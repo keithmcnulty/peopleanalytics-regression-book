@@ -1,0 +1,63 @@
+# Elementary Linear Regression {#linear-reg-ols}
+
+## What it is and when to use it
+
+### Origins and Intuition of Linear Regression
+
+The first methodology we will outline in this book is one of the simplest and most intuitive statistical modeling methods known: Linear Regression, also known as *Ordinary Least Squares Linear Regression* or *OLS Regression* for short.  The principle and method was discovered independently by the mathematicians Gauss and Legendre at or around the first decade of the 19th century, and there remains today some controversy about who should take credit for its discovery.  However,  at the time of its discovery it was not actually known as "regression".  This term became more popular following the work of Francis Galton - a British intellectual jack-of-all-trades and a cousin of Charles Darwin.  In the late 1800s, Galton had researched the relationship between the heights of a population of almost 1,000 children to that of their parents.  He was surprised to discover that the height of parents was not a perfect predictor of the height of children, and that in general children's heights were more likely to be in a 'narrower' range that was closer to the mean for the total population.  He described this statistical phenomenon as a "regression towards mediocrity" ("regression" comes from a Latin term approximately meaning "go back").  
+
+Here is an illustration of Galton's data with the black line showing what a perfect correlation would look like, and the red dashed line showing the actual relationship he determined.  You can regard the red dashed line as 'going back' from the perfect relationship (symbolized by the black line) in the direction of a flat line representing the mean of the child heights.  This might give you an intuition that will help you understand later sections of this chapter. In essence, Linear Regression is about finding the red dashed line in your data and using it to explain the degree to which your input data (the $x$ axis) explains or predicts your outcome data (the $y$ axis). 
+
+```{r galton-fig, fig.cap="Galton's study of the height of children introduced the concept of regression", out.width='80%', fig.asp=.75, fig.align='center', echo = FALSE}
+knitr::include_graphics("www/01/Regression-to-the-mean.png")
+```
+
+### Use cases for Linear Regression
+
+Linear regression is particularly suited to a problem where:
+
+1.  The outcome of interest is on some sort of continuous scale (for example quantity or money)
+2.  There is reason to believe that a simple linear or near-linear relationship exists between the inputs and the outcome of interest.
+
+In reality, number 2 is not that easy to determine with any certainty, although running some simple correlations between inputs and outcome can give a sense of linearity/non-linearity.  In my experience, Linear Regression can be a first port of call before trying more complex modeling approaches.  It is simple and easy to explain, and analysts will often accept a slightly less accurate modeling result using Linear Regression in order to avoid having to interpret a more complex model. So if your outcome is continuous in nature and you have no better intuition, my advice is to explore Linear Regression first. 
+
+Here are some illustratory examples of questions that could be (at least initially) tackled with a Linear Regression approach:
+
+* Given a data set of age, education level, education discipline, years of employment, industry employed in and current salary, to what extent can current salary be explained or predicted from the rest of the data?
+
+* Given semi-annual test scores for a set of students over a three year period, what is the relationship between the final test score and earlier test scores?
+
+* Given information on the demographics, personal characteristics and prior qualifications of a set of PhD students, to what degree can these be used to explain or predict the time taken to complete their studies?
+
+If your outcome of interest is on a binary or categorical scale (for example, 'Yes' or 'No'; 'High', 'Medium' or 'Low'), then linear regression is not recommended and logistic regression is a more well-suited approach.
+
+### Walkthrough Example 
+
+We will use walkthrough examples throughout each chapter of this book to maintain a focus on a real problem as we go through the essential theory and methodology, and to demonstrate the coding of the approach in R or Python.  The data sets for all walkthrough examples will be downloadable via the link provided.  
+
+You are working as an analyst for the Biology Department of a large academic institution.  Due to the outbreak of a major pandemic, the institution is not able to hold final examinations for students in the last year of their 4 year long undergraduate degree program.  The Department has decided to grade students based on their performance in the end of year examinations in their three previous years.
+
+You have been provided with data for the three prior years of individuals graduating from the degree program, and you have been asked to create a model to explain each individual's final examination score based on their examination scores for the first three years of their program.
+
+The dataset is here.
+
+
+## Methodological Overview
+
+You may have concluded from earlier in this chapter that Linear Regression is a parametric model with a linear inductive bias.  (Although this inductive bias can be adjusted to become non-linear which we will look at later).  In order to visualize our approach, we will start with *simple* linear regression, which is the case where there is only a single input variable and output variable.
+
+### Simple Linear Regression
+
+
+
+
+
+
+```{r nice-tab, tidy=FALSE}
+knitr::kable(
+  head(iris, 20), caption = 'Here is a nice table!',
+  booktabs = TRUE
+)
+```
+
+You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
