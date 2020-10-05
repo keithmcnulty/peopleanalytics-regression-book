@@ -79,12 +79,16 @@ The data looks as expected.  Let's get a summary of the data:
 summary(salespeople)
 ```
 
-We see that about a third of individuals were promoted, that sales ranged from \$150k to \$940k, that as expected the satisfaction ratings range from 1 to 5, and finally we see four performance ratings.  Let's do a pairplot to get a quick view on some underlying relationships:
+We see that about a third of individuals were promoted, that sales ranged from \$150k to \$940k, that as expected the satisfaction ratings range from 1 to 5, and finally we see four performance ratings, although the performance categories are numeric when they should be an ordered factor.   Let's convert them to an ordered factor and let's do a pairplot to get a quick view on some underlying relationships:
 
 ```{r, warning = FALSE, message = FALSE}
 library(ggplot2)
 library(GGally)
 
+#convert performance to ordered factor
+salespeople$performance <- ordered(salespeople$performance, levels = 1:4)
+
+# generate pairplot
 GGally::ggpairs(salespeople)
 
 
@@ -92,7 +96,19 @@ GGally::ggpairs(salespeople)
 
 Here we are looking a the binary variable `promoted` on the x-axis in the first column.  We can see that there are twice as many 0s as 1s in the first chart of that column, which confirms what we discovered in our summary.  We can see from the distribution of the scatters for 0 and 1 in the rest of that column that there may be a relationship between sales and promotion and between customer rating and promotion.  We can also see that none of those who received the bottom two performance ratings were promoted.  We also see a moderate relationship between customer rating and sales, which is intuitive (if the customer doesn't like you, sales wouldn't likely be very high).
 
-So we can see that some relationships with our outcome may exist here, but its not clear how to tease them out and quantify them relative to each other.
+So we can see that some relationships with our outcome may exist here, but it's not clear how to tease them out and quantify them relative to each other.  Let's explore how binary logistic regression can help us do this.
 
 
+## Probabilistic outcomes
+
+Imagine that you have an outcome $y$ which is the probability of a certain event.  $y$ obviously takes the a value between zero and 1.  Now imaging that some input variable $x$ has a positive effect on the probability of the event taking place.  Then you would naturally expect $y$ to increase as $x$ increases.
+
+In our `salespeople` data set, let's plot our `promotion` outcome against the `sales` input.  This can be seen in Figure \@ref(fig:prom-sales-plot).
+
+```{r fig-sales-plot, fig.cap = "Plot of promotion against sales in `salespeople` data set", fig.align="center", echo = FALSE}
+
+ggplot2::ggplot(data = salespeople, aes(x = sales, y = promoted)) +
+  ggplot2::geom_point()
+
+```
 
