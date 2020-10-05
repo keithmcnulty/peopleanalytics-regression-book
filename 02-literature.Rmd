@@ -55,11 +55,17 @@ Example questions that could be approached using binary logistic regression incl
 
 ### Walkthrough example
 
-You are an analyst for a large company consisting of numerous sales teams across the country.  Twice every year, this company promotes its salespeople.  Promotion is at the discretion of the head of each sales team, taking into consideration financial performance, customer satisfaction ratings, peer collaboration ratings and personal judgment.  
+You are an analyst for a large company consisting of four regional sales teams across the country.  Twice every year, this company promotes its salespeople.  Promotion is at the discretion of the head of each regional sales team, taking into consideration financial performance, customer satisfaction ratings and personal judgment.  
 
-You are asked by the management of the company to conduct an analysis to determine how the three factors of financial performance, customer ratings and peer ratings influence the likelihood of a given salesperson being promoted.  You are provided with a dataset [here](https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/salespeople.csv).
+You are asked by the management of the company to conduct an analysis to determine how the factors of financial performance, customer ratings and evaluator judgment influence the likelihood of a given salesperson being promoted.  You are provided with a dataset [here](https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/salespeople.csv), containing data for the last three years of salespeople considered for promotion.  The data contains the following fields:
 
-```{r}
+* `promoted`:  A binary value indicating 1 if the individual was promoted and 0 if not.
+* `sales`: the sales (in $000s) attributed to the individual in the period of the promotion
+* `customer_rate`:  the average satisfaction rating from a survey of the individuals customers during the promotion period
+* `region`: the region that the individual was based in
+
+```{r, warning = FALSE, message = FALSE}
+# obtain data from online csv at github
 url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/salespeople.csv"
 salespeople <- read.csv(url)
 
@@ -67,4 +73,26 @@ salespeople <- read.csv(url)
 head(salespeople)
 
 ```
+The data looks as expected.  Let's get a summary of the data:
+
+```{r}
+summary(salespeople)
+```
+
+We see that about a third of individuals were promoted, that sales ranged from \$150k to \$940k, that as expected the satisfaction ratings range from 1 to 5, and finally we see four regions.  Let's do a pairplot to get a quick view on some underlying relationships:
+
+```{r}
+library(ggplot2)
+library(GGally)
+
+GGally::ggpairs(salespeople)
+
+
+```
+
+Here we are looking a the binary variable `promoted` on the x-axis in the first column.  We can see that there are twice as many 0s as 1s in the first chart of that column.  We can see from the distribution of the scatters for 0 and 1 in the rest of that column that there may be a relationship between sales and promotion and between customer rating and promotion.  The situation with number of new customers in unclear from this chart.  WE also see a moderate relationship between customer rating and sales, which is intuitive (if the customer doesn't like you, sales wouldn't likely be very high).
+
+So we can see that some relationship with our outcome may exist here, but its not clear how to tease them out and quantify them relative to each other.
+
+
 

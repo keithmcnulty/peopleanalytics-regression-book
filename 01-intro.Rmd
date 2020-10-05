@@ -50,6 +50,7 @@ To help with this, you have been provided with data for last year's individuals 
 The dataset is [here](https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/ugtests.csv), and we will load it into our session and take a brief look at it.
 
 ```{r}
+# obtain data from online csv at github
 url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/ugtests.csv"
 ugtests <- read.csv(url)
 
