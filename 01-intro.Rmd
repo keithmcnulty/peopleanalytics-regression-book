@@ -1,6 +1,8 @@
-# Elementary Linear Regression {#linear-reg-ols}
+# Elementary Linear Regression for Continuous Outcomes {#linear-reg-ols}
 
-## What it is and when to use it {#when-oßls}
+In this chapter we will introduce and explore elementary linear regression, one of the first learning methods to be developed by statisticians and one of the easiest to interpret.  Despite its simplicity - indeed *because* of its simplicity - it can be a very powerful tool in many situations.  Linear regression will often be the first methodology to be trialled on a given problem, and will give an immediate benchmark with which to judge the efficacy of other, more complex, modeling techniques.  Given the ease of interpretation, many analysts will select a linear regression model over more complex approaches even if those approaches produce a slightly better fit. This is particularly the case in inferential modeling.  This chapter will also introduce many critical concepts that will apply to other modeling approaches as we proceed through this book, therefore for inexperienced modelers this should be considered a foundational chapter which should not be skipped.
+
+## When to use it {#when-ols}
 
 ### Origins and Intuition of Linear Regression {#origins-ols}
 
@@ -48,10 +50,8 @@ To help with this, you have been provided with data for last year's individuals 
 The dataset is [here](https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/ugtests.csv), and we will load it into our session and take a brief look at it.
 
 ```{r}
-
-# use the readr library to directly download our data into a dataframe called ugtests
-library(readr)
-ugtests <- readr::read_csv("https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/ugtests.csv")
+url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/ugtests.csv"
+ugtests <- read.csv(url)
 
 # look at the first few rows of data
 head(ugtests)
@@ -69,7 +69,7 @@ We can see that the tests have different scales in Years 3 and 4, and judging by
 
 We can also plot our four years of test scores pairwise to see any initial relationships of interest.
 
-```{r pairplot-ugtests}
+```{r pairplot-ugtests, fig.cap = "Pairplot of the `ugtests` data set", fig.align = "center"}
 library(ggplot2)
 library(GGally)
 
@@ -94,21 +94,21 @@ where $m$ represents the slope or gradient of the line, and $c$ represents the p
 
 Now let's assume that we have a sample of six datapoints with which to estimate our linear relationship.  Let's take the first six values of `Yr3` and `Final` in our `ugtests` dataset:
 
-```{r, echo = FALSE}
-head(ugtests[ , c("Yr3", "Final")])
+```{r}
+(d <- head(ugtests[ , c("Yr3", "Final")]))
 ```
 
-We can do a simple plot of these data points as in \@ref(fig:sample-plot):
+We can do a simple plot of these data points as in Figure \@ref(fig:sample-plot):
 
-```{r sample-plot, echo = FALSE}
+```{r sample-plot, fig.cap = "Basic scatter plot of six datapoints", fig.align = "center", echo = FALSE}
 d <- head(ugtests[ , c("Yr3", "Final")])
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_point()
 ```
 
-Intuitively, we can imagine a line passing through these points that 'fits' the general pattern.  For example, taking $m = 2$ and $c = 0$, the resulting line $y = 2x$ could  fit between the points we are given, as displayed in \@ref(fig:sample-plot-fit):
+Intuitively, we can imagine a line passing through these points that 'fits' the general pattern.  For example, taking $m = 2$ and $c = 0$, the resulting line $y = 2x$ could  fit between the points we are given, as displayed in Figure \@ref(fig:sample-plot-fit):
 
-``` {r sample-plot-fit, echo = FALSE}
+``` {r sample-plot-fit, fig.cap = "Fitting $y=2x$ to our six datapoints", fig.align = "center", echo = FALSE}
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) + 
   ggplot2::geom_point() +
   ggplot2::geom_function(fun = function(x) 2*x, colour = "red", linetype = "dashed") +
@@ -120,10 +120,10 @@ This looks like an approximation of the relationship, but how do we know that it
 
 ### Minimising the error {#minimising-error-ols}
 
-For each of our data points, we can determine an error in the fitted model by calculating the difference between the real value of $y$ and the one predicted by our model.  For example, at $x = 18$, our modeled value of y is 36, but the real value is 63, producing an error of 27.  These errors are known as the *residuals* of our model. The residuals for the six points in our dataset are illustrated by the solid red line segments in \@ref(fig:sample-plot-residuals).  It looks like at least one of our residuals is pretty large.
+For each of our data points, we can determine an error in the fitted model by calculating the difference between the real value of $y$ and the one predicted by our model.  For example, at $x = 18$, our modeled value of y is 36, but the real value is 63, producing an error of 27.  These errors are known as the *residuals* of our model. The residuals for the six points in our dataset are illustrated by the solid red line segments in Figure \@ref(fig:sample-plot-residuals).  It looks like at least one of our residuals is pretty large.
 
 
-``` {r sample-plot-residuals, echo = FALSE}
+``` {r sample-plot-residuals, fig.cap = "Residuals of $y=2x$ for our six datapoints", fig.align = "center", echo = FALSE}
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) + 
   ggplot2::geom_point() +
   ggplot2::geom_function(fun = function(x) 2*x, colour = "red", linetype = "dashed") +
@@ -142,7 +142,7 @@ The total error of our model, which we want to minimize could be defined in a nu
 2.  The sum of the *absolute values* of our residuals (so that negative values are converted to positive values)
 3.  The sum of the squares of our residuals (note that all squares are positive)
 
-For a number of reasons (not least that fact that at the time this method was developed it was one of the easiest to calculate manually), the most common approach is number 3, which is why we call our regression model *Ordinary Least Squares* regression.  Some simple algebra and calculus can help us determine the equation of the line that generates the least squared residual error.  You can see more of the mathematics [here](), but let's look at how this works in practice.  
+For a number of reasons (not least that fact that at the time this method was developed it was one of the easiest to calculate manually), the most common approach is number 3, which is why we call our regression model *Ordinary Least Squares* regression.  Some simple algebra and calculus can help us determine the equation of the line that generates the least squared residual error.  You can see more of the mathematics [here](https://are.berkeley.edu/courses/EEP118/current/derive_ols.pdf), but let's look at how this works in practice.  
 
 ### Determining the best fit {#best-fit-simple-ols}
 
@@ -173,9 +173,9 @@ This tells us that that our best fit model - the one that minimises the sum of t
 
 We have calculated a model which minimizes the sum of squares residual error for the sample of data that we have, but we don't really have a sense of how 'good' the model is.  How do we tell how well our model uses the input data to explain the outcome?   This is an important question to answer because you would not want to propose a model that does not do a good job of explaining your outcome, and you also may need to compare your model to other alternatives, which will require some sort of benchmark metric.
 
-One natural way to benchmark how good a job your model does of explaining the outcome is to compare it to a situation where you have no input and no model at all.  In this situation, all you have is your outcome values which can be considered a random variable with a mean and a variance.  In the case of our six datapoints, we have six values of `Final` with a mean of `r round(mean(d$Final), 2)`.  We can consider the horizontal line representing the mean of $y$ as our 'random model', and we can calculate the residuals around the mean.  This can be seen in \@ref(fig:model-mean).
+One natural way to benchmark how good a job your model does of explaining the outcome is to compare it to a situation where you have no input and no model at all.  In this situation, all you have is your outcome values which can be considered a random variable with a mean and a variance.  In the case of our six datapoints, we have six values of `Final` with a mean of `r round(mean(d$Final), 2)`.  We can consider the horizontal line representing the mean of $y$ as our 'random model', and we can calculate the residuals around the mean.  This can be seen in Figure \@ref(fig:model-mean).
 
-```{r model-mean, echo = FALSE}
+```{r model-mean, fig.cap = "Residuals of our six datapoints around their mean value", fig.align = "center", echo = FALSE}
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_point() +
   ggplot2::geom_function(fun = function(x) mean(d$Final), color = "blue", linetype = "dashed") +
@@ -191,9 +191,9 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
 
 If you consult the definition of the population variance of $y$, notated as $\mathrm{Var}(y)$, in any elementary statistics textbook, you will see that it is the average of the squares of these residuals. Therefore $\mathrm{Var}(y)$ represents the mean sum of squares error of a random model.  This calculates in this case to `r round((5/6)*var(d$Final), 2)`.
 
-Now let's overlay our fitted model onto this random model in \@ref(fig:model-overlay):
+Now let's overlay our fitted model onto this random model in Figure \@ref(fig:model-overlay):
 
-```{r model-overlay, echo = FALSE}
+```{r model-overlay, fig.cap = "Comparison of residuals of fitted model (red) against random variable (blue)", fig.align = "center", echo = FALSE}
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_point() +
   ggplot2::geom_function(fun = function(x) mean(d$Final), color = "blue", linetype = "dashed") +
@@ -227,7 +227,7 @@ This metric is known as the $R^2$ of our model and is the primary metric used in
 
 In reality, regression problems rarely involve one single input variable, but rather multiple variables. The methodology for multiple linear regression is similar in nature to a simple linear regression, but obviously more difficult to visualize because of its increased dimensionality.
 
-In this case, our input $X$ is a vector of $p$ variables $(x_1, x_2, ..., x_p)$.  Extending the linear equation in \@ref(linear-single), we seek to develop an equation of the form:
+In this case, our input $X$ is a vector of $p$ variables $(x_1, x_2, ..., x_p)$.  Extending the linear equation in Figure \@ref(linear-single), we seek to develop an equation of the form:
 
 $$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p$$
 so that our sum of squares residual error is minimized.  
@@ -243,7 +243,7 @@ model$coefficients
 ```
 
 
-Referring to our formula in \@ref(multiple-linear-regression), let's understand what each coefficient $\beta_0, \beta_1, ..., \beta_p$ means.  $\beta_0$, known as the *intercept* of the model, represents the value of $y$ assuming that all the inputs were zero.  You can imagine that your output can be expected to have a base value even without any inputs - a student who completely flunked the first three years can still redeem themselves to a degree in the Final year.
+Referring to our formula in Section \@ref(multiple-linear-regression), let's understand what each coefficient $\beta_0, \beta_1, ..., \beta_p$ means.  $\beta_0$, known as the *intercept* of the model, represents the value of $y$ assuming that all the inputs were zero.  You can imagine that your output can be expected to have a base value even without any inputs - a student who completely flunked the first three years can still redeem themselves to a degree in the Final year.
 
 Now looking at the other coefficients, let's consider what happens if our first input $x_1$ increased by a single unit, assuming nothing else changed.  We would then expect our value of y to increase by $\beta_1$.  Similarly for any input $x_k$, a unit increase would result in an increase in $y$ of $\beta_k$, assuming no other changes in the inputs. 
 
@@ -306,12 +306,11 @@ This provides us with some of the most important metrics from our model.  In par
 In this case we should already be quite happy with the overall fit and confidence level of our linear regression model, and we may now want to use it to predict the Final test scores of our new students who have been affected by the pandemic.  As you might imagine, prediction is a relatively straightforward process.  We feed in the `Yr2` and `Yr3` examination scores into our fitted model, and it applies the coefficients to calculate the predicted outcome.  Let's look at three fictitious students, and create a dataframe with their scores to input into the model.
 
 ```{r}
-new_students <- data.frame(
+(new_students <- data.frame(
   Yr2 = c(67, 23, 88), 
   Yr3 = c(144, 100, 166)
-)
+))
 
-new_students
 ```
 
 Now we can feed these values into our model to get predictions of the Final examination result for our three new students.
@@ -360,7 +359,7 @@ There are three main options for how missing data is handled:
 
 2.  As data becomes more sparse, removing observations becomes less of an option.  If the sparseness is massive (eg more than half of the data is missing), then there is no choice but to remove that variable from the model.  While this may be unsatisfactory for a given variable (because it is considered a potentially important predictor), the fact remains that data that is mostly missing is not a good measure of that predictor in the first place.
 
-3.  Moderate sparse data could be considered for imputation.  Imputation methods involve using the overall statistical properties of the entire data set or of specific other variables to 'suggest' what the missing value might be.  We will not cover imputation methods in depth here, but we will touch on them later in this book. 
+3.  Moderate sparse data could be considered for imputation.  Imputation methods involve using the overall statistical properties of the entire data set or of specific other variables to 'suggest' what the missing value might be, ranging from simple mean and median values to more complex imputation methods.  We will not cover imputation methods in depth here, but we will touch on them later in this book. 
 
 ### Transforming categorical inputs to dummy variables
 
@@ -376,30 +375,26 @@ In general, all model input variables should take a numeric form.  The most reli
 
 ```{r}
 
-vehicle_data <- data.frame(
+(vehicle_data <- data.frame(
   make = c("Ford", "Toyota", "Audi"), 
   manufacturing_cost = c(15000, 19000, 28000)
-)
+))
 
-vehicle_data 
 ```
 
 The `make` data is categorical, so it will be converted to several columns for each possible value of `make` and binary labelling will be used to identify whether that value is present in that specific observation.  Many packages and functions are available to conveniently do this, for example:
 
 ```{r}
-dummy_vehicle <- dummies::dummy("make", data = vehicle_data)
-dummy_vehicle
+(dummy_vehicle <- dummies::dummy("make", data = vehicle_data))
 ```
 
 Dummy variables can then replace the original `make` column to get your data set ready for modeling:
 
 ```{r}
-vehicle_data_dummies <- cbind(
+(vehicle_data_dummies <- cbind(
   manufacturing_cost = vehicle_data$manufacturing_cost,
   dummy_vehicle
-)
-
-vehicle_data_dummies
+))
 
 ```
 
@@ -420,9 +415,9 @@ All modeling techniques have underlying assumptions about the data that they mod
 
 We mentioned earlier that linear regression assumes that the relationship we are trying to model is linear and additive in nature.  Therefore you can expect problems if you are using this approach to model a pattern that is non-linear.  In general, you'd expect this problem to come out 'in the wash' anyway, because a linear model will not produce a good fit on a non-linear underlying relationship.  
 
-Nevertheless, you can check whether your linearity assumption was reasonable in a couple of ways.  You can plot the true versus the predicted (fitted) values to see if they look correlated.  You can see such a plot on our student examination model from before in \@ref(fig:predplot):
+Nevertheless, you can check whether your linearity assumption was reasonable in a couple of ways.  You can plot the true versus the predicted (fitted) values to see if they look correlated.  You can see such a plot on our student examination model from before in Figure \@ref(fig:predplot):
 
-```{r predplot}
+```{r predplot, fig.cap = "Plot of true versus fitted/predicted student scores", fig.align = "center"}
 predicted_values <- newmodel$fitted.values
 true_values <- ugtests$Final
 
@@ -431,9 +426,9 @@ plot(predicted_values, true_values)
 
 ```
 
-Alternatively, you can plot the residuals of your model against the predicted values, and look for the pattern of a random distribution (ie no major discernible pattern), such as in \@ref(fig:resplot):
+Alternatively, you can plot the residuals of your model against the predicted values, and look for the pattern of a random distribution (ie no major discernible pattern), such as in Figure \@ref(fig:resplot):
 
-```{r resplot}
+```{r resplot, fig.cap = "Plot of residuals against fitted/predicted scores", fig.align = "center",}
 residuals <- newmodel$residuals
 
 #plot residuals against predicted values
@@ -446,18 +441,18 @@ You can also plot the residuals against each input variable as an extra check of
 
 It is assumed in a linear model that the errors or residuals are homoscedastic - this means that their variance is constant across the values of the input variables.  If the errors of your model heteroscedastic - that is, if they increase or decrease according to the value of the model inputs, this can lead to poor estimations of confidence intervals and fits.
 
-While a simple plot of residuals against predicted values (such as in \@ref(fig:resplot)) can give a quick indication on homoscedacity, to be thorough the residuals should be plotted against each input variable, and it should be verified that the range of the residuals remains broadly stable.  In our student examination model, we can first plot the residuals against the values of `Yr2` in \@ref(fig:resyr2):
+While a simple plot of residuals against predicted values (such as in Figure \@ref(fig:resplot)) can give a quick indication on homoscedacity, to be thorough the residuals should be plotted against each input variable, and it should be verified that the range of the residuals remains broadly stable.  In our student examination model, we can first plot the residuals against the values of `Yr2` in Figure \@ref(fig:resyr2):
 
-```{r resyr2}
+```{r resyr2, fig.cap = "Plot of residuals against `Yr2` values", fig.align = "center"}
 Yr2 <- ugtests$Yr2
 
 #plot residuals against Yr2 values
 plot(Yr2, residuals)
 ```
 
-Then we can plot against `Yr3` in \@ref(fig:resyr3):
+Then we can plot against `Yr3` in Figure \@ref(fig:resyr3):
 
-```{r resyr3}
+```{r resyr3, fig.cap = "Plot of residuals against `Yr3` values", fig.align = "center"}
 Yr3 <- ugtests$Yr3
 
 #plot residuals against Yr3 values
@@ -470,20 +465,20 @@ Both plots show a pretty consistent range of values between the left and right s
 
 In an appropriate model we expect our errors to be random, so we would therefore expect our residuals to be normally distributed over sufficient numbers of observations.  If our residuals are distributed differently, this is again an indicator of an inappropriate model and can result in inaccurate estimates of confidence intervals and the statistical significance of coefficients.
 
-The quickest way to determine if residuals in your sample are consistent with a normal distribution is to run a quantile-quantile plot (or QQplot) on the residuals.  This will plot the observed quantiles of your sample against the theoretical quantiles of a normal distribution.  The closer this plot looks like a perfect correlation, the more certain you can be that this normality assumption holds.  An example for our student examination model is in \@ref(fig:qqplottests):
+The quickest way to determine if residuals in your sample are consistent with a normal distribution is to run a quantile-quantile plot (or QQplot) on the residuals.  This will plot the observed quantiles of your sample against the theoretical quantiles of a normal distribution.  The closer this plot looks like a perfect correlation, the more certain you can be that this normality assumption holds.  An example for our student examination model is in Figure \@ref(fig:qqplottests):
 
-```{r qqplottests}
+```{r qqplottests, fig.cap = "Quantile-Quantile plot of residuals", fig.align = "center"}
 ## normal distribution qqplot of residuals
 qqnorm(newmodel$residuals)
 ```
 
-### Avoiding high collinearity and multicollinearity between input variables (#collinearity)
+### Avoiding high collinearity and multicollinearity between input variables {#collinearity}
 
-In multiple linear regression, the various input variables used can be considered 'dimensions' of the problem or model.  In theory, we ideally expect dimensions to be independent and uncorrelated.  Practically speaking, however, it's very challenging in large data sets to ensure that every input variable is completely uncorrelated from another.  For example, even in our limited `ugtests` data set we saw in \@ref(fig:pairplot-ugtests) that `Yr2` and `Yr3` examination scores are correlated to some degree.
+In multiple linear regression, the various input variables used can be considered 'dimensions' of the problem or model.  In theory, we ideally expect dimensions to be independent and uncorrelated.  Practically speaking, however, it's very challenging in large data sets to ensure that every input variable is completely uncorrelated from another.  For example, even in our limited `ugtests` data set we saw in Figure \@ref(fig:pairplot-ugtests) that `Yr2` and `Yr3` examination scores are correlated to some degree.
 
 While some intercorrelation between input variables can be expected and tolerated in linear regression models, high levels of correlation can result in significant inflation of coefficients and inaccurate estimates of p-values of coefficients.  
 
-*Collinearity* means that two input variables are highly correlated.  The definition of 'high correlation' is a matter of judgment, but as a rule of thumb correlations greater than 0.5 might be considered high and greater than 0.7 might be considered extreme.  Creating a simple correlation matrix or a pairplot (such as \@ref(fig:pairplot-ugtests)) can immediately surface high or extreme collinearity.
+*Collinearity* means that two input variables are highly correlated.  The definition of 'high correlation' is a matter of judgment, but as a rule of thumb correlations greater than 0.5 might be considered high and greater than 0.7 might be considered extreme.  Creating a simple correlation matrix or a pairplot (such as Figure \@ref(fig:pairplot-ugtests)) can immediately surface high or extreme collinearity.
 
 *Multicollinearity* means that there is a linear relationship between more than two of the input variables.  This may not always present itself in the form of high correlations between pairs of input variables, but may be seen by identiying 'clusters' of moderately correlated variables, or by calculating a Variance Inflation Factor (VIF) for each input variable - where VIFs greater than 5 indicate high multicollinearity.  Easy-to-use tests also exist in statistical software for identifying multicollinearity (for example the `mctests` package in R, or `variance_inflation_factor` function in the `statsmodels` package in Python).
 
@@ -527,6 +522,65 @@ In this case we find that modeling `Yr1` as a quadratic makes no difference to t
 
 ## Learning exercises
 
+Most chapters in this book will end with learning exercises.  These will be a combination of discussion questions to encourage engagement with the material in the chapter and practical exercises with data sets.  Links to data will be provided where relevant.
+
+### Discussion questions
+
+1.  What is the approximate meaning of the term 'regression'?  Why is the term particularly suited to the methodology described in this chapter?
+
+2.  What basic condition must the outcome variable satisfy for linear regression to be a potential modeling approach?  Describe some ideas for problems that might be modeled using linear regression.
+
+3.  What is the difference between simple linear regression and multiple linear regression?
+
+4.  What is a residual and how does it relate to the term 'Ordinary Least Squares'?  
+
+5.  How are the coefficients of a linear regression model interpreted?  Explain why higher coefficients do not necessarily imply greater importance.
+
+6.  How is the $R^2$ of a linear regression model interpreted?  What are the minimum and maximum possible values for $R^2$ and what does each mean?
+
+7.  What are the key considerations when preparing input data for a linear regression model?  
+
+8.  Describe what you understand by the term 'dummy variable'.  Why are dummy variable coefficients often larger than other coefficients in linear regression models?
+
+9.  Describe the term 'collinearity' and why it is an important consideration in regression models. 
+
+10. Describe some ways that linear regression models can be extended into non-linear models.
+
+### Data exercise
+
+The `sociological_data` dataset can be obtained at https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/sociological_data.csv.  This data represents a sample of information obtained from individuals who participated in a global research study, and contains the following fields:
+
+* `annual_income_ppp`:  The annual income of the individual in PPP adjusted US dollars
+* `average_wk_hrs`:  The average number of hours per week worked by the individual
+* `education_months`: The total number of months spend by the individual in formal primary, secondary and tertiary education
+* `region`:  The region of the world where the individual lives
+* `job_type`: Whether the individual works in a skilled or unskilled profession
+* `gender`: The gender of the individual
+* `family_size`:  The size of the individual's family of dependents
+* `work_distance`:  The distance between the indivdual's residence and workplace in kilometers
+* `languages`:  The number of languages spoken fluently by the individual
+
+Conduct some exploratory data analysis on this data set.  Including:
+
+1. Identify the extent to which missing data is an issue  
+2. Determine if the data types are appropriate for analysis
+3. Using a correlation matrix, pairplot or alternative method, identify whether collinearity is present in the data
+4. Identify and discuss anything else interesting that you see in the data
+
+Prepare to build a linear regression model to explain the variation in `annual_income_ppp` using the other data in the data set.
+
+5. Are there any fields which you believe should not be included in the model?  If so, why?
+6. Would you consider imputing missing data for some or all fields where it is an issue?  If so, what might be some simple ways to impute the missing data?
+7. Which variables are categorical?  Convert these variables to dummy variables using a convenient function or using your own approach.
+
+Run and interpret the model.  For convenience, and to avoid long formula strings, you can use the formula notation `annual_income_ppp ~ .` which means 'regress `annual_income` against everything else'.  You can also remove fields this way, for example `annual_income_ppp ~ . - family_size`.
+
+8.  Determine what variables are significant predictors of annual income and what is the effect of each on the outcome.
+9.  Determine the overall fit of the model.
+10. Do some simple analysis on the residuals of the model to determine if the model is safe to interpret.
+11. Experiment with improving the model fit through possible interaction terms or non-linear extensions.
+12. Comment on your results.  Did anything in the results surprise you?  If so, what might be possible explanations for this.
+13. Explain why you would or would not be comfortable using a model like this in a predictive setting - for example to help employers determine the right pay for employees.
 
 
 

@@ -1,0 +1,70 @@
+# Binary Logistic Regression for Two-Class Outcomes
+
+In the previous chapter we looked at how to explain outcomes that have continuous scale, such as quantity, money, height or weights.  While there are  a number of typical problems of this type in the people analytics domain, they are not the most common form of outcomes that are typically modeled.  Much more common are situations where the outcome of interest takes the form of a limited set of classes.  Two-class (binary) problems are very common.  In business contexts hiring, promotion and attrition are of often modeled as binary outcomes:  for example 'Promoted' or 'Not promoted'.  Even multi-class outcomes like performance, where individuals can have multiple performance ratings on an ordinal scale, are often converted to binary outcomes by dividing the performance ratings into two groups, for example 'High' and 'Not High'.
+
+In any situation where our outcome is binary we are effectively working with probabilities.  Probability distributions are not generally linear in nature, and so we are no longer have the comfort of our inputs being *directly* linearly related to our outcome.    Therefore, direct linear regression methods such as Ordinary Least Squares regression are not well suited to outcomes of this type.  That said, linear relationships can be inferred on *transformations* of the outcome variable, which gives us a path to building interpretable models.  Hence, logistic regression is said to be in a class of *generalized linear models* or *GLMs*.  Because of the transformations of the outcome variable, the steps to interpretation of a binary logistic regression model are a little more involved than in the previous chapter.  Understanding logistic regression and using it reliably in practice is not straightforward, but it is an invaluable skill to have in the people analytics domain.
+
+## When to use it
+
+### Origins and intuition of binary logistic regression
+
+The *logistic function* was introduced by the Belgian Mathematician Pierre François Verhulst in the mid-1800s as a tool for modeling population growth for humans, animals and certain species of plants and fruits.  By this time, it was generally accepted that population growth could not continue exponentially forever, and that there were environmental and resource limits which place a maximum limit on the size of a population, called the 'carrying capacity'.  The formula for Verhulst's function was:
+
+$$
+y = \frac{L}{1 + e^{-k(x - x_0)}}
+$$
+where $e$ is the exponential constant, $x_0$ is the value of $x$ at the midpoint, $L$ is the maximum value of $y$ (the 'carrying capacity') and $k$ is the maximum gradient of the curve. 
+
+The logistic function, as shown in Figure \@ref(fig:logistic-function-verhulst), was felt to accurately capture the theorized stages of population growths, with slower growth in the initial stage, moving to exponential growth during the intermediate stage and then to slower growth as the population approaches its carrying capacity.  
+
+```{r logistic-function-verhulst, fig.align = "center", fig.cap = "Verhulst's Logistic Function modeled both the exponential nature and the natural limit of population expansion", echo = FALSE}
+
+knitr::include_graphics("www/02/logistic-curve.png")
+
+
+```
+
+In the early 20th century, starting with applications in economics and in chemistry, the logistic function was adopted in a wide array of fields as a useful tool for modeling phenomena.  In statistics, it was quickly noted that the logistic function has a similar S-shape (or *sigmoid*) to a cumulative normal distribution of probability, as depicted in Figure \@ref(fig:norm-log-curves)^[The logistic function plotted in Figure \@ref(fig:norm-log-curves) takes the simple form $y = \frac{1}{1 + e^{-x}}$]).  However, the logistic function has a clear and simple mathematical formula which is easy to perform calculus on, and therefore easier to use to develop inferential models based on maximum likelihood.  So statisticians started to observe that they could work with a more 'plyable' function that was very close in nature to a normal probability distribution.  Unsurprisingly, the logistic model soon became a common approach to modeling probabilistic phenomena.
+
+```{r norm-log-curves, fig.align = "center", fig.cap = "The logistic function is very similar to a cumulative normal distribution, but easier to work with mathematically", echo = FALSE}
+library(ggplot2)
+
+ggplot2::ggplot() +
+  ggplot2::xlim(-5, 5) +
+  ggplot2::geom_function(fun = pnorm, aes(color = "red")) +
+  ggplot2::geom_function(fun = plogis, aes(color = "blue")) +
+  scale_color_discrete(name = "Distribution Type", labels = c("Cumulative Normal", "Logistic"))
+                      
+  
+
+
+```
+
+### Use cases for binary logistic regression
+
+Binary logistic regression can be used in the following situation:
+
+1.  The outcome of interest is binary or dichotomous in nature.  That is, it takes one of two values.  For example, one or zero, true or false, yes or no.  These classes are commonly described as 'positive' and 'negative' classes.
+2.  There is more than one input variable and you need to understand the *relative* impact of each variable on the likelihood of the output being in the positive class.  If there is only one input variable, logistic regression can still be used but a Chi-squared test will produce similar results and is a generally simpler approach.
+
+Example questions that could be approached using binary logistic regression include:
+
+* Given a set of data about sales managers in an organization, including performance against targets, team size, tenure in the organization and other factors, what impact do these factors have on the likelihood of the individual being a high performer? 
+* Given a set of demographic, income and location data, what influence does each have on the likelihood of an individual voting in an election?
+* Given a set of responses to survey questions from a set of employees and data on the employees' history with the organization, to what extent can the different survey responses explain the likelihood of an individual leaving the organization within a defined time period?
+
+### Walkthrough example
+
+You are an analyst for a large company consisting of numerous sales teams across the country.  Twice every year, this company promotes its salespeople.  Promotion is at the discretion of the head of each sales team, taking into consideration financial performance, customer satisfaction ratings, peer collaboration ratings and personal judgment.  
+
+You are asked by the management of the company to conduct an analysis to determine how the three factors of financial performance, customer ratings and peer ratings influence the likelihood of a given salesperson being promoted.  You are provided with a dataset [here](https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/salespeople.csv).
+
+```{r}
+url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/salespeople.csv"
+salespeople <- read.csv(url)
+
+# look at the first few rows of data
+head(salespeople)
+
+```
+
