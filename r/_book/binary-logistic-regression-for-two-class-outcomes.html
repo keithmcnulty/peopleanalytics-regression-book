@@ -365,7 +365,7 @@ P(y = 0) = 1 - \frac{1}{1 + e^{-(\beta_1x + \beta_0)}}
 <p><span class="math display">\[
 \frac{P(y = 1)}{P(y = 0)} = e^{\beta_0 + \beta_1x} = e^{\beta_0}(e^{\beta_1})^x
 \]</span></p>
-<p>From this, we can interpret that <span class="math inline">\(e^{\beta_0}\)</span> represents the base odds of promotion assuming no sales, and that for every additional unit sales, those base odds are multiplied by <span class="math inline">\(e^{\beta_1}\)</span>. Given this multiplicative effect that <span class="math inline">\(e^{\beta_1}\)</span> has on the odds, it is knows as an <em>odds ratio</em>.</p>
+<p>From this, we can interpret that <span class="math inline">\(e^{\beta_0}\)</span> represents the base odds of promotion assuming no sales, and that for every additional unit sales, those base odds are multiplied by <span class="math inline">\(e^{\beta_1}\)</span>. Given this multiplicative effect that <span class="math inline">\(e^{\beta_1}\)</span> has on the odds, it is known as an <em>odds ratio</em>.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="binary-logistic-regression-for-two-class-outcomes.html#cb8-1"></a><span class="co"># convert log odds to base odds and odds ratio</span></span>
 <span id="cb8-2"><a href="binary-logistic-regression-for-two-class-outcomes.html#cb8-2"></a><span class="kw">exp</span>(simple_model<span class="op">$</span>coefficients)</span></code></pre></div>
 <pre><code>##  (Intercept)        sales 
