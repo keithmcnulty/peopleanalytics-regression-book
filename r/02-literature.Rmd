@@ -1,4 +1,4 @@
-# Binary Logistic Regression for Two-Class Outcomes
+# Binomial Logistic Regression for Two-Class Outcomes
 
 ```{r setup, echo = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
@@ -7,11 +7,11 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 In the previous chapter we looked at how to explain outcomes that have continuous scale, such as quantity, money, height or weights.  While there are  a number of typical problems of this type in the people analytics domain, they are not the most common form of outcomes that are typically modeled.  Much more common are situations where the outcome of interest takes the form of a limited set of classes.  Two-class (binary) problems are very common.  In business contexts hiring, promotion and attrition are of often modeled as binary outcomes:  for example 'Promoted' or 'Not promoted'.  Even multi-class outcomes like performance, where individuals can have multiple performance ratings on an ordinal scale, are often converted to binary outcomes by dividing the performance ratings into two groups, for example 'High' and 'Not High'.
 
-In any situation where our outcome is binary we are effectively working with probabilities.  Probability distributions are not generally linear in nature, and so we are no longer have the comfort of our inputs being *directly* linearly related to our outcome.    Therefore, direct linear regression methods such as Ordinary Least Squares regression are not well suited to outcomes of this type.  That said, linear relationships can be inferred on *transformations* of the outcome variable, which gives us a path to building interpretable models.  Hence, logistic regression is said to be in a class of *generalized linear models* or *GLMs*.  Because of the transformations of the outcome variable, the steps to interpretation of a binary logistic regression model are a little more involved than in the previous chapter.  Understanding logistic regression and using it reliably in practice is not straightforward, but it is an invaluable skill to have in the people analytics domain.
+In any situation where our outcome is binary we are effectively working with probabilities.  Probability distributions are not generally linear in nature, and so we are no longer have the comfort of our inputs being *directly* linearly related to our outcome.    Therefore, direct linear regression methods such as Ordinary Least Squares regression are not well suited to outcomes of this type.  That said, linear relationships can be inferred on *transformations* of the outcome variable, which gives us a path to building interpretable models.  Hence, logistic regression is said to be in a class of *generalized linear models* or *GLMs*.  Because of the transformations of the outcome variable, the steps to interpretation of a binomial logistic regression model are a little more involved than in the previous chapter.  Understanding logistic regression and using it reliably in practice is not straightforward, but it is an invaluable skill to have in the people analytics domain.
 
 ## When to use it
 
-### Origins and intuition of binary logistic regression {#logistic-origins}
+### Origins and intuition of binomial logistic regression {#logistic-origins}
 
 The *logistic function* was introduced by the Belgian Mathematician Pierre François Verhulst in the mid-1800s as a tool for modeling population growth for humans, animals and certain species of plants and fruits.  By this time, it was generally accepted that population growth could not continue exponentially forever, and that there were environmental and resource limits which place a maximum limit on the size of a population, called the 'carrying capacity'.  The formula for Verhulst's function was:
 
@@ -45,14 +45,14 @@ ggplot2::ggplot() +
 
 ```
 
-### Use cases for binary logistic regression
+### Use cases for binomial logistic regression
 
-Binary logistic regression can be used in the following situation:
+binomial logistic regression can be used in the following situation:
 
 1.  The outcome of interest is binary or dichotomous in nature.  That is, it takes one of two values.  For example, one or zero, true or false, yes or no.  These classes are commonly described as 'positive' and 'negative' classes.
 2.  There is more than one input variable and you need to understand the *relative* impact of each variable on the likelihood of the output being in the positive class.  If there is only one input variable, logistic regression can still be used but a Chi-squared test will produce similar results and is a generally simpler approach.
 
-Example questions that could be approached using binary logistic regression include:
+Example questions that could be approached using binomial logistic regression include:
 
 * Given a set of data about sales managers in an organization, including performance against targets, team size, tenure in the organization and other factors, what impact do these factors have on the likelihood of the individual being a high performer? 
 * Given a set of demographic, income and location data, what influence does each have on the likelihood of an individual voting in an election?
@@ -100,9 +100,9 @@ GGally::ggpairs(salespeople)
 
 ```
 
-We can see from this pairplot that there is are clearly higher sales for those who are promoted versus those who are not sales.  We also see a moderate relationship between customer rating and sales, which is intuitive (if the customer doesn't like you, sales wouldn't likely be very high).
+We can see from this pairplot that there are clearly higher sales for those who are promoted versus those who are not.  We also see a moderate relationship between customer rating and sales, which is intuitive (if the customer doesn't like you, sales wouldn't likely be very high).
 
-So we can see that some relationships with our outcome may exist here, but it's not clear how to tease them out and quantify them relative to each other.  Let's explore how binary logistic regression can help us do this.
+So we can see that some relationships with our outcome may exist here, but it's not clear how to tease them out and quantify them relative to each other.  Let's explore how binomial logistic regression can help us do this.
 
 
 ## Modeling probabilistic outcomes using a logistic function
@@ -254,7 +254,7 @@ $$
 The derivations in the previous section easily extend to multivariate data.  Let $y$ by a dichotomous outcome and let $x_1, x_2, ..., x_p$ be our input variables.  Then
 
 $$
-log\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p
+\log\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p
 $$
 for coefficients $\beta_0, \beta_1,..., \beta_p$.  As before:
 
@@ -272,7 +272,7 @@ $$
 Therefore we can conclude that:
 
 * $e^{\beta_0}$ represents the odds of the outcome when all inputs are zero
-* Each $e^{\beta_i}$ represents the *odds ratio* associated with a unit increase in $x_i$ assuming no change in the other inputs (that is, a unit increase in $x_i$ multiplies the odds of our outcome by $e^{\beta_i}$.  Let's put this into practice.
+* Each $e^{\beta_i}$ represents the *odds ratio* associated with a unit increase in $x_i$ assuming no change in the other inputs (that is, a unit increase in $x_i$ multiplies the odds of our outcome by $e^{\beta_i}$).  Let's put this into practice.
 
 ### Running and interpreting a multivariate logistic regression model
 
