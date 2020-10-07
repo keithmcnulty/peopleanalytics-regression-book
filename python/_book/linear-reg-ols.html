@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Elementary Linear Regression for Continuous Outcomes | Elementary and Advanced Methods in People Analytics</title>
+  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Elementary Linear Regression for Continuous Outcomes | Elementary and Advanced Methods in People Analytics" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="github-repo" content="keithmcnulty/eampa" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Elementary Linear Regression for Continuous Outcomes | Elementary and Advanced Methods in People Analytics" />
+  
+  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
+
+<meta name="author" content="Keith McNulty" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="binary-logistic-regression-for-two-class-outcomes.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
+<li class="chapter" data-level="2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html"><i class="fa fa-check"></i><b>2</b> Elementary Linear Regression for Continuous Outcomes</a><ul>
+<li class="chapter" data-level="2.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#when-ols"><i class="fa fa-check"></i><b>2.1</b> When to use it</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#origins-ols"><i class="fa fa-check"></i><b>2.1.1</b> Origins and Intuition of Linear Regression</a></li>
+<li class="chapter" data-level="2.1.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#use-cases-ols"><i class="fa fa-check"></i><b>2.1.2</b> Use cases for Linear Regression</a></li>
+<li class="chapter" data-level="2.1.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#walkthrough-ols"><i class="fa fa-check"></i><b>2.1.3</b> Walkthrough Example</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#simple-ols"><i class="fa fa-check"></i><b>2.2</b> Simple Linear Regression</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#linear-single"><i class="fa fa-check"></i><b>2.2.1</b> Linear relationship between a single input and an outcome</a></li>
+<li class="chapter" data-level="2.2.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#minimising-error-ols"><i class="fa fa-check"></i><b>2.2.2</b> Minimising the error</a></li>
+<li class="chapter" data-level="2.2.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#best-fit-simple-ols"><i class="fa fa-check"></i><b>2.2.3</b> Determining the best fit</a></li>
+<li class="chapter" data-level="2.2.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#measuring-goodness-of-fit"><i class="fa fa-check"></i><b>2.2.4</b> Measuring ‘goodness of fit’</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#multiple-linear-regression"><i class="fa fa-check"></i><b>2.3</b> Multiple linear regression</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#running-a-multiple-linear-regression-model-and-interpreting-its-coefficients"><i class="fa fa-check"></i><b>2.3.1</b> Running a multiple linear regression model and interpreting its coefficients</a></li>
+<li class="chapter" data-level="2.3.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#coefficient-confidence"><i class="fa fa-check"></i><b>2.3.2</b> Coefficient confidence</a></li>
+<li class="chapter" data-level="2.3.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#model-confidence"><i class="fa fa-check"></i><b>2.3.3</b> Model confidence</a></li>
+<li class="chapter" data-level="2.3.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#making-predictions-from-your-model"><i class="fa fa-check"></i><b>2.3.4</b> Making predictions from your model</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#managing-inputs-in-linear-regression"><i class="fa fa-check"></i><b>2.4</b> Managing inputs in linear regression</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#relevance-of-input-variables"><i class="fa fa-check"></i><b>2.4.1</b> Relevance of input variables</a></li>
+<li class="chapter" data-level="2.4.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#sparseness-missingness-of-data"><i class="fa fa-check"></i><b>2.4.2</b> Sparseness (‘missingness’) of data</a></li>
+<li class="chapter" data-level="2.4.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#transforming-categorical-inputs-to-dummy-variables"><i class="fa fa-check"></i><b>2.4.3</b> Transforming categorical inputs to dummy variables</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#important-watchouts-in-linear-regression"><i class="fa fa-check"></i><b>2.5</b> Important watchouts in linear regression</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#assumption-of-linearity-and-additivity"><i class="fa fa-check"></i><b>2.5.1</b> Assumption of linearity and additivity</a></li>
+<li class="chapter" data-level="2.5.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#assumption-of-constant-error-variance"><i class="fa fa-check"></i><b>2.5.2</b> Assumption of constant error variance</a></li>
+<li class="chapter" data-level="2.5.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#assumption-of-normally-distributed-errors"><i class="fa fa-check"></i><b>2.5.3</b> Assumption of normally distributed errors</a></li>
+<li class="chapter" data-level="2.5.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#collinearity"><i class="fa fa-check"></i><b>2.5.4</b> Avoiding high collinearity and multicollinearity between input variables</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#extending-multiple-linear-regression-into-non-linear-contexts"><i class="fa fa-check"></i><b>2.6</b> Extending multiple linear regression into non-linear contexts</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#interactions-between-input-variables"><i class="fa fa-check"></i><b>2.6.1</b> Interactions between input variables</a></li>
+<li class="chapter" data-level="2.6.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#non-linear-modeling"><i class="fa fa-check"></i><b>2.6.2</b> Non-linear modeling</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#learning-exercises"><i class="fa fa-check"></i><b>2.7</b> Learning exercises</a><ul>
+<li class="chapter" data-level="2.7.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#discussion-questions"><i class="fa fa-check"></i><b>2.7.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="2.7.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#data-exercise"><i class="fa fa-check"></i><b>2.7.2</b> Data exercise</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="binary-logistic-regression-for-two-class-outcomes.html"><a href="binary-logistic-regression-for-two-class-outcomes.html"><i class="fa fa-check"></i><b>3</b> Binary Logistic Regression for Two-Class Outcomes</a><ul>
+<li class="chapter" data-level="3.1" data-path="binary-logistic-regression-for-two-class-outcomes.html"><a href="binary-logistic-regression-for-two-class-outcomes.html#when-to-use-it"><i class="fa fa-check"></i><b>3.1</b> When to use it</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="binary-logistic-regression-for-two-class-outcomes.html"><a href="binary-logistic-regression-for-two-class-outcomes.html#logistic-origins"><i class="fa fa-check"></i><b>3.1.1</b> Origins and intuition of binary logistic regression</a></li>
+<li class="chapter" data-level="3.1.2" data-path="binary-logistic-regression-for-two-class-outcomes.html"><a href="binary-logistic-regression-for-two-class-outcomes.html#use-cases-for-binary-logistic-regression"><i class="fa fa-check"></i><b>3.1.2</b> Use cases for binary logistic regression</a></li>
+<li class="chapter" data-level="3.1.3" data-path="binary-logistic-regression-for-two-class-outcomes.html"><a href="binary-logistic-regression-for-two-class-outcomes.html#walkthrough-example"><i class="fa fa-check"></i><b>3.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="binary-logistic-regression-for-two-class-outcomes.html"><a href="binary-logistic-regression-for-two-class-outcomes.html#modeling-probabilistic-outcomes-using-a-logistic-function"><i class="fa fa-check"></i><b>3.2</b> Modeling probabilistic outcomes using a logistic function</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="binary-logistic-regression-for-two-class-outcomes.html"><a href="binary-logistic-regression-for-two-class-outcomes.html#deriving-the-concept-of-log-odds"><i class="fa fa-check"></i><b>3.2.1</b> Deriving the concept of log-odds</a></li>
+<li class="chapter" data-level="3.2.2" data-path="binary-logistic-regression-for-two-class-outcomes.html"><a href="binary-logistic-regression-for-two-class-outcomes.html#modeling-the-log-odds-and-interpreting-the-coefficients"><i class="fa fa-check"></i><b>3.2.2</b> Modeling the log odds and interpreting the coefficients</a></li>
+<li class="chapter" data-level="3.2.3" data-path="binary-logistic-regression-for-two-class-outcomes.html"><a href="binary-logistic-regression-for-two-class-outcomes.html#odds-versus-probability"><i class="fa fa-check"></i><b>3.2.3</b> Odds versus probability</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a></li>
+<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a><ul>
+<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
+<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Elementary and Advanced Methods in People Analytics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="linear-reg-ols" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Elementary Linear Regression for Continuous Outcomes</h1>
+<p>In this chapter we will introduce and explore elementary linear regression, one of the first learning methods to be developed by statisticians and one of the easiest to interpret. Despite its simplicity - indeed <em>because</em> of its simplicity - it can be a very powerful tool in many situations. Linear regression will often be the first methodology to be trialled on a given problem, and will give an immediate benchmark with which to judge the efficacy of other, more complex, modeling techniques. Given the ease of interpretation, many analysts will select a linear regression model over more complex approaches even if those approaches produce a slightly better fit. This chapter will also introduce many critical concepts that will apply to other modeling approaches as we proceed through this book, therefore for inexperienced modelers this should be considered a foundational chapter which should not be skipped.</p>
+<div id="when-ols" class="section level2">
+<h2><span class="header-section-number">2.1</span> When to use it</h2>
+<div id="origins-ols" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Origins and Intuition of Linear Regression</h3>
+<p>Linear Regression, also known as <em>Ordinary Least Squares Linear Regression</em> or <em>OLS Regression</em> for short, was developed independently by the mathematicians Gauss and Legendre at or around the first decade of the 19th century, and there remains today some controversy about who should take credit for its discovery. However, at the time of its discovery it was not actually known as “regression”. This term became more popular following the work of Francis Galton - a British intellectual jack-of-all-trades and a cousin of Charles Darwin. In the late 1800s, Galton had researched the relationship between the heights of a population of almost 1,000 children and the average height of their parents (mid-parent height). He was surprised to discover that the height of parents was not a perfect predictor of the height of children, and that in general children’s heights were more likely to be in a ‘narrower’ range that was closer to the mean for the total population. He described this statistical phenomenon as a “regression towards mediocrity” (“regression” comes from a Latin term approximately meaning “go back”).</p>
+<p>Here is an illustration of Galton’s data with the black solid line showing what a perfect relationship would look like, and the red dashed line showing the actual relationship he determined. You can regard the red dashed line as ‘going back’ from the perfect relationship (symbolized by the black line) in the direction of a flat line representing the mean of the child heights. This might give you an intuition that will help you understand later sections of this chapter. In an arbitrary data set, the red dashed line can lie anywhere between a flat line at the mean of <span class="math inline">\(y\)</span> (no relationship) and the solid black line (a perfect relationship). Linear Regression is about finding the red dashed line in your data and using it to explain the degree to which your input data (the <span class="math inline">\(x\)</span> axis) explains or predicts your outcome data (the <span class="math inline">\(y\)</span> axis).</p>
+<div class="figure" style="text-align: center"><span id="fig:galton-fig"></span>
+<img src="www/01/Regression-to-the-mean.png" alt="Galton's study of the height of children introduced the term 'regression'" width="80%" />
+<p class="caption">
+Figure 2.1: Galton’s study of the height of children introduced the term ‘regression’
+</p>
+</div>
+</div>
+<div id="use-cases-ols" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Use cases for Linear Regression</h3>
+<p>Linear regression is particularly suited to a problem where:</p>
+<ol style="list-style-type: decimal">
+<li>The outcome of interest is on some sort of continuous scale (for example quantity, money, height, weight)</li>
+<li>There is reason to believe that the relationship between the outcome and the inputs can be approximated linearly</li>
+</ol>
+<p>In reality, number 2 is not that easy to determine with any certainty, although running some simple bivariate correlations between inputs and outcome can give a sense of linearity/non-linearity. Linear Regression can be a first port of call before trying more complex modeling approaches. It is simple and easy to explain, and analysts will often accept a somewhat poorer fit using Linear Regression in order to avoid having to interpret a more complex model.</p>
+<p>Here are some illustratory examples of questions that could be (at least initially) tackled with a Linear Regression approach:</p>
+<ul>
+<li><p>Given a data set of age, education level, education discipline, years of employment, industry employed in and current salary, to what extent can current salary be explained by the rest of the data?</p></li>
+<li><p>Given semi-annual test scores for a set of students over a three year period, what is the relationship between the final test score and earlier test scores?</p></li>
+<li><p>Given information on the demographics, personal characteristics and prior qualifications of a set of PhD students, to what degree can these explain the time taken to complete their studies?</p></li>
+</ul>
+<p>If your outcome of interest is on a binary or categorical scale (for example, ‘Yes’ or ‘No’; ‘High’, ‘Medium’ or ‘Low’), then linear regression is not recommended and logistic regression or other probabilistic methods are more well-suited, and we will cover these in subsequent chapters.</p>
+</div>
+<div id="walkthrough-ols" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> Walkthrough Example</h3>
+<p>We will use walkthrough examples throughout most chapters of this book to maintain a focus on a real problem as we go through the essential theory and methodology, and to demonstrate the coding of the approach in R. The data sets for all walkthrough examples will be downloadable via the link provided.</p>
+<p>You are working as an analyst for the Biology Department of a large academic institution. Due to the outbreak of a major pandemic, the institution is not able to hold final examinations for students in the last year of their 4 year long undergraduate degree program. The Department has decided to grade students based on their performance in the end of year examinations in their three previous years.</p>
+<p>To help with this, you have been provided with data for last year’s individuals graduating from the degree program, and you have been asked to create a model to explain each individual’s final examination score based on their examination scores for the first three years of their program.</p>
+<p>The dataset is <a href="https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/ugtests.csv">here</a>, and we will load it into our session and take a brief look at it.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="linear-reg-ols.html#cb1-1"></a><span class="co"># obtain data from online csv at github</span></span>
+<span id="cb1-2"><a href="linear-reg-ols.html#cb1-2"></a>url &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/ugtests.csv&quot;</span></span>
+<span id="cb1-3"><a href="linear-reg-ols.html#cb1-3"></a>ugtests &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url)</span>
+<span id="cb1-4"><a href="linear-reg-ols.html#cb1-4"></a></span>
+<span id="cb1-5"><a href="linear-reg-ols.html#cb1-5"></a><span class="co"># look at the first few rows of data</span></span>
+<span id="cb1-6"><a href="linear-reg-ols.html#cb1-6"></a><span class="kw">head</span>(ugtests)</span></code></pre></div>
+<pre><code>##   Yr1 Yr2 Yr3 Final
+## 1  18   3  18    63
+## 2  51  83 102   200
+## 3  32  28 189   171
+## 4  16  41  46   115
+## 5  23  24  59   106
+## 6  78  88  11    84</code></pre>
+<p>The data looks as expected, with test scores for four years all read in as numeric data types, but of course this is only a few rows. We need a quick statistical overview of the data.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="linear-reg-ols.html#cb3-1"></a><span class="kw">summary</span>(ugtests)</span></code></pre></div>
+<pre><code>##       Yr1              Yr2              Yr3             Final      
+##  Min.   :  0.00   Min.   :  0.00   Min.   :  0.00   Min.   :  0.0  
+##  1st Qu.: 11.00   1st Qu.: 20.00   1st Qu.: 49.75   1st Qu.:105.0  
+##  Median : 22.00   Median : 47.50   Median :101.50   Median :133.0  
+##  Mean   : 26.94   Mean   : 47.52   Mean   : 98.86   Mean   :146.9  
+##  3rd Qu.: 40.00   3rd Qu.: 74.00   3rd Qu.:146.25   3rd Qu.:185.5  
+##  Max.   :100.00   Max.   :100.00   Max.   :200.00   Max.   :300.0</code></pre>
+<p>We can see that the tests have different scales in Years 3 and 4, and judging by the means and upper quartiles, students seem to have found earlier exams more challenging. We can also be assured that there is no missing data, as these would have been displayed as <code>NA</code> counts in our summary if they existed.</p>
+<p>We can also plot our four years of test scores pairwise to see any initial relationships of interest.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="linear-reg-ols.html#cb5-1"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb5-2"><a href="linear-reg-ols.html#cb5-2"></a><span class="kw">library</span>(GGally)</span>
+<span id="cb5-3"><a href="linear-reg-ols.html#cb5-3"></a></span>
+<span id="cb5-4"><a href="linear-reg-ols.html#cb5-4"></a><span class="co"># display a pair plot of all four columns of data</span></span>
+<span id="cb5-5"><a href="linear-reg-ols.html#cb5-5"></a>GGally<span class="op">::</span><span class="kw">ggpairs</span>(ugtests)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:pairplot-ugtests"></span>
+<img src="bookdown-demo_files/figure-html/pairplot-ugtests-1.png" alt="Pairplot of the `ugtests` data set" width="672" />
+<p class="caption">
+Figure 2.2: Pairplot of the <code>ugtests</code> data set
+</p>
+</div>
+<p>In the diagonal we can see the distributions of the data in each column. We observe a relatively normal looking distribution of our outcome data (<code>Final</code>), with more skewed distributions of data for previous years. We can see scatter plots and pairwise correlation statistics off the diagonal. For example, we see a particularly strong correlation between <code>Yr3</code> and <code>Final</code> test scores, along with some other notable correlations elsewhere.</p>
+</div>
+</div>
+<div id="simple-ols" class="section level2">
+<h2><span class="header-section-number">2.2</span> Simple Linear Regression</h2>
+<p>In order to visualize our approach and improve our intuition, we will start with <em>simple</em> linear regression, which is the case where there is only a single input variable and output variable.</p>
+<div id="linear-single" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Linear relationship between a single input and an outcome</h3>
+<p>Let our input variable be <span class="math inline">\(x\)</span> and our outcome variable be <span class="math inline">\(y\)</span>. Recalling the equation of a straight line, because we assume that the relationship is linear, we expect the relationship to be of the form:</p>
+<p><span class="math display">\[y = mx + c\]</span>
+where <span class="math inline">\(m\)</span> represents the slope or gradient of the line, and <span class="math inline">\(c\)</span> represents the point at which the line intercepts the <span class="math inline">\(y\)</span> axis. When using a straight line to model a relationship in the data, we call <span class="math inline">\(c\)</span> and <span class="math inline">\(m\)</span> the <em>coefficients</em> of the model.</p>
+<p>Now let’s assume that we have a sample of six datapoints with which to estimate our linear relationship. Let’s take the first six values of <code>Yr3</code> and <code>Final</code> in our <code>ugtests</code> dataset:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="linear-reg-ols.html#cb6-1"></a>(d &lt;-<span class="st"> </span><span class="kw">head</span>(ugtests[ , <span class="kw">c</span>(<span class="st">&quot;Yr3&quot;</span>, <span class="st">&quot;Final&quot;</span>)]))</span></code></pre></div>
+<pre><code>##   Yr3 Final
+## 1  18    63
+## 2 102   200
+## 3 189   171
+## 4  46   115
+## 5  59   106
+## 6  11    84</code></pre>
+<p>We can do a simple plot of these data points as in Figure <a href="linear-reg-ols.html#fig:sample-plot">2.3</a>:</p>
+<div class="figure" style="text-align: center"><span id="fig:sample-plot"></span>
+<img src="bookdown-demo_files/figure-html/sample-plot-1.png" alt="Basic scatter plot of six datapoints" width="672" />
+<p class="caption">
+Figure 2.3: Basic scatter plot of six datapoints
+</p>
+</div>
+<p>Intuitively, we can imagine a line passing through these points that ‘fits’ the general pattern. For example, taking <span class="math inline">\(m = 2\)</span> and <span class="math inline">\(c = 0\)</span>, the resulting line <span class="math inline">\(y = 2x\)</span> could fit between the points we are given, as displayed in Figure <a href="linear-reg-ols.html#fig:sample-plot-fit">2.4</a>:</p>
+<div class="figure" style="text-align: center"><span id="fig:sample-plot-fit"></span>
+<img src="bookdown-demo_files/figure-html/sample-plot-fit-1.png" alt="Fitting $y=2x$ to our six datapoints" width="672" />
+<p class="caption">
+Figure 2.4: Fitting <span class="math inline">\(y=2x\)</span> to our six datapoints
+</p>
+</div>
+<p>This looks like an approximation of the relationship, but how do we know that it is the best approximation?</p>
+</div>
+<div id="minimising-error-ols" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Minimising the error</h3>
+<p>For each of our data points, we can determine an error in the fitted model by calculating the difference between the real value of <span class="math inline">\(y\)</span> and the one predicted by our model. For example, at <span class="math inline">\(x = 18\)</span>, our modeled value of y is 36, but the real value is 63, producing an error of 27. These errors are known as the <em>residuals</em> of our model. The residuals for the six points in our dataset are illustrated by the solid red line segments in Figure <a href="linear-reg-ols.html#fig:sample-plot-residuals">2.5</a>. It looks like at least one of our residuals is pretty large.</p>
+<div class="figure" style="text-align: center"><span id="fig:sample-plot-residuals"></span>
+<img src="bookdown-demo_files/figure-html/sample-plot-residuals-1.png" alt="Residuals of $y=2x$ for our six datapoints" width="672" />
+<p class="caption">
+Figure 2.5: Residuals of <span class="math inline">\(y=2x\)</span> for our six datapoints
+</p>
+</div>
+<p>The total error of our model, which we want to minimize could be defined in a number of ways:</p>
+<ol style="list-style-type: decimal">
+<li>The sum of the residuals</li>
+<li>The sum of the <em>absolute values</em> of our residuals (so that negative values are converted to positive values)</li>
+<li>The sum of the squares of our residuals (note that all squares are positive)</li>
+</ol>
+<p>For a number of reasons (not least that fact that at the time this method was developed it was one of the easiest to calculate manually), the most common approach is number 3, which is why we call our regression model <em>Ordinary Least Squares</em> regression. Some simple algebra and calculus can help us determine the equation of the line that generates the least squared residual error. You can see more of the mathematics <a href="https://are.berkeley.edu/courses/EEP118/current/derive_ols.pdf">here</a>, but let’s look at how this works in practice.</p>
+</div>
+<div id="best-fit-simple-ols" class="section level3">
+<h3><span class="header-section-number">2.2.3</span> Determining the best fit</h3>
+<p>We can run a fairly simple function in R to calculate the best fit linear model for our data. Once we have run that function, the model, and all the details, will be saved in our session for further investigation or use.</p>
+<p>First we need to express the model we are looking to calculate as a formula. In this simple case we want to regress the outcome <span class="math inline">\(y =\)</span> <code>Final</code> against the input <span class="math inline">\(x =\)</span> <code>Yr3</code>, and therefore we would use the simple formula notation <code>Final ~ Yr3</code>. Now we can use the <code>lm()</code> function to calculate the OLS model based on our dataset and our formula.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="linear-reg-ols.html#cb8-1"></a><span class="co">## calculate model</span></span>
+<span id="cb8-2"><a href="linear-reg-ols.html#cb8-2"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">formula =</span> Final <span class="op">~</span><span class="st"> </span>Yr3, <span class="dt">data =</span> d)</span></code></pre></div>
+<p>The <code>model</code> object that we have created is a list of a number of different pieces of information, which we can see by looking at the names of the objects in the list:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="linear-reg-ols.html#cb9-1"></a><span class="kw">names</span>(model)</span></code></pre></div>
+<pre><code>##  [1] &quot;coefficients&quot;  &quot;residuals&quot;     &quot;effects&quot;       &quot;rank&quot;         
+##  [5] &quot;fitted.values&quot; &quot;assign&quot;        &quot;qr&quot;            &quot;df.residual&quot;  
+##  [9] &quot;xlevels&quot;       &quot;call&quot;          &quot;terms&quot;         &quot;model&quot;</code></pre>
+<p>So we can already see some terms we are familiar with. For example, we can look at the coefficients:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="linear-reg-ols.html#cb11-1"></a>model<span class="op">$</span>coefficients</span></code></pre></div>
+<pre><code>## (Intercept)         Yr3 
+##  78.2990096   0.6334257</code></pre>
+<p>This tells us that that our best fit model - the one that minimises the sum of the squares of the residuals - is <span class="math inline">\(y = 0.63x + 78.3\)</span>. In other words, our <code>Final</code> test score can be expected to take a value of 78.3 even with zero score in the <code>Yr3</code> input, and that every additional point scored in <code>Yr3</code> will increase the <code>Final</code> score by 0.63.</p>
+</div>
+<div id="measuring-goodness-of-fit" class="section level3">
+<h3><span class="header-section-number">2.2.4</span> Measuring ‘goodness of fit’</h3>
+<p>We have calculated a model which minimizes the sum of squares residual error for the sample of data that we have, but we don’t really have a sense of how ‘good’ the model is. How do we tell how well our model uses the input data to explain the outcome? This is an important question to answer because you would not want to propose a model that does not do a good job of explaining your outcome, and you also may need to compare your model to other alternatives, which will require some sort of benchmark metric.</p>
+<p>One natural way to benchmark how good a job your model does of explaining the outcome is to compare it to a situation where you have no input and no model at all. In this situation, all you have is your outcome values which can be considered a random variable with a mean and a variance. In the case of our six datapoints, we have six values of <code>Final</code> with a mean of 123.17. We can consider the horizontal line representing the mean of <span class="math inline">\(y\)</span> as our ‘random model’, and we can calculate the residuals around the mean. This can be seen in Figure <a href="linear-reg-ols.html#fig:model-mean">2.6</a>.</p>
+<div class="figure" style="text-align: center"><span id="fig:model-mean"></span>
+<img src="bookdown-demo_files/figure-html/model-mean-1.png" alt="Residuals of our six datapoints around their mean value" width="672" />
+<p class="caption">
+Figure 2.6: Residuals of our six datapoints around their mean value
+</p>
+</div>
+<p>Recall from our previous chapter the definition of the population variance of <span class="math inline">\(y\)</span>, notated as <span class="math inline">\(\mathrm{Var}(y)\)</span>. Note that it is defined as the average of the squares of the residuals around the mean of<span class="math inline">\(y\)</span>. Therefore <span class="math inline">\(\mathrm{Var}(y)\)</span> represents the mean sum of squares error of a random model. This calculates in this case to 2284.47.</p>
+<p>Now let’s overlay our fitted model onto this random model in Figure <a href="linear-reg-ols.html#fig:model-overlay">2.7</a>:</p>
+<div class="figure" style="text-align: center"><span id="fig:model-overlay"></span>
+<img src="bookdown-demo_files/figure-html/model-overlay-1.png" alt="Comparison of residuals of fitted model (red) against random variable (blue)" width="672" />
+<p class="caption">
+Figure 2.7: Comparison of residuals of fitted model (red) against random variable (blue)
+</p>
+</div>
+<p>So we seem to have reduced the variance from the random model by fitting our new model. If we average the square of our residuals for the fitted model, we obtain the mean sum of squares error of our fitted model, which calculates to 809.1.</p>
+<p>Therefore before we fit our model, we have an average error of 2284.47, and after we fit it, we have an average error of 809.1. So we have reduced the average error of our model by 1475.37 or, expressed as a proportion, by 0.65. In other words, we can say that our model explains 0.65 (or 65%) of the variance of our outcome.</p>
+<p>This metric is known as the <span class="math inline">\(R^2\)</span> of our model and is the primary metric used in measuring the ‘goodness of fit’ in a linear regression model<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
+</div>
+</div>
+<div id="multiple-linear-regression" class="section level2">
+<h2><span class="header-section-number">2.3</span> Multiple linear regression</h2>
+<p>In reality, regression problems rarely involve one single input variable, but rather multiple variables. The methodology for multiple linear regression is similar in nature to a simple linear regression, but obviously more difficult to visualize because of its increased dimensionality.</p>
+<p>In this case, our input is a vector of <span class="math inline">\(p\)</span> variables <span class="math inline">\((x_1, x_2, ..., x_p)\)</span>. Extending the linear equation in Figure <a href="linear-reg-ols.html#linear-single">2.2.1</a>, we seek to develop an equation of the form:</p>
+<p><span class="math display">\[y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p\]</span>
+so that our sum of squares residual error is minimized.</p>
+<div id="running-a-multiple-linear-regression-model-and-interpreting-its-coefficients" class="section level3">
+<h3><span class="header-section-number">2.3.1</span> Running a multiple linear regression model and interpreting its coefficients</h3>
+<p>A multiple linear regression model is run is a similar way to a simple regression model, with your formula notation determining what outcome and input variables you wish to have in your model. Let’s now perform a multiple linear regression on our entire <code>ugtests</code> dataset and regress our <code>Final</code> test score against all prior test scores using the formula <code>Final ~ Yr3 + Yr2 + Yr1</code> and determine our coefficients as before.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="linear-reg-ols.html#cb13-1"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">data =</span> ugtests, <span class="dt">formula =</span> Final <span class="op">~</span><span class="st"> </span>Yr3 <span class="op">+</span><span class="st"> </span>Yr2 <span class="op">+</span><span class="st"> </span>Yr1)</span>
+<span id="cb13-2"><a href="linear-reg-ols.html#cb13-2"></a>model<span class="op">$</span>coefficients</span></code></pre></div>
+<pre><code>##  (Intercept)          Yr3          Yr2          Yr1 
+## 15.353836878  0.804742441  1.095682961 -0.002609611</code></pre>
+<p>Referring to our formula in Section <a href="linear-reg-ols.html#multiple-linear-regression">2.3</a>, let’s understand what each coefficient <span class="math inline">\(\beta_0, \beta_1, ..., \beta_p\)</span> means. <span class="math inline">\(\beta_0\)</span>, the <em>intercept</em> of the model, represents the value of <span class="math inline">\(y\)</span> assuming that all the inputs were zero. You can imagine that your output can be expected to have a base value even without any inputs - a student who completely flunked the first three years can still redeem themselves to some extent in the Final year.</p>
+<p>Now looking at the other coefficients, let’s consider what happens if our first input <span class="math inline">\(x_1\)</span> increased by a single unit, assuming nothing else changed. We would then expect our value of y to increase by <span class="math inline">\(\beta_1\)</span>. Similarly for any input <span class="math inline">\(x_k\)</span>, a unit increase would result in an increase in <span class="math inline">\(y\)</span> of <span class="math inline">\(\beta_k\)</span>, assuming no other changes in the inputs.</p>
+<p>In the case of our <code>ugtests</code> dataset, we can say the following:</p>
+<ul>
+<li><p>The intercept of the model is 15.354. This is the value that a student could be expected to score in their final exam even if they had scored zero in all previous exams.</p></li>
+<li><p>The <code>Yr3</code> coefficient is 0.805. Assuming no change in other inputs, this is the increase in the Final exam score that could be expected from an extra point in the Year 3 score.</p></li>
+<li><p>The <code>Yr2</code> coefficient is 1.096. Assuming no change in other inputs, this is the increase in the Final exam score that could be expected from an extra point in the Year 2 score.</p></li>
+<li><p>The <code>Yr1</code> coefficient is -0.003. Assuming no change in other inputs, this is the increase in the Final exam score that could be expected from an extra point in the Year 1 score.</p></li>
+</ul>
+</div>
+<div id="coefficient-confidence" class="section level3">
+<h3><span class="header-section-number">2.3.2</span> Coefficient confidence</h3>
+<p>Intuitively, these coefficients appear too precise for comfort. After all, we are attempting to estimate a relationship based on a limited set of data. In particular, looking at the <code>Yr1</code> coefficient, it seems to be very close to zero, implying that there is a possibility that the Year 1 examination score has no impact on the final examination score. Like in any statistical estimation, the coefficients calculated for our model have a margin of error. Typically, in any such situation, we seek to know a 95% confidence interval to set a standard of certainty around the values we are interpreting.<br />
+The <code>summary()</code> function is a useful way to gather critical information in your model, including important statistics on your coefficients:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="linear-reg-ols.html#cb15-1"></a>model_summary &lt;-<span class="st"> </span><span class="kw">summary</span>(model)</span>
+<span id="cb15-2"><a href="linear-reg-ols.html#cb15-2"></a>model_summary<span class="op">$</span>coefficients</span></code></pre></div>
+<pre><code>##                 Estimate Std. Error     t value     Pr(&gt;|t|)
+## (Intercept) 15.353836878 3.95980032  3.87742705 1.489032e-04
+## Yr3          0.804742441 0.02618271 30.73563820 1.164026e-72
+## Yr2          1.095682961 0.05434385 20.16204248 1.300721e-47
+## Yr1         -0.002609611 0.08406623 -0.03104232 9.752710e-01</code></pre>
+<p>The 95% confidence interval corresponds to approximately two Standard Errors above or below the estimated value. For example, the 95% confidence interval for the coefficient of <code>Yr3</code> is [0.752, 0.857]. For a given coefficient, if this confidence interval includes zero, you cannot reject the hypothesis that the variable has no relationship with the outcome. Another indicator of this is the last column, which represents the <em>p-value</em> of the statistical hypothesis test. If this value is less than a certain threshold (usually 0.05), you can conclude that this variable has a statistically significant relationship with the outcome. In this case, we can conclude that the examinations in Years 2 and 3 have a significant relationship with the Final examination score, but we cannot conclude this for Year 1. Effectively, this means that we can drop <code>Yr1</code> from our model with no significant loss of fit. In general, simpler models are easier to manage and interpret, so let’s remove the non-significant variable now.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="linear-reg-ols.html#cb17-1"></a>newmodel &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">data =</span> ugtests, <span class="dt">formula =</span> Final <span class="op">~</span><span class="st"> </span>Yr3 <span class="op">+</span><span class="st"> </span>Yr2)</span></code></pre></div>
+</div>
+<div id="model-confidence" class="section level3">
+<h3><span class="header-section-number">2.3.3</span> Model confidence</h3>
+<p>At this point we can further explore the overall summary of our model. As you saw in the previous section, our model summary contains numerous objects of interest, including statistics on the coefficients of our model. We can see what is inside our summary by looking at the names of its contents, and we can then dive in and explore specific objects of interest. For example:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="linear-reg-ols.html#cb18-1"></a><span class="co">## get summary of model</span></span>
+<span id="cb18-2"><a href="linear-reg-ols.html#cb18-2"></a>newmodel_summary &lt;-<span class="st"> </span><span class="kw">summary</span>(newmodel)</span>
+<span id="cb18-3"><a href="linear-reg-ols.html#cb18-3"></a></span>
+<span id="cb18-4"><a href="linear-reg-ols.html#cb18-4"></a><span class="co">## see summary contents</span></span>
+<span id="cb18-5"><a href="linear-reg-ols.html#cb18-5"></a><span class="kw">names</span>(newmodel_summary)</span></code></pre></div>
+<pre><code>##  [1] &quot;call&quot;          &quot;terms&quot;         &quot;residuals&quot;     &quot;coefficients&quot; 
+##  [5] &quot;aliased&quot;       &quot;sigma&quot;         &quot;df&quot;            &quot;r.squared&quot;    
+##  [9] &quot;adj.r.squared&quot; &quot;fstatistic&quot;    &quot;cov.unscaled&quot;</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="linear-reg-ols.html#cb20-1"></a><span class="co">## view r-squared</span></span>
+<span id="cb20-2"><a href="linear-reg-ols.html#cb20-2"></a>newmodel_summary<span class="op">$</span>r.squared</span></code></pre></div>
+<pre><code>## [1] 0.8925014</code></pre>
+<p>We can see that our model explains a lot of the variance in the Final examination score. Alternatively, we can view the entire summary to receive a formatted report on our model.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="linear-reg-ols.html#cb22-1"></a><span class="co">## see full model summary</span></span>
+<span id="cb22-2"><a href="linear-reg-ols.html#cb22-2"></a>newmodel_summary</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Final ~ Yr3 + Yr2, data = ugtests)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -102.921   -9.862    2.805   14.387   33.452 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 15.31787    3.77581   4.057 7.45e-05 ***
+## Yr3          0.80470    0.02608  30.860  &lt; 2e-16 ***
+## Yr2          1.09505    0.05017  21.828  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 20.3 on 177 degrees of freedom
+## Multiple R-squared:  0.8925,	Adjusted R-squared:  0.8913 
+## F-statistic: 734.8 on 2 and 177 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>This provides us with some of the most important metrics from our model. In particular, the last line gives us a report on our model confidence - that is, how confident can we be that our model explains the outcome to a non-zero degree. The F-statistic is an evaluation of the confidence of the entire model, with a higher F-statistic indicating a better model. More intuitively, perhaps, we also have the p-value for the model. In this case it is extremely small, so we can conclude (unsurprisingly) that our model has some explanatory/predictive power.</p>
+</div>
+<div id="making-predictions-from-your-model" class="section level3">
+<h3><span class="header-section-number">2.3.4</span> Making predictions from your model</h3>
+<p>In this case we should already be quite happy with the overall fit and confidence level of our linear regression model, and we may now want to use it to predict the Final test scores of our new students who have been affected by the pandemic. While the book focuses on inferential rather than predictive analytics, we briefly touch here on the mechanics of generating predictions from models. As you might imagine, once the model has been fitted, prediction is a relatively straightforward process. We feed in the <code>Yr2</code> and <code>Yr3</code> examination scores into our fitted model, and it applies the coefficients to calculate the predicted outcome. Let’s look at three fictitious students, and create a dataframe with their scores to input into the model.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="linear-reg-ols.html#cb24-1"></a>(new_students &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb24-2"><a href="linear-reg-ols.html#cb24-2"></a>  <span class="dt">Yr2 =</span> <span class="kw">c</span>(<span class="dv">67</span>, <span class="dv">23</span>, <span class="dv">88</span>), </span>
+<span id="cb24-3"><a href="linear-reg-ols.html#cb24-3"></a>  <span class="dt">Yr3 =</span> <span class="kw">c</span>(<span class="dv">144</span>, <span class="dv">100</span>, <span class="dv">166</span>)</span>
+<span id="cb24-4"><a href="linear-reg-ols.html#cb24-4"></a>))</span></code></pre></div>
+<pre><code>##   Yr2 Yr3
+## 1  67 144
+## 2  23 100
+## 3  88 166</code></pre>
+<p>Now we can feed these values into our model to get predictions of the Final examination result for our three new students.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="linear-reg-ols.html#cb26-1"></a><span class="co">## use newmodel to predict for new_students</span></span>
+<span id="cb26-2"><a href="linear-reg-ols.html#cb26-2"></a><span class="kw">predict</span>(newmodel, new_students)</span></code></pre></div>
+<pre><code>##        1        2        3 
+## 204.5629 120.9741 245.2623</code></pre>
+<p>We know from our earlier work in this chapter that there is a confidence interval around the coefficients of our model, which means that there is a range of values for our prediction according to those confidence intervals. This can be determined by specifying that you require a confidence interval:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="linear-reg-ols.html#cb28-1"></a><span class="co">## get a confidence interval </span></span>
+<span id="cb28-2"><a href="linear-reg-ols.html#cb28-2"></a><span class="kw">predict</span>(newmodel, new_students, <span class="dt">interval =</span> <span class="st">&quot;confidence&quot;</span>)</span></code></pre></div>
+<pre><code>##        fit      lwr      upr
+## 1 204.5629 200.3472 208.7786
+## 2 120.9741 117.1244 124.8238
+## 3 245.2623 239.2533 251.2713</code></pre>
+<p>You may also recall from our previous chapter on modeling theory that any datapoint in our outcome is subject to uncontrollable error, so that there is a further margin of ‘prediction error’, even after we take into consideration the confidence interval of our model. Therefore to generate a more reliable prediction range to use in real life, which takes this random, uncontrollable error into consideration, you should calculate a ‘prediction interval’:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="linear-reg-ols.html#cb30-1"></a><span class="co">## get a prediction interval </span></span>
+<span id="cb30-2"><a href="linear-reg-ols.html#cb30-2"></a><span class="kw">predict</span>(newmodel, new_students, <span class="dt">interval =</span> <span class="st">&quot;prediction&quot;</span>)</span></code></pre></div>
+<pre><code>##        fit       lwr      upr
+## 1 204.5629 164.27814 244.8477
+## 2 120.9741  80.72593 161.2222
+## 3 245.2623 204.75059 285.7741</code></pre>
+<p>You will notice that the prediction interval is substantially wider than the confidence interval. However, in human processes where there is often room for judgment, the prediction interval can be a valuable piece of information. In our example here, the Faculty may wish to provide their staff with some discretion on the Final examination score based on their observations of the individual in class, or on their perception of their learning ‘trajectory’. Providing a recommended score and a range around that score can help facilitate, but also control, this discretionary element of the process.</p>
+<p>In reality, the process of developing a model to <em>predict</em> an outcome can be quite different from developing a model to <em>explain</em> an outcome. For a start, it is unlikely that you would use your entire sample to fit a predictive model, as you would want to reserve a portion of your data to test for its fit on new data. Since the focus of this book is inferential modeling, much of this topic will be out of our scope.</p>
+</div>
+</div>
+<div id="managing-inputs-in-linear-regression" class="section level2">
+<h2><span class="header-section-number">2.4</span> Managing inputs in linear regression</h2>
+<p>Our walkthrough example for this chapter, while useful for illustrating the key concepts, is a very straightfoward data set to run a model on. There is no missing data, and all the data inputs have the same numeric data type (in the exercises at the end of this chapter we will present a more varied data set for analysis). Commonly, an analyst will have a list of possible input variables that they can consider in their model, and rarely will they run a model using all of these variables. In this section we will cover some common elements of decision making and design of input variables in regression models.</p>
+<div id="relevance-of-input-variables" class="section level3">
+<h3><span class="header-section-number">2.4.1</span> Relevance of input variables</h3>
+<p>The first step in managing your input variables is to make a judgment about their relevance to the outcome being modeled. Analysts should not blindly run a model on a set of variables before considering their relevance. There are two common reasons for rejecting the inclusion of an input variable:</p>
+<ol style="list-style-type: decimal">
+<li><p>There is no reasonable possibility of a direct or indirect causal relationship between the input and the outcome. For example, if you were provided with the height of each individual taking the Final examination in our walkthrough example, it would be difficult to see how that could reasonably relate to the outcome that you are modeling.</p></li>
+<li><p>If there is a possibility that the model will be used to predict based on new data in the future, there may be variables that you explicity do not wish to be used in any prediction. For example, if our walkthrough model contained student gender data, we would not want to include that in a model that predicted future student scores because we would not want gender to be taken into consideration when determining student performance.</p></li>
+</ol>
+</div>
+<div id="sparseness-missingness-of-data" class="section level3">
+<h3><span class="header-section-number">2.4.2</span> Sparseness (‘missingness’) of data</h3>
+<p>Missing data is a very common problem in modeling. If an observation has missing data in a variable that is being included in the model, that observation will be ignored, or an error will be thrown. This forces a model trained on a smaller set of data, which can compromise fit and predictive accuracy. Running summary functions on your data (eg <code>summary()</code> in R) will reveal variables that contain missing data if it exists.</p>
+<p>There are three main options for how missing data is handled:</p>
+<ol style="list-style-type: decimal">
+<li><p>If the data for a given variable is relatively complete and only a small number of observations are missing, its usually best and simplest to remove the observations that are missing from the dataset. Note that many modeling functions (though not all) will take care of this automatically.</p></li>
+<li><p>As data becomes more sparse, removing observations becomes less of an option. If the sparseness is massive (eg more than half of the data is missing), then there is no choice but to remove that variable from the model. While this may be unsatisfactory for a given variable (because it is thought to have an important explanatory role), the fact remains that data that is mostly missing is not a good measure of that variable in the first place.</p></li>
+<li><p>Moderate sparse data could be considered for imputation. Imputation methods involve using the overall statistical properties of the entire data set or of specific other variables to ‘suggest’ what the missing value might be, ranging from simple mean and median values to more complex imputation methods. Imputation methods are more commonly used in predictive settings, and we will not cover imputation methods in depth here.</p></li>
+</ol>
+</div>
+<div id="transforming-categorical-inputs-to-dummy-variables" class="section level3">
+<h3><span class="header-section-number">2.4.3</span> Transforming categorical inputs to dummy variables</h3>
+<p>Many models will have categorical inputs rather than numerical inputs. Categorical inputs usually take forms such as:</p>
+<ul>
+<li>Binary values - for example, Yes/No, True/False</li>
+<li>Unordered categories - for example Car, Train, Bicycle</li>
+<li>Ordered categories - for example Low, Medium, High</li>
+</ul>
+<p>Categorical variables do not behave like numerical variables. There is no sense of quantity in a categorical variable. We do not know how a Car relates to a Train quantitatively, we only know that they are different. Even for an ordered category, although we know that ‘Medium’ is higher than ‘Low’, we do not know how much higher or indeed whether the difference is the same as that between ‘High’ and ‘Medium’.</p>
+<p>In general, all model input variables should take a numeric form. The most reliable way to do this is to convert categorical values to dummy variables. While some packages and function have a built-in ability to convert categorical data to dummy variables, not all do, so it is important to know how to do this yourself. Consider the following data set:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="linear-reg-ols.html#cb32-1"></a>(vehicle_data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb32-2"><a href="linear-reg-ols.html#cb32-2"></a>  <span class="dt">make =</span> <span class="kw">c</span>(<span class="st">&quot;Ford&quot;</span>, <span class="st">&quot;Toyota&quot;</span>, <span class="st">&quot;Audi&quot;</span>), </span>
+<span id="cb32-3"><a href="linear-reg-ols.html#cb32-3"></a>  <span class="dt">manufacturing_cost =</span> <span class="kw">c</span>(<span class="dv">15000</span>, <span class="dv">19000</span>, <span class="dv">28000</span>)</span>
+<span id="cb32-4"><a href="linear-reg-ols.html#cb32-4"></a>))</span></code></pre></div>
+<pre><code>##     make manufacturing_cost
+## 1   Ford              15000
+## 2 Toyota              19000
+## 3   Audi              28000</code></pre>
+<p>The <code>make</code> data is categorical, so it will be converted to several columns for each possible value of <code>make</code> and binary labelling will be used to identify whether that value is present in that specific observation. Many packages and functions are available to conveniently do this, for example:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="linear-reg-ols.html#cb34-1"></a><span class="kw">library</span>(dummies)</span>
+<span id="cb34-2"><a href="linear-reg-ols.html#cb34-2"></a>(dummy_vehicle &lt;-<span class="st"> </span>dummies<span class="op">::</span><span class="kw">dummy</span>(<span class="st">&quot;make&quot;</span>, <span class="dt">data =</span> vehicle_data))</span></code></pre></div>
+<pre><code>##   makeAudi makeFord makeToyota
+## 1        0        1          0
+## 2        0        0          1
+## 3        1        0          0</code></pre>
+<p>Dummy variables can then replace the original <code>make</code> column to get your data set ready for modeling:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="linear-reg-ols.html#cb36-1"></a>(vehicle_data_dummies &lt;-<span class="st"> </span><span class="kw">cbind</span>(</span>
+<span id="cb36-2"><a href="linear-reg-ols.html#cb36-2"></a>  <span class="dt">manufacturing_cost =</span> vehicle_data<span class="op">$</span>manufacturing_cost,</span>
+<span id="cb36-3"><a href="linear-reg-ols.html#cb36-3"></a>  dummy_vehicle</span>
+<span id="cb36-4"><a href="linear-reg-ols.html#cb36-4"></a>))</span></code></pre></div>
+<pre><code>##   manufacturing_cost makeAudi makeFord makeToyota
+## 1              15000        0        1          0
+## 2              19000        0        0          1
+## 3              28000        1        0          0</code></pre>
+<p>It is worth a moment to consider how to interpret coefficients of dummy variables in a linear regression model. If <span class="math inline">\(x_k\)</span> is one of our dummy variables, then it can only take a value of 0 or 1. Therefore its coefficient <span class="math inline">\(\beta_k\)</span> is either ‘switched off’ or ‘switched on’ in the model. If we were to try to use the data in our <code>vehicle_data_dummies</code> dataset to predict, say, the retail price of a vehicle, we would interpret coefficients like this:</p>
+<ul>
+<li>For each <em>extra dollar</em> spent on manufacturing, the retail price increases by …</li>
+<li>If the vehicle is a Ford, the retail price increases/decreases by …</li>
+<li>If the vehicle is a Toyota, the retail price increases/decreases by …</li>
+<li>If the vehicle is an Audi, the retail price increases/decreases by …</li>
+</ul>
+<p>This highlights the importance of appropriate interpretation of coefficients, and in particular the proper understanding of units. It will be common to see much larger coefficients for dummy variables in regression models, because they represent a binary ‘all’ or ‘nothing’ variable in the model. The coefficient for, say, manufacturing cost, would be much smaller because a unit in this case is a dollar of manufacturing spend, on a scale of many thousands of potential dollars in spend. Care should be taken not to ‘rank’ coefficients by their value. Higher coefficients in and of themselves do not imply greater importance.</p>
+</div>
+</div>
+<div id="important-watchouts-in-linear-regression" class="section level2">
+<h2><span class="header-section-number">2.5</span> Important watchouts in linear regression</h2>
+<p>All modeling techniques have underlying assumptions about the data that they model, and can generate inaccurate results when those assumptions do not hold true. Conscientious analysts will verify that these assumptions are satisfied before finalizing their modeling efforts. In this section we will outline some common ‘watchouts’ when running linear regression models.</p>
+<div id="assumption-of-linearity-and-additivity" class="section level3">
+<h3><span class="header-section-number">2.5.1</span> Assumption of linearity and additivity</h3>
+<p>We mentioned earlier that linear regression assumes that the relationship we are trying to model is linear and additive in nature. Therefore you can expect problems if you are using this approach to model a pattern that is non-linear. In general, you’d expect this problem to come out ‘in the wash’ anyway, because a linear model will not produce a good fit on a non-linear underlying relationship.</p>
+<p>Nevertheless, you can check whether your linearity assumption was reasonable in a couple of ways. You can plot the true versus the predicted (fitted) values to see if they look correlated. You can see such a plot on our student examination model from before in Figure <a href="linear-reg-ols.html#fig:predplot">2.8</a>:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="linear-reg-ols.html#cb38-1"></a>predicted_values &lt;-<span class="st"> </span>newmodel<span class="op">$</span>fitted.values</span>
+<span id="cb38-2"><a href="linear-reg-ols.html#cb38-2"></a>true_values &lt;-<span class="st"> </span>ugtests<span class="op">$</span>Final</span>
+<span id="cb38-3"><a href="linear-reg-ols.html#cb38-3"></a></span>
+<span id="cb38-4"><a href="linear-reg-ols.html#cb38-4"></a><span class="co">#plot true values against predicted values</span></span>
+<span id="cb38-5"><a href="linear-reg-ols.html#cb38-5"></a><span class="kw">plot</span>(predicted_values, true_values)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:predplot"></span>
+<img src="bookdown-demo_files/figure-html/predplot-1.png" alt="Plot of true versus fitted/predicted student scores" width="672" />
+<p class="caption">
+Figure 2.8: Plot of true versus fitted/predicted student scores
+</p>
+</div>
+<p>Alternatively, you can plot the residuals of your model against the predicted values, and look for the pattern of a random distribution (ie no major discernible pattern), such as in Figure <a href="linear-reg-ols.html#fig:resplot">2.9</a>:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="linear-reg-ols.html#cb39-1"></a>residuals &lt;-<span class="st"> </span>newmodel<span class="op">$</span>residuals</span>
+<span id="cb39-2"><a href="linear-reg-ols.html#cb39-2"></a></span>
+<span id="cb39-3"><a href="linear-reg-ols.html#cb39-3"></a><span class="co">#plot residuals against predicted values</span></span>
+<span id="cb39-4"><a href="linear-reg-ols.html#cb39-4"></a><span class="kw">plot</span>(predicted_values, residuals)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:resplot"></span>
+<img src="bookdown-demo_files/figure-html/resplot-1.png" alt="Plot of residuals against fitted/predicted scores" width="672" />
+<p class="caption">
+Figure 2.9: Plot of residuals against fitted/predicted scores
+</p>
+</div>
+<p>You can also plot the residuals against each input variable as an extra check of independent randomness, looking for a reasonably random distribution in all cases. If you find that your residuals are following a clear pattern and are not random in nature, this is an indication that a linear model is not a good choice for your data.</p>
+</div>
+<div id="assumption-of-constant-error-variance" class="section level3">
+<h3><span class="header-section-number">2.5.2</span> Assumption of constant error variance</h3>
+<p>It is assumed in a linear model that the errors or residuals are <em>homoscedastic</em> - this means that their variance is constant across the values of the input variables. If the errors of your model <em>heteroscedastic</em> - that is, if they increase or decrease according to the value of the model inputs, this can lead to poor estimations of confidence intervals and fits.</p>
+<p>While a simple plot of residuals against predicted values (such as in Figure <a href="linear-reg-ols.html#fig:resplot">2.9</a>) can give a quick indication on homoscedacity, to be thorough the residuals should be plotted against each input variable, and it should be verified that the range of the residuals remains broadly stable. In our student examination model, we can first plot the residuals against the values of <code>Yr2</code> in Figure <a href="linear-reg-ols.html#fig:resyr2">2.10</a>:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="linear-reg-ols.html#cb40-1"></a>Yr2 &lt;-<span class="st"> </span>ugtests<span class="op">$</span>Yr2</span>
+<span id="cb40-2"><a href="linear-reg-ols.html#cb40-2"></a></span>
+<span id="cb40-3"><a href="linear-reg-ols.html#cb40-3"></a><span class="co">#plot residuals against Yr2 values</span></span>
+<span id="cb40-4"><a href="linear-reg-ols.html#cb40-4"></a><span class="kw">plot</span>(Yr2, residuals)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:resyr2"></span>
+<img src="bookdown-demo_files/figure-html/resyr2-1.png" alt="Plot of residuals against `Yr2` values" width="672" />
+<p class="caption">
+Figure 2.10: Plot of residuals against <code>Yr2</code> values
+</p>
+</div>
+<p>Then we can plot against <code>Yr3</code> in Figure <a href="linear-reg-ols.html#fig:resyr3">2.11</a>:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="linear-reg-ols.html#cb41-1"></a>Yr3 &lt;-<span class="st"> </span>ugtests<span class="op">$</span>Yr3</span>
+<span id="cb41-2"><a href="linear-reg-ols.html#cb41-2"></a></span>
+<span id="cb41-3"><a href="linear-reg-ols.html#cb41-3"></a><span class="co">#plot residuals against Yr3 values</span></span>
+<span id="cb41-4"><a href="linear-reg-ols.html#cb41-4"></a><span class="kw">plot</span>(Yr3, residuals)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:resyr3"></span>
+<img src="bookdown-demo_files/figure-html/resyr3-1.png" alt="Plot of residuals against `Yr3` values" width="672" />
+<p class="caption">
+Figure 2.11: Plot of residuals against <code>Yr3</code> values
+</p>
+</div>
+<p>Both plots show a pretty consistent range of values between the left and right sides of the plots which reassures us that we have homoscedacity.</p>
+</div>
+<div id="assumption-of-normally-distributed-errors" class="section level3">
+<h3><span class="header-section-number">2.5.3</span> Assumption of normally distributed errors</h3>
+<p>In an appropriate model we expect our errors to be random, so we would therefore expect our residuals to be normally distributed over sufficient numbers of observations. If our residuals are distributed differently, this is again an indicator of an inappropriate model and can result in inaccurate estimates of confidence intervals and the statistical significance of coefficients.</p>
+<p>The quickest way to determine if residuals in your sample are consistent with a normal distribution is to run a quantile-quantile plot (or QQplot) on the residuals. This will plot the observed quantiles of your sample against the theoretical quantiles of a normal distribution. The closer this plot looks like a perfect correlation, the more certain you can be that this normality assumption holds. An example for our student examination model is in Figure <a href="linear-reg-ols.html#fig:qqplottests">2.12</a>:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="linear-reg-ols.html#cb42-1"></a><span class="co">## normal distribution qqplot of residuals</span></span>
+<span id="cb42-2"><a href="linear-reg-ols.html#cb42-2"></a><span class="kw">qqnorm</span>(newmodel<span class="op">$</span>residuals)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span id="fig:qqplottests"></span>
+<img src="bookdown-demo_files/figure-html/qqplottests-1.png" alt="Quantile-Quantile plot of residuals" width="672" />
+<p class="caption">
+Figure 2.12: Quantile-Quantile plot of residuals
+</p>
+</div>
+</div>
+<div id="collinearity" class="section level3">
+<h3><span class="header-section-number">2.5.4</span> Avoiding high collinearity and multicollinearity between input variables</h3>
+<p>In multiple linear regression, the various input variables used can be considered ‘dimensions’ of the problem or model. In theory, we ideally expect dimensions to be independent and uncorrelated. Practically speaking, however, it’s very challenging in large data sets to ensure that every input variable is completely uncorrelated from another. For example, even in our limited <code>ugtests</code> data set we saw in Figure <a href="linear-reg-ols.html#fig:pairplot-ugtests">2.2</a> that <code>Yr2</code> and <code>Yr3</code> examination scores are correlated to some degree.</p>
+<p>While some intercorrelation between input variables can be expected and tolerated in linear regression models, high levels of correlation can result in significant inflation of coefficients and inaccurate estimates of p-values of coefficients.</p>
+<p><em>Collinearity</em> means that two input variables are highly correlated. The definition of ‘high correlation’ is a matter of judgment, but as a rule of thumb correlations greater than 0.5 might be considered high and greater than 0.7 might be considered extreme. Creating a simple correlation matrix or a pairplot (such as Figure <a href="linear-reg-ols.html#fig:pairplot-ugtests">2.2</a>) can immediately surface high or extreme collinearity.</p>
+<p><em>Multicollinearity</em> means that there is a linear relationship between more than two of the input variables. This may not always present itself in the form of high correlations between pairs of input variables, but may be seen by identiying ‘clusters’ of moderately correlated variables, or by calculating a Variance Inflation Factor (VIF) for each input variable - where VIFs greater than 5 indicate high multicollinearity. Easy-to-use tests also exist in statistical software for identifying multicollinearity (for example the <code>mctest</code> package in R). Here is how we would test for multicollinearity in our student examination model.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="linear-reg-ols.html#cb43-1"></a><span class="kw">library</span>(mctest)</span>
+<span id="cb43-2"><a href="linear-reg-ols.html#cb43-2"></a></span>
+<span id="cb43-3"><a href="linear-reg-ols.html#cb43-3"></a><span class="co">#diagnose possible overall presence of multicollinearity</span></span>
+<span id="cb43-4"><a href="linear-reg-ols.html#cb43-4"></a>mctest<span class="op">::</span><span class="kw">omcdiag</span>(newmodel)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## mctest::omcdiag(mod = newmodel)
+## 
+## 
+## Overall Multicollinearity Diagnostics
+## 
+##                        MC Results detection
+## Determinant |X&#39;X|:         0.9991         0
+## Farrar Chi-Square:         0.1524         0
+## Red Indicator:             0.0293         0
+## Sum of Lambda Inverse:     2.0017         0
+## Theil&#39;s Method:           -0.8908         0
+## Condition Number:          4.9861         0
+## 
+## 1 --&gt; COLLINEARITY is detected by the test 
+## 0 --&gt; COLLINEARITY is not detected by the test</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="linear-reg-ols.html#cb45-1"></a><span class="co">#if necessary, diagnose specific multicollinear variables using VIF </span></span>
+<span id="cb45-2"><a href="linear-reg-ols.html#cb45-2"></a>mctest<span class="op">::</span><span class="kw">imcdiag</span>(newmodel, <span class="dt">method =</span> <span class="st">&quot;VIF&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## mctest::imcdiag(mod = newmodel, method = &quot;VIF&quot;)
+## 
+## 
+##  VIF Multicollinearity Diagnostics
+## 
+##        VIF detection
+## Yr3 1.0009         0
+## Yr2 1.0009         0
+## 
+## NOTE:  VIF Method Failed to detect multicollinearity
+## 
+## 
+## 0 --&gt; COLLINEARITY is not detected by the test
+## 
+## ===================================</code></pre>
+<p>Note that collinearity and multicollinearity only affect the coefficients of the variables impacted, and do not affect other variables or the overall statistics and fit of a model. Therefore, if a model is being developed primarily to make predictions and there is little interest in using the model to explain a phenomenon, there may not be any need to address this issue at all. However, in inferential modeling the accuracy of the coefficients is very important, and so testing of multicollinearity is essential. In general, the best way to deal with collinear variables is to remove one of them from the model (usually the one that has the least significance in explaining the outcome).</p>
+</div>
+</div>
+<div id="extending-multiple-linear-regression-into-non-linear-contexts" class="section level2">
+<h2><span class="header-section-number">2.6</span> Extending multiple linear regression into non-linear contexts</h2>
+<p>We wrap up this chapter by introducing some simple extensions of linear regression, with a particular aim of trying to improve the overall fit of a model by relaxing the linear or additive assumptions. In other chapters we will look at substantial developments on the ordinary least squares regression approach, such as Ridge and LASSO regression.</p>
+<div id="interactions-between-input-variables" class="section level3">
+<h3><span class="header-section-number">2.6.1</span> Interactions between input variables</h3>
+<p>Recall that our model of student examination scores took each year’s score as a separate input variable, and therefore we are making the assumption that the score obtained in each years acts independently and additively in predicting the Final score. However, it is very possible that several input variables act together in relation to the outcome. One way of modelling this is to include interaction terms in your model, which are new input variables formed as products of the original input variables.</p>
+<p>In our students examination data in <code>ugtests</code>, we could consider extending our model to not only include the individual years examinations, but also to include the impact of combined changes across multiple years. For example, we could combine the impact of <code>Yr2</code> and <code>Yr3</code> examinations by multiplying them together in our model.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="linear-reg-ols.html#cb47-1"></a>interaction_model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">data =</span> ugtests, <span class="dt">formula =</span> Final <span class="op">~</span><span class="st"> </span>Yr2 <span class="op">+</span><span class="st"> </span>Yr3 <span class="op">+</span><span class="st"> </span>Yr2<span class="op">*</span>Yr3)</span>
+<span id="cb47-2"><a href="linear-reg-ols.html#cb47-2"></a><span class="kw">summary</span>(interaction_model)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Final ~ Yr2 + Yr3 + Yr2 * Yr3, data = ugtests)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -74.846  -4.656   2.205   6.889  17.418 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 60.474211   3.136250  19.282  &lt; 2e-16 ***
+## Yr2          0.179646   0.054627   3.289  0.00122 ** 
+## Yr3          0.337562   0.028016  12.049  &lt; 2e-16 ***
+## Yr2:Yr3      0.009375   0.000479  19.573  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 11.42 on 176 degrees of freedom
+## Multiple R-squared:  0.9662,	Adjusted R-squared:  0.9656 
+## F-statistic:  1675 on 3 and 176 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>We see that introducing this interaction term has improved our model, and that the interaction term is significant, so we conclude that in addition to a significant effect of the <code>Yr2</code> an <code>Yr3</code> scores, there is an additional significant effect from their interaction.</p>
+<p>In theory, an analyst could explore any combination of interactions of two or more variables. However, consider the impact on interpretability of modeling complex combinations of interactions. As always, there is a trade-off between intepretability and accuracy. In the case of the model above, now with a near perfect fit, there would likely be no further benefit to exploring additional interaction terms, if those did exist.</p>
+<p>When running models with interaction terms, you can expect to see a hierarchy in the coefficients according to the level of the interaction. For example, single terms will usually generate higher coefficients than interactions of two terms, which will generate higher coefficients than interactions of three terms, and so on. Given this, whenever an interaction of terms is considered significant in a model, then the single terms contained in that interaction should automatically be regarded as significant.</p>
+</div>
+<div id="non-linear-modeling" class="section level3">
+<h3><span class="header-section-number">2.6.2</span> Non-linear modeling</h3>
+<p>Specific non linear models can be trialled using linear regression technology. For example, if the underlying relationship was throught to be quadratic on a given input variable <span class="math inline">\(x\)</span>, then the formula would take the form <span class="math inline">\(y = \beta_0 + \beta_1x + \beta_2x^2\)</span>, and this can easily be put into a linear model formula.</p>
+<p>For example, recall that we removed <code>Yr1</code> data from our model because it was not significant when modeled linearly. We could test if a quadratic model on <code>Yr1</code> helps improve our fit<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="linear-reg-ols.html#cb49-1"></a>quadratic_yr1_model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="dt">data =</span> ugtests, <span class="dt">formula =</span> Final <span class="op">~</span><span class="st"> </span>Yr3 <span class="op">+</span><span class="st"> </span>Yr2 <span class="op">+</span><span class="st"> </span>Yr1 <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(Yr1<span class="op">^</span><span class="dv">2</span>))</span>
+<span id="cb49-2"><a href="linear-reg-ols.html#cb49-2"></a><span class="kw">summary</span>(quadratic_yr1_model)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Final ~ Yr3 + Yr2 + Yr1 + I(Yr1^2), data = ugtests)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -101.578  -10.973    2.779   14.217   33.703 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 11.775529   4.624141   2.547   0.0117 *  
+## Yr3          0.804060   0.026098  30.810   &lt;2e-16 ***
+## Yr2          1.097832   0.054178  20.263   &lt;2e-16 ***
+## Yr1          0.313720   0.228949   1.370   0.1724    
+## I(Yr1^2)    -0.004496   0.003028  -1.485   0.1394    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 20.29 on 175 degrees of freedom
+## Multiple R-squared:  0.8938,	Adjusted R-squared:  0.8914 
+## F-statistic: 368.4 on 4 and 175 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>In this case we find that modeling <code>Yr1</code> as a quadratic makes no difference to the fit of the model.</p>
+</div>
+</div>
+<div id="learning-exercises" class="section level2">
+<h2><span class="header-section-number">2.7</span> Learning exercises</h2>
+<p>Most chapters in this book will end with learning exercises. These will be a combination of discussion questions to encourage engagement with the material in the chapter and practical exercises with data sets. Links to data will be provided where relevant.</p>
+<div id="discussion-questions" class="section level3">
+<h3><span class="header-section-number">2.7.1</span> Discussion questions</h3>
+<ol style="list-style-type: decimal">
+<li><p>What is the approximate meaning of the term ‘regression’? Why is the term particularly suited to the methodology described in this chapter?</p></li>
+<li><p>What basic condition must the outcome variable satisfy for linear regression to be a potential modeling approach? Describe some ideas for problems that might be modeled using linear regression.</p></li>
+<li><p>What is the difference between simple linear regression and multiple linear regression?</p></li>
+<li><p>What is a residual and how does it relate to the term ‘Ordinary Least Squares’?</p></li>
+<li><p>How are the coefficients of a linear regression model interpreted? Explain why higher coefficients do not necessarily imply greater importance.</p></li>
+<li><p>How is the <span class="math inline">\(R^2\)</span> of a linear regression model interpreted? What are the minimum and maximum possible values for <span class="math inline">\(R^2\)</span> and what does each mean?</p></li>
+<li><p>What are the key considerations when preparing input data for a linear regression model?</p></li>
+<li><p>Describe what you understand by the term ‘dummy variable’. Why are dummy variable coefficients often larger than other coefficients in linear regression models?</p></li>
+<li><p>Describe the term ‘collinearity’ and why it is an important consideration in regression models.</p></li>
+<li><p>Describe some ways that linear regression models can be extended into non-linear models.</p></li>
+</ol>
+</div>
+<div id="data-exercise" class="section level3">
+<h3><span class="header-section-number">2.7.2</span> Data exercise</h3>
+<p>The <code>sociological_data</code> dataset can be obtained at <a href="https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/sociological_data.csv" class="uri">https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/sociological_data.csv</a>. This data represents a sample of information obtained from individuals who participated in a global research study, and contains the following fields:</p>
+<ul>
+<li><code>annual_income_ppp</code>: The annual income of the individual in PPP adjusted US dollars</li>
+<li><code>average_wk_hrs</code>: The average number of hours per week worked by the individual</li>
+<li><code>education_months</code>: The total number of months spend by the individual in formal primary, secondary and tertiary education</li>
+<li><code>region</code>: The region of the world where the individual lives</li>
+<li><code>job_type</code>: Whether the individual works in a skilled or unskilled profession</li>
+<li><code>gender</code>: The gender of the individual</li>
+<li><code>family_size</code>: The size of the individual’s family of dependents</li>
+<li><code>work_distance</code>: The distance between the indivdual’s residence and workplace in kilometers</li>
+<li><code>languages</code>: The number of languages spoken fluently by the individual</li>
+</ul>
+<p>Conduct some exploratory data analysis on this data set. Including:</p>
+<ol style="list-style-type: decimal">
+<li>Identify the extent to which missing data is an issue<br />
+</li>
+<li>Determine if the data types are appropriate for analysis</li>
+<li>Using a correlation matrix, pairplot or alternative method, identify whether collinearity is present in the data</li>
+<li>Identify and discuss anything else interesting that you see in the data</li>
+</ol>
+<p>Prepare to build a linear regression model to explain the variation in <code>annual_income_ppp</code> using the other data in the data set.</p>
+<ol start="5" style="list-style-type: decimal">
+<li>Are there any fields which you believe should not be included in the model? If so, why?</li>
+<li>Would you consider imputing missing data for some or all fields where it is an issue? If so, what might be some simple ways to impute the missing data?</li>
+<li>Which variables are categorical? Convert these variables to dummy variables using a convenient function or using your own approach.</li>
+</ol>
+<p>Run and interpret the model. For convenience, and to avoid long formula strings, you can use the formula notation <code>annual_income_ppp ~ .</code> which means ‘regress <code>annual_income</code> against everything else’. You can also remove fields this way, for example <code>annual_income_ppp ~ . - family_size</code>.</p>
+<ol start="8" style="list-style-type: decimal">
+<li>Determine what variables are significant predictors of annual income and what is the effect of each on the outcome.</li>
+<li>Determine the overall fit of the model.</li>
+<li>Do some simple analysis on the residuals of the model to determine if the model is safe to interpret.</li>
+<li>Experiment with improving the model fit through possible interaction terms or non-linear extensions.</li>
+<li>Comment on your results. Did anything in the results surprise you? If so, what might be possible explanations for this.</li>
+<li>Explain why you would or would not be comfortable using a model like this in a predictive setting - for example to help employers determine the right pay for employees.</li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>As a side note, in a simple regression model like this, where there is only one input variable, we have the simple identity <span class="math inline">\(R^2 = r^2\)</span>, where <span class="math inline">\(r\)</span> is the correlation between the input and outcome (for our small set of six datapoints here, the correlation is 0.804)<a href="linear-reg-ols.html#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>Note the use of <code>I()</code> in the fomula notation here. This is because the symbol <code>^</code> has a different meaning inside a formula and we use <code>I()</code> to <em>isolate</em> what is inside the parentheses to ensure that it is interpreted iterally as ‘the square of <code>Yr1</code>’<a href="linear-reg-ols.html#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="binary-logistic-regression-for-two-class-outcomes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/01-intro.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
