@@ -1,5 +1,10 @@
 # Binary Logistic Regression for Two-Class Outcomes
 
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+
+```
+
 In the previous chapter we looked at how to explain outcomes that have continuous scale, such as quantity, money, height or weights.  While there are  a number of typical problems of this type in the people analytics domain, they are not the most common form of outcomes that are typically modeled.  Much more common are situations where the outcome of interest takes the form of a limited set of classes.  Two-class (binary) problems are very common.  In business contexts hiring, promotion and attrition are of often modeled as binary outcomes:  for example 'Promoted' or 'Not promoted'.  Even multi-class outcomes like performance, where individuals can have multiple performance ratings on an ordinal scale, are often converted to binary outcomes by dividing the performance ratings into two groups, for example 'High' and 'Not High'.
 
 In any situation where our outcome is binary we are effectively working with probabilities.  Probability distributions are not generally linear in nature, and so we are no longer have the comfort of our inputs being *directly* linearly related to our outcome.    Therefore, direct linear regression methods such as Ordinary Least Squares regression are not well suited to outcomes of this type.  That said, linear relationships can be inferred on *transformations* of the outcome variable, which gives us a path to building interpretable models.  Hence, logistic regression is said to be in a class of *generalized linear models* or *GLMs*.  Because of the transformations of the outcome variable, the steps to interpretation of a binary logistic regression model are a little more involved than in the previous chapter.  Understanding logistic regression and using it reliably in practice is not straightforward, but it is an invaluable skill to have in the people analytics domain.
@@ -53,7 +58,7 @@ Example questions that could be approached using binary logistic regression incl
 * Given a set of demographic, income and location data, what influence does each have on the likelihood of an individual voting in an election?
 * Given a set of responses to survey questions from a set of employees and data on the employees' history with the organization, to what extent can the different survey responses explain the likelihood of an individual leaving the organization within a defined time period?
 
-### Walkthrough example
+### Walkthrough example {#walkthrough-logit}
 
 You are an analyst for a large company consisting of four regional sales teams across the country.  Twice every year, this company promotes its salespeople.  Promotion is at the discretion of the head of each regional sales team, taking into consideration financial performance, customer satisfaction ratings, recent performance ratings and personal judgment.  
 
@@ -79,14 +84,15 @@ The data looks as expected.  Let's get a summary of the data:
 summary(salespeople)
 ```
 
-We see that about a third of individuals were promoted, that sales ranged from \$150k to \$940k, that as expected the satisfaction ratings range from 1 to 5, and finally we see four performance ratings, although the performance categories are numeric when they should be an ordered factor.   Let's convert them to an ordered factor and let's do a pairplot to get a quick view on some underlying relationships:
+We see that about a third of individuals were promoted, that sales ranged from \$150k to \$940k, that as expected the satisfaction ratings range from 1 to 5, and finally we see four performance ratings, although the performance categories are numeric when they should be an ordered factor, and `promoted` is numeric when it should be categorical.   Let's convert these and then let's do a pairplot to get a quick view on some underlying relationships:
 
 ```{r, warning = FALSE, message = FALSE}
 library(ggplot2)
 library(GGally)
 
-#convert performance to ordered factor
+#convert performance to ordered factor and promoted to categorical
 salespeople$performance <- ordered(salespeople$performance, levels = 1:4)
+salespeople$promoted <- as.factor(salespeople$promoted)
 
 # generate pairplot
 GGally::ggpairs(salespeople)
@@ -94,7 +100,7 @@ GGally::ggpairs(salespeople)
 
 ```
 
-Here we are looking a the binary variable `promoted` on the x-axis in the first column.  We can see that there are twice as many 0s as 1s in the first chart of that column, which confirms what we discovered in our summary.  We can see from the distribution of the scatters for 0 and 1 in the rest of that column that there may be a relationship between sales and promotion and between customer rating and promotion.  We can also see that none of those who received the bottom two performance ratings were promoted.  We also see a moderate relationship between customer rating and sales, which is intuitive (if the customer doesn't like you, sales wouldn't likely be very high).
+We can see from this pairplot that there is are clearly higher sales for those who are promoted versus those who are not sales.  We also see a moderate relationship between customer rating and sales, which is intuitive (if the customer doesn't like you, sales wouldn't likely be very high).
 
 So we can see that some relationships with our outcome may exist here, but it's not clear how to tease them out and quantify them relative to each other.  Let's explore how binary logistic regression can help us do this.
 
@@ -202,4 +208,117 @@ exp(simple_model$coefficients)
 So, we can see that the base odds of promotion with zero sales, is very close to zero, which makes sense. Note that odds can only be precisely zero in a situation where it is impossible to be in the positive class (eg nobody gets promoted).  We can also see that each unit (that is, every \$1000) of sales multiplies the base odds by approximately `r round(exp(simple_model$coefficients[2]), 2)` - in other words it increases the odds of promotion by `r round(exp(simple_model$coefficients[2])*100 - 100)`%.
 
 ### Odds versus probability
+
+It is worth spending a little time understanding the concept of odds and how it relates to probability.  It is extremely common for these two terms to be used synonymously, and this can lead to serious misunderstandings when interpreting a logistic regression model.
+
+If a certain event has a probability of 0.1, then this means that its odds are 1:9, or 0.111.  If the probability is 0.5, then the odds are 1, if the probability is 0.9, then the odds are 9, and if the probability is 0.99, the odds are 99.  As we approach a a probability of 1, the odds become exponentially large, as illustrated in Figure \@ref(fig:odds-prob):
+
+```{r odds-prob, fig.cap="Odds plotted against probability", fig.align="center", echo = FALSE, message = FALSE, warning = FALSE}
+
+library(latex2exp)
+
+ggplot2::ggplot() +
+  xlim(0, 1) +
+  ylim(0, 100) +
+  geom_function(fun = function (x) {x/(1-x)}, colour = "black") +
+  xlab("Probability") +
+  ylab("Odds")
+
+```
+
+The consequences of this is that a given increase in odds can have very different effects on probability depending on what original probability was in the first place.  If the probability was already quite low, for example 0.1, then a 4% increase in odds translates to odds of `r round((1/9)*1.04, 3)` which translates to a new probability of `r round((0.1*1.04)/(1 + 0.1*0.04), 6)`, representing an increase in probability of `r round((0.1*1.04)/(1 + 0.1*0.04)*100/0.1, 2) - 100`%, which is very close to the increase in odds.  If the probability was already high, say 0.9, then a 4% increase in odds translates to odds of `r round((9/1)*1.04, 3)`, which translates to a new probability of `r round((0.9*1.04)/(1 + 0.9*0.04), 6)` representing an increase in probability of `r round((0.9*1.04)/(1 + 0.9*0.04)*100/0.9, 2) - 100`%, which is very different from the increase in odds.  Figure \@ref(fig:pcoddsplot) shows the impact of a 4% increase in odds according to the original probability of the event.
+
+```{r pcoddsplot, fig.cap="Effect of 4% increase in odds plotted against original probability", fig.align="center", echo = FALSE, message = FALSE, warning = FALSE}
+
+library(latex2exp)
+
+ggplot2::ggplot() +
+  xlim(0, 1) +
+  ylim(0, 0.05) +
+  ylab("Increase in probability") +
+  xlab("Original probability") +
+  geom_function(fun = function (x) {(x * 1.04)/(1 + x * 0.04)/x - 1}, colour = "black") 
+
+```
+
+
+We can see that the closer the base probability is to zero, the similar the effect of the increase on both odds and on probability.  However, the higher the probability of the event, the less impact the increase in odds has.  In any case, it's useful to remember the formulas for convertings odds to probability and vice-versa.  If $O$ represents odds and $P$ represents probability then we have:
+
+$$
+O = \frac{P}{1 - P} \\
+P = \frac{O}{1 + O}
+$$
+
+## Running a multivariate logistic regression model
+
+The derivations in the previous section easily extend to multivariate data.  Let $y$ by a dichotomous outcome and let $x_1, x_2, ..., x_p$ be our input variables.  Then
+
+$$
+log\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p
+$$
+for coefficients $\beta_0, \beta_1,..., \beta_p$.  As before:
+
+* $\beta_0$ represents the log odds of our outcome when all inputs are zero
+* Each $\beta_i$ represents the increase in the log odds of our outcome associated with a unit change in $x_i$.
+
+Applying an exponent as before, we have
+
+$$
+\begin{align*}
+\frac{P(y = 1)}{P(y = 0)} &= e^{\beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p} \\
+&= e^{\beta_0}(e^{\beta_1})^{x_1}(e^{\beta_2})^{x_2}...(e^{\beta_p})^{x_p} 
+\end{align*}
+$$
+Therefore we can conclude that:
+
+* $e^{\beta_0}$ represents the odds of the outcome when all inputs are zero
+* Each $e^{\beta_i}$ represents the *odds ratio* associated with a unit increase in $x_i$ assuming no change in the other inputs (that is, a unit increase in $x_i$ multiplies the odds of our outcome by $e^{\beta_i}$.  Let's put this into practice.
+
+### Running and interpreting a multivariate logistic regression model
+
+Let's use a binomial logistic regression model to understand how each of the three inputs in out `salespeople` data set influences the likelihood of promotion.
+
+First, as we learned previously, it is good practice to convert the categorical `performance` variable to a dummy variable^[Note that most standard modeling functions have a built in capability to deal with categorical variables, meaning that it's often not necessary to explicitly construct dummies.  However, it is shown here for completion sake.  You may wish to try running the subsequent code without explicitly constructing dummies]. 
+
+```{r}
+library(dummies)
+
+# convert performance to dummy
+perf_dummies <- dummies::dummy("performance", data = salespeople)
+
+# replace in salespeople dataframe
+
+salespeople_dummies <- cbind(salespeople[c("promoted", "sales", "customer_rate")], perf_dummies)
+head(salespeople_dummies)
+```
+
+Now we can run our mode (using the formula `promoted ~ .` to mean regressing `promoted` against everything else) and view our coefficients.
+
+```{r}
+# run binomial glm
+full_model <- glm(formula = "promoted ~ .",
+                  family = "binomial",
+                  data = salespeople_dummies)
+
+# get coefficient summary 
+(coefs <- summary(full_model)$coefficients)
+```
+
+Note how only three of the `performance` dummies have displayed.  This is because the model is using `performance4` as the base case, so we can interpret each `performance` coefficient as the effect of a move to that performance category from `performance4`.
+
+We can already see from the `P (> |z|)` column that only `sales` and `customer_rate` meet the significance threshold of less than 0.05.  Interestingly, it appears from the `Estimate` column that `customer_rate` has a negative effect on the log odds of promotion.    We can add an extra column to create the exponents of our estimated coefficients so that we can see the odds ratios:
+
+```{r}
+(full_coefs <- cbind(coefs, odds_ratio = exp(full_model$coefficients))) 
+```
+
+Now we can interpret our model as follows:
+
+* Sales have a significant positive effect on the likelihood of promotion, with each additional thousand dollars of sales increasing the odds of promotion by 4%.
+* Customer ratings have a significant negative effect on the likelihood of promotion.  One full rating higher is associated with 67% lower odds of promotion.
+* Performance ratings have no significant effect on the likelihood of promotion.
+
+The second conclusion may appear counterintuitive, but remember from our pairplot in \@ref(walkthrough-logit) that there is already moderate correlation between sales and customer ratings, and this model will be controlling for that relationship. Recall that our odds ratios act *assuming all other variables are the same*.  Therefore, if two individuals have the same sales, the one with the lower customer rating is more likely to have been promoted.  Similarly, if two individuals have the same level of sales and the same customer rating, their performance rating will have no significant bearing on the likelihood of promotion.
+
+Similar to other regression models, the unit scale needs to be taken into consideration during interpretation.  On first sight, a decrease of 67% in odds seems a lot more important than an increase of 4% in odds.  However, the increase of 4% is for one unit ($000) in many thousands of sales units, and over 10 or 100 additional units can have a substantial compound effect on odds of promotion.  The decrease of 67% is on a full customer rating point on a scale of only 4 full points.  
 
