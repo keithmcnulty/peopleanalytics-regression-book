@@ -188,7 +188,7 @@ print(results.params)
 
 This tells us that that our best fit model - the one that minimises the sum of the squares of the residuals -  is $y = 0.63x + 78.3$.  In other words, our `Final` test score can be expected to take a value of 78.3 even with zero score in the `Yr3` input, and that every additional point scored in `Yr3`  will increase the `Final` score by 0.63.
 
-### Measuring 'goodness of fit'
+### Measuring the fit of the model
 
 We have calculated a model which minimizes the sum of squares residual error for the sample of data that we have, but we don't really have a sense of how 'good' the model is.  How do we tell how well our model uses the input data to explain the outcome?   This is an important question to answer because you would not want to propose a model that does not do a good job of explaining your outcome, and you also may need to compare your model to other alternatives, which will require some sort of benchmark metric.
 
@@ -239,7 +239,7 @@ So we seem to have reduced the variance from the random model by fitting our new
 
 Therefore before we fit our model, we have an average error of `r round((5/6)*var(py$d$Final), 2)`, and after we fit it, we have an average error of `r round(sum(py$results$resid^2)/6, 2)`.  So we have reduced the average error of our model by `r round((5/6)*var(d$Final), 2) - round(sum(py$results$resid^2)/6, 2)` or, expressed as a proportion, by `r round((round((5/6)*var(d$Final), 2) - round(sum(py$results$resid^2)/6, 2))/((5/6)*var(d$Final)), 2)`.  In other words, we can say that our model explains `r  round(((5/6)*var(d$Final) - sum(py$results$resid^2)/6)/((5/6)*var(d$Final)), 2)` (or `r  round(((5/6)*var(d$Final) - sum(py$results$resid^2)/6)/((5/6)*var(d$Final)), 2) * 100`%) of the variance of our outcome.  
 
-This metric is known as the $R^2$ of our model and is the primary metric used in measuring the 'goodness of fit' in a linear regression model^[As a side note, in a simple regression model like this, where there is only one input variable, we have the simple identity $R^2 = r^2$, where $r$ is the correlation between the input and outcome (for our small set of six datapoints here, the correlation is `r round(cor(py$d$Yr3, py$d$Final), 3)`)]. 
+This metric is known as the $R^2$ of our model and is the primary metric used in measuring the fit of a linear regression model^[As a side note, in a simple regression model like this, where there is only one input variable, we have the simple identity $R^2 = r^2$, where $r$ is the correlation between the input and outcome (for our small set of six datapoints here, the correlation is `r round(cor(py$d$Yr3, py$d$Final), 3)`)]. 
 
 
 ## Multiple linear regression {#multiple-linear-regression}
@@ -314,7 +314,9 @@ newmodel_summary = newresults.summary()
 print(newmodel_summary.tables[0])
 ```
 
-We can see from the R-squared value that our model explains a lot of the variance in the Final examination score.   Alternatively, we can view the entire summary to receive a formatted report on our model. We can also see a report on our model confidence - that is, how confident can we be that our model explains the outcome to a non-zero degree.  The F-statistic is an evaluation of the confidence of the entire model, with a higher F-statistic indicating a better model.  More intuitively, perhaps, we also have the p-value for the model, notated as `Prob (F-statistic)`.  In this case it is extremely small, so we can conclude (unsurprisingly) that our model has some explanatory/predictive power.
+We can see from the $R^2$ value that our model explains a lot of the variance in the Final examination score.   We can also see a report on our model confidence - that is, how confident can we be that our model fits the outcome better than the alternative of a random model.  The F-statistic is an evaluation of the confidence of the entire model, with a high F-statistic indicating a strong likelihood that the model fits the outcome better than a random model.  More intuitively, perhaps, we also have the p-value for the F-statistic, notated as `Prob (F-statistic)`.  In this case it is extremely small, so we can conclude that our model has some explanatory/predictive power over and above that of a random model.
+
+Be careful not to confuse model confidence with $R^2$.  Depending on your sample, it is entirely possible for a model with a low $R^2$ to have high confidence and vice versa.  
 
 ### Making predictions from your model
 
