@@ -439,5 +439,22 @@ plot(d, main= "")
 
 ### Data exercise
 
+A nature preservation charity has asked you to analyze some data to help them understand the features of those members of the public who donated in a given month.  The `charity_donation` data set can be found at https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/charity_donation.csv.  It contains the following data:
 
+* `n_donations`:  The total number of times the individual donated previous to the month being studied.
+* `total_donations`: The total amount of money donated by the individual previous to the month being studied
+* `time_donating`: The number of months between the first donation and the month being studied
+* `recent_donation`: Whether or not the individual donated in the month being studied
+* `last_donation`: The number of months between the most recent previous donation and the month beng studied
+* `gender`: The gender of the individual
+* `reside`:  Whether the person resides in an Urban or Rural Domestic location or Overseas
+* `age`:  The age of the individual
 
+1.  View the data and obtain statistical summaries.  Ensure data types are appropriate and there is no missing data.  Determine the outcome and input variables.
+2. Using a pairplot or by plotting or correlating selected fields, try to hypothesize which variables may be significant in explaining who recently donated.
+3. Run a binomial logistic regression model using all input fields.  Determine which input variables have a significant effect on the outcome and the direction of that effect.
+4. Calculate the odds ratios for the significant variables and explain their impact on the outcome
+5. Experiment with model parsimony by reducing input variables that do not have a significant impact on the outcome.  Decide on the most parsimonious model.
+6. Calculate a variety of Pseudo-$R^2$ variants for the model.  How would you explain these to someone?
+7. Report the conclusions of your modeling exercise to the charity using a simple explanation that assumes no knowledge of statistics.
+8. Extension:  Using a variety of methods of your choice, test the hypothesis that your model fits the data.  How conclusive are your tests?
