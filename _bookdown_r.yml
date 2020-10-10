@@ -1,0 +1,7 @@
+book_filename: "sipa_r.Rmd"
+rmd_files: ["index_r.Rmd", "r/01-intro.Rmd", "r/02-basic_r.Rmd", "r/03-primer_stats.Rmd", "r/04-linear_regression.Rmd", "r/05-binomial_logistic_regression.Rmd"]
+output_dir: "_book_r"
+language:
+  ui:
+    chapter_name: "Chapter "
+delete_merged_file: true

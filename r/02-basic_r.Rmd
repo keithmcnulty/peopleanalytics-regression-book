@@ -1,0 +1,237 @@
+# The Basics of the R Programming Language 
+
+All of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis.  (I intend to release a sister book with the examples coded in Python very soon.)  I have made efforts to keep the code as simple as possible, and where possible I have tried to avoid the use of too many external packages.  For the most part, readers should see (especially in the earlier chapters) that code blocks are short and simple, relying wherever possible on base R functionality.  No doubt there are neater and more effective ways to code some of the material in this book using a wide array of R packages, but my priority has been to keep the code simple, consistent and informative.  
+
+For those who wish to simply replicate my work as quickly as possible, they will be able to avail of the code block copying feature.  By pointing their mouse to the top right corner of any input code block, a 'copy' icon will appear that will allow them to copy all of the code in that block directly into their session.  Another convenience feature is the ability to directly download the datas ets used in this book from my Github repository.
+
+This book is not intended to be a tutorial on R.  There are many more qualified individuals and existing resources that would better serve that purpose - in particular I recommend @wickham.  If you have never used R before, it is recommended that you consult these resources and become comfortable with the basics of R before proceeding into the later chapters of this book.  However, acknowledging that many will want to dive in sooner rather than later, this chapter covers the absolute basics of R that will allow the uninitiated reader to proceed with at least some orientation.
+
+## What is R?
+
+R is a programming language that was originally developed by and for statisticians, but has in recent years expanded greatly in its capabilities and the environments in which it is used, with extensive use nowadays in academia and the public and private sectors.  There are many advantages to using a programming language like R.  Here are some.
+
+1.  It is completely free and open source.
+2.  It is faster and more efficient with memory than popular graphical user interface tools such as Excel and SPSS
+3.  It facilitates easier replication of analysis from person to person compared to Excel and SPSS
+4.  It has a large and growing global community of active users
+5.  It has a large and rapidly growing library of packages which are all free and which provide the ability to do an extremely wide range of general and highly specialized tasks - both statistical and otherwise.
+
+There is often heated debate about which languages/tools are better for doing non-trivial statistical analysis.  I personally find that R and Python far outperform the other options at this point in time, but that is just my opinion based on my experience, and there are no doubt many others that will disagree.
+
+## How to start using R
+
+Just like most programming languages, R itself is an interpreter which receives input and returns output.  It is not very easy to use without an IDE.  An IDE is an *Integrated Development Environment*, which is a user interface allowing an R programmer to do all the main tasks including writing and running R code, saving files, viewing data and plots, integrating code into documents and many other things.  By far the most popular IDE for R is RStudio.  An example of what the RStudio IDE looks like can be seen in Figure \@ref(fig:rstudio-ide). 
+
+```{r rstudio-ide, fig.cap="The RStudio IDE", fig.align="center", echo = FALSE}
+knitr::include_graphics("~/rstudio_projects/eampa/www/R/rstudio-windows.png")
+ 
+```
+
+To start using R, follow these steps:
+
+1.  Download and install the latest version of R from https://www.r-project.org/.  Ensure that the version suits your operating system.
+2.  Download the latest version of the RStudio IDE from https://rstudio.com/products/rstudio/ and view the video on that page to familiarize yourself with the different elememts.  
+3.  Open R Studio and play around.
+
+The initial stages of using R can be challenging, mostly due to the need to familiarize with how R understands, stores and processes data. Perseverance is important in these early stages, as well as an openness to seeking help from others either in person or via online forums.
+
+## Data in R
+
+As you start to do tasks involving data in R, you will generally want to store the things you create so that you can refer to them later.  Simply calculating something does not store it in R.  For example, a simple calculation like this can be performed easily:
+
+```{r}
+3 + 3
+```
+
+However, as soon as the calculation is complete, it is forgotten by R because the result hasn't been assigned anywhere.  To store something in your R session, you will assign it a name using the `<-` command.  So I can assign my previous calculation to an object called `sum`, and this allows me to access the answer at any time.
+
+```{r}
+# store the result
+sum <- 3 + 3
+
+# now I can work with it
+sum + 3
+```
+
+You will see above that you can comment your code by simply adding a `#` to the start of a line to ensure that the line is ignored.
+
+Note that assignment to an object does not result in the value being displayed.  To display the value, the name of the object must be typed, the `print()` command used or the command should be wrapped in parentheses.
+
+```{r}
+# show me the value of sum
+sum
+
+# assign sum + 3 to new_sum and show the result
+(new_sum <- sum + 3)
+```
+
+
+### Data types
+
+All data in R has an associated type, to reflect the wide range of data that R is able to work with.  The `typeof()` function can be used to see the type of a single scalar value. Here are the most common scalar data types:
+
+**Numeric data** can be in integer form or double (decimal) form
+
+```{r}
+my_integer <- 1L  #integers can be signified by adding an 'L' to the end
+my_double <- 6.38
+
+typeof(my_integer)
+typeof(my_double)
+```
+
+**Character data** is text data surrounded by single or double quotes
+
+```{r}
+my_character <- "THIS IS TEXT"
+typeof(my_character)
+```
+
+**Logical data** takes the form `TRUE` or `FALSE`:
+
+```{r}
+my_logical <- TRUE
+typeof(my_logical)
+```
+
+### Homogeneous data structures
+
+**Vectors** are one dimensional structures containing data of the same type and are notated by using `c()`. The type of the vector can be viewed using the `str()` function:
+
+```{r}
+my_double_vector <- c(2.3, 6.8, 4.5, 65, 6)
+print(my_double_vector)
+str(my_double_vector)
+```
+
+Categorical data - which takes only a finite number of possible values, can be stored as a factor vector to make it easier to perform grouping and manipulation:
+
+```{r}
+categories <- factor(c("Category A", "Category B", "Category C", "Category A", "Category C"))
+str(categories)
+```
+
+If needed, the factors can be given order:
+
+```{r}
+# character vector 
+ranking <- c("Medium", "High", "Low")
+str(ranking)
+
+# turn it into an ordered factor
+ranking_factors <- ordered(ranking, levels = c("Low", "Medium", "High"))
+str(ranking_factors)
+
+```
+
+The number of elements in a vector can be seen using the `length()` function:
+
+```{r}
+length(categories)
+```
+
+Simple numeric sequence vectors can be created using shorthand notation:
+
+```{r}
+(my_sequence <- 1:10)
+```
+
+If you try to mix data types inside a vector, it will usually result in *type coersion*, where one of the types is forced into a different type. Often this means the vector will become a character vector:
+
+```{r}
+# numeric sequence vector
+vec <- 1:5
+str(vec)
+
+# create a new vector containing vec and the character "hello"
+new_vec <- c(vec, "hello")
+
+# numeric values have been coerced into their character equivalents
+str(new_vec)
+```
+
+But sometimes logical or factor will be coerced to numeric:
+
+```{r}
+# attempt a mixed logical and numeric
+mix <- c(TRUE, 6)
+
+# logical has been converted to binary numeric (TRUE = 1)
+str(mix)
+
+# try to add a numeric to our previous categories factor vector
+new_categories <- c(categories, 1)
+
+# categories have been coerced to their background integer representations
+str(new_categories)
+
+
+```
+
+**Matrices** are two-dimensional data structures of the same type, and are built from a vector by defining the number of rows and columns.  Data is read into the matrix across the rows, one at a time.  Matrices are rarely used for non-numeric data types.
+
+```{r}
+# create a 2x2 with the first four integers
+(m <- matrix(c(1, 2, 3, 4), nrow = 2, ncol = 2))
+```
+
+**Arrays** are n-dimensional data structures with the same data type, and are not used extensively by most R users.
+
+### Heterogeneous data structures
+
+**Lists** are one dimensional data structures that can take data of any type:
+
+```{r}
+my_list <- list(6, TRUE, "hello")
+str(my_list)
+```
+
+Lists can contain any data of any dimension, each element can be given a name:
+
+```{r}
+new_list <- list(scalar = 6, vector = c("Hello", "Goodbye"), matrix = matrix(1:4, nrow = 2, ncol = 2))
+str(new_list)
+```
+
+Named list elements can be accessed by using `$`:
+
+```{r}
+new_list$matrix
+```
+
+**Dataframes** are the most used data structure in R, and are effectively a named list of vectors of the same length, with each vector as a column.  As such, it has a great resemblance to a typical database table or spreadsheet.  
+
+```{r}
+# two vectors of different types but same length
+names <- c("John", "Ayesha")
+ages <- c(31, 24)
+
+# create a dataframe
+(df <- data.frame(names, ages))
+
+#get types of columns
+str(df)
+
+#get dimensions of df
+dim(df)
+```
+
+
+
+### Loading and tidying data
+
+To work with data in R, you usually need to pull it in from an outside source into a dataframe^[R also has some inbuilt data sets which are for testing and playing with, for example check out `mtcars` by typing it into the terminal, or type `data()` to see a full list of in built data sets].  R facilitates numerous ways of importing data, from simple csv files, from Excel files, from online sources or from databases.  In this book we will be loading all our datasets from online csv files, and the `read.csv()` function makes this easy.  Let's load a data set that we will be using later - the `salespeople` data set, which contains some information on the sales, customer ratings and performance ratings of sales people.  The `read.csv()` function can accept a URL address of the file if it is online.
+
+```{r}
+# url of data set 
+url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/salespeople.csv"
+
+# load the dataset and store it as a dataframe called salespeople
+salespeople <- read.csv(url)
+```
+
+We might not want to 
+
+
+
+
