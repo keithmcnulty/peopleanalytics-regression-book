@@ -216,11 +216,13 @@ str(df)
 dim(df)
 ```
 
+## Working with dataframes
 
+The dataframe is the most common data structure used by analysts in R, due to its similarity to data tables found in databases and spreadsheets.  We will work almost entirely with datafames in this book, so let's get to know them.
 
-### Loading and tidying data
+### Loading and tidying data in dataframes
 
-To work with data in R, you usually need to pull it in from an outside source into a dataframe^[R also has some inbuilt data sets which are for testing and playing with, for example check out `mtcars` by typing it into the terminal, or type `data()` to see a full list of in built data sets].  R facilitates numerous ways of importing data, from simple csv files, from Excel files, from online sources or from databases.  In this book we will be loading all our datasets from online csv files, and the `read.csv()` function makes this easy.  Let's load a data set that we will be using later - the `salespeople` data set, which contains some information on the sales, customer ratings and performance ratings of sales people.  The `read.csv()` function can accept a URL address of the file if it is online.
+To work with data in R, you usually need to pull it in from an outside source into a dataframe^[R also has some inbuilt data sets which are for testing and playing with, for example check out `mtcars` by typing it into the terminal, or type `data()` to see a full list of in built data sets].  R facilitates numerous ways of importing data from simple csv files, from Excel files, from online sources or from databases.  In this book we will be loading all our datasets from online csv files, and the `read.csv()` function makes this easy.  Let's load a data set that we will be using later - the `salespeople` data set, which contains some information on the sales, average customer ratings and performance ratings of salespeople.  The `read.csv()` function can accept a URL address of the file if it is online.
 
 ```{r}
 # url of data set 
@@ -230,8 +232,67 @@ url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/salespe
 salespeople <- read.csv(url)
 ```
 
-We might not want to 
+We might not want to display this entire dataset before knowing how big it is.  We can view the dimensions and if it is too big to display, we can use the `head()` function to display just the first few rows.
+
+```{r}
+dim(salespeople)
+
+# view first few rows
+head(salespeople)
+```
 
 
+We can view a specific column by using `$`, and we can use square brackets to view a specific entry.   For example if we wanted to see the 6th entry of the `sales` column:
+
+```{r}
+salespeople$sales[6]
+```
+
+Alternatively we can use a `[row, column]` index to get a specific entry in the dataframe.
+
+```{r}
+salespeople[34, 4]
+```
 
 
+We can take a look at the data types using `str()`
+
+```{r}
+str(salespeople)
+```
+
+We can also see a statistical summary of each column using `summary()`, which tells us various statistics depending on the type of the column.
+
+```{r}
+summary(salespeople)
+```
+
+Note that there is missing data in this dataframe, indicated by `NA`s in the summary.  Missing data is identified by a special `NA` value in R.  This should not be confused with `"NA"`, which is simply a character string.  The function `is.na()` will look at all values in a vector or dataframe and return `TRUE` or `FALSE` based on whether they are `NA` or not.  By adding these up using the `sum()` function, it will take `TRUE` as 1 and `FALSE` as 0, which effectively provides a count of missing data.
+
+```{r}
+sum(is.na(salespeople))
+```
+
+This is a small number of `NA`s given the dimensions of our data set and we might want to remove the rows of data that contain NAs.  The easiest way is to use the `complete.cases()` function, which identifies the rows that have no `NA`s, and then we can select those rows from the dataframe based on that condition.  Note that you can overwrite objects with the same name in R.
+
+```{r}
+salespeople <- salespeople[complete.cases(salespeople), ]
+
+#confirm no NAs
+sum(is.na(salespeople))
+```
+
+We can see the unique values of a vector or column using the `unique()` function.
+
+```{r}
+unique(salespeople$performance)
+```
+
+If we need to change the type of a column in a dataframe, we can use the `as.numeric()`, `as.character()`, `as.logical()` or `as.factor()` functions.  For example, given that there are only four unique values for the `performance` column, we may want to convert it to a factor.
+
+```{r}
+salespeople$performance <- as.factor(salespeople$performance)
+str(salespeople)
+```
+
+### Manipulating dataframes

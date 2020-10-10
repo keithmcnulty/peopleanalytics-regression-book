@@ -77,11 +77,14 @@ The data looks as expected.  Let's get a summary of the data:
 summary(salespeople)
 ```
 
-We see that about a third of individuals were promoted, that sales ranged from \$150k to \$940k, that as expected the average satisfaction ratings range from 1 to 5, and finally we see four performance ratings, although the performance categories are numeric when they should be an ordered factor, and `promoted` is numeric when it should be categorical.   Let's convert these and then let's do a pairplot to get a quick view on some possible underlying relationships (Figure \@ref(fig:log-pairplot)).
+First we see a small number of missing values, and we should remove those observations.  We see that about a third of individuals were promoted, that sales ranged from \$150k to \$940k, that as expected the average satisfaction ratings range from 1 to 5, and finally we see four performance ratings, although the performance categories are numeric when they should be an ordered factor, and `promoted` is numeric when it should be categorical.   Let's convert these and then let's do a pairplot to get a quick view on some possible underlying relationships (Figure \@ref(fig:log-pairplot)).
 
 ```{r log-pairplot, fig.cap = "Pairplot for the `salespeople` data set", fig.align="center", warning = FALSE, message = FALSE}
 library(ggplot2)
 library(GGally)
+
+#remove NAs
+salespeople <- salespeople[complete.cases(salespeople), ]
 
 #convert performance to ordered factor and promoted to categorical
 salespeople$performance <- ordered(salespeople$performance, levels = 1:4)
