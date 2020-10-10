@@ -265,13 +265,35 @@ The `summary()` function is a useful way to gather critical information in your 
 ```{r}
 model_summary <- summary(model)
 model_summary$coefficients
-
 ```
 
-The 95% confidence interval corresponds to approximately two Standard Errors above or below the estimated value. For example, the 95% confidence interval for the coefficient of `Yr3` is [`r round(model_summary$coefficients[c("Yr3"), c("Estimate")] - 2*model_summary$coefficients[c("Yr3"), c("Std. Error")], 3)`, `r round(model_summary$coefficients[c("Yr3"), c("Estimate")] + 2*model_summary$coefficients[c("Yr3"), c("Std. Error")], 3)`]. For a given coefficient, if this confidence interval includes zero, you cannot reject the hypothesis that the variable has no relationship with the outcome.  Another indicator of this is the last column, which represents the *p-value* of the statistical hypothesis test.  If this value is less than a certain threshold (usually 0.05), you can conclude that this variable has a statistically significant relationship with the outcome. In this case, we can conclude that the examinations in Years 2 and 3 have a significant relationship with the Final examination score, but we cannot conclude this for Year 1.  Effectively, this means that we can drop `Yr1` from our model with no significant loss of fit.  In general, simpler models are easier to manage and interpret, so let's remove the non-significant variable now.
+The 95% confidence interval corresponds to approximately two Standard Errors above or below the estimated value. For a given coefficient, if this confidence interval includes zero, you cannot reject the hypothesis that the variable has no relationship with the outcome.  Another indicator of this is the `Pr(>|t|)` column of the coefficient summary, which represents the *p-value* of the hypothesis test that the input variable has no relationship with the outcome.  If this value is less than a certain threshold (usually 0.05), you can conclude that this variable has a statistically significant relationship with the outcome. To see the precise confidence intervals for your model coefficients, you can use the `confint()` function:
+
+```{r}
+confint(model)
+```
+
+In this case, we can conclude that the examinations in Years 2 and 3 have a significant relationship with the Final examination score, but we cannot conclude this for Year 1.  Effectively, this means that we can drop `Yr1` from our model with no substantial loss of fit.  In general, simpler models are easier to manage and interpret, so let's remove the non-significant variable now.
 
 ```{r}
 newmodel <- lm(data = ugtests, formula = Final ~ Yr3 + Yr2)
+
+```
+
+Given that our new model only has three dimensions, we have the luxury of visualizing it.  Interactive Figure \@ref(fig:lin-reg-3d) shows the data and the fitted plane of our model.  
+
+```{r lin-reg-3d, fig.cap = "3D Visualization of the fitted `newmodel` against the `ugtests` data", fig.align="center", echo = FALSE}
+library(plotly)
+library(magrittr)
+
+plot_ly(data = ugtests) %>%
+  add_trace(x = ~Yr3, y = ~Yr2, z = ~Final, mode = "markers", type = "scatter3d",
+            marker = list(size = 5, color = "blue", symbol = 104), name = "Observations") %>% 
+  add_trace(z = newmodel$fitted.values, x = ~Yr3, y = ~Yr2, type = "mesh3d", 
+            name = "Fitted values") %>%
+  layout(scene = list(xaxis = list(title = 'Yr3'), yaxis = list(title = 'Yr2'),
+                     zaxis = list(title = 'Final'), aspectmode='cube')) 
+
 
 ```
 
