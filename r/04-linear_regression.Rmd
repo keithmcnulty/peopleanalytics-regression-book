@@ -17,7 +17,7 @@ Linear Regression, also known as *Ordinary Least Squares Linear Regression* or *
 Here is an illustration of Galton's data with the black solid line showing what a perfect relationship would look like, and the red dashed line showing the actual relationship he determined.  You can regard the red dashed line as 'going back' from the perfect relationship (symbolized by the black line) in the direction of a flat line representing the mean of the child heights.  This might give you an intuition that will help you understand later sections of this chapter. In an arbitrary data set, the red dashed line can lie anywhere between a flat line at the mean of $y$ (no relationship) and the solid black line (a perfect relationship). Linear Regression is about finding the red dashed line in your data and using it to explain the degree to which your input data (the $x$ axis) explains or predicts your outcome data (the $y$ axis). 
 
 ```{r galton-fig, fig.cap="Galton's study of the height of children introduced the term 'regression'", out.width='80%', fig.asp=.75, fig.align='center', echo = FALSE}
-knitr::include_graphics("www/01/Regression-to-the-mean.png")
+knitr::include_graphics("~/rstudio_projects/eampa/www/01/Regression-to-the-mean.png")
 ```
 
 ### Use cases for Linear Regression {#use-cases-ols}
@@ -525,7 +525,7 @@ Note that collinearity and multicollinearity only affect the coefficients of the
 
 ## Extending multiple linear regression into non-linear contexts
 
-We wrap up this chapter by introducing some simple extensions of linear regression, with a particular aim of trying to improve the overall fit of a model by relaxing the linear or additive assumptions.  In other chapters we will look at substantial developments on the ordinary least squares regression approach, such as Ridge and LASSO regression.
+We wrap up this chapter by introducing some simple extensions of linear regression, with a particular aim of trying to improve the overall fit of a model by relaxing the linear or additive assumptions.  It is rare for practitioners to extend linear regression models too greatly due to the negative impact this can have on interpretation, but simple extensions such as experimenting with interaction terms or quadratics are not uncommon.  If you have an appetite to explore this topic more fully, I recommend @rao.
 
 ### Interactions between input variables
 
@@ -534,17 +534,32 @@ Recall that our model of student examination scores took each year's score as a 
 In our students examination data in `ugtests`, we could consider extending our model to not only include the individual years examinations, but also to include the impact of combined changes across multiple years.  For example, we could combine the impact of `Yr2` and `Yr3` examinations by multiplying them together in our model.
 
 ```{r}
-interaction_model <- lm(data = ugtests, formula = Final ~ Yr2 + Yr3 + Yr2*Yr3)
+interaction_model <- lm(data = ugtests, formula = Final ~ Yr2 + Yr2*Yr3)
 summary(interaction_model)
 ```
 
-We see that introducing this interaction term has improved our model, and that the interaction term is significant, so we conclude that in addition to a significant effect of the `Yr2` an `Yr3` scores, there is an additional significant effect from their interaction.  
+We see that introducing this interaction term has improved our model, and that the interaction term is significant, so we conclude that in addition to a significant effect of the `Yr2` an `Yr3` scores, there is an additional significant effect from their interaction.  Visualizing this, we can see in Interactive Figure \@ref(fig:non-lin-reg-3d) that this non-linear term introduces a curvature to our fitted surface that aligns it more closely with the observations in our data set. 
+
+```{r non-lin-reg-3d, fig.cap = "3D Visualization of the fitted `interaction_model` against the `ugtests` data", fig.align="center", echo = FALSE}
+library(plotly)
+library(magrittr)
+
+plot_ly(data = ugtests) %>%
+  add_trace(x = ~Yr3, y = ~Yr2, z = ~Final, mode = "markers", type = "scatter3d",
+            marker = list(size = 5, color = "blue", symbol = 104), name = "Observations") %>% 
+  add_trace(z = interaction_model$fitted.values, x = ~Yr3, y = ~Yr2, type = "mesh3d", 
+            name = "Fitted values") %>%
+  layout(scene = list(xaxis = list(title = 'Yr3'), yaxis = list(title = 'Yr2'),
+                     zaxis = list(title = 'Final'), aspectmode='cube')) 
+
+
+```
 
 In theory, an analyst could explore any combination of interactions of two or more variables.  However, consider the impact on interpretability of modeling complex combinations of interactions.  As always, there is a trade-off between intepretability and accuracy.  In the case of the model above, now with a near perfect fit, there would likely be no further benefit to exploring additional interaction terms, if those did exist.
 
 When running models with interaction terms, you can expect to see a hierarchy in the coefficients according to the level of the interaction.  For example, single terms will usually generate higher coefficients than interactions of two terms, which will generate higher coefficients than interactions of three terms, and so on.   Given this, whenever an interaction of terms is considered significant in a model, then the single terms contained in that interaction should automatically be regarded as significant.
 
-### Non-linear modeling
+### Quadratic and higher-order polynomial terms
 
 Specific non linear models can be trialled using linear regression technology.  For example, if the underlying relationship was throught to be quadratic on a given input variable $x$, then the formula would take the form $y = \beta_0 + \beta_1x + \beta_2x^2$, and this can easily be put into a linear model formula.  
 

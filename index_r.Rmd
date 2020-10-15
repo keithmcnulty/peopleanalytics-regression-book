@@ -1,25 +1,21 @@
 --- 
-title: "Inferential Statistics in People Analytics"
+title: "Statistical Inference in People Analytics"
 author: "Keith McNulty"
 date: "`r format(Sys.Date(), '%B %d %Y')`"
 site: bookdown::bookdown_site
-output: bookdown::gitbook
+output: 
+  bookdown::gitbook:
+    split_by: section
+nocite: '@*'
 documentclass: book
-bibliography: [r/book.bib, r/packages.bib]
-biblio-style: apalike
+bibliography: [r/book.bib]
 fig-caption: yes
 link-citations: yes
 github-repo: keithmcnulty/eampa
-description: "This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook."
 ---
 
 # Introduction
 
 Lorem Ipsum
 
-```{r}
-# automatically create a bib database for R packages
-knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown'
-), 'r/packages.bib')
-```
+

@@ -24,7 +24,7 @@ The logistic function, as shown in Figure \@ref(fig:logistic-function-verhulst),
 
 ```{r logistic-function-verhulst, fig.align = "center", fig.cap = "Verhulst's Logistic Function modeled both the exponential nature and the natural limit of population expansion", echo = FALSE}
 
-knitr::include_graphics("www/02/logistic-curve.png")
+knitr::include_graphics("~/rstudio_projects/eampa/www/02/logistic-curve.png")
 
 
 ```
@@ -422,6 +422,16 @@ Model parsimony becomes a substantial concern when there is a large number of in
 
 ## Other considerations in binomial logistic regression
 
+To predict from new data, just use the `predict()` function as in the previous chapter.  This function recognizes the type of model being used - in this case a generalized linear model - and adjusts its prediction approach accordingly. In particular, if you want to return the probability of the new observations being promoted, you need to use `type = "response"` as an argument.
+
+```{r}
+# define new observations
+(new_data <- data.frame(sales = c(420, 510, 710), customer_rate = c(3.4, 2.3, 4.2)))
+
+#predict probability of promotion
+predict(simpler_model, new_data, type = "response")
+```
+
 Many of the principles covered in the previous chapter on linear regression are equally important in logistic regression.  For example, input variables should be managed in a similar way.  Collinearity and multicollinearity should be of concern.  Interaction of input variables can be modeled.  For the most part, analysts should be aware of the fundamental transformations which take place on the outcome $y$ during logistic regression when they consider some of these issues (another reason to ensure that the mathematics covered earlier in this chapter is well understood).  For example, while coefficients in linear regression have a direct additive impact on $y$, in logistic regression they have a direct additive impact on the log odds of $y$, or alternatively their exponents have a direct multiplicative impact on the odds of $y$.  Therefore multicollinear variables, as an example, risk introducing overestimated coefficients which inflate the log odds additively.  The exponents of these overestimated coefficients will then inflate the odds multiplicatively.
 
 Because of the binary nature of our outcome variable, the residuals of a logistic regression model have limited direct application to the problem being studied.  In practical contexts the residuals of logistic regression models are rarely examined, but they can be useful in identifying outliers or particularly influential observations and in assessing goodness of fit, as in \@ref(logistic-gof).  When residuals are examined, they need to be transformed in order to be analyzed appropriately.  For example, the *Pearson residual* is a standardized form of residual from logistic regression which can be expected to have a normal distribution over large enough samples.  We can see in Figure \@ref(fig:pearson-resids) that this is the case for our `simpler_model`, but that there are a small number of substantial underestimates in our model.  A good source of further learning on diagnostics of logistic regression models is @menard.
@@ -479,3 +489,4 @@ A nature preservation charity has asked you to analyze some data to help them un
 7. Calculate a variety of Pseudo-$R^2$ variants for your model.  How would you explain these to someone with no statistics expertise?
 8. Report the conclusions of your modeling exercise to the charity by writing a simple explanation that assumes no knowledge of statistics.
 9. Extension:  Using a variety of methods of your choice, test the hypothesis that your model fits the data.  How conclusive are your tests?
+

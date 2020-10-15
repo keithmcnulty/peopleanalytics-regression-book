@@ -1,3 +1,453 @@
-# A Primer on Univariate and Bivariate Statistics
+# Statistics foundations
 
-Lorem ipsum
+To properly understand multivariate models, an analyst needs to have a decent grasp of foundational statistics.  Many of the assumptions and results of multivariate models require an understanding of these foundations in order to be properly interpreted.  There are three topics that are particularly important for those proceeding further in this book:
+
+1.  Descriptive statistics of populations and samples
+2.  Distribution of random variables
+3.  Hypothesis testing
+
+If you have never really studied these topics, I would strongly recommend taking a course in them and spending good time getting to know them.  Again, just as the last chapter was not intended to be a comprehensive tutorial on R, neither is this chapter intended to be a comprehensive tutorial on introductory statistics. However, we will introduce some key concepts here that are critical to understanding later chapters, and as always we will illustrate using real data examples in R.
+
+In preparation for this chapter we are going to download a data set that we will work through in a later chapter, and use it for practical examples and illustration purposes.  The data are a set of information on the sales, customer ratings and performance ratings on a set of 351 salespeople as well as an indication of whether or not they were promoted.
+
+```{r}
+# use online url to download salespeople data
+url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/salespeople.csv"
+salespeople <- read.csv(url)
+```
+
+Let's take a brief look at first few rows of this data to make sure we know what is inside it.
+
+```{r}
+head(salespeople)
+```
+
+And let's understand the structure of this data.
+
+```{r}
+str(salespeople)
+```
+
+It looks like:
+
+* `promoted` is a binary value, either 1 or 0.  Presumably 1 means 'was promoted' and 0 means 'was not promoted'.
+* `sales` and `customer_rate` look like normal numerical values.
+* `performance` looks like a set of performance categories - there appear to be four based on what we can see.
+
+## Elementary descriptive statistics of populations and samples
+
+Any collection of numerical data on a given measure will have a mean and a variance around that mean.  
+
+### Mean, variance and standard deviation
+
+The **mean** is the average value of the data and is defined by adding up all the values and dividing by the number of datapoints.  If the data set contains the $N$ datapoints $x_1, x_2, ..., x_N$, then the mean is defined as:
+
+$$
+\frac{1}{N}\sum_{i = 1}^{N}x_i
+$$
+
+The mean can have a different interpretation depending on the type of data being studied.  Let's look at the mean of three different columns of our `salespeople` data, making sure to ignore any missing data.
+
+```{r}
+mean(salespeople$sales, na.rm = TRUE)
+```
+
+This looks very intuitive and appears to be the average amount of sales made by the individuals in the data set.
+
+```{r}
+mean(salespeople$promoted, na.rm = TRUE)
+```
+
+Given that this data can only have the value of 0 or 1, we interpret this mean as *likelihood* or *expectation* that an individual will be labelled as 1.  That is, the average probability of promotion in the data set.  If this data showed a perfectly even likelihood of promotion, we would expect this to take the value of 0.5.  But it is lower than 0.5, which tells us that the majority of individuals are not promoted.
+
+```{r}
+mean(salespeople$performance, na.rm = TRUE)
+```
+
+Given that this data can only have the values 1, 2, 3 or 4, we interpret this as the *expected value* of the performance rating in the dataset.  Higher or lower means inform us about the distribution of the performance ratings.  A low mean will indicate a skew towards a low rating, and a high mean will indicate a skew towards a high rating.
+
+Other common statistical summary measures include the *median*, which is the middle value when the values are ranked in order, and the *mode*, which is the most frequently occurring value.
+
+The **variance** is a measure of how much the data varies around its mean.  There are two different definitions of variance.  The **population variance** assumes that there is no sampling and is defined as the average squared difference from the mean.  If $\mu$ is the mean value of $X = x_1, x_2, ..., x_N$, then population variance is
+
+$$
+\mathrm{Var}_p(X) = \frac{1}{N}\sum_{i = 1}^{N}(x_i - \mu)^2
+$$
+The **sample variance** assumes there is sampling and attempts to estimate the variance of a larger population by applying *Bessel's Correction* to account for potential sampling error.    The sample variance is:
+
+$$
+\mathrm{Var}_s(X) = \frac{1}{N-1}\sum_{i = 1}^{N}(x_i - \mu)^2
+$$
+
+You can see that, on the same dataset,
+
+$$
+\mathrm{Var}_p(X) = \frac{N - 1}{N}\mathrm{Var}_s(X)
+$$
+so as the dataset gets larger, the sample variance and the population variance become less and less distinguishable, which intuitively makes sense.
+
+Note that in R and in many other statistical software packages, the sample variance is calculated by default:
+
+```{r}
+# sample variance 
+(sample_variance_sales <- var(salespeople$sales, na.rm = TRUE))
+```
+
+So where necessary, we need to apply a transformation to get the population variance:
+
+```{r}
+# population variance (need length of non-NA data)
+n <- length(!is.na(salespeople$sales))
+(population_variance_sales <- ((n-1)/n) * sample_variance_sales)
+```
+
+Variance does not have intuitive scale relative to the data being studied, because we have used a 'squared distance metric', therefore we can square-root it to get a measure of 'deviance' on the same scale as the data.  We call this the *standard deviation* $\sigma$, where $\mathrm{Var}(X) = \sigma^2$.  As with variance, standard deviation has both population and sample versions, and the sample version is calculated by default. Conversion between the two takes the form
+
+$$
+\sigma_p = \sqrt{\frac{N-1}{N}}\sigma_s
+$$
+
+```{r}
+# sample standard deviation
+(sample_sd_sales <- sd(salespeople$sales, na.rm = TRUE))
+
+# verify that sample sd is sqrt(sample var)
+sd(salespeople$sales, na.rm = TRUE) == sqrt(sample_variance_sales)
+
+# calculate population standard deviation
+(population_sd_sales <- sqrt((n-1)/n) * sample_sd_sales)
+
+```
+
+Given the range of sales is [`r range(salespeople$sales, na.rm = TRUE)`] and the mean is `r round(mean(salespeople$sales, na.rm = TRUE))`, we see that the standard deviation gives a more intuitive sense of the 'spread' of the data relative to its inherent scale.
+
+### Covariance and correlation
+
+The *covariance* between two variables is a measure the extent to which one changes as the other changes.  If $Y = y_1, y_2, ..., y_N$ is a second variable, and $\mu_X$ and $\mu_Y$ are the means of X and Y respectively, then the **sample covariance** of $X$ and $Y$ is defined as:
+
+$$
+\mathrm{cov}_s(X, Y) = \frac{1}{N - 1}\sum_{i = 1}^{N}(x_i - \mu_X)(y_i - \mu_Y)
+$$
+and as with variance, the **population covariance** is 
+
+$$
+\mathrm{cov}_p(X, Y) = \frac{N-1}{N}\mathrm{cov}_s(X, Y) 
+$$
+
+Again, the sample covariance is the default in R and we need to transform to obtain the population covariance:
+
+```{r}
+# get sample covariance for sales and customer_rate, ignoring observations with missing data
+(sample_cov <- cov(salespeople$sales, salespeople$customer_rate, 
+                   use = "complete.obs"))
+
+# convert to population covariance (need number of complete obs)
+cols <- subset(salespeople, select = c("sales", "customer_rate"))
+N <- nrow(cols[complete.cases(cols), ])
+(population_cov <- ((N-1)/N) * sample_cov)
+```
+
+As can be seen, the difference in covariance is very small between the sample and population versions, and both confirm a positive relationship between sales and customer rating.  However, we again see this issue that there is no intuitive sense of scale for this measure.  
+
+**Pearson's correlation** coefficient divides the covariance by the product of the standard deviations of the two variables.. 
+
+$$
+r_{X, Y} = \frac{\mathrm{cov}(X, Y)}{\sigma_X\sigma_Y}
+$$
+This creates a maximum scale of -1 to 1 for $r_{X, Y}$ which is an intuitive way of understanding both the direction and scale of the relationship between X and Y, with -1 indicating that X increases perfectly as Y decreases, 1 indicating that X increases perfectly as X increases, and 0 indicating that there is no relationship between the two.
+
+As before, there is a sample and population version of the correlation coefficient and R calculates the sample version by default.  Similar transformations can be used to determine a population correlation coefficient and over large populations the two measures converge.
+
+```{r}
+# calculate sample correlation between sales and customer_rate
+cor(salespeople$sales, salespeople$customer_rate, use = "complete.obs")
+```
+
+This tells us that there is a moderate positive correlation between sales and customer_rating.
+
+You will notice that we have so far used two variables on a continuous scale to demonstrate covariance and correlation. Pearson's correlation can also be used between a continuous scale and a dichotomous (binary) scale variable, and this is known as a **point-biserial correlation**.
+
+```{r}
+cor(salespeople$sales, salespeople$promoted, use = "complete.obs")
+```
+
+Correlating ranked variables involve an adjusted approach leading to **Spearman's correlation** coefficient or **Kendall's Tau**, among others.  We will not dive into the mathematics of this here, but a good source is @bhattacharya.  Spearman's or Kendall's variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.
+
+```{r}
+# spearman's correlation
+cor(salespeople$sales, salespeople$performance, method = "spearman", use = "complete.obs")
+
+# kendall's correlation
+cor(salespeople$sales, salespeople$performance, method = "kendall", use = "complete.obs")
+```
+
+Both in this case indicate a low to moderate correlation.  Spearman or Kendall can also be used to correlate a ranked and a dichotomous variable, and this is known as a **rank-biserial correlation**.
+
+
+## Distribution of random variables
+
+In our last chapter we discussed how, when we build a model, we are using a set of sample data to infer a general relationship on a bigger population.  A major underlying assumption in our inference is that we believe the real life variables we are dealing with are random in nature.  For example, we might be trying to model the drivers of the voting choice of millions of people in a national election, but we may only have sample data on a few thousand people.  When we infer nationwide voting intentions from our sample, we assume that the characteristics of the voting population are random variables. 
+
+### Sampling of random variables
+
+When we describe variables as random, we are assuming that they take a form which is *independent and identically distributed*.  Using our `salespeople` data as an example, we are assuming that the sales of one person in the data set is not influenced by the sales of another person in the data set.  In this case, this seems like a reasonable assumption, and we will be making it for many (though not all) of the statistical methods used in this book.  However, it is good to recognize that there are scenarios where this assumption cannot be made.  For example, if the salespeople worked together in serving the same customers on the same products, and each individuals sales represented some proportion of the overall sales to the customer, we cannot say that the sales data is independent and identically distributed.  In this case we will expect to see some hierarchy in our data and will need to adjust our techniques accordingly to take this into consideration.      
+
+Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let's test this with a little experiment on our `salespeople` data.  Figure \@ref(fig:sales-sample) shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the `salespeople` dataset and creating a histogram of the resulting mean sales values.  We can see how greater numbers of samples (down the rows) leads to a more normal distribution and larger sample sizes (across the columns) leads to a 'spikier' distribution with a smaller standard deviation.
+
+
+```{r sales-sample, fig.cap="Histogram and density of mean `sales` based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)", fig.align = "center", echo = FALSE, warning = FALSE}
+set.seed(124)
+library(ggplot2)
+
+salespeople_ <- salespeople[complete.cases(salespeople), ]
+
+mean_samp_50_10 <- c()
+mean_samp_100_10 <- c()
+mean_samp_150_10 <- c()
+
+for (i in 1:10) {
+mean_samp_50_10[i] <- mean(salespeople_$sales[sample(1:350, 50)])
+mean_samp_100_10[i] <- mean(salespeople_$sales[sample(1:350, 100)])
+mean_samp_150_10[i] <- mean(salespeople_$sales[sample(1:350, 150)])
+}
+
+mean_samp_50_100 <- c()
+mean_samp_100_100 <- c()
+mean_samp_150_100 <- c()
+
+for (i in 1:100) {
+mean_samp_50_100[i] <- mean(salespeople_$sales[sample(1:350, 50)])
+mean_samp_100_100[i] <- mean(salespeople_$sales[sample(1:350, 100)])
+mean_samp_150_100[i] <- mean(salespeople_$sales[sample(1:350, 150)])
+}
+
+mean_samp_50_1000 <- c()
+mean_samp_100_1000 <- c()
+mean_samp_150_1000 <- c()
+
+for (i in 1:1000) {
+mean_samp_50_1000[i] <- mean(salespeople_$sales[sample(1:350, 50)])
+mean_samp_100_1000[i] <- mean(salespeople_$sales[sample(1:350, 100)])
+mean_samp_150_1000[i] <- mean(salespeople_$sales[sample(1:350, 150)])
+}
+
+plotdist <- function(i, j) {
+  ggplot() + 
+            geom_histogram(aes(x = get(paste("mean_samp", i, j, sep = "_")), y=..density..),     
+                           binwidth=5,
+                           colour="black", fill="white") +
+            geom_density(aes(x = get(paste("mean_samp", i, j, sep = "_"))), alpha=.2, fill="#FF6666", inherit.aes = FALSE) +
+            xlab("Mean sales") +
+            xlim(450, 600)
+}
+
+gridExtra::grid.arrange(plotdist(50, 10), plotdist(100, 10), plotdist(150, 10),
+                        plotdist(50, 10), plotdist(100, 100), plotdist(150, 100),
+                        plotdist(50, 1000), plotdist(100, 1000), plotdist(150, 1000),
+                        nrow = 3, ncol = 3)
+```
+
+### Standard errors and confidence intervals
+
+One consequence of the observations in \@ref(fig:sales-sample) is that the summary statistics calculated from larger sample sizes fall into normal distributions that are 'narrower' and hence represent more precise estimations of the population statistic.  The standard deviation of of a sampled statistic is called the **standard error** of that statistic.  In the special case of a sampled mean, the formula for the standard error of the mean can be derived to be
+
+$$
+SE = \frac{\sigma}{\sqrt{n}}
+$$
+Where \sigma is the (sample) standard deviation.  This confirms that the standard error of the mean decreases with greater sample size, confirming our intuition that the estimation of the mean is more precise with larger samples.
+
+To apply this logic to our `salespeople` data set, let's take a random sample of 100 values of `customer_rate`.
+
+```{r}
+N <- length(salespeople$customer_rate[!is.na(salespeople$customer_rate)])
+sample <- salespeople$customer_rate[sample(1:N, 100)]
+```
+
+We can calculate the mean of the sample and the standard error of the mean:
+
+```{r}
+# mean
+(sample_mean <- mean(sample))
+
+# standard error
+(se <- sd(sample)/sqrt(N))
+```
+
+Because the normal distribution is a frequency (or probability) distribution, we can interpret the standard error as a 'sensitivity' range around the sample mean corresponding to a probability level.  One standard error above or below the sample mean corresponds to approximately 68% of the probability distribution, and two standard errors correspond to approximately 95% of the probability distribution.  As an example, we can calculate a range of values from the sample mean and standard error that is 95% likely to contain the true population mean - the so called 95% confidence interval.
+
+```{r}
+## 95% confidence interval lower and upper bounds
+lower_bound <- sample_mean - 2*se
+upper_bound <- sample_mean + 2*se
+
+cat(paste0('[', lower_bound, ', ', upper_bound, ']')) 
+```
+
+## Hypothesis testing
+
+Observations about the distribution of statistics on random variables allow us to construct tests for hypotheses of statistical difference or similarity.  Such hypothesis testing is useful in itself for simple bivariate analysis in practice settings, but it will be particularly critical in later chapters in determining whether models are useful or not.  
+
+### Testing for a difference in sample means (Student's t-test)
+
+Imagine that we are asked if the sales of low performers are the same as the sales of high performers in our `salespeople` data set.  Let's take two subsets of our data for those with a performance ratiing of 1 and those with a performance rating of 4, and calculate the difference in mean sales.
+
+```{r}
+# take two performance group samples 
+perf1 <- subset(salespeople, subset = performance == 1)
+perf4 <- subset(salespeople, subset = performance == 4)
+
+# calculate the difference in mean sales
+(diff <- mean(perf4$sales) - mean(perf1$sales))
+```
+
+We can see that those with a higher performance rating in our sample did generate higher mean sales than those with a lower performance rating.  But these are just samples, and we are being asked to give a conclusion about the populations they are drawn from. 
+
+Let's take a hypothesis that there is no difference in true mean sales between the two populations that these samples are drawn from.  We call this the *null hypothesis*.   We combine the two samples and calculate the distribution around the their difference in means.  To *accept* the null hypothesis we would need to determine that the 95% confidence interval of this distribution contains zero.  If it does not, we can *reject* the hypothesis in favour of the *alternative hypothesis* that there is a non-zero difference between the true mean sales of the two populations.
+
+
+We calculate the standard error of the combined sample using the fomula^[If you are inquisitive about this formula, see the exercises at the end of this chapter]:
+
+$$
+\sqrt{\frac{\sigma_{\mathrm{perf1}}^2}{n_{\mathrm{perf1}}} + \frac{\sigma_{\mathrm{perf4}}^2}{n_{\mathrm{perf4}}}}
+$$
+where $\sigma_{\mathrm{perf1}}$ and $\sigma_{\mathrm{perf2}}$ are the standard deviations of the two samples and $n_{\mathrm{perf1}}$ and $n_{\mathrm{perf2}}$ are the two sample sizes.  This allows us to construct a 95% confidence interval for the difference between the means, and we can test whether this contains zero.
+
+```{r}
+# calculate standard error of the two sets
+se <- sqrt(sd(perf1$sales)^2/length(perf1$sales) + sd(perf4$sales)^2/length(perf4$sales))
+
+# calculate 95% confidence interval (approximately)
+(lower_bound <- diff - 2*se)
+(upper_bound <- diff + 2*se)
+
+# test if zero is inside this interval
+(0 <= upper_bound) & (0 >= lower_bound)
+```
+
+Since this has returned `FALSE`, we conclude that a mean difference of zero is outside the 95% confidence interval of our sample mean difference, and so we cannot have 95% certainty that the difference in population means is zero. We reject the hypothesis that the mean sales of both performance levels are the same.
+
+Looking at this graphically, we are assuming a normal distribution of the mean difference, and we are determining where zero sits in that distribution, as in Figure \@ref(fig:norm-dist).
+
+```{r norm-dist, fig.cap = "Distribution of the mean sales difference between `perf1` and `perf4` with 95% confidence intervals marked by red dashed lines and a mean difference of zero marked with a blue solid line", fig.align = "center", echo = FALSE}
+ggplot(data = data.frame(x = c(-5, 5)), aes(x)) +
+  stat_function(fun = dnorm, n = 101, args = list(mean = 0, sd = 1)) + ylab("") +
+  xlab("Standard errors around sample mean difference") +
+  geom_vline(xintercept = -2, color = "red", linetype = "dashed") +
+  geom_vline(xintercept = 2, color = "red", linetype = "dashed") +
+  geom_vline(xintercept = - diff/se, color = "blue", linetype = "solid")
+```
+
+The red dashed lines in this diagram represent the 95% confidence interval around the mean difference of our two samples.  The 'tails' of the curve outside of these two lines each represent a maximum of 0.025 probability that zero is the population mean difference.  So we can see that the position of the blue line can correspond to a *maximum probability* that the population mean difference is zero.  We call this the *p-value* of the hypothesis test^[We call this type of hypothesis test a *two tailed* test, because the tested population mean can be either higher or lower than the sample mean, thus it can appear in any of the two tails for the null hypothesis to be rejected.  *One-tailed* tests are used when you are testing for an alternative hypothesis that the difference is specifically "less than zero" or "greater than zero".  In the `t.test()` function in R, you can specify this in the arguments].
+
+The p-value can be derived by calculating the position of zero as a proportion of the standard error of the sample mean difference (called the $t$-statistic) and then applying a conversion function^[In R, this function uses `pnorm()` to calculate the value of the integral of the normal distribution between $-\infty$ and the absolute value of the $t$-statistic].  But nowadays it is never necessary to do these calculations because hypothesis tests are a standard part of statistical software.  In R, the `t.test()` function performs a hypothesis test of no mean difference on two samples^[Note some slight differences with the previous manual calculations, which did not have the same degree of precision].
+
+```{r}
+t.test(perf4$sales, perf1$sales)
+```
+
+Because of the small p-value calculated by the test, it rejects the null hypothesis and returns the alternative hypothesis.  The accepted standard in the statistics community for rejection of a hypothesis is a p-value of less than 0.05.  This standard is associated with the term *statistically significant*.  Therefore we could say here that the two performance groups have a statistically significant difference in mean sales.  
+
+In practice, there are numerous levels of p-value that are of interest to an analyst.  While 0.05 is the most common standard in many disciplines, more stringent p-value standards of 0.01 and 0.001 are often used in situations where a high degree of certainty is desirable (for example some medical fields).  Similarly, a less stringent p-value standard of 0.1 can be of interest particularly when sample sizes are small and the analyst is satisfied with 'indications' from the data.  Many leading statisticians have argued - not without justification - that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data.  In particular, situations where data and methodology have been deliberately manipulated to achieve certain desired p-values - a process known as "p-hacking" - has been of increasing concern recently.
+
+### Testing for a non-zero correlation between two variables (t-test for correlation)
+
+Imagine that we are given a sample of data for two variables and we are asked if the variables are correlated in the overall population.  We can take a null hypothesis that the variables are not correlated, determine a t-statistic associated with a zero correlation and convert this to a p-value.  The t-statistic associated with correlation testing is often notated $t^*$ and is defined as 
+
+$$
+t^* = \frac{r\sqrt{n-2}}{1-r^2}
+$$
+$t^*$ can be converted to an associated p-value using a t-distribution in a similar way to how we compared population mean difference in the previous section^[In this case the t-distribution has $n-2$ degrees of freedom instead of the $n-1$ degrees of freedom t-distribution used in comparing mean differences].
+
+The `cor.test()` function in R performs a hypothesis test on the null hypothesis that two variables have zero correlation. We can use it to test if sales and customer rating are correlated in our `salespeople` dataset.
+
+```{r}
+## remove NAs from salespeople
+salespeople <- salespeople[complete.cases(salespeople), ]
+
+cor.test(salespeople$sales, salespeople$customer_rate)
+```
+
+We see the null hypothesis has been rejected and we can conclude that there is a significant correlation between sales and customer rating.
+
+### Testing for a difference in frequency distribution between different categories in a data set (Chi-square test)
+
+Imagine that we are asked if the performance category of each person in the `salespeople` data set has a relationship with their promotion likelihood.  We will test the null hypothesis that there is no difference in the distribution of promoted versus not promoted across the four performance categories.
+
+First we can produce a *contingency table* which is matrix containing counts of how many people were promoted or not promoted in each category.
+
+```{r}
+## create contingency table of promoted versus performance
+(contingency <- table(salespeople$promoted, salespeople$performance))
+```
+
+We can see by summing each row that for the total sample we can expect `r sum(contingency[2, ])` people to be promoted and `r sum(contingency[1, ])` to miss out on promotion.  We can use this ratio to compute an expected proportion in each performance category under the assumption that the distribution was exactly the same across all four categories.
+
+```{r}
+(expected_promoted <- (sum(contingency[2, ])/sum(contingency)) * colSums(contingency))
+(expected_notpromoted <- (sum(contingency[1, ])/sum(contingency)) * colSums(contingency))
+```
+
+Now we can compare our observed versus expected values using the metric:
+
+$$
+\frac{(\mathrm{observed} - \mathrm{expected})^2}{\mathrm{expected}}
+$$
+and add these all up to get a total, known as the $\chi^2$ statistic.
+
+```{r}
+notpromoted <- sum((expected_notpromoted - contingency[1, ])^2/expected_notpromoted)
+promoted <- sum((expected_promoted - contingency[2, ])^2/expected_promoted)
+(chi_sq_stat = notpromoted + promoted)
+```
+
+The $\chi^2$ statistic has an expected distribution that can be used to determine the p-value associated with this statistic.  The distribution depends on the number of rows and columns in the contingency table^[The chi-square distribution depends on the degrees of freedom.  This is calculated by subtracting one from the number of rows and from the number of columns and multiplying them together.  In this case we have 2 rows and 4 columns which calculates to 3 degrees of freedom].  In this case, a $\chi^2$ statistic of `r round(chi_sq_stat, 3)` is associated with a very low p-value, and so we can reject the null hypothesis and confirm the alternative hypothesis:  that there is a difference in the distribution of promoted/not promoted individuals between the four performance categories.
+
+The `chisq.test()` function in R performs a chi-squared test of independence on a contingency table and returns the $\chi^2$ statistic and associated p-value for the null hypothesis.
+
+```{r}
+chisq.test(contingency)
+
+```
+
+
+## Learning exercises
+
+### Discussion exercises
+
+Where relevant in these discussion exercises, let $X = x_1, x_2, ..., x_n$ and $Y = y_1, y_2, ..., y_m$ be samples of two random variables of length $n$ and $m$ respectively.
+
+1.  If the values of $X$ can only take the form 0 or 1, and if their mean is 0.25, how many of the values equal 0?
+2.  If $m = n$ and $X + Y$ is formed from the element-wise sum of $X$ and $Y$, show that the mean of X + Y is equal to the sum of the mean of X and the mean of Y.
+3.  For a scalar multiplier $a$, show that $\mathrm{Var}(aX) = a^2\mathrm{Var}(X)$.
+4.  Explain why the standard deviation of X is a more intuitive measure of the deviation in X than the variance.
+5.  Describe which two types of correlation you could use if X is an ordered ranking.
+6.  Describe the role of sample size and sampling frequency in the distribution of sampling means for a random variable.
+7.  Describe what a standard error is and how it relates to the probability density of a random variable statistic. 
+8.  If we conduct a t-test on the null hypothesis that $X$ and $Y$ are drawn from populations with the same mean, describe what a p-value of 0.01 means. 
+9.  **Extension:**  The sum of variance law states that $\mathrm{Var}(X + Y) = \mathrm{Var}(X) + \mathrm{Var}(Y)$.  Use this together with the identity from Exercise 3 to derive the formula for the standard error of the mean of X:
+
+$$
+SE = \frac{\sigma_X}{\sqrt{n}}
+$$
+
+10.  **Extension:**  The sum of variance law also states that $\mathrm{Var}(X - Y) = \mathrm{Var}(X) + \mathrm{Var}(Y)$.  In a similar way to Exercise 9, show that the standard error for the difference between the means of $X$ and $Y$ is 
+
+$$
+\sqrt{\frac{\sigma_{X}^2}{n} + \frac{\sigma_{Y}^2}{m}}
+$$
+
+### Data exercises
+
+For these exercises, download the charity donation dataset from https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/charity_donation.csv.  This dataset contains information on a sample of individuals who made donations to a nature charity.
+
+1.  Calculate the mean `total_donations` from the data set.
+2.  Calculate the sample variance for `total_donation` and convert this to a population variance.
+3.  Calculate the sample standard deviation for `total_donations` and verify that it is the same as the square root of the sample variance.
+4.  Calculate the sample correlation between `total_donations` and `time_donating`.  By using an appropriate hypothesis test, determine if these two variables are independent in the overall population.
+5.  Calculate the mean and the standard error of the mean for the first 20 entries of `total_donations`.
+6.  Calculate the mean and the standard error of the mean for the first 50 entries of `total_donations`.  Verify that the standard error is less than in Exercise 5.
+7.  By using an appropriate hypothesis test, determine if the mean age of those who made a recent donation is different from those who did not.
+8.  By using an appropriate hypothesis test, determine if there is a difference in whether or not a recent donation was made according to where people reside.
+9. **Extension:** By using an appropriate hypothesis test, determine if the age of those who have recently donated is at least 10 years older than those who have not recently donated in the population.
+10. **Extension:** By using an appropriate hypothesis test, determine if the average donation amount is at least ten dollars higher for those who recently donated versus those who did not.  Retest for 20 dollars higher.
+
