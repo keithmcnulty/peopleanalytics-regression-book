@@ -473,9 +473,9 @@ When first faced with an error that you can't understand, try not to get frustra
 
 *Messages* are pieces of information that may or may not be useful to you at a particular point in time.  Sometimes you will receive messages when you load a package from your library.  Sometimes messages will keep you up to date on the progress of a process that is taking a long time to execute.   
 
-## Exercises
+## Learning exercises
 
-### Discussion exercises
+### Discussion questions
 
 1.  Describe the following data types:  numeric, character, logical, factor.
 2.  Why is a vector known as a homogeneous data structure?

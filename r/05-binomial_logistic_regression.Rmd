@@ -43,7 +43,7 @@ ggplot2::ggplot() +
 
 ### Use cases for binomial logistic regression
 
-Binomial logistic regression can be used when the outcome of interest is binary or dichotomous in nature.  That is, it takes one of two values.  For example, one or zero, true or false, yes or no.  These classes are commonly described as 'positive' and 'negative' classes.
+Binomial logistic regression can be used when the outcome of interest is binary or dichotomous in nature.  That is, it takes one of two values.  For example, one or zero, true or false, yes or no.  These classes are commonly described as 'positive' and 'negative' classes.  There is an underlying assumption that the cumulative probability of the outcome takes a shape similar to a cumulative normal distribution.
 
 Here are some example questions that could be approached using binomial logistic regression:
 
@@ -467,7 +467,7 @@ plot(d, main= "")
 
 10. Describe the concept of model parsimony.  What measure is commonly used to determine the most parsimonious logistic regression model?
 
-### Data exercise
+### Data exercises
 
 A nature preservation charity has asked you to analyze some data to help them understand the features of those members of the public who donated in a given month.  The `charity_donation` data set can be found at https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/charity_donation.csv.  It contains the following data:
 

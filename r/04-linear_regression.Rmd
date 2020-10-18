@@ -523,13 +523,13 @@ mctest::imcdiag(newmodel, method = "VIF")
 Note that collinearity and multicollinearity only affect the coefficients of the variables impacted, and do not affect other variables or the overall statistics and fit of a model.  Therefore, if a model is being developed primarily to make predictions and there is little interest in using the model to explain a phenomenon, there may not be any need to address this issue at all.  However, in inferential modeling the accuracy of the coefficients is very important, and so testing of multicollinearity is essential.   In general, the best way to deal with collinear variables is to remove one of them from the model (usually the one that has the least significance in explaining the outcome). 
 
 
-## Extending multiple linear regression into non-linear contexts
+## Extending multiple linear regression
 
 We wrap up this chapter by introducing some simple extensions of linear regression, with a particular aim of trying to improve the overall fit of a model by relaxing the linear or additive assumptions.  It is rare for practitioners to extend linear regression models too greatly due to the negative impact this can have on interpretation, but simple extensions such as experimenting with interaction terms or quadratics are not uncommon.  If you have an appetite to explore this topic more fully, I recommend @rao.
 
 ### Interactions between input variables
 
-Recall that our model of student examination scores took each year's score as a separate input variable, and therefore we are making the assumption that the score obtained in each years acts independently and additively in predicting the Final score.  However, it is very possible that several input variables act together in relation to the outcome.  One way of modelling this is to include interaction terms in your model, which are new input variables formed as products of the original input variables.
+Recall that our model of student examination scores took each year's score as an independent input variable, and therefore we are making the assumption that the score obtained in each year acts independently and additively in predicting the Final score.  However, it is very possible that several input variables act together in relation to the outcome.  One way of modelling this is to include interaction terms in your model, which are new input variables formed as products of the original input variables.
 
 In our students examination data in `ugtests`, we could consider extending our model to not only include the individual years examinations, but also to include the impact of combined changes across multiple years.  For example, we could combine the impact of `Yr2` and `Yr3` examinations by multiplying them together in our model.
 
@@ -561,7 +561,7 @@ When running models with interaction terms, you can expect to see a hierarchy in
 
 ### Quadratic and higher-order polynomial terms
 
-Specific non linear models can be trialled using linear regression technology.  For example, if the underlying relationship was throught to be quadratic on a given input variable $x$, then the formula would take the form $y = \beta_0 + \beta_1x + \beta_2x^2$, and this can easily be put into a linear model formula.  
+In many situations the real underlying relationship between the outcome and the inputs may be non-linear.  For example, if the underlying relationship was throught to be quadratic on a given input variable $x$, then the formula would take the form $y = \beta_0 + \beta_1x + \beta_2x^2$.  We can easily trial polynomial terms using our linear model technology.
 
 For example, recall that we removed `Yr1` data from our model because it was not significant when modeled linearly.   We could test if a quadratic model on `Yr1` helps improve our fit^[Note the use of `I()` in the fomula notation here.  This is because the symbol `^` has a different meaning inside a formula and we use `I()` to *isolate* what is inside the parentheses to ensure that it is interpreted iterally as 'the square of `Yr1`']:
 
@@ -634,7 +634,4 @@ Run and interpret the model.  For convenience, and to avoid long formula strings
 11. Experiment with improving the model fit through possible interaction terms or non-linear extensions.
 12. Comment on your results.  Did anything in the results surprise you?  If so, what might be possible explanations for this.
 13. Explain why you would or would not be comfortable using a model like this in a predictive setting - for example to help employers determine the right pay for employees.
-
-
-
 

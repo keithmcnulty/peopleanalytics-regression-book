@@ -339,7 +339,17 @@ ggplot(data = data.frame(x = c(-5, 5)), aes(x)) +
 
 The red dashed lines in this diagram represent the 95% confidence interval around the mean difference of our two samples.  The 'tails' of the curve outside of these two lines each represent a maximum of 0.025 probability that zero is the population mean difference.  So we can see that the position of the blue line can correspond to a *maximum probability* that the population mean difference is zero.  We call this the *p-value* of the hypothesis test^[We call this type of hypothesis test a *two tailed* test, because the tested population mean can be either higher or lower than the sample mean, thus it can appear in any of the two tails for the null hypothesis to be rejected.  *One-tailed* tests are used when you are testing for an alternative hypothesis that the difference is specifically "less than zero" or "greater than zero".  In the `t.test()` function in R, you can specify this in the arguments].
 
-The p-value can be derived by calculating the position of zero as a proportion of the standard error of the sample mean difference (called the $t$-statistic) and then applying a conversion function^[In R, this function uses `pnorm()` to calculate the value of the integral of the normal distribution between $-\infty$ and the absolute value of the $t$-statistic].  But nowadays it is never necessary to do these calculations because hypothesis tests are a standard part of statistical software.  In R, the `t.test()` function performs a hypothesis test of no mean difference on two samples^[Note some slight differences with the previous manual calculations, which did not have the same degree of precision].
+The p-value can be derived by calculating the position of zero as a proportion of the standard error of the sample mean difference (called the $t$-statistic) and then applying a conversion function, as follows^[In R, this function uses `pnorm()` to calculate the value of the integral of the normal distribution between $-\infty$ and the absolute value of the $t$-statistic].    
+
+```{r}
+# calculate t-statistic 
+t <- diff/se
+
+# convert to p-value
+(p <- (1 - pnorm(abs(t), 0, 1))*2)
+```
+
+This confirms an extremely low p-value.  Nowadays, it is never necessary to do these calculations ourselves because hypothesis tests are a standard part of statistical software.  In R, the `t.test()` function performs a hypothesis test of no mean difference on two samples^[Note some slight differences with the previous manual calculations, which did not have the same degree of precision].
 
 ```{r}
 t.test(perf4$sales, perf1$sales)
@@ -412,7 +422,7 @@ chisq.test(contingency)
 
 ## Learning exercises
 
-### Discussion exercises
+### Discussion questions
 
 Where relevant in these discussion exercises, let $X = x_1, x_2, ..., x_n$ and $Y = y_1, y_2, ..., y_m$ be samples of two random variables of length $n$ and $m$ respectively.
 

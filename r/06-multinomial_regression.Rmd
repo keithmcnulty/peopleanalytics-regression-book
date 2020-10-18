@@ -1,0 +1,37 @@
+# Multinomial Logistic Regression for Nominal Category Outcomes
+
+In the previous chapter we looked at how to model a binary or dichotomous outcome using a logistic function.  In this chapter we look at how to extend this to the case when the outcome has a number of categories that do not have any order to them.  When an outcome has this nominal categorical form, it does not have a sense of direction.  There is no 'better' or 'worse', no 'higher' or 'lower', there is only 'different'.
+
+## When to use it
+
+### Intuition for multinomial logistic regression 
+
+In fact, a dichotomous outcome like we studied in the previous chapter is already nominal outcome with two categories, so in principle we already have the basic technology with which to study this problem if the number of categories increases.  That said, the way we approach the problem can differ according to the types of inferences we wish to make.  
+
+If we only wish to make inferences about pairwise comparisons of the categories - what drives whether an individual is in Category A versus Category B, or Category A versus Category C - then we have the option of running binomial logistic regression models just on the pairwise data, answering each question separately.  In this case we can refine our model differently for each comparison, eliminating variables that are not significant in that particular comparison.  This could potentially lead to models being defined slightly differently for different pairs of outcomes.
+
+If we wish, however, to make a more abstracted conclusion about what variables influence decision making across all the categories, then we need to take a more holistic approach.  While this would still be founded on pairwise binomial models, we would need to make the decisions on refining the model and interpreting the coefficients with all categories in mind.
+
+In this chapter we will briefly look at the pairwise approach (which is effectively a repetition of work done in the previous chapter) before focusing moe intently on how we construct models and make inferences across all the categories.  
+
+### Use cases for multinomial logistic regression
+
+Multinomial logistic regression is appropriate for any situation where a finite number of outcome categories are being modeled and where those outcome categories have no order.  An underlying assumption is the independence of irrelevant alternatives - one way of stating this is that adding an outcome option is expected to reduce the odds of the other options by an equal amount.  In cases where this assumption is violated, hierarchical or nested model alternatives are necessary.
+
+Examples of typical situations that might be modeled by multinomial logistic regression include:
+
+1.  Understanding voting choice in elections with multiple candidates
+2.  Understanding choice of career options by students
+3.  Understanding choice of benefit options by employees
+
+### Walkthrough example
+
+You are an analyst at a large technology company.  The company recently introduced a new healthcare provider for its employees.  At the beginning of the year the employees had to choose one of three different healthcare plan products from this provider to best suit their needs.  You have been asked to determine which factors influenced the choice in product.
+
+The data set can be found here and consists of:
+
+* `age`: The age of the individual when they made the choice
+* `gender`:  The gender of the individual as stated when theu made the choice
+* `children`:  The number of child dependents the individual had at the time of the choice
+* `position_level`:  Position level in the company at the time they made the choice, where 1 is is the lowest and 5 is the highest
+* `tenure`: Full years employed by the company at the time they made the choice.
