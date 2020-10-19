@@ -287,7 +287,7 @@ cat(paste0('[', lower_bound, ', ', upper_bound, ']'))
 
 Observations about the distribution of statistics on random variables allow us to construct tests for hypotheses of statistical difference or similarity.  Such hypothesis testing is useful in itself for simple bivariate analysis in practice settings, but it will be particularly critical in later chapters in determining whether models are useful or not.  
 
-### Testing for a difference in sample means (Student's t-test)
+### Testing for a difference in sample means (Student's t-test) {#means-sig}
 
 Imagine that we are asked if the sales of low performers are the same as the sales of high performers in our `salespeople` data set.  Let's take two subsets of our data for those with a performance ratiing of 1 and those with a performance rating of 4, and calculate the difference in mean sales.
 

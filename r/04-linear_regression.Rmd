@@ -43,9 +43,9 @@ If your outcome of interest is on a binary or categorical scale (for example, 'Y
 
 We will use walkthrough examples throughout most chapters of this book to maintain a focus on a real problem as we go through the essential theory and methodology, and to demonstrate the coding of the approach in R.  The data sets for all walkthrough examples will be downloadable via the link provided.  
 
-You are working as an analyst for the Biology Department of a large academic institution.  Due to the outbreak of a major pandemic, the institution is not able to hold final examinations for students in the last year of their 4 year long undergraduate degree program.  The Department has decided to grade students based on their performance in the end of year examinations in their three previous years.
+You are working as an analyst for the Biology Department of a large academic institution, which offers a four year Undergraduate degree program.  The academic leaders of the department are interested in understanding how student performance in the final year examination of the degree program relates to performance in the prior three years. 
 
-To help with this, you have been provided with data for last year's individuals graduating from the degree program, and you have been asked to create a model to explain each individual's final examination score based on their examination scores for the first three years of their program.
+To help with this, you have been provided with data for 975 individuals graduating in the past three years, and you have been asked to create a model to explain each individual's final examination score based on their examination scores for the first three years of their program.  The Year 1 examination scores are awarded on a scale of 0-100, Years 2 and 3 on a scale of 0-200, and the Final year is awarded on a scale of 0-300.
 
 The dataset is [here](https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/ugtests.csv), and we will load it into our session and take a brief look at it.
 
@@ -56,17 +56,20 @@ ugtests <- read.csv(url)
 
 # look at the first few rows of data
 head(ugtests)
-
 ```
 
-The data looks as expected, with test scores for four years all read in as numeric data types, but of course this is only a few rows.  We need a quick statistical overview of the data.
+The data looks as expected, with test scores for four years all read in as numeric data types, but of course this is only a few rows.  We need a quick statistical and structural overview of the data.
 
 ```{r}
+# view structure
+str(ugtests)
+
+# view statistical summary
 summary(ugtests)
 
 ```
 
-We can see that the tests have different scales in Years 3 and 4, and judging by the means and upper quartiles, students seem to have found earlier exams more challenging.  We can also be assured that there is no missing data, as these would have been displayed as `NA` counts in our summary if they existed.
+We can see that the results do seem to have different scales in the different years as we have been informed, and judging by the means, students seem to have found Year 2 exams more challenging.  We can also be assured that there is no missing data, as these would have been displayed as `NA` counts in our summary if they existed.
 
 We can also plot our four years of test scores pairwise to see any initial relationships of interest.
 
@@ -79,12 +82,12 @@ GGally::ggpairs(ugtests)
 
 ```
 
-In the diagonal we can see the distributions of the data in each column.  We observe a relatively normal looking distribution of our outcome data (`Final`), with more skewed distributions of data for previous years.  We can see scatter plots and pairwise correlation statistics off the diagonal.  For example, we see a particularly strong correlation between `Yr3` and `Final` test scores, along with some other notable correlations elsewhere.
+In the diagonal we can see the distributions of the data in each column.  We observe relatively normal looking distributions in each year.  We can see scatter plots and pairwise correlation statistics off the diagonal.  For example, we see a particularly strong correlation between `Yr3` and `Final` test scores, a moderate correlation between `Yr2` and `Final` and relative independence elsewhere.
 
 
 ## Simple Linear Regression {#simple-ols}
 
-In order to visualize our approach and improve our intuition, we will start with *simple* linear regression, which is the case where there is only a single input variable and output variable.
+In order to visualize our approach and improve our intuition, we will start with *simple* linear regression, which is the case where there is only a single input variable and outcome variable.
 
 ### Linear relationship between a single input and an outcome {#linear-single}
 
@@ -93,27 +96,26 @@ Let our input variable be $x$ and our outcome variable be $y$.  Recalling the eq
 $$y = mx + c$$
 where $m$ represents the slope or gradient of the line, and $c$ represents the point at which the line intercepts the $y$ axis.  When using a straight line to model a relationship in the data, we call $c$ and $m$ the *coefficients* of the model.
 
-Now let's assume that we have a sample of six datapoints with which to estimate our linear relationship.  Let's take the first six values of `Yr3` and `Final` in our `ugtests` dataset:
+Now let's assume that we have a sample of ten datapoints with which to estimate our linear relationship.  Let's take the first ten values of `Yr3` and `Final` in our `ugtests` dataset:
 
 ```{r}
-(d <- head(ugtests[ , c("Yr3", "Final")]))
+(d <- head(ugtests[ , c("Yr3", "Final")], 10))
 ```
 
 We can do a simple plot of these data points as in Figure \@ref(fig:sample-plot):
 
-```{r sample-plot, fig.cap = "Basic scatter plot of six datapoints", fig.align = "center", echo = FALSE}
-d <- head(ugtests[ , c("Yr3", "Final")])
+```{r sample-plot, fig.cap = "Basic scatter plot of ten datapoints", fig.align = "center", echo = FALSE}
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_point()
 ```
 
-Intuitively, we can imagine a line passing through these points that 'fits' the general pattern.  For example, taking $m = 2$ and $c = 0$, the resulting line $y = 2x$ could  fit between the points we are given, as displayed in Figure \@ref(fig:sample-plot-fit):
+Intuitively, we can imagine a line passing through these points that 'fits' the general pattern.  For example, taking $m = 1.2$ and $c = 5$, the resulting line $y = 1.2x + 5$ could  fit between the points we are given, as displayed in Figure \@ref(fig:sample-plot-fit):
 
-``` {r sample-plot-fit, fig.cap = "Fitting $y=2x$ to our six datapoints", fig.align = "center", echo = FALSE}
+``` {r sample-plot-fit, fig.cap = "Fitting $y=1.2x + 5$ to our ten datapoints", fig.align = "center", echo = FALSE}
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) + 
   ggplot2::geom_point() +
-  ggplot2::geom_function(fun = function(x) 2*x, colour = "red", linetype = "dashed") +
-  ggplot2::annotate("text", x = 165, y = 300, label = TeX("$y = 2x$"), colour = "red")
+  ggplot2::geom_function(fun = function(x) {1.2*x + 5}, colour = "red", linetype = "dashed") +
+  ggplot2::annotate("text", x = 140, y = 160, label = "y = 1.2x + 5", colour = "red")
 
 ```
 
@@ -121,20 +123,24 @@ This looks like an approximation of the relationship, but how do we know that it
 
 ### Minimising the error {#minimising-error-ols}
 
-For each of our data points, we can determine an error in the fitted model by calculating the difference between the real value of $y$ and the one predicted by our model.  For example, at $x = 18$, our modeled value of y is 36, but the real value is 63, producing an error of 27.  These errors are known as the *residuals* of our model. The residuals for the six points in our dataset are illustrated by the solid red line segments in Figure \@ref(fig:sample-plot-residuals).  It looks like at least one of our residuals is pretty large.
+For each of our data points, we can determine an error in the fitted model by calculating the difference between the real value of $y$ and the one predicted by our model.  For example, at $x = 52$, our modeled value of y is `r print(1.2*52 + 5)`, but the real value is 93, producing an error of `r print(93 - 1.2*52 - 5)`.  These errors are known as the *residuals* of our model. The residuals for the ten points in our dataset are illustrated by the solid red line segments in Figure \@ref(fig:sample-plot-residuals).  It looks like at least one of our residuals is pretty large.
 
 
-``` {r sample-plot-residuals, fig.cap = "Residuals of $y=2x$ for our six datapoints", fig.align = "center", echo = FALSE}
+``` {r sample-plot-residuals, fig.cap = "Residuals of $y=1.2x + 5$ for our ten datapoints", fig.align = "center", echo = FALSE}
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) + 
   ggplot2::geom_point() +
-  ggplot2::geom_function(fun = function(x) 2*x, colour = "red", linetype = "dashed") +
-  ggplot2::annotate("text", x = 165, y = 300, label = TeX("$y = 2x$"), colour = "red") +
-  ggplot2::geom_segment(aes(x = Yr3[1], y = 2*Yr3[1], xend = Yr3[1], yend = Final[1]), color = "red") +
-  ggplot2::geom_segment(aes(x = Yr3[2], y = 2*Yr3[2], xend = Yr3[2], yend = Final[2]), color = "red") +
-  ggplot2::geom_segment(aes(x = Yr3[3], y = 2*Yr3[3], xend = Yr3[3], yend = Final[3]), color = "red") +
-  ggplot2::geom_segment(aes(x = Yr3[4], y = 2*Yr3[4], xend = Yr3[4], yend = Final[4]), color = "red") +
-  ggplot2::geom_segment(aes(x = Yr3[5], y = 2*Yr3[5], xend = Yr3[5], yend = Final[5]), color = "red") +
-  ggplot2::geom_segment(aes(x = Yr3[6], y = 2*Yr3[6], xend = Yr3[6], yend = Final[6]), color = "red")
+  ggplot2::geom_function(fun = function(x) {1.2*x + 5}, colour = "red", linetype = "dashed") +
+  ggplot2::annotate("text", x = 137, y = 152, label = "y = 1.2x + 5", colour = "red") +
+  ggplot2::geom_segment(aes(x = Yr3[1], y = 1.2*Yr3[1] + 5, xend = Yr3[1], yend = Final[1]), color = "red") +
+  ggplot2::geom_segment(aes(x = Yr3[2], y = 1.2*Yr3[2] + 5, xend = Yr3[2], yend = Final[2]), color = "red") +
+  ggplot2::geom_segment(aes(x = Yr3[3], y = 1.2*Yr3[3] + 5, xend = Yr3[3], yend = Final[3]), color = "red") +
+  ggplot2::geom_segment(aes(x = Yr3[4], y = 1.2*Yr3[4] + 5, xend = Yr3[4], yend = Final[4]), color = "red") +
+  ggplot2::geom_segment(aes(x = Yr3[5], y = 1.2*Yr3[5] + 5, xend = Yr3[5], yend = Final[5]), color = "red") +
+  ggplot2::geom_segment(aes(x = Yr3[6], y = 1.2*Yr3[6] + 5, xend = Yr3[6], yend = Final[6]), color = "red") +
+  ggplot2::geom_segment(aes(x = Yr3[7], y = 1.2*Yr3[7] + 5, xend = Yr3[7], yend = Final[7]), color = "red") +
+  ggplot2::geom_segment(aes(x = Yr3[8], y = 1.2*Yr3[8] + 5, xend = Yr3[8], yend = Final[8]), color = "red") +
+  ggplot2::geom_segment(aes(x = Yr3[9], y = 1.2*Yr3[9] + 5, xend = Yr3[9], yend = Final[9]), color = "red") +
+  ggplot2::geom_segment(aes(x = Yr3[10], y = 1.2*Yr3[10] + 5, xend = Yr3[10], yend = Final[10]), color = "red")
 ```
 
 The total error of our model, which we want to minimize could be defined in a number of ways:
@@ -143,7 +149,7 @@ The total error of our model, which we want to minimize could be defined in a nu
 2.  The sum of the *absolute values* of our residuals (so that negative values are converted to positive values)
 3.  The sum of the squares of our residuals (note that all squares are positive)
 
-For a number of reasons (not least that fact that at the time this method was developed it was one of the easiest to calculate manually), the most common approach is number 3, which is why we call our regression model *Ordinary Least Squares* regression.  Some simple algebra and calculus can help us determine the equation of the line that generates the least squared residual error.  You can see more of the mathematics [here](https://are.berkeley.edu/courses/EEP118/current/derive_ols.pdf), but let's look at how this works in practice.  
+For a number of reasons (not least that fact that at the time this method was developed it was one of the easiest to calculate manually), the most common approach is number 3, which is why we call our regression model *Ordinary Least Squares* regression.  Some algebra and calculus can help us determine the equation of the line that generates the least squared residual error.  You can see more of the mathematics [here](https://are.berkeley.edu/courses/EEP118/current/derive_ols.pdf), but let's look at how this works in practice.  
 
 ### Determining the best fit {#best-fit-simple-ols}
 
@@ -167,25 +173,29 @@ So we can already see some terms we are familiar with.  For example, we can look
 model$coefficients
 
 ```
-This tells us that that our best fit model - the one that minimises the sum of the squares of the residuals -  is $y = 0.63x + 78.3$.  In other words, our `Final` test score can be expected to take a value of 78.3 even with zero score in the `Yr3` input, and that every additional point scored in `Yr3`  will increase the `Final` score by 0.63.
+This tells us that that our best fit model - the one that minimises the sum of the squares of the residuals -  is $y = 1.14x + 16.63$.  In other words, our `Final` test score can be expected to take a value of 16.63 even with zero score in the `Yr3` input, and that every additional point scored in `Yr3`  will increase the `Final` score by 1.14.
 
 ### Measuring the fit of the model
 
 We have calculated a model which minimizes the sum of squares residual error for the sample of data that we have, but we don't really have a sense of how 'good' the model is.  How do we tell how well our model uses the input data to explain the outcome?   This is an important question to answer because you would not want to propose a model that does not do a good job of explaining your outcome, and you also may need to compare your model to other alternatives, which will require some sort of benchmark metric.
 
-One natural way to benchmark how good a job your model does of explaining the outcome is to compare it to a situation where you have no input and no model at all.  In this situation, all you have is your outcome values which can be considered a random variable with a mean and a variance.  In the case of our six datapoints, we have six values of `Final` with a mean of `r round(mean(d$Final), 2)`.  We can consider the horizontal line representing the mean of $y$ as our 'random model', and we can calculate the residuals around the mean.  This can be seen in Figure \@ref(fig:model-mean).
+One natural way to benchmark how good a job your model does of explaining the outcome is to compare it to a situation where you have no input and no model at all.  In this situation, all you have is your outcome values which can be considered a random variable with a mean and a variance.  In the case of our ten datapoints, we have ten values of `Final` with a mean of `r round(mean(d$Final), 2)`.  We can consider the horizontal line representing the mean of $y$ as our 'random model', and we can calculate the residuals around the mean.  This can be seen in Figure \@ref(fig:model-mean).
 
-```{r model-mean, fig.cap = "Residuals of our six datapoints around their mean value", fig.align = "center", echo = FALSE}
+```{r model-mean, fig.cap = "Residuals of our ten datapoints around their mean value", fig.align = "center", echo = FALSE}
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_point() +
   ggplot2::geom_function(fun = function(x) mean(d$Final), color = "blue", linetype = "dashed") +
-  ggplot2::annotate("text", x = 180, y = 120, label = TeX("$y = 123.17$"), colour = "blue") +
-  ggplot2::geom_segment(aes(x = Yr3[1], y = round(mean(d$Final), 2), xend = Yr3[1], yend = Final[1]), color = "blue") +
-  ggplot2::geom_segment(aes(x = Yr3[2], y = round(mean(d$Final), 2), xend = Yr3[2], yend = Final[2]), color = "blue") +
-  ggplot2::geom_segment(aes(x = Yr3[3], y = round(mean(d$Final), 2), xend = Yr3[3], yend = Final[3]), color = "blue") +
-  ggplot2::geom_segment(aes(x = Yr3[4], y = round(mean(d$Final), 2), xend = Yr3[4], yend = Final[4]), color = "blue") +
-  ggplot2::geom_segment(aes(x = Yr3[5], y = round(mean(d$Final), 2), xend = Yr3[5], yend = Final[5]), color = "blue") +
-  ggplot2::geom_segment(aes(x = Yr3[6], y = round(mean(d$Final), 2), xend = Yr3[6], yend = Final[6]), color = "blue")
+  ggplot2::annotate("text", x = 65, y = 137, label = "y = 133.70", colour = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[1], y = round(mean(Final), 2), xend = Yr3[1], yend = Final[1]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[2], y = round(mean(Final), 2), xend = Yr3[2], yend = Final[2]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[3], y = round(mean(Final), 2), xend = Yr3[3], yend = Final[3]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[4], y = round(mean(Final), 2), xend = Yr3[4], yend = Final[4]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[5], y = round(mean(Final), 2), xend = Yr3[5], yend = Final[5]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[6], y = round(mean(Final), 2), xend = Yr3[6], yend = Final[6]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[7], y = round(mean(Final), 2), xend = Yr3[7], yend = Final[7]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[8], y = round(mean(Final), 2), xend = Yr3[8], yend = Final[8]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[9], y = round(mean(Final), 2), xend = Yr3[9], yend = Final[9]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[10], y = round(mean(Final), 2), xend = Yr3[10], yend = Final[10]), color = "blue")
 
 ```
 
@@ -197,30 +207,38 @@ Now let's overlay our fitted model onto this random model in Figure \@ref(fig:mo
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_point() +
   ggplot2::geom_function(fun = function(x) mean(d$Final), color = "blue", linetype = "dashed") +
-  ggplot2::annotate("text", x = 180, y = 110, label = TeX("$y = 123.17$"), colour = "blue") +
-  ggplot2::geom_segment(aes(x = Yr3[1], y = round(mean(d$Final), 2), xend = Yr3[1], yend = Final[1]), color = "blue") +
-  ggplot2::geom_segment(aes(x = Yr3[2], y = round(mean(d$Final), 2), xend = Yr3[2], yend = Final[2]), color = "blue") +
-  ggplot2::geom_segment(aes(x = Yr3[3], y = round(mean(d$Final), 2), xend = Yr3[3], yend = Final[3]), color = "blue") +
-  ggplot2::geom_segment(aes(x = Yr3[4], y = round(mean(d$Final), 2), xend = Yr3[4], yend = Final[4]), color = "blue") +
-  ggplot2::geom_segment(aes(x = Yr3[5], y = round(mean(d$Final), 2), xend = Yr3[5], yend = Final[5]), color = "blue") +
-  ggplot2::geom_segment(aes(x = Yr3[6], y = round(mean(d$Final), 2), xend = Yr3[6], yend = Final[6]), color = "blue") +
+  ggplot2::annotate("text", x = 65, y = 137, label = "y = 133.70", colour = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[1], y = round(mean(Final), 2), xend = Yr3[1], yend = Final[1]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[2], y = round(mean(Final), 2), xend = Yr3[2], yend = Final[2]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[3], y = round(mean(Final), 2), xend = Yr3[3], yend = Final[3]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[4], y = round(mean(Final), 2), xend = Yr3[4], yend = Final[4]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[5], y = round(mean(Final), 2), xend = Yr3[5], yend = Final[5]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[6], y = round(mean(Final), 2), xend = Yr3[6], yend = Final[6]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[7], y = round(mean(Final), 2), xend = Yr3[7], yend = Final[7]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[8], y = round(mean(Final), 2), xend = Yr3[8], yend = Final[8]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[9], y = round(mean(Final), 2), xend = Yr3[9], yend = Final[9]), color = "blue") +
+  ggplot2::geom_segment(aes(x = Yr3[10], y = round(mean(Final), 2), xend = Yr3[10], yend = Final[10]), color = "blue") +
   ggplot2::geom_function(fun = function(x) {model$coefficients[2]*x + model$coefficients[1]}, colour = "red", 
                          linetype = "dashed") +
-  ggplot2::annotate("text", x = 160, y = 155, label = TeX("$y = 0.63x + 78.3$"), colour = "red") +
+  ggplot2::annotate("text", x = 100, y = 110, label = "y = 1.14x + 16.63", colour = "red") +
   ggplot2::geom_segment(aes(x = Yr3[1], y = model$fitted.values[1], xend = Yr3[1], yend = Final[1]), color = "red") +
   ggplot2::geom_segment(aes(x = Yr3[2], y = model$fitted.values[2], xend = Yr3[2], yend = Final[2]), color = "red") +
   ggplot2::geom_segment(aes(x = Yr3[3], y = model$fitted.values[3], xend = Yr3[3], yend = Final[3]), color = "red") +
   ggplot2::geom_segment(aes(x = Yr3[4], y = model$fitted.values[4], xend = Yr3[4], yend = Final[4]), color = "red") +
   ggplot2::geom_segment(aes(x = Yr3[5], y = model$fitted.values[5], xend = Yr3[5], yend = Final[5]), color = "red") +
-  ggplot2::geom_segment(aes(x = Yr3[6], y = model$fitted.values[6], xend = Yr3[6], yend = Final[6]), color = "red")
+  ggplot2::geom_segment(aes(x = Yr3[6], y = model$fitted.values[6], xend = Yr3[6], yend = Final[6]), color = "red") +
+  ggplot2::geom_segment(aes(x = Yr3[7], y = model$fitted.values[7], xend = Yr3[7], yend = Final[7]), color = "red") +
+  ggplot2::geom_segment(aes(x = Yr3[8], y = model$fitted.values[8], xend = Yr3[8], yend = Final[8]), color = "red") +
+  ggplot2::geom_segment(aes(x = Yr3[9], y = model$fitted.values[9], xend = Yr3[9], yend = Final[9]), color = "red") +
+  ggplot2::geom_segment(aes(x = Yr3[10], y = model$fitted.values[10], xend = Yr3[10], yend = Final[10]), color = "red")
 
 ```
 
-So we seem to have reduced the variance from the random model by fitting our new model.  If we average the square of our residuals for the fitted model, we obtain the mean sum of squares error of our fitted model, which calculates to `r round(sum(model$residuals^2)/6, 2)`.
+So for most of our observations (though not all) we seem to have reduced the 'distance' from the random model by fitting our new model.  If we average the square of our residuals for the fitted model, we obtain the mean sum of squares error of our fitted model, which calculates to `r round(sum(model$residuals^2)/6, 2)`.
 
 Therefore before we fit our model, we have an average error of `r round((5/6)*var(d$Final), 2)`, and after we fit it, we have an average error of `r round(sum(model$residuals^2)/6, 2)`.  So we have reduced the average error of our model by `r round((5/6)*var(d$Final), 2) - round(sum(model$residuals^2)/6, 2)` or, expressed as a proportion, by `r round((round((5/6)*var(d$Final), 2) - round(sum(model$residuals^2)/6, 2))/((5/6)*var(d$Final)), 2)`.  In other words, we can say that our model explains `r  round(((5/6)*var(d$Final) - sum(model$residuals^2)/6)/((5/6)*var(d$Final)), 2)` (or `r  round(((5/6)*var(d$Final) - sum(model$residuals^2)/6)/((5/6)*var(d$Final)), 2) * 100`%) of the variance of our outcome.  
 
-This metric is known as the $R^2$ of our model and is the primary metric used in measuring the fit of a linear regression model^[As a side note, in a simple regression model like this, where there is only one input variable, we have the simple identity $R^2 = r^2$, where $r$ is the correlation between the input and outcome (for our small set of six datapoints here, the correlation is `r round(cor(d$Yr3, d$Final), 3)`)]. 
+This metric is known as the $R^2$ of our model and is the primary metric used in measuring the fit of a linear regression model^[As a side note, in a simple regression model like this, where there is only one input variable, we have the simple identity $R^2 = r^2$, where $r$ is the correlation between the input and outcome (for our small set of ten datapoints here, the correlation is `r round(cor(d$Yr3, d$Final), 3)`)]. 
 
 
 ## Multiple linear regression {#multiple-linear-regression}
@@ -327,7 +345,7 @@ Be careful not to confuse model confidence with $R^2$.  Depending on your sample
 
 ### Making predictions from your model
 
-In this case we should already be quite happy with the overall fit and confidence level of our linear regression model, and we may now want to use it to predict the Final test scores of our new students who have been affected by the pandemic. While the book focuses on inferential rather than predictive analytics, we briefly touch here on the mechanics of generating predictions from models. As you might imagine, once the model has been fitted, prediction is a relatively straightforward process.  We feed in the `Yr2` and `Yr3` examination scores into our fitted model, and it applies the coefficients to calculate the predicted outcome.  Let's look at three fictitious students, and create a dataframe with their scores to input into the model.
+While the book focuses on inferential rather than predictive analytics, we briefly touch here on the mechanics of generating predictions from models. As you might imagine, once the model has been fitted, prediction is a relatively straightforward process.  We feed in the `Yr2` and `Yr3` examination scores into our fitted model, and it applies the coefficients to calculate the predicted outcome.  Let's look at three fictitious students, and create a dataframe with their scores to input into the model.
 
 ```{r}
 (new_students <- data.frame(
@@ -434,9 +452,9 @@ It is worth a moment to consider how to interpret coefficients of dummy variable
 
 This highlights the importance of appropriate interpretation of coefficients, and in particular the proper understanding of units.  It will be common to see much larger coefficients for dummy variables in regression models, because they represent a binary 'all' or 'nothing' variable in the model.  The coefficient for, say, manufacturing cost, would be much smaller because a unit in this case is a dollar of manufacturing spend, on a scale of many thousands of potential dollars in spend.  Care should be taken not to 'rank' coefficients by their value.  Higher coefficients in and of themselves do not imply greater importance.
 
-## Important watchouts in linear regression
+## Testing your model assumptions
 
-All modeling techniques have underlying assumptions about the data that they model, and can generate inaccurate results when those assumptions do not hold true.  Conscientious analysts will verify that these assumptions are satisfied before finalizing their modeling efforts.  In this section we will outline some common 'watchouts' when running linear regression models.
+All modeling techniques have underlying assumptions about the data that they model, and can generate inaccurate results when those assumptions do not hold true.  Conscientious analysts will verify that these assumptions are satisfied before finalizing their modeling efforts.  In this section we will outline some common diagnostics of model assumptions when running linear regression models.
 
 ### Assumption of linearity and additivity
 
@@ -486,7 +504,7 @@ Yr3 <- ugtests$Yr3
 plot(Yr3, residuals)
 ```
 
-Both plots show a pretty consistent range of values between the left and right sides of the plots which reassures us that we have homoscedacity.
+Both plots show a pretty consistent range of values which reassures us that we have homoscedacity.
 
 ### Assumption of normally distributed errors
 
@@ -534,11 +552,22 @@ Recall that our model of student examination scores took each year's score as an
 In our students examination data in `ugtests`, we could consider extending our model to not only include the individual years examinations, but also to include the impact of combined changes across multiple years.  For example, we could combine the impact of `Yr2` and `Yr3` examinations by multiplying them together in our model.
 
 ```{r}
-interaction_model <- lm(data = ugtests, formula = Final ~ Yr2 + Yr2*Yr3)
+interaction_model <- lm(data = ugtests, formula = Final ~ Yr2 + Yr3 + Yr2*Yr3)
 summary(interaction_model)
 ```
 
-We see that introducing this interaction term has improved our model, and that the interaction term is significant, so we conclude that in addition to a significant effect of the `Yr2` an `Yr3` scores, there is an additional significant effect from their interaction.  Visualizing this, we can see in Interactive Figure \@ref(fig:non-lin-reg-3d) that this non-linear term introduces a curvature to our fitted surface that aligns it more closely with the observations in our data set. 
+We see that introducing this interaction term has improved the fit of our model from `r round(newmodel_summary$r.squared, 2)` to `r round(summary(interaction_model)$r.squared, 2)`, and that the interaction term is significant, so we conclude that in addition to a significant effect of the `Yr2` and `Yr3` scores, there is an additional significant effect from their interaction `Yr2*Yr3`. Let's take a moment to understand how to interpret this, since we note that some of the coefficients are now negative.
+
+Our model now includes two input variables and their interaction, so it can be written as 
+
+$$
+\begin{align*}
+\mathrm{Final} &= \beta_0 + \beta_1\mathrm{Yr3} + \beta_2\mathrm{Yr2} + \beta_3\mathrm{Yr3}\mathrm{Yr2} \\
+&= \beta_0 + (\beta_1 + \beta_3\mathrm{Yr2})\mathrm{Yr3} + \beta_2\mathrm{Yr2} \\
+&= \beta_0 + \gamma\mathrm{Yr3} + \beta_2\mathrm{Yr2}
+\end{align*}
+$$
+where $\gamma = \beta_1 + \beta_3\mathrm{Yr2}$.  Therefore our model has coefficients which are not constant, but change with the values of the input variables.  We can conclude that the effect of an extra point in the examination in Year 3 will be different depending on how the student performed in Year 2.  Visualizing this, we can see in Interactive Figure \@ref(fig:non-lin-reg-3d) that this non-constant term introduces a curvature to our fitted surface that aligns it a little more closely with the observations in our data set. 
 
 ```{r non-lin-reg-3d, fig.cap = "3D Visualization of the fitted `interaction_model` against the `ugtests` data", fig.align="center", echo = FALSE}
 library(plotly)
@@ -555,7 +584,19 @@ plot_ly(data = ugtests) %>%
 
 ```
 
-In theory, an analyst could explore any combination of interactions of two or more variables.  However, consider the impact on interpretability of modeling complex combinations of interactions.  As always, there is a trade-off between intepretability and accuracy.  In the case of the model above, now with a near perfect fit, there would likely be no further benefit to exploring additional interaction terms, if those did exist.
+By examining the shape of this curved plane, we can observe that the model considers *trajectories* in the Year 2 and Year 3 examination scores.  Those individuals who have improved from one year to the next will perform better in this model than those who declined.  To demonstrate, lets look at the predicted scores from our interaction model for someone who declined and for someone who improved from Year 2 to Year 3.
+
+```{r}
+# data frame with a declining and an improving observation
+obs <- data.frame(
+  Yr2 = c(150, 75),
+  Yr3 = c(75, 150)
+)
+
+predict(interaction_model, obs)
+```
+
+Through including the interaction effect, the model interprets declining examination scores more negatively than improving examination scores.  This kinds of additional inferential insights may be of great interest.  However, consider the impact on interpretability of modeling too many combinations of interactions.  As always, there is a trade-off between intepretability and accuracy^[In a predictive context, there is also the issue of 'overfitting' the model, where the model is too 'tightly' aligned to the past data that was used in fitting it that it may be very inaccurate for new data.  For example, in our interaction model, someone who scores very low in both Year 2 and Year 3 will be awarded an unreasonably high score (see the intercept coefficient in the interactive model summary).  This reinforces the need to test and validate model fits in a predictive context].
 
 When running models with interaction terms, you can expect to see a hierarchy in the coefficients according to the level of the interaction.  For example, single terms will usually generate higher coefficients than interactions of two terms, which will generate higher coefficients than interactions of three terms, and so on.   Given this, whenever an interaction of terms is considered significant in a model, then the single terms contained in that interaction should automatically be regarded as significant.
 
@@ -574,8 +615,6 @@ In this case we find that modeling `Yr1` as a quadratic makes no difference to t
 
 
 ## Learning exercises
-
-Most chapters in this book will end with learning exercises.  These will be a combination of discussion questions to encourage engagement with the material in the chapter and practical exercises with data sets.  Links to data will be provided where relevant.
 
 ### Discussion questions
 
