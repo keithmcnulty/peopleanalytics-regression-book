@@ -1,4 +1,4 @@
-# Binomial Logistic Regression for Binary Outcomes
+# Binomial Logistic Regression for Binary Outcomes {#bin-log-reg}
 
 ```{r setup, echo = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
@@ -29,16 +29,18 @@ knitr::include_graphics("~/rstudio_projects/eampa/www/02/logistic-curve.png")
 
 ```
 
-In the early 20th century, starting with applications in economics and in chemistry, the logistic function was adopted in a wide array of fields as a useful tool for modeling phenomena.  In statistics, it was quickly noted that the logistic function has a similar S-shape (or *sigmoid*) to a cumulative normal distribution of probability, as depicted in Figure \@ref(fig:norm-log-curves)^[The logistic function plotted in Figure \@ref(fig:norm-log-curves) takes the simple form $y = \frac{1}{1 + e^{-x}}$]).  However, the logistic function has a clearer mathematical formula which is easier to perform calculus on, and therefore easier to use to develop inferential models based on maximum likelihood.  So statisticians started to observe that they could work with a more 'plyable' function that was very close in nature to a normal probability distribution.  Unsurprisingly, therefore, the logistic model soon became a common approach to modeling probabilistic phenomena.
+In the early 20th century, starting with applications in economics and in chemistry, the logistic function was adopted in a wide array of fields as a useful tool for modeling phenomena.  In statistics, it was quickly noted that the logistic function has a similar S-shape (or *sigmoid*) to a cumulative normal distribution of probability, as depicted in Figure \@ref(fig:norm-log-curves)^[The logistic function plotted in Figure \@ref(fig:norm-log-curves) takes the simple form $y = \frac{1}{1 + e^{-x}}$]).  However, the logistic function has a simpler mathematical formula which is easier to perform calculus on, and therefore easier to use to develop inferential models based on maximum likelihood.  So statisticians started to observe that they could work with a more 'plyable' function that was very close in nature to a normal probability distribution.  Unsurprisingly, therefore, the logistic model soon became a common approach to modeling probabilistic phenomena.
 
-```{r norm-log-curves, fig.align = "center", fig.cap = "The logistic function is very similar to a cumulative normal distribution, but easier to work with mathematically", echo = FALSE}
+```{r norm-log-curves, fig.align = "center", fig.cap = "The logistic function (blue dashed line) is very similar to a cumulative normal distribution (red solid line), but easier to work with mathematically", echo = FALSE}
 library(ggplot2)
 
 ggplot2::ggplot() +
   ggplot2::xlim(-5, 5) +
-  ggplot2::geom_function(fun = pnorm, aes(color = "red")) +
-  ggplot2::geom_function(fun = plogis, aes(color = "blue")) +
-  scale_color_discrete(name = "Distribution Type", labels = c("Cumulative Normal", "Logistic"))
+  xlab("\u03C3") +
+  ylab("P (cumulative)") +
+  ggplot2::geom_function(fun = pnorm, color = "red") +
+  ggplot2::geom_function(fun = plogis, color = "blue", linetype = "dashed")
+
 ```
 
 ### Use cases for binomial logistic regression
@@ -99,7 +101,7 @@ We can see from this pairplot that there are clearly higher sales for those who 
 So we can see that some relationships with our outcome may exist here, but it's not clear how to tease them out and quantify them relative to each other.  Let's explore how binomial logistic regression can help us do this.
 
 
-## Modeling probabilistic outcomes using a logistic function
+## Modeling probabilistic outcomes using a logistic function {#mod-prob}
 
 Imagine that you have an outcome $y$ which either occurs or does not occur.  The probability of $y$ occurring, or $P(y = 1)$, obviously takes a value between 0 and 1.  Now imagine that some input variable $x$ has a positive effect on the probability of the event taking place.  Then you would naturally expect $P(y = 1)$ to increase as $x$ increases.
 

@@ -482,7 +482,7 @@ plot(predicted_values, residuals)
 
 You can also plot the residuals against each input variable as an extra check of independent randomness, looking for a reasonably random distribution in all cases.  If you find that your residuals are following a clear pattern and are not random in nature, this is an indication that a linear model is not a good choice for your data.
 
-### Assumption of constant error variance
+### Assumption of constant error variance {#lin-reg-const-var}
 
 It is assumed in a linear model that the errors or residuals are *homoscedastic* - this means that their variance is constant across the values of the input variables.  If the errors of your model *heteroscedastic* - that is, if they increase or decrease according to the value of the model inputs, this can lead to poor estimations of confidence intervals and fits.
 

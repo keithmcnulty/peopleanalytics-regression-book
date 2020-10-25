@@ -361,7 +361,7 @@ In practice, there are numerous levels of p-value that are of interest to an ana
 
 ### Testing for a non-zero correlation between two variables (t-test for correlation)
 
-Imagine that we are given a sample of data for two variables and we are asked if the variables are correlated in the overall population.  We can take a null hypothesis that the variables are not correlated, determine a t-statistic associated with a zero correlation and convert this to a p-value.  The t-statistic associated with correlation testing is often notated $t^*$ and is defined as 
+Imagine that we are given a sample of data for two variables and we are asked if the variables are correlated in the overall population.  We can take a null hypothesis that the variables are not correlated, determine a t-statistic associated with a zero correlation and convert this to a p-value.  The t-statistic associated with a correlation $r$ between two samples of length $n$ is often notated $t^*$ and is defined as 
 
 $$
 t^* = \frac{r\sqrt{n-2}}{1-r^2}
@@ -434,13 +434,13 @@ Where relevant in these discussion exercises, let $X = x_1, x_2, ..., x_n$ and $
 6.  Describe the role of sample size and sampling frequency in the distribution of sampling means for a random variable.
 7.  Describe what a standard error is and how it relates to the probability density of a random variable statistic. 
 8.  If we conduct a t-test on the null hypothesis that $X$ and $Y$ are drawn from populations with the same mean, describe what a p-value of 0.01 means. 
-9.  **Extension:**  The sum of variance law states that $\mathrm{Var}(X + Y) = \mathrm{Var}(X) + \mathrm{Var}(Y)$.  Use this together with the identity from Exercise 3 to derive the formula for the standard error of the mean of X:
+9.  **Extension:**  The sum of variance law states that, for independent random variables $X$ and $Y$, $\mathrm{Var}(X \pm Y) = \mathrm{Var}(X) + \mathrm{Var}(Y)$.  Use this together with the identity from Exercise 3 to derive the formula for the standard error of the mean of $X = x_1, x_2, ..., x_n$:
 
 $$
 SE = \frac{\sigma_X}{\sqrt{n}}
 $$
 
-10.  **Extension:**  The sum of variance law also states that $\mathrm{Var}(X - Y) = \mathrm{Var}(X) + \mathrm{Var}(Y)$.  In a similar way to Exercise 9, show that the standard error for the difference between the means of $X$ and $Y$ is 
+10.  **Extension:**  In a similar way to Exercise 9, show that the standard error for the difference between the means of $X$ and $Y$ is 
 
 $$
 \sqrt{\frac{\sigma_{X}^2}{n} + \frac{\sigma_{Y}^2}{m}}
