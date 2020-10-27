@@ -1,0 +1,42 @@
+# Mixed Models for Hierarchical Data
+
+So far in this book we have learned all of the most common foundational regression methods for inferential modeling.  Starting with this chapter, we will look at common situations where we need to adapt or combine techniques to address common goals or data constraints.  In this chapter we look at situations where data has a hierarchy and where we wish to consider this hierarchy in our modeling efforts.
+
+The most common hierarchies that we see in data are group-based and time-based.  A group-based hierarchy occurs when we are taking observations that belong to different groups. For example, in our first walkthrough example in Chapter \@ref(linear-reg-ols), we modeled final examination performance against examination performance for the previous three years. In this case we considered each student observation to be independent and identically distributed and we ran a linear regression model on all the students.  If we were to receive additional information that these students were actually a mix of students on different degree programs, then we may wish to take this into account in how we model the problem - that is, we would want to assume that each student observation is only independent and identically distributed within each degree program.
+
+Similarly, a time-based hierarchy occurs when we have multiple observations of the same subject taken at different times.  For example, if we are conducting a weekly survey on the same people over the course of a year, and we are modeling how answers to some questions might depend on answers to others, we may wish to consider the effect of the person on this model.
+
+Both of these situations introduce a new grouping variable into the problem we are modeling, thus creating a hierarchy.  It is not hard to imagine that each group confers different properties on the observations that belong to it - perhaps the 'intercept' or 'starting point' for different groups are different, or perhaps each input variable acts differently on different groups.  In this chapter we will look at mixed modeling techniques that suit these types of situations.  
+
+## Fixed and random effects
+
+Let's imagine that we have a set of observations consisting of a continuous output variable $y$ and input variables $x_1, x_2, ..., x_p$.  Let's also assume that we have an additional data point for each observation where we assign it to a group $G$.  We are asked to determine the relationship between the outcome and the input variables.  One option is to develop a linear model $y = \beta_0 + \beta_1x_1 + ... + \beta_px_p + \epsilon$, ignoring the grouping data.  In this model, we assume that the coefficients all have a *fixed effect* on the input variables - that is, they act on every observation in the same way.  This may be fine if there is trust that group membership is unlikely to have any impact on the relationship being modeled.
+
+If, however, there is a belief that group membership may have an effect on the relationship being modeled, then we need to adjust our model to a mixed model.  The most common adjustment is a *random intercept*.  In this situation, we imagine that group membership has an effect on the 'starting point' of the relationship:  the intercept.  Therefore $y = \alpha_G + \beta_0 + \beta_1x_1 + ... + \beta_px_p + \epsilon$, where $\alpha_G$ is a random effect with a mean of zero associated with the group that the observation is a member of.  This can be restated as:
+
+$$
+y = \beta_G + \beta_1x_1 + ... + \beta_px_p + \epsilon
+$$
+
+where $\beta_G = \alpha_G + \beta_0$, which is a random intercept of mean $\beta_0$.  
+
+This model is very similar to a standard linear regression model, except instead of having fixed intercept, we have an intercept that varies by group.  Such a model will produce two 'levels' of statistic.  It will produce statistics at the individual level (in this case the mean coefficient estimates $\beta_0, \beta_1, ..., \beta_p$ similar to the standard linear model), and it will produce the statistics at the group level (in this case the variance of $\beta_G$ around $\beta_0$ for the different groups in the data).  For this reason mixed models are sometimes known as *multi-level models*.
+
+It is not too difficult to see how this approach can be extended.  For example, suppose that we believe the groups also have an effect on the coefficient of the input variable $x_1$ as well as the intercept.  Then
+
+$$
+y = \beta_{G0} + \beta_{G1}x_1 + \beta_2x_2 + ... + \beta_px_p 
+$$
+where $\beta_{G0}$ is a random intercept with mean $\beta_0$ and $\beta_{G1}$ is a *random slope* with mean $\beta_1$.  In this case, a mixed model would return the mean estimated coefficients and the statistics for the random effects $\beta_{G0}$ and $\beta_{G1}$.
+
+Finally, our model does not need to be linear for this to apply.  This approach also extends to logistic models and other generalized linear models.  For example, if $y$ was a binary outcome variable and our model was a binomial logistic regression model, our last equation would translate to
+
+$$
+\mathrm{ln}\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_{G0} + \beta_{G1}x_1 + \beta_2x_2 + ... + \beta_px_p
+$$
+
+## Running a mixed model
+
+
+
+
