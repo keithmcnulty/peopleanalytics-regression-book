@@ -1,33 +1,41 @@
-# Mixed Models for Hierarchical Data
+# Modeling Explicit and Latent Hierarchical Stucture in Data
 
-So far in this book we have learned all of the most common foundational regression methods for inferential modeling.  Starting with this chapter, we will look at common situations where we need to adapt or combine techniques to address common goals or data constraints.  In this chapter we look at situations where data has a hierarchy and where we wish to consider this hierarchy in our modeling efforts.
+So far in this book we have learned all of the most common foundational regression methods for inferential modeling.  Starting with this chapter, we will look at common situations where we need to adapt or combine techniques to address common goals or data constraints.  In this chapter we look at some common situations where data has a hierarchy and where we wish to consider this hierarchy in our modeling efforts.   
 
-The most common hierarchies that we see in data are group-based and time-based.  A group-based hierarchy occurs when we are taking observations that belong to different groups. For example, in our first walkthrough example in Chapter \@ref(linear-reg-ols), we modeled final examination performance against examination performance for the previous three years. In this case we considered each student observation to be independent and identically distributed and we ran a linear regression model on all the students.  If we were to receive additional information that these students were actually a mix of students on different degree programs, then we may wish to take this into account in how we model the problem - that is, we would want to assume that each student observation is only independent and identically distributed within each degree program.
+It is very often the case that data has an explicit hierarchy.  For example, each observation in our data may refer to a different individual and each such individual may be a member of a few different groups.  Similarly, each observation might refer to an event involving an individual, and we may have data on multiple events for the same individual.  For a particular problem that we are modeling, we may wish to take into consideration the effect of the hierarchical grouping on the observations.  This requires a model which has a mixture of random effects and fixed effects - called a *mixed model*.
+
+Separately, it can be the case that data we are given could have a latent hierarchy.  The input variables in the data might be acting in combination to measure a smaller set of higher level latent constructs, and we may have a more interpretable model if we hypothesize, confirm and model those latent constructs against our outcome of interest rather than using the explicit input variables.    Latent variable modeling is a common technique to address this situation, and in this chapter we will review a form of latent variable modeling called *structural equation modeling* which is very common especially in making inferences from survey instruments with large numbers of items. 
+
+These topics are quote broad and there are many different approaches, techniques and terms involved in mixed modeling and latent variable modeling.  In this chapter we will only cover some of the simpler approaches, which would suffice for the majority of common situations in people analytics.  For a deeper treatment of these topics, see @jiang for mixed models and @bartholomew or @skrondal for latent variable models.
+
+## Mixed models for explicit hierarchy in data
+
+The most common explicit hierarchies that we see in data are group-based and time-based.  A group-based hierarchy occurs when we are taking observations that belong to different groups. For example, in our first walkthrough example in Chapter \@ref(linear-reg-ols), we modeled final examination performance against examination performance for the previous three years. In this case we considered each student observation to be independent and identically distributed and we ran a linear regression model on all the students.  If we were to receive additional information that these students were actually a mix of students on different degree programs, then we may wish to take this into account in how we model the problem - that is, we would want to assume that each student observation is only independent and identically distributed within each degree program.
 
 Similarly, a time-based hierarchy occurs when we have multiple observations of the same subject taken at different times.  For example, if we are conducting a weekly survey on the same people over the course of a year, and we are modeling how answers to some questions might depend on answers to others, we may wish to consider the effect of the person on this model.
 
-Both of these situations introduce a new grouping variable into the problem we are modeling, thus creating a hierarchy.  It is not hard to imagine that each group confers different properties on the observations that belong to it - perhaps the 'intercept' or 'starting point' for different groups are different, or perhaps each input variable acts differently on different groups.  In this chapter we will look at mixed modeling techniques that suit these types of situations.  
+Both of these situations introduce a new grouping variable into the problem we are modeling, thus creating a hierarchy.  It is not hard to imagine that analyzing each group may produce different statistical properties compared to analyzing the entire population - for example there could be correlations between the data inside groups which are less evident when looking at the overall population.  It follows therefore that in some cases a model may provide more accurate and reliable estimates if this grouping is taken into account.  
 
-## Fixed and random effects
+### Fixed and random effects
 
-Let's imagine that we have a set of observations consisting of a continuous output variable $y$ and input variables $x_1, x_2, ..., x_p$.  Let's also assume that we have an additional data point for each observation where we assign it to a group $G$.  We are asked to determine the relationship between the outcome and the input variables.  One option is to develop a linear model $y = \beta_0 + \beta_1x_1 + ... + \beta_px_p + \epsilon$, ignoring the grouping data.  In this model, we assume that the coefficients all have a *fixed effect* on the input variables - that is, they act on every observation in the same way.  This may be fine if there is trust that group membership is unlikely to have any impact on the relationship being modeled.
+Let's imagine that we have a set of observations consisting of a continuous output variable $y$ and input variables $x_1, x_2, ..., x_p$.  Let's also assume that we have an additional data point for each observation where we assign it to a group $G$.  We are asked to determine the relationship between the outcome and the input variables.  One option is to develop a linear model $y = \beta_0 + \beta_1x_1 + ... + \beta_px_p + \epsilon$, ignoring the group data.  In this model, we assume that the coefficients all have a *fixed effect* on the input variables - that is, they act on every observation in the same way.  This may be fine if there is trust that group membership is unlikely to have any impact on the relationship being modeled, or if we are comfortable making inferences about variables at the observation level only.
 
-If, however, there is a belief that group membership may have an effect on the relationship being modeled, then we need to adjust our model to a mixed model.  The most common adjustment is a *random intercept*.  In this situation, we imagine that group membership has an effect on the 'starting point' of the relationship:  the intercept.  Therefore $y = \alpha_G + \beta_0 + \beta_1x_1 + ... + \beta_px_p + \epsilon$, where $\alpha_G$ is a random effect with a mean of zero associated with the group that the observation is a member of.  This can be restated as:
+If, however, there is a belief that group membership may have an effect on the relationship being modeled, and if we are interested in interpreting our model at the group and observation level, then we need to adjust our model to a mixed model for more accurate and reliable inference.  The most common adjustment is a *random intercept*.  In this situation, we imagine that group membership has an effect on the 'starting point' of the relationship:  the intercept.  Therefore, for a given observation $y = \alpha_G + \beta_0 + \beta_1x_1 + ... + \beta_px_p + \epsilon$, where $\alpha_G$ is a random effect with a mean of zero associated with the group that the observation is a member of.  This can be restated as:
 
 $$
 y = \beta_G + \beta_1x_1 + ... + \beta_px_p + \epsilon
 $$
 
-where $\beta_G = \alpha_G + \beta_0$, which is a random intercept of mean $\beta_0$.  
+where $\beta_G = \alpha_G + \beta_0$, which is a random intercept with a mean of $\beta_0$.  
 
-This model is very similar to a standard linear regression model, except instead of having fixed intercept, we have an intercept that varies by group.  Such a model will produce two 'levels' of statistic.  It will produce statistics at the individual level (in this case the mean coefficient estimates $\beta_0, \beta_1, ..., \beta_p$ similar to the standard linear model), and it will produce the statistics at the group level (in this case the variance of $\beta_G$ around $\beta_0$ for the different groups in the data).  For this reason mixed models are sometimes known as *multi-level models*.
+This model is very similar to a standard linear regression model, except instead of having a fixed intercept, we have an intercept that varies by group.  Therefore, we will essentially have two 'levels' in our model:  one at the observation level to describe $y$ and one at the group level to describe $\beta_G$.  For this reason mixed models are sometimes known as *multi-level models*.
 
 It is not too difficult to see how this approach can be extended.  For example, suppose that we believe the groups also have an effect on the coefficient of the input variable $x_1$ as well as the intercept.  Then
 
 $$
 y = \beta_{G0} + \beta_{G1}x_1 + \beta_2x_2 + ... + \beta_px_p 
 $$
-where $\beta_{G0}$ is a random intercept with mean $\beta_0$ and $\beta_{G1}$ is a *random slope* with mean $\beta_1$.  In this case, a mixed model would return the mean estimated coefficients and the statistics for the random effects $\beta_{G0}$ and $\beta_{G1}$.
+where $\beta_{G0}$ is a random intercept and $\beta_{G1}$ is a *random slope*.  In this case, a mixed model would return the estimated coefficients at the observation level and the statistics for the random effects $\beta_{G0}$ and $\beta_{G1}$ at the group level.
 
 Finally, our model does not need to be linear for this to apply.  This approach also extends to logistic models and other generalized linear models.  For example, if $y$ was a binary outcome variable and our model was a binomial logistic regression model, our last equation would translate to
 
@@ -35,8 +43,75 @@ $$
 \mathrm{ln}\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_{G0} + \beta_{G1}x_1 + \beta_2x_2 + ... + \beta_px_p
 $$
 
-## Running a mixed model
+### Running a mixed model
 
+Let's look at a fun and straightforward example of how mixed models can be useful. The speed dating data set can be found [here](https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/speed_dating.csv) and is a set of information captured during experiments with speed dating by students at Columbia University in New York^[I have simplified the data set, and the full version can be found at http://www.stat.columbia.edu/~gelman/arm/examples/speed.dating/].  Each row represents one meeting between an individual and a partner of the opposite sex.  The data contains the following fields:
+
+* `iid` is an id number for the individual
+* `gender` is the gender of the individual with 0 as Female and 1 and Male
+* `match` indicates that the meeting resulted in a match
+* `samerace` indicates that both the individual and the partner were of the same race
+* `race` is the race of the individual, with race coded as follows: 	Black/African American=1,	European/Caucasian-American=2, 	Latino/Hispanic American=3, Asian/Pacific Islander/Asian-American=4, Native American=5, Other=6
+* `goal` is the reason why the individual is participating in the event, coded as follows: Seemed like a fun night out=1, To meet new people=2, To get a date=3, Looking for a serious relationship=4, To say I did it=5, Other=6
+* `dec` is a binary rating from the individual as to whether they would like to see their partner again (1 is Yes and 0 is No)
+* `attr` is the individual's rating out of ten on the attractiveness of the partner
+* `intel` is the individual's rating out of ten on the intelligence level of the partner
+* `prob` is the individual's rating out of ten on whether they believe the partner will want to see them again
+* `agediff` is the absolute difference in the ages of the individual and the partner.
+
+This data can be explored in numerous ways, but we will focus here on modeling options.  We are interested in the binary outcome `dec` (the decision of the individual) and we would like to understand how it relates to the age difference, the racial similarity and the ratings on `attr`, `intel` and `prob`.  First, let's assume that we don't care about how an individual makes up their mind about their speed date, and that we are only interested in the dynamics of speed date decisions. Then we would simply run a binomial logistic regression on our data set, ignoring `iid` and other grouping variables like `race`, `goal` and `gender`.
+
+```{r}
+# get data
+url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/speed_dating.csv"
+speed_dating <- read.csv(url)
+
+# run standard binomial model
+model <- glm(dec ~ agediff + samerace + attr + intel + prob, data = speed_dating, 
+             family = "binomial")
+
+summary(model)
+```
+
+In general, we see that the factors which significantly influence the speed dating decision seem to be the attractiveness of the partner and the feeling of reciprocation of interest from the partner, and that age difference, racial similarity and intelligence do not seem to play a significant role at the level of the speed date itself. 
+
+Now let's say that we are interested in how a given *individual* weighs up these factors in coming to a decision.  Then we will need to assign a random effect for individuals based on `iid`.  The `lme4` package in R contains functions for performing mixed linear regression models and mixed generalized linear regression models.  These functions take formulas with additional terms to define the random effects to be estimated.  The function for a linear model is `lmer()` and for a generalized linear model is `glmer()`.
+
+In the simple case, let's just model a random intercept according to the `iid` of the individual.  Here we would use the formula `dec ~ agediff + samerace + attr + intel + prob + (1 | iid)`, where `(1 | iid)` means 'a random effect for `iid` on the intercept of the model'.
+
+```{r, message = FALSE, warning = FALSE}
+# run binomial mixed effects model
+library(lme4)
+iid_intercept_model <- lme4:::glmer(dec ~ agediff + samerace + attr + intel + prob + (1 | iid),
+             data = speed_dating,
+             family = "binomial")
+
+# view summary without correlation table of fixed effects
+summary(iid_intercept_model, correlation = FALSE)
+```
+
+We can see the two levels of results in this summary.  The fixed effects level gives the the coefficients of the model at an observation (speed date) level, and the random effects tell us how the intercept of that model can vary according to the individual.  We see that there is considerable variance in the intercept from individual to individual, and taking this into account, we now see that the decision of an individual on a given date is significantly influenced by all the factors in this model.  If we had stuck with the simple binomial model, the effects of age difference, racial similarity and intelligence at an individual level would have gotten lost, and we could have reached the erroneous conclusion that none of these really matter in speed dating. 
+
+If we wished to extend our random effects to the slope coefficients of our model, we can do so easily.  For example we could use `(1 + agediff | iid)` to model a random effect of `iid` on the intercept and the `agediff` coefficient.  Similarly, if we wanted to consider two grouping variables - like `iid` and `goal` - on the intercept, we could add both `(1 | iid)` and `(1 | goal)` to our model formula.
+
+
+## Structural Equation Models for latent hierarchies in data
+
+In this section we will focus entire on survey data use cases, as this is the most common application of Structural Equation Modeling in People Analytics.  However it should be noted that survey data is not the only situation where latent variables may be modeled, and this technology has substantially broader applications.  Indeed, advanced practitioners may see opportunities to experiment with this technology in other use cases.
+
+A frequent occurence with surveys conducted on large samples of people, such as a public survey or a large company survey, relates to the sheer number of questions, or 'items', contained in the survey.  It is not unusual for surveys to contain such a number of items that attempts to run models on all these items can be problematic.  Often many of the items are highly correlated, and even if they were not, high dimensionality makes interpretability very challenging.  Decision-makers are not usually interested in explanations that involve 50 or 100 variables.
+
+Usually, such a large number of survey items are not all independently measuring a different construct.  Many of the items can be considered to be addressing similar thematic contructs.  For example, the items 'I believe I am compensated well' and 'I am happy with the benefits offered by my employer', could both be considered to be related to employee rewards.  In some cases, survey instruments can be explicitly constructed around these themes, and in other cases surveys have grown organically over time to include a disorganized set of items that could be grouped into themes after the fact.
+
+It is a common request for an analyst to model a certain outcome using the many items in a complex survey as input variables.  In some cases the outcome being modeled is an item in the survey itself - usually some overall measure of interest - or in other cases the outcome could be independent of the survey instrument.  In this situation, a model using the themes as input variables is likely to be a lot more useful and interpretable than a model using the items as input variables.
+
+*Structural Equation Modeling* is a technique that allows an analyst to hypothesize a smaller set of 'latent variables' that explain the responses to the survey items themselves (the 'measured variables'), and then regresses the outcome of interest against the latent variables.  It is a two part approach, each part being a separate model in and of itself, as follows:
+
+1.  *Measurement Model*:  This is focused on how well the hypothesized latent variables explain the responses to the survey items using a technique called Factor Analysis.  In the most common case, where a subject matter expert has pre-organized the items into several groups corresponding to hyothesized latest variables, the process is called *Confirmatory Factor Analysis*, and the objective is to confirm that the groupings represent a high-quality measurement model, adjusting as necessary to refine the model.  In the simplest case, items are fitted into separate independent themes with no overlap.
+
+2.  *Structural Model*:  Assuming a satisfactory measurement model, the structural model is effectively a regression model which explains how each of the proposed latent variabes impact the outcome of interest.
+
+As a walkthrough example, the `politics_survey` dataset can be downloaded [here]
 
 
 
