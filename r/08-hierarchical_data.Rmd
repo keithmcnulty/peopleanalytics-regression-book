@@ -97,7 +97,7 @@ If we wished to extend our random effects to the slope coefficients of our model
 
 ## Structural Equation Models for latent hierarchies in data
 
-In this section we will focus entire on survey data use cases, as this is the most common application of Structural Equation Modeling in People Analytics.  However it should be noted that survey data is not the only situation where latent variables may be modeled, and this technology has substantially broader applications.  Indeed, advanced practitioners may see opportunities to experiment with this technology in other use cases.
+In this section we will focus entirely on survey data use cases, as this is the most common application of Structural Equation Modeling in People Analytics.  However it should be noted that survey data is not the only situation where latent variables may be modeled, and this technology has substantially broader applications.  Indeed, advanced practitioners may see opportunities to experiment with this technology in other use cases.
 
 It is a frequent occurrence with surveys conducted on large samples of people, such as a public survey or a large company survey, that attempts to run regression models can be problematic due to the large number of survey questions or items.  Often many of the items are highly correlated, and even if they were not, high dimensionality makes interpretability very challenging.  Decision-makers are not usually interested in explanations that involve 50 or 100 variables.
 
@@ -175,14 +175,14 @@ With the measurement model defined, the confirmatory factor analysis can be run 
 library(lavaan)
 
 cfa_meas_mod <- lavaan::cfa(model = meas_mod, data = politics_survey)
-summary(cfa_meas_mod, fit.measures = TRUE, standardized = TRUE)
+lavaan::summary(cfa_meas_mod, fit.measures = TRUE, standardized = TRUE)
 ```
 
 This is a large set of results, but we can focus in on some important parameters to examine.  First we note that the results did not come attached to a warning.  One particular warning to look out for relates to the covariance matrix being non-positive definite.  This renders some of the attempted measurement invalid and is usually caused by too small a sample size for the complexity of the measurement model.  Since we did not receive this warning, we can proceed to examine the fit of the measurement model.
 
 Second, we can examine the fit statistics.  Numerous statistics are reported^[Other reported measures include statistical tests of perfect fit for the measurement model and for the baseline model, which in general should be disregarded for large samples, and AIC and BIC which are valuable for comparing different measurement model options], but for larger samples such as this dataset, the following measures should be examined:
 
-* CLI and TLI, which compare the proposed model to a baseline (null or random) model to determine if it is better.  Ideally we look for both of these measures to exceed 0.95.  We see that our measurement model comes very close to meeting these criteria
+* CFI and TLI, which compare the proposed model to a baseline (null or random) model to determine if it is better.  Ideally we look for both of these measures to exceed 0.95.  We see that our measurement model comes very close to meeting these criteria
 
 * RMSEA should ideally be less than 0.06, which is met by our measurement model
 
@@ -207,7 +207,7 @@ Eco =~ Eco1 + Eco2
 "
 
 cfa_meas_mod_rev <- lavaan::cfa(model = meas_mod_revised, data = politics_survey)
-summary(cfa_meas_mod_rev, fit.measures = TRUE, standardized = TRUE)
+lavaan::summary(cfa_meas_mod_rev, fit.measures = TRUE, standardized = TRUE)
 
 ```
 
@@ -234,7 +234,7 @@ Overall ~ Pol + Hab + Loc + Env + Int + Pers + Nat + Eco
 "
 
 full_model <- lavaan::sem(model = full_sem, data = politics_survey)
-summary(full_model, standardized = TRUE)
+lavaan::summary(full_model, standardized = TRUE)
 ```
 
 The `Std.all` column of the `Regressions` section of the output provides standardized estimates which can be approximately interpreted as the proportion of the variance of the outcome that is explained by each factor.  Here we can make the following interpretations:
