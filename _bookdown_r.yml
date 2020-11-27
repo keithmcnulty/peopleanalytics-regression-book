@@ -1,6 +1,6 @@
 book_filename: "sipa_r.Rmd"
 rmd_files: ["index_r.Rmd", "r/01-intro.Rmd", "r/02-basic_r.Rmd", "r/03-primer_stats.Rmd", "r/04-linear_regression.Rmd", "r/05-binomial_logistic_regression.Rmd",
-"r/06-multinomial_regression.Rmd", "r/07-ordinal_regression.Rmd", "r/08-hierarchical_data.Rmd", "r/09-bibliography.Rmd"]
+"r/06-multinomial_regression.Rmd", "r/07-ordinal_regression.Rmd", "r/08-hierarchical_data.Rmd", "r/09-survival_analysis.Rmd", "r/10-bibliography.Rmd"]
 output_dir: "_book_r"
 language:
   ui:
