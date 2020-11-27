@@ -1,0 +1,215 @@
+# Alternative technical approaches in R and Python
+
+As outlined earlier in this book, all technical implementations of the modeling techniques in previous chapters have relied wherever possible on base R code and specialist packages for specific methodologies - this allowed a focus on the basics of understanding, running and interpreting these models which is the key aim of this book.    For those interested in a wider range of technical options for running inferential statistical models, this chapter illustrates some alternative options and should be considered a starting point for those interested rather than an in-depth exposition.  
+
+First we look at options for generating models in more predictable formats in R.  We have seen in prior chapters that the output of many models in R can be inconsistent.  In many cases we are given more information than we need and in some cases we have less than we need.  Formats can vary and we sometimes need to look in different parts of the output to see specific statistics that we seek.  The `tidymodels` set of packages tries to bring the principles of tidy data into the realm of statistical modeling and we will illustrate this briefly.
+
+Second, for those whose preference is to use Python, we provide some examples for how inferential regression models can be run in Python.  While Python is particularly well-tooled for running predictive models, it does not have the full range of statistical inference tools that are available in R.  In particular, using predictive modeling or machine learning packages like `scikit-learn` to conduct regression modeling can often leave the analyst lacking when seeking information about certain model statistics when those statistics are not typically sought after in a predictive modeling workflow.  We briefly illustrate some Python packages which perform modeling with a greater emphasis on inference versus prediction.  
+
+## 'Tidier' modeling approaches in R
+
+The `tidymodels` meta-package is a collection of packages which collectively apply the principles of tidy data to the construction of statistical models.  More information and learning resources on `tidymodels` can be found [here](https://www.tidymodels.org/).  Within `tidymodels` there are two packages which are particular useful in controlling the output of models in R:  the `broom` and `parsnip` packages.
+
+### The `broom` package
+
+Consistent with how it is named, `broom` aims to tidy up the output of the models into a predictable format.  It works with over 100 different types of models in R.  In order to illustrate its use, let's run a model from a previous chapter - specifically our salesperson promotion model in Chapter \@ref(bin-log-reg).
+
+```{r}
+# obtain salespeople data
+url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/salespeople.csv"
+salespeople <- read.csv(url)
+
+# convert promoted to factor
+salespeople$promoted <- as.factor(salespeople$promoted)
+
+# build model to predict promotion based on sales and customer_rate
+promotion_model <- glm(formula = promoted ~ sales + customer_rate,
+             family = "binomial",
+             data = salespeople)
+
+```
+
+We now have our model sitting in memory.  We can use three key functions in the `broom` package to view a variety of model statistics.  First, the `tidy()` function allows us to see the coefficient statistics of the model.
+
+```{r}
+library(tidymodels)
+broom::tidy(promotion_model)
+
+```
+
+The `glance()` function allows us to see a row of overall model statistics:
+
+```{r}
+broom::glance(promotion_model)
+```
+
+And the `augment()` function augments the observations in the dataset with a range of observation-level model statistics such as residuals:
+
+```{r}
+head(broom::augment(promotion_model))
+```
+
+These functions are model-agnostic for a very wide range of common models in R.  For example, we can use them on our proportional odds model on soccer discipline from Chapter \@ref(ord-reg) and they will generate the relevant statistics in tidy tables.
+
+```{r}
+# get soccer data
+url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/soccer.csv"
+soccer <- read.csv(url)
+
+# convert discipline to ordered factor
+soccer$discipline <- ordered(soccer$discipline, levels = c("None", "Yellow", "Red"))
+
+# run proportional odds model
+library(MASS)
+soccer_model <- polr(formula = discipline ~ n_yellow_25 + n_red_25 + position + country + level + result, 
+              data = soccer)
+
+# view model statistics
+broom::glance(soccer_model)
+```
+
+
+`broom` functions integrate well into other tidyverse methods, and allow easy running of models over nested subsets of data.  For example, if we want to run our soccer discipline model across the different countries in the dataset and see all the model statistics in a neat table, we can use typical tidyverse grammar to do so using `dplyr`.
+
+```{r, warning = FALSE, message = FALSE}
+library(tidyverse)
+
+soccer %>% 
+  dplyr::nest_by(country) %>% 
+  dplyr::summarise(broom::glance(
+    polr(formula = discipline ~ n_yellow_25 + n_red_25 + position + level + result, 
+         data = data)
+    )
+  )
+
+
+```
+### The `parsnip` package
+
+The `parsnip` package aims create a unified interface to running models, to avoid users needing to do understand different model terminology and other minutiae.   It also takes a more hierarchical approach to defining models that is similar in nature to the object-oriented approaches that Python users would be more familiar with.
+
+Again let's use our salesperson promotion model example to illustrate.  We start by defining a model family that we wish to use, in this case logistic regression, and define a specific engine and mode.
+
+```{r}
+model <- parsnip::logistic_reg() %>% 
+  parsnip::set_engine("glm") %>% 
+  parsnip::set_mode("classification")
+
+```
+
+We can use the `translate()` function to see what kind of model we have created:
+
+```{r}
+model %>% 
+  parsnip::translate()
+```
+
+Now with our model defined, we can fit it using a formula and data and then use `broom` to view the coefficients:
+
+```{r}
+model %>% 
+  parsnip::fit(formula = promoted ~ sales + customer_rate,
+               data = salespeople) %>% 
+  broom::tidy()
+```
+
+`parsnip` functions are particularly motivated around tooling for machine learning model workflows in a similar way to `scikit-learn` in Python, but they can offer an attractive approach to coding inferential models, particularly where common families of models are used. 
+
+## Inferential statistical modeling in Python
+
+In general, the modeling functions contained in `scikit-learn` - which tends to be the go-to modeling package for most Python users - are oriented towards predictive modeling and can be challenging to navigate for those who are primarily interested in inferential modeling.  In this section we will briefly review approaches for running some of the models contained in this book in Python.  The `statsmodels` package is highly recommended as it offers a wide range of models which report similar statistics to those reviewed in this books.
+
+### Ordinary least squares (OLS) linear regression
+
+The OLS linear regression model reviewed in Chapter \@ref(linear-reg-ols) can be generated using the `statsmodels` package, which can report a reasonably thorough set of model statistics.  By using the `statsmodels` formula API, model formulas similar to those used in R can be used.  
+
+```{python}
+import pandas as pd
+import statsmodels.formula.api as smf
+
+# get data
+url = "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/ugtests.csv"
+ugtests = pd.read_csv(url)
+
+# define model
+model = smf.ols(formula = "Final ~ Yr3 + Yr2 + Yr1", data = ugtests)
+
+# fit model
+ugtests_model = model.fit()
+
+# see results summary
+print(ugtests_model.summary())
+```
+
+### Binomial logistic regression
+
+Binomial logistic regression models can be generated in a similar way to OLS linear regression models using the `statsmodels` formula API, calling the binomial family from the general `statsmodels` API.
+
+```{python}
+import pandas as pd
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
+# obtain salespeople data
+url = "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/salespeople.csv"
+salespeople = pd.read_csv(url)
+
+# define model
+model = smf.glm(formula = "promoted ~ sales + customer_rate", 
+                data = salespeople, family = sm.families.Binomial())
+
+# fit model
+promotion_model = model.fit()
+
+# see results summary
+print(promotion_model.summary())
+```
+
+### Multinomial logistic regression
+
+Multinomial logistic regression is similarly available using the `statsmodels` formula API.  As usual, care must be taken to ensure that the reference category is appropriately defined, dummy input variables need to be explictly constructed, and a constant input variable must be added to ensure an intercept is calculated.
+
+```{python}
+import pandas as pd
+import statsmodels.formula.api as smf
+
+# load health insurance data
+url = "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/health_insurance.csv"
+health_insurance = pd.read_csv(url)
+
+# convert product to categorical as an outcome variable
+y = pd.Categorical(health_insurance['product'])
+
+# create dummies for gender
+X1 = pd.get_dummies(health_insurance['gender'], drop_first = True)
+
+#replace back into input variables 
+X2 = health_insurance.drop(['product', 'gender'], axis = 1)
+X = pd.concat([X1, X2], axis = 1)
+
+Xc = sm.add_constant(X)
+
+# define model
+model = sm.MNLogit(y, Xc)
+
+# fit model
+insurance_model = model.fit()
+
+# see results summary
+print(insurance_model.summary())
+
+```
+
+### Other model variants
+
+Implementation of other model variants featured in earlier chapters becomes thinner in Python as the models become more unique to applications in statistical inference.  However, of note are the following:
+
+* Ordinal regression is a recent addition to the `statsmodels` package and is still only available in the development version.  The `mord` package offers an implementation for predictive analytics purposes, but for inferential modeling users will need to wait for the next release of `statsmodels` or for immediate use they will need to install the development version from source.
+
+* Mixed models only currenly have an implementation for linear mixed modeling in `statsmodels`.  Generalized linear mixed models equivalent to those found in the `lme4` R package are not yet available in Python.
+
+* The `semopy` package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar the `lavaan` package in R.  A full tutorial is available [here](https://semopy.com/tutorial.html).
+
+* The `lifelines` package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions.  A full tutorial is available [here](https://lifelines.readthedocs.io/en/latest/index.html).
+
+

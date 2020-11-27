@@ -1,4 +1,4 @@
-# Ordinal Logistic Regression for Ordered Category Outcomes
+# Ordinal Logistic Regression for Ordered Category Outcomes {#ord-reg}
 
 Often our outcomes will be categorical in nature, but they will also have an order to them.  These are sometimes known as *ordinal* outcomes.  Some very common examples of this include ratings of some form - for example job performance ratings or survey responses on Likert scales. The appropriate modeling approach for these outcome types is an ordinal logistic regression approach.  Surprisingly, this approach is frequently not understood or adopted by analysts.  Often, they treat the outcome as a continuous variable and perform simple linear regression, which can often lead to wildly inaccurate inferences.  Given the prevalence of ordinal outcomes in people analytics, it would serve analysts well to know how to perform ordinal logistic regression models, how to interpret them and how to confirm their validity. 
 
@@ -80,7 +80,7 @@ summary(soccer)
 We see that there are numerous fields that need to be converted to factors before we can model them.  Firstly, our outcome of interest is `discipline` and this needs to be an ordered factor, which we can choose to increase with the seriousness of the disciplinary action.  
 
 ```{r}
-# convert discipline, level and result to ordered factor
+# convert discipline to ordered factor
 soccer$discipline <- ordered(soccer$discipline, levels = c("None", "Yellow", "Red"))
 
 #check conversion
@@ -90,7 +90,7 @@ str(soccer)
 We also know that `position`, `country`, `result` and `level` are categorical, so we convert them to factors.  We could in fact choose to convert `result` and `level` into ordered factors if we so wish, but it is not necessary and the results are usually a little bit easier to read as nominal factors:
 
 ```{r}
-# apply as.factor to two columns
+# apply as.factor to four columns
 cats <- c("position", "country", "result", "level")
 soccer[ ,cats] <- lapply(soccer[ ,cats], as.factor)
 
@@ -211,7 +211,7 @@ Similar to binomial and multinomial models, pseudo-$R^2$ methods are available f
 DescTools::PseudoR2(model, which = c("McFadden", "CoxSnell", "Nagelkerke", "AIC"))
 ```
 
-There are numerous tests of goodness of fit/model confidence that can apply to ordinal logistic regression models, and this area is the subject of considerable recent research.  The `generalhoslem` package in R contains routes to four possible tests, with two of them particularly recommended for ordinal models.  Each work in a similar way to the Hosmer-Lemeshow test discussed in \@ref(logistic-gof), by dividing the sample into groups and comparing the observed versus the fitted outcomes using a chi-square test.  Since the null hypothesis is a good model fit, low p-values indicate potential problems with the model.   We run these tests below for reference. For more information, see @fagerland-hosmer, and for a really intensive treatment of ordinal data modeling @ordinal-agresti is recommended. 
+There are numerous tests of goodness of fit/model confidence that can apply to ordinal logistic regression models, and this area is the subject of considerable recent research.  The `generalhoslem` package in R contains routes to four possible tests, with two of them particularly recommended for ordinal models.  Each work in a similar way to the Hosmer-Lemeshow test discussed in \@ref(logistic-gof), by dividing the sample into groups and comparing the observed versus the fitted outcomes using a chi-square test.  Since the null hypothesis is a good model fit, low p-values indicate potential problems with the model.   We run these tests below for reference. For more information, see @fagerland-hosmer, and for a really intensive treatment of ordinal data modeling @ordinal is recommended. 
 
 
 ```{r}
@@ -279,7 +279,7 @@ brant::brant(model)
 
 The proportional odds model is by far the most utilized approach to modeling ordinal outcomes (not least because of neglect in the testing of the underlying assumptions).  But as we have learned, it is not always an appropriate model choice for ordinal outcomes.  When the test of proportional odds fails, we need to consider a strategy for remodeling the data.  If only one or two variables fail the test of proportional odds, a simple option is to remove those variables.  Whether or not we are comfortable doing this will depend very much on the impact on overall model fit.
 
-In the event where the option to remove variables is unattractive, alternative models for ordinal outcomes should be considered.  The most common alternatives (which we will not cover in depth here, but are explored in @ordinal-agresti) are:
+In the event where the option to remove variables is unattractive, alternative models for ordinal outcomes should be considered.  The most common alternatives (which we will not cover in depth here, but are explored in @ordinal) are:
 
 * *Baseline* logistic model.  This model is the same as the multinomial regression model covered in the previous chapter, using the lowest ordinal value as the reference.
 * *Adjacent-category* logistic model.  This model compares each level of the ordinal variable to the next highest level, and it is a constrained version of the baseline logistic model. The `brglm2` package in R offers a function `bracl()` for calculating an adjacent category logistic model.  
