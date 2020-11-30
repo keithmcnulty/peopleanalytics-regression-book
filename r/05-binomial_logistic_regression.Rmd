@@ -24,7 +24,7 @@ The logistic function, as shown in Figure \@ref(fig:logistic-function-verhulst),
 
 ```{r logistic-function-verhulst, fig.align = "center", fig.cap = "Verhulst's Logistic Function modeled both the exponential nature and the natural limit of population expansion", echo = FALSE}
 
-knitr::include_graphics("~/rstudio_projects/eampa/www/02/logistic-curve.png")
+knitr::include_graphics("./www/02/logistic-curve.png")
 
 
 ```

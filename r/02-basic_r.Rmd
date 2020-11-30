@@ -1,10 +1,10 @@
 # The Basics of the R Programming Language 
 
-All of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis.  (I intend to release a sister book with the examples coded in Python very soon).  I have made efforts to keep the code as simple as possible, and where possible I have tried to avoid the use of too many external packages.  For the most part, readers should see (especially in the earlier chapters) that code blocks are short and simple, relying wherever possible on base R functionality.  No doubt there are neater and more effective ways to code some of the material in this book using a wide array of R packages, but my priority has been to keep the code simple, consistent and informative.  
+All of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis.  (Sample implementations in Python are provided in Chapter \@ref(alt-approaches)).  I have made efforts to keep the code as simple as possible, and where possible I have tried to avoid the use of too many external packages.  For the most part, readers should see (especially in the earlier chapters) that code blocks are short and simple, relying wherever possible on base R functionality.  No doubt there are neater and more effective ways to code some of the material in this book using a wide array of R packages, but my priority has been to keep the code simple, consistent and informative.  
 
-For those who wish to follow the method and theory without the implementations in this book, there is no need to read this chapter.  However, the style of this book is to use implementation to illustrate theory and practice, and so tolerance of many code blocks will be necessary.
+For those who wish to follow the method and theory without the implementations in this book, there is no need to read this chapter.  However, the style of this book is to use implementation to illustrate theory and practice, and so tolerance of many code blocks will be necessary as you read onwards.
 
-For those who wish to simply replicate my work as quickly as possible, they will be able to avail of the code block copying feature.  By pointing their mouse to the top right corner of any input code block, a 'copy' icon will appear that will allow them to copy all of the code in that block directly into their session.  Assuming all the required external packages have been installed, these code blocks should all be transportable.  For those who are extra-inquisitive and want to explore how I constructed graphics used for illustration (for which code is usually not displayed), the best place to go is the Github repository for this book. 
+For those who wish to simply replicate the models as quickly as possible, they will be able to avail of the code block copying feature.  By pointing their mouse to the top right corner of any input code block, a 'copy' icon will appear that will allow them to copy all of the code in that block directly into their session.  Assuming all the required external packages have been installed, these code blocks should all be transportable.  For those who are extra-inquisitive and want to explore how I constructed graphics used for illustration (for which code is usually not displayed), the best place to go is the Github repository for this book. 
 
 This chapter is for those who wish to learn the methods in this book but do not know how to use R.  However, it is not intended to be a full tutorial on R.  There are many more qualified individuals and existing resources that would better serve that purpose - in particular I recommend @wickham.  It is recommended that you consult these resources and become comfortable with the basics of R before proceeding into the later chapters of this book.  However, acknowledging that many will want to dive in sooner rather than later, this chapter covers the absolute basics of R that will allow the uninitiated reader to proceed with at least some orientation.
 
@@ -18,14 +18,14 @@ R is a programming language that was originally developed by and for statisticia
 4.  It has a large and growing global community of active users
 5.  It has a large and rapidly growing universe of packages which are all free and which provide the ability to do an extremely wide range of general and highly specialized tasks - both statistical and otherwise.
 
-There is often heated debate about which languages/tools are better for doing non-trivial statistical analysis.  I personally find that R and Python far outperform the other options at this point in time, but that is just my opinion based on my experience, and there are no doubt many others that will disagree.
+There is often heated debate about which languages/tools are better for doing non-trivial statistical analysis.  I personally find that R provides a wider array of resources for those interested in inferential modeling, while Python has a more well developed toolkit for predictive modeling and machine learning.  Since the primary focus of this book is inferential modeling, the in-depth walkthroughs in this book are coded in R.
 
 ## How to start using R
 
 Just like most programming languages, R itself is an interpreter which receives input and returns output.  It is not very easy to use without an IDE.  An IDE is an *Integrated Development Environment*, which is a convenient user interface allowing an R programmer to do all their main tasks including writing and running R code, saving files, viewing data and plots, integrating code into documents and many other things.  By far the most popular IDE for R is RStudio.  An example of what the RStudio IDE looks like can be seen in Figure \@ref(fig:rstudio-ide). 
 
 ```{r rstudio-ide, fig.cap="The RStudio IDE", fig.align="center", echo = FALSE}
-knitr::include_graphics("~/rstudio_projects/eampa/www/R/rstudio-windows.png")
+knitr::include_graphics("./www/R/rstudio-windows.png")
  
 ```
 
@@ -201,7 +201,7 @@ Named list elements can be accessed by using `$`:
 new_list$matrix
 ```
 
-**Dataframes** are the most used data structure in R, and are effectively a named list of vectors of the same length, with each vector as a column.  As such, it has a great resemblance to a typical database table or spreadsheet.  
+**Dataframes** are the most used data structure in R, and are effectively a named list of vectors of the same length, with each vector as a column.  As such, a dataframe is very similar in nature to a typical database table or spreadsheet.  
 
 ```{r}
 # two vectors of different types but same length
@@ -367,7 +367,7 @@ head(n = 3, x = salespeople)
 Most functions in R have excellent help documentation.  To get help on the `head()` function, type `help(head)` or `?head`.  This will display the results in the Help browser window in RStudio.  Alternatively you can open the `Help` browser window directly in RStudio and do a search there. An example of the browser results for `head()` is in Figure \@ref(fig:head-help).
 
 ```{r head-help, fig.cap="Results of a search for the `head()` function in the RStudio Help browser", fig.align="center", echo = FALSE}
-knitr::include_graphics("~/rstudio_projects/eampa/www/R/head-help.png")
+knitr::include_graphics("./www/R/head-help.png")
 ```
 
 The help page normally shows the following:
@@ -402,7 +402,7 @@ Once a package is loaded from your library, you can use any of the functions ins
 
 Problems can occur when you load packages that contain functions with the same name as functions that already exist in your R session.  Often the messages you see when loading a package will alert you to this.  When R is faced with a situation where a function exists in multiple packages you have loaded, R always defaults to the function in *the most recently loaded* package.  This may not always be what you intended.
 
-One way to completely avoid this issue is to get in the habit of *namespacing* your functions.  To namespace, you simply use `package::function()`, so to safely call `stepAIC()` from `MASS`, you use `MASS::stepAIC()`.  At all times in this book when a function is being called from a package outside base R, I use namespacing to call that function.  This should help avoid confusion about which packages are being used for which functions.
+One way to completely avoid this issue is to get in the habit of *namespacing* your functions.  To namespace, you simply use `package::function()`, so to safely call `stepAIC()` from `MASS`, you use `MASS::stepAIC()`.  Most of the time in this book when a function is being called from a package outside base R, I use namespacing to call that function.  This should help avoid confusion about which packages are being used for which functions.
 
 ### The pipe operator
 
@@ -481,7 +481,7 @@ When first faced with an error that you can't understand, try not to get frustra
 2.  Why is a vector known as a homogeneous data structure?
 3.  Give an example of a heterogeneous data structure in R.
 4.  What is the difference between `NA` and `"NA"`?
-5.  What operator is used to see named elements of a list and named columns of a dataframe?
+5.  What operator is used to return named elements of a list and named columns of a dataframe?
 6.  Describe some functions that are used to manipulate dataframes.
 7.  What is a package and how do you install and use a new package?
 8.  Describe what is meant by 'namespacing' and why it might be useful?

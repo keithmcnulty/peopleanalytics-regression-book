@@ -1,4 +1,4 @@
-# Alternative technical approaches in R and Python
+# Alternative technical approaches in R and Python {#alt-approaches}
 
 As outlined earlier in this book, all technical implementations of the modeling techniques in previous chapters have relied wherever possible on base R code and specialist packages for specific methodologies - this allowed a focus on the basics of understanding, running and interpreting these models which is the key aim of this book.    For those interested in a wider range of technical options for running inferential statistical models, this chapter illustrates some alternative options and should be considered a starting point for those interested rather than an in-depth exposition.  
 

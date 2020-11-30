@@ -171,7 +171,7 @@ You will notice that we have so far used two variables on a continuous scale to 
 cor(salespeople$sales, salespeople$promoted, use = "complete.obs")
 ```
 
-Correlating ranked variables involve an adjusted approach leading to **Spearman's correlation** coefficient or **Kendall's Tau**, among others.  We will not dive into the mathematics of this here, but a good source is @bhattacharya.  Spearman's or Kendall's variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.
+Correlating ranked variables involves an adjusted approach leading to **Spearman's correlation** coefficient or **Kendall's Tau**, among others.  We will not dive into the mathematics of this here, but a good source is @bhattacharya.  Spearman's or Kendall's variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.
 
 ```{r}
 # spearman's correlation
@@ -186,11 +186,11 @@ Both in this case indicate a low to moderate correlation.  Spearman or Kendall c
 
 ## Distribution of random variables
 
-In our last chapter we discussed how, when we build a model, we are using a set of sample data to infer a general relationship on a bigger population.  A major underlying assumption in our inference is that we believe the real life variables we are dealing with are random in nature.  For example, we might be trying to model the drivers of the voting choice of millions of people in a national election, but we may only have sample data on a few thousand people.  When we infer nationwide voting intentions from our sample, we assume that the characteristics of the voting population are random variables. 
+When we build a model, we are using a set of sample data to infer a general relationship on a larger population.  A major underlying assumption in our inference is that we believe the real life variables we are dealing with are random in nature.  For example, we might be trying to model the drivers of the voting choice of millions of people in a national election, but we may only have sample data on a few thousand people.  When we infer nationwide voting intentions from our sample, we assume that the characteristics of the voting population are random variables. 
 
 ### Sampling of random variables
 
-When we describe variables as random, we are assuming that they take a form which is *independent and identically distributed*.  Using our `salespeople` data as an example, we are assuming that the sales of one person in the data set is not influenced by the sales of another person in the data set.  In this case, this seems like a reasonable assumption, and we will be making it for many (though not all) of the statistical methods used in this book.  However, it is good to recognize that there are scenarios where this assumption cannot be made.  For example, if the salespeople worked together in serving the same customers on the same products, and each individuals sales represented some proportion of the overall sales to the customer, we cannot say that the sales data is independent and identically distributed.  In this case we will expect to see some hierarchy in our data and will need to adjust our techniques accordingly to take this into consideration.      
+When we describe variables as random, we are assuming that they take a form which is *independent and identically distributed*.  Using our `salespeople` data as an example, we are assuming that the sales of one person in the data set is not influenced by the sales of another person in the data set.  In this case, this seems like a reasonable assumption, and we will be making it for many (though not all) of the statistical methods used in this book.  However, it is good to recognize that there are scenarios where this assumption cannot be made.  For example, if the salespeople worked together in serving the same customers on the same products, and each individual's sales represented some proportion of the overall sales to the customer, we cannot say that the sales data is independent and identically distributed.  In this case we will expect to see some hierarchy in our data and will need to adjust our techniques accordingly to take this into consideration.      
 
 Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let's test this with a little experiment on our `salespeople` data.  Figure \@ref(fig:sales-sample) shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the `salespeople` dataset and creating a histogram of the resulting mean sales values.  We can see how greater numbers of samples (down the rows) leads to a more normal distribution and larger sample sizes (across the columns) leads to a 'spikier' distribution with a smaller standard deviation.
 
@@ -249,12 +249,12 @@ gridExtra::grid.arrange(plotdist(50, 10), plotdist(100, 10), plotdist(150, 10),
 
 ### Standard errors and confidence intervals
 
-One consequence of the observations in \@ref(fig:sales-sample) is that the summary statistics calculated from larger sample sizes fall into normal distributions that are 'narrower' and hence represent more precise estimations of the population statistic.  The standard deviation of of a sampled statistic is called the **standard error** of that statistic.  In the special case of a sampled mean, the formula for the standard error of the mean can be derived to be
+One consequence of the observations in Figure \@ref(fig:sales-sample) is that the summary statistics calculated from larger sample sizes fall into normal distributions that are 'narrower' and hence represent more precise estimations of the population statistic.  The standard deviation of of a sampled statistic is called the **standard error** of that statistic.  In the special case of a sampled mean, the formula for the standard error of the mean can be derived to be
 
 $$
 SE = \frac{\sigma}{\sqrt{n}}
 $$
-Where \sigma is the (sample) standard deviation.  This confirms that the standard error of the mean decreases with greater sample size, confirming our intuition that the estimation of the mean is more precise with larger samples.
+Where $\sigma$ is the (sample) standard deviation and $n$ is the sample size.  This confirms that the standard error of the mean decreases with greater sample size, confirming our intuition that the estimation of the mean is more precise with larger samples.
 
 To apply this logic to our `salespeople` data set, let's take a random sample of 100 values of `customer_rate`.
 
@@ -289,7 +289,7 @@ Observations about the distribution of statistics on random variables allow us t
 
 ### Testing for a difference in sample means (Student's t-test) {#means-sig}
 
-Imagine that we are asked if the sales of low performers are the same as the sales of high performers in our `salespeople` data set.  Let's take two subsets of our data for those with a performance ratiing of 1 and those with a performance rating of 4, and calculate the difference in mean sales.
+Imagine that we are asked if, in general, the sales of low performing salespeople are the same as the sales of high performing salespeople, but we only have access to the data sample in our `salespeople` data set.  Let's take two subsets of our data for those with a performance ratiing of 1 and those with a performance rating of 4, and calculate the difference in mean sales.
 
 ```{r}
 # take two performance group samples 
@@ -328,7 +328,8 @@ Since this has returned `FALSE`, we conclude that a mean difference of zero is o
 
 Looking at this graphically, we are assuming a normal distribution of the mean difference, and we are determining where zero sits in that distribution, as in Figure \@ref(fig:norm-dist).
 
-```{r norm-dist, fig.cap = "Distribution of the mean sales difference between `perf1` and `perf4` with 95% confidence intervals marked by red dashed lines and a mean difference of zero marked with a blue solid line", fig.align = "center", echo = FALSE}
+
+```{r norm-dist, fig.cap = "Distribution of the mean sales difference between `perf1` and `perf4`, 95% confidence intervals (red lines) and a zero difference (blue line)", fig.align = "center", echo = FALSE}
 ggplot(data = data.frame(x = c(-5, 5)), aes(x)) +
   stat_function(fun = dnorm, n = 101, args = list(mean = 0, sd = 1)) + ylab("") +
   xlab("Standard errors around sample mean difference") +
@@ -336,6 +337,7 @@ ggplot(data = data.frame(x = c(-5, 5)), aes(x)) +
   geom_vline(xintercept = 2, color = "red", linetype = "dashed") +
   geom_vline(xintercept = - diff/se, color = "blue", linetype = "solid")
 ```
+
 
 The red dashed lines in this diagram represent the 95% confidence interval around the mean difference of our two samples.  The 'tails' of the curve outside of these two lines each represent a maximum of 0.025 probability that zero is the population mean difference.  So we can see that the position of the blue line can correspond to a *maximum probability* that the population mean difference is zero.  We call this the *p-value* of the hypothesis test^[We call this type of hypothesis test a *two tailed* test, because the tested population mean can be either higher or lower than the sample mean, thus it can appear in any of the two tails for the null hypothesis to be rejected.  *One-tailed* tests are used when you are testing for an alternative hypothesis that the difference is specifically "less than zero" or "greater than zero".  In the `t.test()` function in R, you can specify this in the arguments].
 
@@ -427,10 +429,10 @@ chisq.test(contingency)
 Where relevant in these discussion exercises, let $X = x_1, x_2, ..., x_n$ and $Y = y_1, y_2, ..., y_m$ be samples of two random variables of length $n$ and $m$ respectively.
 
 1.  If the values of $X$ can only take the form 0 or 1, and if their mean is 0.25, how many of the values equal 0?
-2.  If $m = n$ and $X + Y$ is formed from the element-wise sum of $X$ and $Y$, show that the mean of X + Y is equal to the sum of the mean of X and the mean of Y.
+2.  If $m = n$ and $X + Y$ is formed from the element-wise sum of $X$ and $Y$, show that the mean of $X + Y$ is equal to the sum of the mean of $X$ and the mean of $Y$.
 3.  For a scalar multiplier $a$, show that $\mathrm{Var}(aX) = a^2\mathrm{Var}(X)$.
-4.  Explain why the standard deviation of X is a more intuitive measure of the deviation in X than the variance.
-5.  Describe which two types of correlation you could use if X is an ordered ranking.
+4.  Explain why the standard deviation of $X$ is a more intuitive measure of the deviation in $X$ than the variance.
+5.  Describe which two types of correlation you could use if $X$ is an ordered ranking.
 6.  Describe the role of sample size and sampling frequency in the distribution of sampling means for a random variable.
 7.  Describe what a standard error is and how it relates to the probability density of a random variable statistic. 
 8.  If we conduct a t-test on the null hypothesis that $X$ and $Y$ are drawn from populations with the same mean, describe what a p-value of 0.01 means. 
