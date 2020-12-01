@@ -14,7 +14,7 @@ library(latex2exp)
 
 Linear Regression, also known as *Ordinary Least Squares Linear Regression* or *OLS Regression* for short, was developed independently by the mathematicians Gauss and Legendre at or around the first decade of the 19th century, and there remains today some controversy about who should take credit for its discovery.  However,  at the time of its discovery it was not actually known as "regression".  This term became more popular following the work of Francis Galton - a British intellectual jack-of-all-trades and a cousin of Charles Darwin.  In the late 1800s, Galton had researched the relationship between the heights of a population of almost 1,000 children and the average height of their parents (mid-parent height).  He was surprised to discover that the height of parents was not a perfect predictor of the height of children, and that in general children's heights were more likely to be in a 'narrower' range that was closer to the mean for the total population.  He described this statistical phenomenon as a "regression towards mediocrity" ("regression" comes from a Latin term approximately meaning "go back").  
 
-Figure \@ref(fig:galton-fig) is an illustration of Galton's data with the black solid line showing what a perfect relationship would look like, and the red dashed line showing the actual relationship he determined.  You can regard the red dashed line as 'going back' from the perfect relationship (symbolized by the black line) in the direction of a flat line representing the mean of the child heights.  This might give you an intuition that will help you understand later sections of this chapter. In an arbitrary data set, the red dashed line can lie anywhere between a flat line at the mean of $y$ (no relationship) and the solid black line (a perfect relationship). Linear Regression is about finding the red dashed line in your data and using it to explain the degree to which your input data (the $x$ axis) explains or predicts your outcome data (the $y$ axis). 
+Figure \@ref(fig:galton-fig) is an illustration of Galton's data with the black solid line showing what a perfect relationship would look like, and the red dashed line showing the actual relationship he determined.  You can regard the red dashed line as 'going back' from the perfect relationship (symbolized by the black line) in the direction of a horizontal line representing the mean of the child heights.  This might give you an intuition that will help you understand later sections of this chapter. In an arbitrary data set, the red dashed line can lie anywhere between a horizontal line at the mean of $y$ (no relationship) and the solid black line (a perfect relationship). Linear Regression is about finding the red dashed line in your data and using it to explain the degree to which your input data (the $x$ axis) explains your outcome data (the $y$ axis). 
 
 ```{r galton-fig, fig.cap="Galton's study of the height of children introduced the term 'regression'", out.width='80%', fig.asp=.75, fig.align='center', echo = FALSE}
 knitr::include_graphics("./www/01/Regression-to-the-mean.png")
@@ -29,7 +29,7 @@ Linear regression is particularly suited to a problem where:
 
 In reality, number 2 is not that easy to determine with any certainty, although running some simple bivariate correlations between inputs and outcome can give a sense of linearity/non-linearity.  Linear Regression can be a first port of call before trying more complex modeling approaches.  It is simple and easy to explain, and analysts will often accept a somewhat poorer fit using Linear Regression in order to avoid having to interpret a more complex model. 
 
-Here are some illustratory examples of questions that could be (at least initially) tackled with a Linear Regression approach:
+Here are some illustratory examples of questions that could be tackled with a Linear Regression approach:
 
 * Given a data set of age, education level, education discipline, years of employment, industry employed in and current salary, to what extent can current salary be explained by the rest of the data?
 
@@ -232,7 +232,7 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
 
 So for most of our observations (though not all) we seem to have reduced the 'distance' from the random model by fitting our new model.  If we average the square of our residuals for the fitted model, we obtain the mean sum of squares error of our fitted model, which calculates to `r round(sum(model$residuals^2)/6, 2)`.
 
-Therefore before we fit our model, we have an average error of `r round((5/6)*var(d$Final), 2)`, and after we fit it, we have an average error of `r round(sum(model$residuals^2)/6, 2)`.  So we have reduced the average error of our model by `r round((5/6)*var(d$Final), 2) - round(sum(model$residuals^2)/6, 2)` or, expressed as a proportion, by `r round((round((5/6)*var(d$Final), 2) - round(sum(model$residuals^2)/6, 2))/((5/6)*var(d$Final)), 2)`.  In other words, we can say that our model explains `r  round(((5/6)*var(d$Final) - sum(model$residuals^2)/6)/((5/6)*var(d$Final)), 2)` (or `r  round(((5/6)*var(d$Final) - sum(model$residuals^2)/6)/((5/6)*var(d$Final)), 2) * 100`%) of the variance of our outcome.  
+Therefore before we fit our model, we have an average error of `r round((9/10)*var(d$Final), 2)`, and after we fit it, we have an average error of `r round(sum(model$residuals^2)/10, 2)`.  So we have reduced the average error of our model by `r round((9/10)*var(d$Final), 2) - round(sum(model$residuals^2)/10, 2)` or, expressed as a proportion, by `r round((round((9/10)*var(d$Final), 2) - round(sum(model$residuals^2)/10, 2))/((9/10)*var(d$Final)), 2)`.  In other words, we can say that our model explains `r  round(((9/10)*var(d$Final) - sum(model$residuals^2)/10)/((9/10)*var(d$Final)), 2)` (or `r  round(((9/10)*var(d$Final) - sum(model$residuals^2)/10)/((9/10)*var(d$Final)), 2) * 100`%) of the variance of our outcome.  
 
 This metric is known as the $R^2$ of our model and is the primary metric used in measuring the fit of a linear regression model^[As a side note, in a simple regression model like this, where there is only one input variable, we have the simple identity $R^2 = r^2$, where $r$ is the correlation between the input and outcome (for our small set of ten datapoints here, the correlation is `r round(cor(d$Yr3, d$Final), 3)`)]. 
 
@@ -281,7 +281,7 @@ model_summary <- summary(model)
 model_summary$coefficients
 ```
 
-The 95% confidence interval corresponds to approximately two Standard Errors above or below the estimated value. For a given coefficient, if this confidence interval includes zero, you cannot reject the hypothesis that the variable has no relationship with the outcome.  Another indicator of this is the `Pr(>|t|)` column of the coefficient summary, which represents the *p-value* of the hypothesis test that the input variable has no relationship with the outcome.  If this value is less than a certain threshold (usually 0.05), you can conclude that this variable has a statistically significant relationship with the outcome. To see the precise confidence intervals for your model coefficients, you can use the `confint()` function:
+The 95% confidence interval corresponds to approximately two Standard Errors above or below the estimated value. For a given coefficient, if this confidence interval includes zero, you cannot reject the hypothesis that the variable has no relationship with the outcome.  Another indicator of this is the `Pr(>|t|)` column of the coefficient summary, which represents the *p-value* of the null hypothesis that the input variable has no relationship with the outcome.  If this value is less than a certain threshold (usually 0.05), you can conclude that this variable has a statistically significant relationship with the outcome. To see the precise confidence intervals for your model coefficients, you can use the `confint()` function:
 
 ```{r}
 confint(model)
@@ -373,9 +373,7 @@ You may also recall from Chapter \@ref(inf-model) that any datapoint in our outc
 predict(newmodel, new_students, interval = "prediction")
 ```
 
-You will notice that the prediction interval is substantially wider than the confidence interval.  However, in human processes where there is often room for judgment, the prediction interval can be a valuable piece of information.  In our example here, the Faculty may wish to provide their staff with some discretion on the Final examination score based on their observations of the individual in class, or on their perception of their learning 'trajectory'.  Providing a recommended score and a range around that score can help facilitate, but also control, this discretionary element of the process.
-
-In reality, the process of developing a model to *predict* an outcome can be quite different from developing a model to *explain* an outcome.  For a start, it is unlikely that you would use your entire sample to fit a predictive model, as you would want to reserve a portion of your data to test for its fit on new data.  Since the focus of this book is inferential modeling, much of this topic will be out of our scope.
+As discussed in Chapter \@ref(inf-model), the process of developing a model to *predict* an outcome can be quite different from developing a model to *explain* an outcome.  For a start, it is unlikely that you would use your entire sample to fit a predictive model, as you would want to reserve a portion of your data to test for its fit on new data.  Since the focus of this book is inferential modeling, much of this topic will be out of our scope.
 
 ## Managing inputs in linear regression
 
@@ -391,13 +389,13 @@ The first step in managing your input variables is to make a judgment about thei
 
 ### Sparseness ('missingness') of data
 
-Missing data is a very common problem in modeling.  If an observation has missing data in a variable that is being included in the model, that observation will be ignored, or an error will be thrown.  This forces a model trained on a smaller set of data, which can compromise fit and predictive accuracy.  Running summary functions on your data (eg `summary()` in R) will reveal variables that contain missing data if it exists.
+Missing data is a very common problem in modeling.  If an observation has missing data in a variable that is being included in the model, that observation will be ignored, or an error will be thrown.  This forces a model trained on a smaller set of data, which can compromise its powers of inference.  Running summary functions on your data (eg `summary()` in R) will reveal variables that contain missing data if it exists.
 
 There are three main options for how missing data is handled:
 
 1.  If the data for a given variable is relatively complete and only a small number of observations are missing, it's usually best and simplest to remove the observations that are missing from the dataset.  Note that many modeling functions (though not all) will take care of this automatically.
 
-2.  As data becomes more sparse, removing observations becomes less of an option.  If the sparseness is massive (eg more than half of the data is missing), then there is no choice but to remove that variable from the model.  While this may be unsatisfactory for a given variable (because it is thought to have an important explanatory role), the fact remains that data that is mostly missing is not a good measure of that variable in the first place.
+2.  As data becomes more sparse, removing observations becomes less of an option.  If the sparseness is massive (eg more than half of the data is missing), then there is no choice but to remove that variable from the model.  While this may be unsatisfactory for a given variable (because it is thought to have an important explanatory role), the fact remains that data that is mostly missing is not a good measure of a construct in the first place.
 
 3.  Moderate sparse data could be considered for imputation.  Imputation methods involve using the overall statistical properties of the entire data set or of specific other variables to 'suggest' what the missing value might be, ranging from simple mean and median values to more complex imputation methods.  Imputation methods are more commonly used in predictive settings, and we will not cover imputation methods in depth here. 
 
@@ -411,7 +409,7 @@ Many models will have categorical inputs rather than numerical inputs.  Categori
 
 Categorical variables do not behave like numerical variables.  There is no sense of quantity in a categorical variable.  We do not know how a Car relates to a Train quantitatively, we only know that they are different. Even for an ordered category, although we know that 'Medium' is higher than 'Low', we do not know how much higher or indeed whether the difference is the same as that between 'High' and 'Medium'.  
 
-In general, all model input variables should take a numeric form.  The most reliable way to do this is to convert categorical values to dummy variables. While some packages and function have a built-in ability to convert categorical data to dummy variables, not all do, so it is important to know how to do this yourself. Consider the following data set:
+In general, all model input variables should take a numeric form.  The most reliable way to do this is to convert categorical values to dummy variables. While some packages and functions have a built-in ability to convert categorical data to dummy variables, not all do, so it is important to know how to do this yourself. Consider the following data set:
 
 ```{r}
 
@@ -462,7 +460,7 @@ You can check whether your linearity assumption was reasonable in a couple of wa
 predicted_values <- newmodel$fitted.values
 true_values <- ugtests$Final
 
-#plot true values against predicted values
+# plot true values against predicted values
 plot(predicted_values, true_values)
 
 ```
@@ -472,7 +470,7 @@ Alternatively, you can plot the residuals of your model against the predicted va
 ```{r resplot, fig.cap = "Plot of residuals against fitted/predicted scores", fig.align = "center",}
 residuals <- newmodel$residuals
 
-#plot residuals against predicted values
+# plot residuals against predicted values
 plot(predicted_values, residuals)
 ```
 
@@ -487,7 +485,7 @@ While a simple plot of residuals against predicted values (such as in Figure \@r
 ```{r resyr2, fig.cap = "Plot of residuals against `Yr2` values", fig.align = "center"}
 Yr2 <- ugtests$Yr2
 
-#plot residuals against Yr2 values
+# plot residuals against Yr2 values
 plot(Yr2, residuals)
 ```
 
@@ -496,7 +494,7 @@ Then we can plot against `Yr3` in Figure \@ref(fig:resyr3):
 ```{r resyr3, fig.cap = "Plot of residuals against `Yr3` values", fig.align = "center"}
 Yr3 <- ugtests$Yr3
 
-#plot residuals against Yr3 values
+# plot residuals against Yr3 values
 plot(Yr3, residuals)
 ```
 
@@ -526,10 +524,10 @@ While some intercorrelation between input variables can be expected and tolerate
 ```{r}
 library(mctest)
 
-#diagnose possible overall presence of multicollinearity
+# diagnose possible overall presence of multicollinearity
 mctest::omcdiag(newmodel)
 
-#if necessary, diagnose specific multicollinear variables using VIF 
+# if necessary, diagnose specific multicollinear variables using VIF 
 mctest::imcdiag(newmodel, method = "VIF")
 
 ```
@@ -548,7 +546,8 @@ Recall that our model of student examination scores took each year's score as an
 In our students examination data in `ugtests`, we could consider extending our model to not only include the individual years examinations, but also to include the impact of combined changes across multiple years.  For example, we could combine the impact of `Yr2` and `Yr3` examinations by multiplying them together in our model.
 
 ```{r}
-interaction_model <- lm(data = ugtests, formula = Final ~ Yr2 + Yr3 + Yr2*Yr3)
+interaction_model <- lm(data = ugtests, 
+                        formula = Final ~ Yr2 + Yr3 + Yr2*Yr3)
 summary(interaction_model)
 ```
 
@@ -563,9 +562,6 @@ $$
 &= \beta_0 + \gamma\mathrm{Yr3} + \beta_2\mathrm{Yr2}
 \end{aligned}
 $$
-```
-
-
 where $\gamma = \beta_1 + \beta_3\mathrm{Yr2}$.  Therefore our model has coefficients which are not constant, but change with the values of the input variables.  We can conclude that the effect of an extra point in the examination in Year 3 will be different depending on how the student performed in Year 2.  Visualizing this, we can see in Interactive Figure \@ref(fig:non-lin-reg-3d) that this non-constant term introduces a curvature to our fitted surface that aligns it a little more closely with the observations in our data set. 
 
 ```{r non-lin-reg-3d, fig.cap = "3D Visualization of the fitted `interaction_model` against the `ugtests` data", fig.align="center", echo = FALSE}

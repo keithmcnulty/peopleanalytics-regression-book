@@ -11,27 +11,20 @@ link-citations: yes
 github-repo: keithmcnulty/eampa
 ---
 
-# Foreword and introduction {-}
+# Welcome {-}
 
-As a fresh-faced undergraduate in Mathematics in the 1990s, I took an introductory course in statistics in my first term.  I would never take another.  I struggled with the subject and scored my lowest grade in it, and swore I would never go anywhere near it again.  How wrong I was.  Today I live and breathe statistics.  How did that happen?  
+Welcome to the website for the book *Handbook of Regression Modeling in People Analytics* by [Keith McNulty](https://twitter.com/dr_keithmcnulty).  Content can be used freely with appropriate referencing.
 
-Firstly, statistics is about data, and amazingly there was not a single scrap of data in that course I took all those years ago.  Just abstract formulas and theory, with no attempt to relate that theory to a real problem. I learned from this, and you'll see example problems all over this book so you can see that the mathematics has a purpose.  
+This book is available in [bootstrap format]() and, for those who prefer, in a more plain [gitbook format]().
 
-Secondly, working with real data in my job and in my personal learning activities encouraged me to re-engage with statistics and come at it from a different angle - bottom-up you could say.  Suddenly all those concepts that were put up on whiteboards using abstract formulas had real meaning and consequence to the data I was working with.  I learned from this too, and this book is supported by numerous data sets designed for the reader to engage with.
+This book is in permanent open review.  Feedback and requests for new content should be made via the [issues](https://github.com/keithmcnulty/peopleanalytics-regression-book/issues) section of the book's Github repo.
 
-But one more step solidified my new found love of statistics, and that was when I put regression modeling into practice.  Faced with data sets that I initially believed were just far too messy and random to be able to produce genuine insights, I progressively became more and more fascinated by how regression can cut through the messiness, compartmentalize the randomness and lead you straight to inferences that are often surprising both in their clarity and in their conclusions.
+Happy modeling!
 
-Hence my motivation for writing this book, which is to give others working in my increasingly growing field of people analytics a starting point for a practical learning of regression methods, with the hope that they will see immediate applications to their work and take advantage of a much-underused toolkit that provides strong support for evidence-based practice. 
-
-I am a mathematician who is now a practitioner of analytics.  For this reason you should see that this book in neither afraid of nor obsessed with the mathematics of the methodologies covered.  I also subscribe strongly to the principles of the open-source sharing of knowledge.  If you want to reference the material in this book or use the exercises or data sets in trainings or classes you are free to do so and you do not need to request my permission - I only request that you make reference to this book as the source.  
-
-This book is in permanent open review and I expect it to improve over time.  If you have comments to improve or question any aspect of the contents of this book I encourage you to leave an issue on its Github repo.  This is the most reliable way for me to see your comment.  I promise to consider all comments and input but I do have to make a personal judgment about whether they are helpful to the aims and purpose of this book.  If I do make changes or additions based on your input I will make a point to acknowledge your contribution.
-
-I would like to thank the following individuals who have reviewed or contributed to this book: 
+*Last update:  `r format(Sys.Date(), "%d %B %Y")`*
 
 
-Keith McNulty \
-December 2020
+
 
 
 

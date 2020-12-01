@@ -1,0 +1,27 @@
+delete_merged_file: true
+output_dir: "_book_r"
+
+rmd_files:
+- "index.Rmd"
+- "r/introduction.Rmd"
+- "r/01-intro.Rmd"
+- "r/02-basic_r.Rmd"
+- "r/03-primer_stats.Rmd"
+- "r/04-linear_regression.Rmd"
+- "r/05-binomial_logistic_regression.Rmd"
+- "r/06-multinomial_regression.Rmd"
+- "r/07-ordinal_regression.Rmd"
+- "r/08-hierarchical_data.Rmd"
+- "r/09-survival_analysis.Rmd"
+- "r/10-tidy_modeling.Rmd"
+- "r/11-bibliography.Rmd"
+
+
+# language:
+#   ui:
+#     chapter_name: "Chapter "
+# delete_merged_file: true
+# book_filename: "index.Rmd"
+# rmd_files: ["index_r.Rmd", "r/01-intro.Rmd", "r/02-basic_r.Rmd", "r/03-primer_stats.Rmd", "r/04-linear_regression.Rmd", "r/05-binomial_logistic_regression.Rmd",
+# "r/06-multinomial_regression.Rmd", "r/07-ordinal_regression.Rmd", "r/08-hierarchical_data.Rmd", "r/09-survival_analysis.Rmd", "r/10-tidy_modeling.Rmd",
+# "r/11-bibliography.Rmd"]

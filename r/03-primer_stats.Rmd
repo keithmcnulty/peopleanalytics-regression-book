@@ -1,4 +1,4 @@
-# Statistics foundations
+# Statistics Foundations
 
 To properly understand multivariate models, an analyst needs to have a decent grasp of foundational statistics.  Many of the assumptions and results of multivariate models require an understanding of these foundations in order to be properly interpreted.  There are three topics that are particularly important for those proceeding further in this book:
 
@@ -16,7 +16,7 @@ url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/salespe
 salespeople <- read.csv(url)
 ```
 
-Let's take a brief look at first few rows of this data to make sure we know what is inside it.
+Let's take a brief look at the first few rows of this data to make sure we know what is inside it.
 
 ```{r}
 head(salespeople)
@@ -40,10 +40,10 @@ Any collection of numerical data on a given measure will have a mean and a varia
 
 ### Mean, variance and standard deviation
 
-The **mean** is the average value of the data and is defined by adding up all the values and dividing by the number of datapoints.  If the data set contains the $N$ datapoints $x_1, x_2, ..., x_N$, then the mean is defined as:
+The **mean** is the average value of the data and is defined by adding up all the values and dividing by the number of observations.  If the data set contains the $N$ observations $x_1, x_2, ..., x_N$, then the mean $\mu$ is defined as:
 
 $$
-\frac{1}{N}\sum_{i = 1}^{N}x_i
+\mu = \frac{1}{N}\sum_{i = 1}^{N}x_i
 $$
 
 The mean can have a different interpretation depending on the type of data being studied.  Let's look at the mean of three different columns of our `salespeople` data, making sure to ignore any missing data.
@@ -58,7 +58,7 @@ This looks very intuitive and appears to be the average amount of sales made by 
 mean(salespeople$promoted, na.rm = TRUE)
 ```
 
-Given that this data can only have the value of 0 or 1, we interpret this mean as *likelihood* or *expectation* that an individual will be labelled as 1.  That is, the average probability of promotion in the data set.  If this data showed a perfectly even likelihood of promotion, we would expect this to take the value of 0.5.  But it is lower than 0.5, which tells us that the majority of individuals are not promoted.
+Given that this data can only have the value of 0 or 1, we interpret this mean as *likelihood* or *expectation* that an individual will be labelled as 1.  That is, the average probability of promotion in the data set.  If this data showed a perfectly random likelihood of promotion, we would expect this to take the value of 0.5.  But it is lower than 0.5, which tells us that the majority of individuals are not promoted.
 
 ```{r}
 mean(salespeople$performance, na.rm = TRUE)
@@ -68,7 +68,7 @@ Given that this data can only have the values 1, 2, 3 or 4, we interpret this as
 
 Other common statistical summary measures include the *median*, which is the middle value when the values are ranked in order, and the *mode*, which is the most frequently occurring value.
 
-The **variance** is a measure of how much the data varies around its mean.  There are two different definitions of variance.  The **population variance** assumes that there is no sampling and is defined as the average squared difference from the mean.  If $\mu$ is the mean value of $X = x_1, x_2, ..., x_N$, then population variance is
+The **variance** is a measure of how much the data varies around its mean.  There are two different definitions of variance.  The **population variance** assumes that there is no sampling and is defined as the average squared difference from the mean.  If $\mu$ is the mean value of $X = x_1, x_2, ..., x_N$, then the population variance is
 
 $$
 \mathrm{Var}_p(X) = \frac{1}{N}\sum_{i = 1}^{N}(x_i - \mu)^2
@@ -123,7 +123,7 @@ Given the range of sales is [`r range(salespeople$sales, na.rm = TRUE)`] and the
 
 ### Covariance and correlation
 
-The *covariance* between two variables is a measure the extent to which one changes as the other changes.  If $Y = y_1, y_2, ..., y_N$ is a second variable, and $\mu_X$ and $\mu_Y$ are the means of X and Y respectively, then the **sample covariance** of $X$ and $Y$ is defined as:
+The *covariance* between two variables is a measure of the extent to which one changes as the other changes.  If $Y = y_1, y_2, ..., y_N$ is a second variable, and $\mu_X$ and $\mu_Y$ are the means of X and Y respectively, then the **sample covariance** of $X$ and $Y$ is defined as:
 
 $$
 \mathrm{cov}_s(X, Y) = \frac{1}{N - 1}\sum_{i = 1}^{N}(x_i - \mu_X)(y_i - \mu_Y)
@@ -163,7 +163,7 @@ As before, there is a sample and population version of the correlation coefficie
 cor(salespeople$sales, salespeople$customer_rate, use = "complete.obs")
 ```
 
-This tells us that there is a moderate positive correlation between sales and customer_rating.
+This tells us that there is a moderate positive correlation between sales and customer rating.
 
 You will notice that we have so far used two variables on a continuous scale to demonstrate covariance and correlation. Pearson's correlation can also be used between a continuous scale and a dichotomous (binary) scale variable, and this is known as a **point-biserial correlation**.
 
@@ -175,10 +175,12 @@ Correlating ranked variables involves an adjusted approach leading to **Spearman
 
 ```{r}
 # spearman's correlation
-cor(salespeople$sales, salespeople$performance, method = "spearman", use = "complete.obs")
+cor(salespeople$sales, salespeople$performance, 
+    method = "spearman", use = "complete.obs")
 
 # kendall's correlation
-cor(salespeople$sales, salespeople$performance, method = "kendall", use = "complete.obs")
+cor(salespeople$sales, salespeople$performance, 
+    method = "kendall", use = "complete.obs")
 ```
 
 Both in this case indicate a low to moderate correlation.  Spearman or Kendall can also be used to correlate a ranked and a dichotomous variable, and this is known as a **rank-biserial correlation**.
@@ -192,7 +194,7 @@ When we build a model, we are using a set of sample data to infer a general rela
 
 When we describe variables as random, we are assuming that they take a form which is *independent and identically distributed*.  Using our `salespeople` data as an example, we are assuming that the sales of one person in the data set is not influenced by the sales of another person in the data set.  In this case, this seems like a reasonable assumption, and we will be making it for many (though not all) of the statistical methods used in this book.  However, it is good to recognize that there are scenarios where this assumption cannot be made.  For example, if the salespeople worked together in serving the same customers on the same products, and each individual's sales represented some proportion of the overall sales to the customer, we cannot say that the sales data is independent and identically distributed.  In this case we will expect to see some hierarchy in our data and will need to adjust our techniques accordingly to take this into consideration.      
 
-Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let's test this with a little experiment on our `salespeople` data.  Figure \@ref(fig:sales-sample) shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the `salespeople` dataset and creating a histogram of the resulting mean sales values.  We can see how greater numbers of samples (down the rows) leads to a more normal distribution and larger sample sizes (across the columns) leads to a 'spikier' distribution with a smaller standard deviation.
+Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let's test this with a little experiment on our `salespeople` data.  Figure \@ref(fig:sales-sample) shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the `salespeople` dataset and creating a histogram of the resulting mean sales values.  We can see how greater numbers of samples (down the rows) leads to a more normal distribution curve and larger sample sizes (across the columns) leads to a 'spikier' distribution with a smaller standard deviation.
 
 
 ```{r sales-sample, fig.cap="Histogram and density of mean `sales` based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)", fig.align = "center", echo = FALSE, warning = FALSE}
@@ -249,7 +251,7 @@ gridExtra::grid.arrange(plotdist(50, 10), plotdist(100, 10), plotdist(150, 10),
 
 ### Standard errors and confidence intervals
 
-One consequence of the observations in Figure \@ref(fig:sales-sample) is that the summary statistics calculated from larger sample sizes fall into normal distributions that are 'narrower' and hence represent more precise estimations of the population statistic.  The standard deviation of of a sampled statistic is called the **standard error** of that statistic.  In the special case of a sampled mean, the formula for the standard error of the mean can be derived to be
+One consequence of the observations in Figure \@ref(fig:sales-sample) is that the summary statistics calculated from larger sample sizes fall into normal distributions that are 'narrower' and hence represent more precise estimations of the population statistic.  The standard deviation of a sampled statistic is called the **standard error** of that statistic.  In the special case of a sampled mean, the formula for the standard error of the mean can be derived to be
 
 $$
 SE = \frac{\sigma}{\sqrt{n}}
@@ -461,5 +463,5 @@ For these exercises, download the charity donation dataset from https://raw.gith
 7.  By using an appropriate hypothesis test, determine if the mean age of those who made a recent donation is different from those who did not.
 8.  By using an appropriate hypothesis test, determine if there is a difference in whether or not a recent donation was made according to where people reside.
 9. **Extension:** By using an appropriate hypothesis test, determine if the age of those who have recently donated is at least 10 years older than those who have not recently donated in the population.
-10. **Extension:** By using an appropriate hypothesis test, determine if the average donation amount is at least ten dollars higher for those who recently donated versus those who did not.  Retest for 20 dollars higher.
+10. **Extension:** By using an appropriate hypothesis test, determine if the average donation amount is at least ten dollars higher for those who recently donated versus those who did not.  Retest for twenty dollars higher.
 
