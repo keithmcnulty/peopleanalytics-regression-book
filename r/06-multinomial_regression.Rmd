@@ -12,10 +12,11 @@ If we only wish to make inferences about the choice of each specific category - 
 
 However, in many studies there is a need for a 'reference' category to better understand the relative odds of category membership.  For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the 'most healthy' or 'most recovered' patients)^[In @hosmer-logistic, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare placement, with Outpatient  Care as the reference]. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different, we would need to make decisions on refining the model differently and we interpret the coefficients in a different way.
 
-In this chapter we will briefly look at the stratified approach (which is effectively a repetition of work done in the previous chapter) before focusing more intently on how we construct models and make inferences using a multinomial approach.  
+In this chapter we will briefly look at the stratified approach (which is effectively a repetition of work done in the previous chapter) before focusing more intently on how we construct models and make inferences using a multinomial approach. 
+
 ### Use cases for multinomial logistic regression
 
-Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order.  An underlying assumption is the independence of irrelevant alternatives (IIA).  Alternatively stated, this assumption means that there is no other alternative for the outcome that, if included, that would disproportionately influence the membership of one of the other categories^[Put differently, adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption].  In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives which are beyond the scope of this book.
+Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order.  An underlying assumption is the independence of irrelevant alternatives (IIA).  Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, that would disproportionately influence the membership of one of the other categories^[Put differently, it assumes that adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption].  In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives which are beyond the scope of this book.
 
 Examples of typical situations that might be modeled by multinomial logistic regression include:
 
@@ -89,12 +90,13 @@ A_model <- glm(formula = productA ~ age + gender + children + position_level + t
 summary(A_model)
 ```
 
-We see that all variables except tenure seem to play a significant role in the choice of Product A, with older males more likely to choose other products, and those who are female, younger and have larger families more likely to choose product A.  Based on this, we can consider simplifying our model to remove `tenure`.  We can also calculate odds ratios and perform some model diagnostics if we wish, similar to how we approached the problem in the previous chapter.
+We see that all variables except tenure seem to play a significant role in the choice of Product A.  All else being equal, being older makes the choice of Product A less likely. Males are more likely to choose Product A, and more children and higher levels of seniority also make the choice of Product A more likely.  Based on this, we can consider simplifying our model to remove `tenure`.  We can also calculate odds ratios and perform some model diagnostics if we wish, similar to how we approached the problem in the previous chapter.
 
 These results need to be interpreted carefully.  For example, the odds ratios for the Product A choice based on a simplified model are as follows:
 
 ```{r}
-A_simple <- glm(formula = productA ~ age + children + gender, data = health_insurance)
+A_simple <- glm(formula = productA ~ age + children + gender, 
+                data = health_insurance)
 
 exp(A_simple$coefficients)
 ```
@@ -103,11 +105,11 @@ As an example, and as a reminder from our previous chapter, we interpret the odd
 
 ### Modeling other choices
 
-In a similar way we can produce two other models, representing the choice of Products B and C.  These models produce similar significant variables, except that `position_level` does not appear to be significant in the choice of Product C.  If we simplify all our three models we will have a slightly differently defined model for the choice of Product C versus our models for the other two product choices.  However, we can conclude in general that the only input variable that seems to be non-significant across all choices of product is `tenure`.
+In a similar way we can produce two other models, representing the choice of Products B and C.  These models produce similar significant variables, except that `position_level` does not appear to be significant in the choice of Product C.  If we simplify all our three models we will have a slightly differently defined models for the choice of Product C versus our models for the other two product choices.  However, we can conclude in general that the only input variable that seems to be non-significant across all choices of product is `tenure`.
 
 ## Running a multinomial regression model
 
-An alternative to running separate binary stratified models is to run a multinomial logistic regression model.  A multinomial logistic model will base itself from a defined reference category, and run a linear model on the log-odds of membership of each of the other categories versus the reference category.  Due to its extensive use in epidemiology and medicine, this is often known as the *relative risk* of one category compared to the reference category.  Mathematically speaking, if $X$ is the vector of input variables, and y takes the value $A$, $B$ or $C$, with $A$ as the reference, a multinomial logistic regression model will calculate:
+An alternative to running separate binary stratified models is to run a multinomial logistic regression model.  A multinomial logistic model will base itself from a defined reference category, and run a linear model on the log-odds of membership of each of the other categories versus the reference category.  Due to its extensive use in epidemiology and medicine, this is often known as the *relative risk* of one category compared to the reference category.  Mathematically speaking, if $X$ is the vector of input variables, and $y$ takes the value $A$, $B$ or $C$, with $A$ as the reference, a multinomial logistic regression model will calculate:
 
 $$
 \mathrm{ln}\left(\frac{P(y = B)}{P(y=A)}\right) = \alpha{X}
@@ -131,7 +133,7 @@ health_insurance$product <- relevel(health_insurance$product, ref = "A")
 levels(health_insurance$product)
 ```
 
-Once the reference outcome is defined, the `multinom()` function from the `nnet` package will run a series of binomial models comparing the reference to the alternative.
+Once the reference outcome is defined, the `multinom()` function from the `nnet` package will run a series of binomial models comparing the reference to each of the other categories.
 
 ```{r}
 library(nnet)
@@ -185,13 +187,14 @@ $$
 This means we can obtain the coefficients of C against the reference of B by simply calculating the difference between the coefficients of C and B against the common reference of A.  Let's do this.
 
 ```{r}
+# calculate difference between coefficients
 (coefs_c_to_b <- summary(multi_model)$coefficients[2, ] - summary(multi_model)$coefficients[1, ])
 
 ```
 
 If the number of categories in the outcome variable is limited, this can be an efficient way to obtain the model coefficients against various reference points without having to rerun models.  However, to determine standard errors and p-values for these coefficients the model will need to be recalculated against the new reference.
 
-## Model simplification, fit and confidence for multinomial logistic regression models
+## Model simplification, fit and goodness-of-fit for multinomial logistic regression models
 
 Simplifying a multinomial regression model needs to be done with care.  In a binomial model, there is one set of coefficients and their p-values can be a strong guide to which variables can be removed safely.  However, in multinomial models there are several sets of coefficients to consider.
 
@@ -206,14 +209,14 @@ In @hosmer-logistic, a gradual process of elimination of variables is recommende
 * If there is such a change, retain the variable and proceed to the next non-significant variable
 * Stop when all non-significant variables have been tested
 
-In our case, we can compare the coefficients of the model with and without `tenure` included and verify that the change in the coefficients are not substantial.
+In our case, we can compare the coefficients of the model with and without `tenure` included and verify that the changes in the coefficients are not substantial.
 
 ```{r}
 # remove tenure
 simpler_multi_model <- multinom(formula = product ~ age + gender + children + position_level, 
                                 data = health_insurance, model = TRUE)
 
-#compare coefficients
+# compare coefficients
 summary(multi_model)$coefficients
 summary(simpler_multi_model)$coefficients
 
@@ -221,12 +224,13 @@ summary(simpler_multi_model)$coefficients
 
 We can see that only `genderNon-binary` changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model^[Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done.  In the case of these observations of `genderNon-binary`, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a miniscule effect].  It therefore appears safe to remove `tenure`.  Furthermore, the Aikake Information Criterion is equally valid in multinomial models for evaluating model parsimony.   Here we can calculate that the AIC of our model with and without `tenure` is `r round(AIC(multi_model), 2)` and `r round(AIC(simpler_multi_model), 2)` respectively, confirming that the model without `tenure` is marginally more parsimonious.
 
-### Model fit and confidence
+### Model fit and goodness-of-fit
 
 As with the binomial case, a variety of Pseudo-$R^2$ methods are available to assess the fit of a multinomial logistic regression model, although some of our previous variants (particularly Tjur) are not defined on models with more than one outcome category.
 
 ```{r}
-DescTools::PseudoR2(simpler_multi_model, which = c("McFadden", "CoxSnell", "Nagelkerke"))
+DescTools::PseudoR2(simpler_multi_model, 
+                    which = c("McFadden", "CoxSnell", "Nagelkerke"))
 ```
 
 Due to the fact that multinomial models have more than one set of coefficients, assessing goodness of fit is more challenging, and is still an area of intense research.  The most approachable method to assess model confidence is the Hosmer-Lemeshow test mentioned in the previous chapter, which was extended in @fagerland for multinomial models.  An implementation is available in the `generalhoslem` package in R.  However, the Hosmer-Lemeshow test is not valid for models with a small number of input variables (fewer than ten), and therefore we will not experiment with it here.  For further exploration of this topic, Chapter 8 of @hosmer-logistic is recommended, and for a more thorough treatment of the entire topic of categorical analytics, @agresti is an excellent companion.
@@ -237,7 +241,7 @@ Due to the fact that multinomial models have more than one set of coefficients, 
 
 1.  Describe the difference between a stratified versus a multinomial approach to modeling an outcome with more than two nominal categories.
 2.  Describe how you would interpret the odds ratio of an input variable for a given category in a stratified modeling approach.
-3.  Describe what os meant by the 'reference' of a multinomial logistic regression model with at least three nominal outcome categories.
+3.  Describe what is meant by the 'reference' of a multinomial logistic regression model with at least three nominal outcome categories.
 4.  Describe how you would interpret the odds ratio of an input variable for a given category in a multinomial modeling approach.
 5.  Given a multinomial logistic regression model with outcome categories A, B, C and D and reference category A, describe two ways to determine the coefficients of a multinomial logistic regression model with reference category C.
 6.  Describe a process for safely simplifying a multinomial logistic regression model by removing input variables.

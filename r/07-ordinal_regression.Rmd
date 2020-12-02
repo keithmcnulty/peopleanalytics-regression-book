@@ -2,7 +2,7 @@
 
 Often our outcomes will be categorical in nature, but they will also have an order to them.  These are sometimes known as *ordinal* outcomes.  Some very common examples of this include ratings of some form - for example job performance ratings or survey responses on Likert scales. The appropriate modeling approach for these outcome types is an ordinal logistic regression approach.  Surprisingly, this approach is frequently not understood or adopted by analysts.  Often, they treat the outcome as a continuous variable and perform simple linear regression, which can often lead to wildly inaccurate inferences.  Given the prevalence of ordinal outcomes in people analytics, it would serve analysts well to know how to perform ordinal logistic regression models, how to interpret them and how to confirm their validity. 
 
-In fact, there are numerous known ways to approach the inferential modeling of ordinal outcomes, all of which build on the theory of linear, binomial and multinomial regression which we covered in previous chapters.  In this chapter, we will focus on the most commonly adopted approach - *proportional odds* logistic regression.  Proportional odds models (sometimes known as constrained cumulative logistic models) are regarded by most experts as having the greatest utility value in a broad array of analytic settings, but cannot be used blindly without important checking of underlying assumptions.  
+In fact, there are numerous known ways to approach the inferential modeling of ordinal outcomes, all of which build on the theory of linear, binomial and multinomial regression which we covered in previous chapters.  In this chapter, we will focus on the most commonly adopted approach - *proportional odds* logistic regression.  Proportional odds models (sometimes known as constrained cumulative logistic models) are more attractive than other approaches because of their ease of interpretation, but cannot be used blindly without important checking of underlying assumptions.  
 
 ## When to use it
 
@@ -68,6 +68,7 @@ You are an analyst for a sports broadcaster who is doing a feature on player dis
 Let's download our data and take a quick look at it:
 
 ```{r}
+# download data
 url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/soccer.csv"
 soccer <- read.csv(url)
 
@@ -81,7 +82,8 @@ We see that there are numerous fields that need to be converted to factors befor
 
 ```{r}
 # convert discipline to ordered factor
-soccer$discipline <- ordered(soccer$discipline, levels = c("None", "Yellow", "Red"))
+soccer$discipline <- ordered(soccer$discipline, 
+                             levels = c("None", "Yellow", "Red"))
 
 #check conversion
 str(soccer)
@@ -195,7 +197,7 @@ odds_ratio <- exp(coefficients[ ,"Value"])
 Taking into consideration the p-values, we can interpret our coefficients as follows, in each case assuming that other coefficients are held still:
 
 * Each additional yellow card received in the prior 25 games is associated with an approximately 38% higher odds of greater disciplinary action by the referee
-* Each additional red card received in the prior 25 games is associated with an approximately 47% higher odds of greater diciplinary action by the referee
+* Each additional red card received in the prior 25 games is associated with an approximately 47% higher odds of greater disciplinary action by the referee
 * Strikers have approximately 50% lower odds of greater disciplinary action from referees compared to Defenders
 * A player on a team that lost the game has approximately 62% higher odds of greater disciplinary action versus a player on a team that drew the game
 * A player on a team that won the game has approximately 52% lower odds of greater disciplinary action versus a player on a team that drew the game 
@@ -208,7 +210,8 @@ Similar to binomial and multinomial models, pseudo-$R^2$ methods are available f
 
 ```{r}
 # diagnostics of simpler model
-DescTools::PseudoR2(model, which = c("McFadden", "CoxSnell", "Nagelkerke", "AIC"))
+DescTools::PseudoR2(model, 
+                    which = c("McFadden", "CoxSnell", "Nagelkerke", "AIC"))
 ```
 
 There are numerous tests of goodness of fit/model confidence that can apply to ordinal logistic regression models, and this area is the subject of considerable recent research.  The `generalhoslem` package in R contains routes to four possible tests, with two of them particularly recommended for ordinal models.  Each work in a similar way to the Hosmer-Lemeshow test discussed in \@ref(logistic-gof), by dividing the sample into groups and comparing the observed versus the fitted outcomes using a chi-square test.  Since the null hypothesis is a good model fit, low p-values indicate potential problems with the model.   We run these tests below for reference. For more information, see @fagerland-hosmer, and for a really intensive treatment of ordinal data modeling @ordinal is recommended. 
@@ -218,7 +221,8 @@ There are numerous tests of goodness of fit/model confidence that can apply to o
 # lipsitz test 
 generalhoslem::lipsitz.test(model)
 
-# pulkstenis-robinson test (requires the vector of categorical input variables as an argument)
+# pulkstenis-robinson test 
+# (requires the vector of categorical input variables as an argument)
 generalhoslem::pulkrob.chisq(model, catvars = cats)
 ```
 
@@ -243,11 +247,13 @@ soccer$red <- ifelse(soccer$discipline == "Red", 1, 0)
 Now let's create two binomial logistic regression models for the two higher levels of our outcome variable.
 
 ```{r}
+# model for al least a yellow card
 yellowplus_model <- glm(yellow_plus ~ n_yellow_25 + n_red_25 + position + result + country + level, 
                         data = soccer, family = "binomial")
 
-red_model <- glm(red ~ n_yellow_25 + n_red_25 + position + result + country + level, 
-                        data = soccer, family = "binomial")
+# model for a red card
+red_model <- glm(red ~ n_yellow_25 + n_red_25 + position + result + country + level,
+                 data = soccer, family = "binomial")
 ```
 
 We can now display the coefficients of both models and examine the difference between them:
@@ -268,12 +274,14 @@ Ignoring the intercept which is not of concern here, the differences appear rela
 
 In the previous method, some judgment is required to decide whether the coefficients of the stratified binomial models are 'different enough' to decide on violation of the proportional odds assumption.  For those requiring more formal support, an option is the Brant-Wald test.  Under this test, a generalized ordinal logistic regression model is approximated and compared to the calculated proportional odds model.  A generalized ordinal logistic regression model is simply a relaxing of the proportional odds model to allow for different coefficients at each level of the ordinal outcome variable.
 
-The Wald test is conducted on the comparison of the proportional odds and generalized models. A Wald test is a hypothesis test of the significance of the difference in model coefficients, producing a chi-square statistic.  A low p-value in a Brant-Wald test is an indicator that the coefficient does not satisfy the proportional odds assumption.  The `brant` package in R provides an implementation of the Brant test, and in this case supports our judgment that the proportional odds assumption holds.
+The Wald test is conducted on the comparison of the proportional odds and generalized models. A Wald test is a hypothesis test of the significance of the difference in model coefficients, producing a chi-square statistic.  A low p-value in a Brant-Wald test is an indicator that the coefficient does not satisfy the proportional odds assumption.  The `brant` package in R provides an implementation of the Brant-Wald test, and in this case supports our judgment that the proportional odds assumption holds.
 
 ```{r}
 library(brant)
 brant::brant(model)
 ```
+
+A p-value of less than 0.05 on this test - particularly on the Omnibus plus at least one of the variables - should be interpreted as a failure of the proportional odds assumption.
 
 ### Alternatives to proportional odds models
 
@@ -293,7 +301,7 @@ In the event where the option to remove variables is unattractive, alternative m
 2.  Which key assumption of linear regression is relaxed in order to model ordinal variables using proportional odds?
 3.  Describe the series of binomial logistic regression models that are components of a proportional odds regression model.  What can you say about their coefficients?
 4.  If $y$ is an ordinal outcome variable with at least three levels, and if $x$ is an input variable that has coefficient $\beta$ in a proportional odds logistic regression model, describe how to interpret the odds ratio $e^{\beta}$.
-5.  Describe some approaches for assessing the fit and confidence of an ordinal logistic regression model.
+5.  Describe some approaches for assessing the fit and goodness-of-fit of an ordinal logistic regression model.
 6.  Describe how you would use stratified binomial logistic regression models to validate the key assumption for a proportional odds model.
 7.  Describe a statistical significance test that can support or reject the hypothesis that the proportional odds assumption holds.
 8.  Describe some possible options for situations where the proportional odds assumption is violated.

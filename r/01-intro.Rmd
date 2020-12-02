@@ -94,7 +94,7 @@ The subsequent chapters are organized as follows:
 * Chapter 6 covers multinomial regression.  The walkthrough example and exercise involves modeling the choice of three health insurance policies by company employees based on demographic and position data.
 * Chapter 7 covers ordinal regression.  The walkthrough example involves modeling in-game disciplinary action against soccer players based on prior discipline and other factors.  The exercises involve predicting manager performance based on varied data.
 * Chapter 8 covers modeling options for data with explicit or latent hierarchy.  The first part covers mixed modeling and uses a model of speed dating decisions as a walkthrough and example.  The second part covers latent variable modeling and uses an employee engagement survey as a walkthrough and exercise.
-* Chapter 9 covers survival analysis and cox proportional hazards regression and uses employee attrition as a walkthrough example and exercise.
+* Chapter 9 covers survival analysis and Cox proportional hazards regression and uses employee attrition as a walkthrough example and exercise.
 * Chapter 10 outlines alternative technical approaches to regression modeling in both R and Python.
 
 

@@ -4,9 +4,9 @@ So far in this book we have learned all of the most common foundational regressi
 
 It is very often the case that data has an explicit hierarchy.  For example, each observation in our data may refer to a different individual and each such individual may be a member of a few different groups.  Similarly, each observation might refer to an event involving an individual, and we may have data on multiple events for the same individual.  For a particular problem that we are modeling, we may wish to take into consideration the effect of the hierarchical grouping on the observations.  This requires a model which has a mixture of random effects and fixed effects - called a *mixed model*.
 
-Separately, it can be the case that data we are given could have a latent hierarchy.  The input variables in the data might be acting in combination to measure a smaller set of higher level latent constructs, and we may have a more interpretable model if we hypothesize, confirm and model those latent constructs against our outcome of interest rather than using the explicit input variables.    Latent variable modeling is a common technique to address this situation, and in this chapter we will review a form of latent variable modeling called *structural equation modeling* which is very common especially in making inferences from survey instruments with large numbers of items. 
+Separately, it can be the case that data we are given could have a latent hierarchy.  The input variables in the data might be measures of a smaller set of higher level latent constructs, and we may have a more interpretable model if we hypothesize, confirm and model those latent constructs against our outcome of interest rather than using a larger number of explicit input variables.    Latent variable modeling is a common technique to address this situation, and in this chapter we will review a form of latent variable modeling called *structural equation modeling* which is very effective especially in making inferences from survey instruments with large numbers of items. 
 
-These topics are quote broad and there are many different approaches, techniques and terms involved in mixed modeling and latent variable modeling.  In this chapter we will only cover some of the simpler approaches, which would suffice for the majority of common situations in people analytics.  For a deeper treatment of these topics, see @jiang for mixed models and @bartholomew or @skrondal for latent variable models.
+These topics are quite broad and there are many different approaches, techniques and terms involved in mixed modeling and latent variable modeling.  In this chapter we will only cover some of the simpler approaches, which would suffice for the majority of common situations in people analytics.  For a deeper treatment of these topics, see @jiang for mixed models and @bartholomew or @skrondal for latent variable models.
 
 ## Mixed models for explicit hierarchy in data
 
@@ -67,7 +67,8 @@ url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/speed_d
 speed_dating <- read.csv(url)
 
 # run standard binomial model
-model <- glm(dec ~ agediff + samerace + attr + intel + prob, data = speed_dating, 
+model <- glm(dec ~ agediff + samerace + attr + intel + prob, 
+             data = speed_dating, 
              family = "binomial")
 
 summary(model)
@@ -83,8 +84,8 @@ In the simple case, let's just model a random intercept according to the `iid` o
 # run binomial mixed effects model
 library(lme4)
 iid_intercept_model <- lme4:::glmer(dec ~ agediff + samerace + attr + intel + prob + (1 | iid),
-             data = speed_dating,
-             family = "binomial")
+                                    data = speed_dating,
+                                    family = "binomial")
 
 # view summary without correlation table of fixed effects
 summary(iid_intercept_model, correlation = FALSE)
@@ -218,6 +219,7 @@ We now see that our measurement model comfortably meets all fit requirements.  I
 With a satisfactory measurement model, the structural model is a simple regression formula.  The `sem()` function in `lavaan` can be used to perform a full structural equation model including the measurement model and structural model, as follows:
 
 ```{r}
+# define full SEM using revised measurement model
 full_sem <- "
 # measurement model
 Pol =~ Pol1 + Pol2
@@ -233,6 +235,7 @@ Eco =~ Eco1 + Eco2
 Overall ~ Pol + Hab + Loc + Env + Int + Pers + Nat + Eco
 "
 
+# run full SEM 
 full_model <- lavaan::sem(model = full_sem, data = politics_survey)
 lavaan::summary(full_model, standardized = TRUE)
 ```
@@ -251,7 +254,7 @@ The `Std.all` column of the `Regressions` section of the output provides standar
 semPlot::semPaths(full_model, whatLabels = "std", residuals = FALSE, nCharNodes = 0)
 ```
 
-The full structural equation model can be seen in Figure \@ref(fig:fullsemplot).  This simple example illustrates the value of structural equation modeling in both reducing the dimensions of a complex regression problem and in developing more intuitive and interpretable results for stakeholders.  The underlying theory of latent variable modeling, and its implementation in the `lavaan` package offer much more flexibility and parameter control options than illustrated here and further exploration is highly recommended.  @bartholomew and @skrondal are excellent resources for a deeper study of the theory and a wider range of case examples.
+The full structural equation model can be seen in Figure \@ref(fig:fullsemplot).  This simple example illustrates the value of structural equation modeling in both reducing the dimensions of a complex regression problem and in developing more intuitive and interpretable results for stakeholders.  The underlying theory of latent variable modeling, and its implementation in the `lavaan` package, offer much more flexibility and parameter control options than illustrated here and further exploration is highly recommended.  @bartholomew and @skrondal are excellent resources for a deeper study of the theory and a wider range of case examples.
 
 ## Learning exercises
 

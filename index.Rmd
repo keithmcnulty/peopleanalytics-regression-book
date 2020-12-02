@@ -15,7 +15,7 @@ github-repo: keithmcnulty/eampa
 
 Welcome to the website for the book *Handbook of Regression Modeling in People Analytics* by [Keith McNulty](https://twitter.com/dr_keithmcnulty).  Content can be used freely with appropriate referencing.
 
-This book is available in [bootstrap format]() and, for those who prefer, in a more plain [gitbook format]().
+This book is available in [bootstrap format](http://peopleanalytics-regression-book.org) and, for those who prefer, in a more plain [gitbook format](http://peopleanalytics-regression-book.org/gitbook).
 
 This book is in permanent open review.  Feedback and requests for new content should be made via the [issues](https://github.com/keithmcnulty/peopleanalytics-regression-book/issues) section of the book's Github repo.
 

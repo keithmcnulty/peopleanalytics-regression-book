@@ -1,6 +1,6 @@
-# Survival Analysis for modeling the occurrence of singular events over time
+# Survival Analysis for Modeling the Occurrence of Singular Events Over Time
 
-In previous chapters, the outcomes we have been modeling have or have not occurred at a particular point in time following when the input variables were measured.  For example, in Chapter \@ref(linear-reg-ols) input variables were measured in the first three years of an education program and the outcome was measured at the end of the fourth year.  In many situations, the outcome we are interested in is a singular events that can occur at any time following when the input variables were measured, can occur at a different time for different individuals, and once it has occurred it cannot reoccur or repeat.  In medical studies, death can occur or the onset of a disease can be diagnosed at any time during the study period.  In employment contexts an attrition event can occur at various times through the year.  
+In previous chapters, the outcomes we have been modeling have or have not occurred at a particular point in time following when the input variables were measured.  For example, in Chapter \@ref(linear-reg-ols) input variables were measured in the first three years of an education program and the outcome was measured at the end of the fourth year.  In many situations, the outcome we are interested in is a singular event that can occur at any time following when the input variables were measured, can occur at a different time for different individuals, and once it has occurred it cannot reoccur or repeat.  In medical studies, death can occur or the onset of a disease can be diagnosed at any time during the study period.  In employment contexts an attrition event can occur at various times through the year.  
 
 An obvious and simple way to deal with this would be to simply agree to look at a specific point in time and measure whether or not the event had occurred at that point, for example 'How many employees had left at the three year point?'.  Such an approach allows us to use standard generic regression models like those studied in previous chapters.  But this approach has limitations.  
 
@@ -40,14 +40,14 @@ In our example, we are defining 'survival' as 'remaining in substantially the sa
 $$
 S_i = S_{i - 1}(1 - \frac{l_i}{n_i})
 $$
-where $l_i$ are the number reported as left in month $i$ and $n_i$ is the number still in substantially the same job after month $i - 1$, with $S_0 = 1$.
+where $l_i$ is the number reported as left in month $i$ and $n_i$ is the number still in substantially the same job after month $i - 1$, with $S_0 = 1$.
 
 The `survival` package in R allows easy construction of survival rates on data in a similar format to that in our `job_retention` dataset.  A survival object is created using the `Surv()` function to track the survival rate at each time period.
 
 ```{r}
 library(survival)
 
-# create survival object for with event as 'left' and time as 'month'
+# create survival object with event as 'left' and time as 'month'
 retention <- Surv(event = job_retention$left, time = job_retention$month)
 
 # view unique values of retention
@@ -56,26 +56,36 @@ unique(retention)
 
 We can see that our survival object records the month at which the individual had left their job if they are recorded as having done so in the dataset.  If not, the object records the last month at which there was a record of the individual, appended with a '+' to indicate that this was the last record available.
 
-The `survfit()` function allows us to calculate *Kaplan-Meier estimates* of survival for different groups in the data so that we can compare them.  We con do this using our usual formula notation but using a survival object as the outcome.  Let's take a look at survival by gender.
+The `survfit()` function allows us to calculate *Kaplan-Meier estimates* of survival for different groups in the data so that we can compare them.  We can do this using our usual formula notation but using a survival object as the outcome.  Let's take a look at survival by gender.
 
 ```{r}
-kmestimate_gender <- survival::survfit(formula = Surv(event = left, time = month) ~ gender, 
-                                       data = job_retention)
+# kaplan-meier estimates of survival by gender
+kmestimate_gender <- survival::survfit(
+  formula = Surv(event = left, time = month) ~ gender, 
+  data = job_retention
+)
+
 summary(kmestimate_gender)
 
 ```
 
-We can see that the `n.risk`, `n.event` and `survival` columns for each group correspond to the $n_i$, $l_i$ and $S_i$ in our formula above and that the confidence intervals for each survival rate is given. This can be very useful if we wish to illustrate a likely effect of a given input variable on survival likelihood.  
+We can see that the `n.risk`, `n.event` and `survival` columns for each group correspond to the $n_i$, $l_i$ and $S_i$ in our formula above and that the confidence intervals for each survival rate are given. This can be very useful if we wish to illustrate a likely effect of a given input variable on survival likelihood.  
 
 Let's imagine that we wish to determine if the sentiment of the individual had an impact on survival likelihood.  We can divide our population into two (or more) groups based on their sentiment and compare their survival rates.  
 
 ```{r}
 # create a new field to define high sentiment (>= 7)
-job_retention$sentiment_category <- ifelse(job_retention$sentiment >= 7, "High", "Not High")
+job_retention$sentiment_category <- ifelse(
+  job_retention$sentiment >= 7, 
+  "High", 
+  "Not High"
+)
 
 # generate survival rates by sentiment category
-kmestimate_sentimentcat <- survival::survfit(formula = Surv(event = left, time = month) ~ sentiment_category, 
-                                             data = job_retention)
+kmestimate_sentimentcat <- survival::survfit(
+  formula = Surv(event = left, time = month) ~ sentiment_category,
+  data = job_retention
+)
 
 summary(kmestimate_sentimentcat)
 ```
@@ -86,11 +96,13 @@ We can see that survival seems to consistently trend higher for those with high 
 library(survminer)
 
 # show survival curves with p-value estimate and confidence intervals
-survminer::ggsurvplot(kmestimate_sentimentcat,
-           pval = TRUE,
-           conf.int = TRUE,
-           xlab = "Month",
-           ylab = "Retention Rate")
+survminer::ggsurvplot(
+  kmestimate_sentimentcat,
+  pval = TRUE,
+  conf.int = TRUE,
+  xlab = "Month",
+  ylab = "Retention Rate"
+)
 
 ```
 This confirms that the survival difference between the two sentiment groups is statistically significant and provides a highly intuitive visualization of the effect of sentiment on retention throughout the period of study.
@@ -113,13 +125,14 @@ $$
 \end{align*}
 $$
 
-Note that there is no $t$ in our final equation.  The important observation here is that the hazard for person B relative to person A is *constant and independent of time*.  This allows us to take a complicating factor out of our model - that of time.  It means we can model the effect of input variables on the hazard without needing to account for changes over times, making this model very similar in interpretation to a standard binomial regression model.
+Note that there is no $t$ in our final equation.  The important observation here is that the hazard for person B relative to person A is *constant and independent of time*.  This allows us to take a complicating factor out of our model.  It means we can model the effect of input variables on the hazard without needing to account for changes over times, making this model very similar in interpretation to a standard binomial regression model.
 
 ### Running a Cox proportional hazard regression model
 
 A Cox proportional hazard model can be run using the `coxph()` function in the `survival` package, with the outcome as a survival object.  Let's model our survival against the input variables `gender`, `field`, `level` and `sentiment`.
 
 ```{r}
+# run cox model against survival outcome
 cox_model <- survival::coxph(formula = Surv(event = left, time = month) ~ gender + field + level + sentiment,
                              data = job_retention)
 
@@ -140,16 +153,19 @@ Importantly, as well as statistically validating that sentiment has a significan
 
 Note that we mentioned in the previous section a critical assumption for our Cox proportional hazard model to be valid, called the proportional hazard assumption.  As always, it is important to check this assumption before finalizing any inferences or conclusions from your model.  
 
-The most user-friendly and popular test of this assumption uses a residual known as a *Schoenfeld residual* which would be expected to be independent of time if the proportional hazard assumption holds.  The `cox.zph()` function in the `survival` package runs a statistical test on the the the null hypothesis that the Schoenfeld residuals are independent of time.  The test is conduced on every input variable and on the model as a whole, and a significant result would reject the proportional hazard assumption.
+The most popular test of this assumption uses a residual known as a *Schoenfeld residual* which would be expected to be independent of time if the proportional hazard assumption holds.  The `cox.zph()` function in the `survival` package runs a statistical test on the null hypothesis that the Schoenfeld residuals are independent of time.  The test is conduced on every input variable and on the model as a whole, and a significant result would reject the proportional hazard assumption.
 
 ```{r}
-(ph_check <- survival::cox.zph(cox_model))
+survival::cox.zph(cox_model)
 ```
 
 In our case, we can confirm that the proportional hazard assumption is not rejected.  The `ggcoxzph()` function in the `survminer` package takes the result of the `cox.zph()` check and allows a graphical check by plotting the residuals against time, as seen in Figure \@ref(fig:schoenfeld).
 
 ```{r schoenfeld, fig.align = "center", fig.cap = "Schoenfeld test on proportional hazard assumption for `cox_model`"}
-survminer::ggcoxzph(ph_check, font.main = 10, font.x = 10, font.y = 10)
+survminer::ggcoxzph(ph_check, 
+                    font.main = 10, 
+                    font.x = 10, 
+                    font.y = 10)
 ```
 
 ## Learning exercises
@@ -164,7 +180,7 @@ survminer::ggcoxzph(ph_check, font.main = 10, font.x = 10, font.y = 10)
 
 ### Data exercises
 
-For these exercise, use the same `job_retention` dataset as in the walkthrough example for this chapter, which can be found at https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/job_retention.csv.  The `intention` field represents a score of 1 to 10 on the individual's intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention.  This response was recorded at the beginning of the study period.
+For these exercises, use the same `job_retention` dataset as in the walkthrough example for this chapter, which can be found at https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/job_retention.csv.  The `intention` field represents a score of 1 to 10 on the individual's intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention.  This response was recorded at the beginning of the study period.
 
 1.  Create three categories of `intention` as follows:  High (score of 7 or higher), Moderate (score of 4-6), Low (score of 3 or less)
 2.  Calculate Kaplan-Meier survival estimates for the three categories and visualize these using survival curves.

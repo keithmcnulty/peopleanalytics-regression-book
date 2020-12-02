@@ -13,7 +13,7 @@ In any situation where our outcome is binary, we are effectively working with li
 
 ### Origins and intuition of binomial logistic regression {#logistic-origins}
 
-The *logistic function* was introduced by the Belgian Mathematician Pierre François Verhulst in the mid-1800s as a tool for modeling population growth for humans, animals and certain species of plants and fruits.  By this time, it was generally accepted that population growth could not continue exponentially forever, and that there were environmental and resource limits which place a maximum limit on the size of a population.  The formula for Verhulst's function was:
+The *logistic function* was first introduced by the Belgian mathematician Pierre François Verhulst in the mid-1800s as a tool for modeling population growth for humans, animals and certain species of plants and fruits.  By this time, it was generally accepted that population growth could not continue exponentially forever, and that there were environmental and resource limits which place a maximum limit on the size of a population.  The formula for Verhulst's function was:
 
 $$
 y = \frac{L}{1 + e^{-k(x - x_0)}}
@@ -29,9 +29,9 @@ knitr::include_graphics("./www/02/logistic-curve.png")
 
 ```
 
-In the early 20th century, starting with applications in economics and in chemistry, the logistic function was adopted in a wide array of fields as a useful tool for modeling phenomena.  In statistics, it was quickly noted that the logistic function has a similar S-shape (or *sigmoid*) to a cumulative normal distribution of probability, as depicted in Figure \@ref(fig:norm-log-curves)^[The logistic function plotted in Figure \@ref(fig:norm-log-curves) takes the simple form $y = \frac{1}{1 + e^{-x}}$]).  However, the logistic function has a simpler mathematical formula which is easier to perform calculus on, and therefore easier to use to develop inferential models based on maximum likelihood.  So statisticians started to observe that they could work with a more 'plyable' function that was very close in nature to a normal probability distribution.  Unsurprisingly, therefore, the logistic model soon became a common approach to modeling probabilistic phenomena.
+In the early 20th century, starting with applications in economics and in chemistry, the logistic function was adopted in a wide array of fields as a useful tool for modeling phenomena.  In statistics, it was quickly noted that the logistic function has a similar S-shape (or *sigmoid*) to a cumulative normal distribution of probability, as depicted in Figure \@ref(fig:norm-log-curves)^[The logistic function plotted in Figure \@ref(fig:norm-log-curves) takes the simple form $y = \frac{1}{1 + e^{-x}}$]).  However, as we will learn, the logistic function gives rise to a mathematical model where the coefficients are more easily interpreted in terms of likelihood of the outcome.  Unsurprisingly, therefore, the logistic model soon became a common approach to modeling probabilistic phenomena.
 
-```{r norm-log-curves, fig.align = "center", fig.cap = "The logistic function (blue dashed line) is very similar to a cumulative normal distribution (red solid line), but easier to work with mathematically", echo = FALSE}
+```{r norm-log-curves, fig.align = "center", fig.cap = "The logistic function (blue dashed line) is very similar to a cumulative normal distribution (red solid line), but easier to interpret", echo = FALSE}
 library(ggplot2)
 
 ggplot2::ggplot() +
@@ -61,7 +61,7 @@ You are asked by the management of the company to conduct an analysis to determi
 
 * `promoted`:  A binary value indicating 1 if the individual was promoted and 0 if not.
 * `sales`: the sales (in thousands of dollars) attributed to the individual in the period of the promotion
-* `customer_rate`:  the average satisfaction rating from a survey of the individuals customers during the promotion period
+* `customer_rate`:  the average satisfaction rating from a survey of the individual's customers during the promotion period
 * `performance`: the most recent performance rating prior to promotion, from 1 (lowest) to 4 (highest) 
 
 ```{r}
@@ -79,16 +79,16 @@ The data looks as expected.  Let's get a summary of the data:
 summary(salespeople)
 ```
 
-First we see a small number of missing values, and we should remove those observations.  We see that about a third of individuals were promoted, that sales ranged from \$150k to \$940k, that as expected the average satisfaction ratings range from 1 to 5, and finally we see four performance ratings, although the performance categories are numeric when they should be an ordered factor, and `promoted` is numeric when it should be categorical.   Let's convert these and then let's do a pairplot to get a quick view on some possible underlying relationships (Figure \@ref(fig:log-pairplot)).
+First we see a small number of missing values, and we should remove those observations.  We see that about a third of individuals were promoted, that sales ranged from \$151k to \$945k, that as expected the average satisfaction ratings range from 1 to 5, and finally we see four performance ratings, although the performance categories are numeric when they should be an ordered factor, and `promoted` is numeric when it should be categorical.   Let's convert these and then let's do a pairplot to get a quick view on some possible underlying relationships (Figure \@ref(fig:log-pairplot)).
 
 ```{r log-pairplot, fig.cap = "Pairplot for the `salespeople` data set", fig.align="center", warning = FALSE, message = FALSE}
 library(ggplot2)
 library(GGally)
 
-#remove NAs
+# remove NAs
 salespeople <- salespeople[complete.cases(salespeople), ]
 
-#convert performance to ordered factor and promoted to categorical
+# convert performance to ordered factor and promoted to categorical
 salespeople$performance <- ordered(salespeople$performance, levels = 1:4)
 salespeople$promoted <- as.factor(salespeople$promoted)
 
@@ -103,7 +103,7 @@ So we can see that some relationships with our outcome may exist here, but it's 
 
 ## Modeling probabilistic outcomes using a logistic function {#mod-prob}
 
-Imagine that you have an outcome $y$ which either occurs or does not occur.  The probability of $y$ occurring, or $P(y = 1)$, obviously takes a value between 0 and 1.  Now imagine that some input variable $x$ has a positive effect on the probability of the event taking place.  Then you would naturally expect $P(y = 1)$ to increase as $x$ increases.
+Imagine that you have an outcome event $y$ which either occurs or does not occur.  The probability of $y$ occurring, or $P(y = 1)$, obviously takes a value between 0 and 1.  Now imagine that some input variable $x$ has a positive effect on the probability of the event occurring.  Then you would naturally expect $P(y = 1)$ to increase as $x$ increases.
 
 In our `salespeople` data set, let's plot our `promotion` outcome against the `sales` input.  This can be seen in Figure \@ref(fig:prom-sales-plot).
 
@@ -114,12 +114,12 @@ ggplot2::ggplot(data = salespeople, aes(x = sales, y = promoted)) +
 
 ```
 
-It's clear that the probability of promotion increases according to the sales level, with a lower limit of zero and an upper limit of 1.  We could try to model this probability using our logistic function which we learned about in \@ref(logistic-origins).  For example, let's plot the logistic function 
+It's clear that promotion is more likely with higher sales levels.  As we move along the $x$ axis from left to right and gradually include more and more individuals with higher sales, we know that the probability of promotion is gradually increasing overall.  We could try to model this probability using our logistic function which we learned about in \@ref(logistic-origins).  For example, let's plot the logistic function 
 $$
 P(y = 1) = \frac{1}{1 + e^{-k(x - x_{0})}}
 $$ 
 
-on this data, where we set $x_0$ to the mean of `sales` and $k$ to be some maximum gradient value.   In \@ref(fig:prom-with-logistic), we can see these logistic functions for different values of $k$.  All of these seem to reflect the pattern we are observing to some extent, but how do we determine the best fitting logistic function?
+on this data, where we set $x_0$ to the mean of `sales` and $k$ to be some maximum gradient value.   In Figure  \@ref(fig:prom-with-logistic), we can see these logistic functions for different values of $k$.  All of these seem to reflect the pattern we are observing to some extent, but how do we determine the best fitting logistic function?
 
 ```{r prom-with-logistic, fig.cap = "Overlaying logistic functions with various gradients onto previous plot", fig.align="center", echo = FALSE}
 
@@ -175,7 +175,8 @@ Let's take our simple case of regressing `sales` against the outcome of `promote
 
 ```{r}
 # run a binomial model 
-sales_model <- glm(formula = promoted ~ sales, data = salespeople, family = "binomial")
+sales_model <- glm(formula = promoted ~ sales, 
+                   data = salespeople, family = "binomial")
 
 # view the coefficients
 sales_model$coefficients
@@ -183,7 +184,7 @@ sales_model$coefficients
 
 We can interpret the coefficients as follows:
 
-1. The `(Intercept)` coefficient is the value of the log odds with zero input value of $x$.  It is effectively the log odds of promotion if you made no sales.  
+1. The `(Intercept)` coefficient is the value of the log odds with zero input value of $x$ - it is effectively the log odds of promotion if you made no sales.  
 
 2.  The `sales` coefficient represents the increase in the log odds of promotion associated with each unit increase in sales.
 
@@ -206,7 +207,7 @@ So we can see that the base odds of promotion with zero sales is very close to z
 
 It is worth spending a little time understanding the concept of odds and how it relates to probability.  It is extremely common for these two terms to be used synonymously, and this can lead to serious misunderstandings when interpreting a logistic regression model.
 
-If a certain event has a probability of 0.1, then this means that its odds are 1:9, or 0.111.  If the probability is 0.5, then the odds are 1, if the probability is 0.9, then the odds are 9, and if the probability is 0.99, the odds are 99.  As we approach a a probability of 1, the odds become exponentially large, as illustrated in Figure \@ref(fig:odds-prob):
+If a certain event has a probability of 0.1, then this means that its odds are 1:9, or 0.111.  If the probability is 0.5, then the odds are 1, if the probability is 0.9, then the odds are 9, and if the probability is 0.99, the odds are 99.  As we approach a probability of 1, the odds become exponentially large, as illustrated in Figure \@ref(fig:odds-prob):
 
 ```{r odds-prob, fig.cap="Odds plotted against probability", fig.align="center", echo = FALSE, message = FALSE, warning = FALSE}
 
@@ -246,7 +247,7 @@ $$
 
 ## Running a multivariate logistic regression model
 
-The derivations in the previous section easily extend to multivariate data.  Let $y$ by a dichotomous outcome and let $x_1, x_2, ..., x_p$ be our input variables.  Then
+The derivations in the previous section easily extend to multivariate data.  Let $y$ be a dichotomous outcome and let $x_1, x_2, ..., x_p$ be our input variables.  Then
 
 $$
 \ln\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p
@@ -304,14 +305,15 @@ Note how only three of the `performance` dummies have displayed.  This is becaus
 We can already see from the `P (> |z|)` column that only `sales` and `customer_rate` meet the significance threshold of less than 0.05.  Interestingly, it appears from the `Estimate` column that `customer_rate` has a negative effect on the log odds of promotion.    We can add an extra column to create the exponents of our estimated coefficients so that we can see the odds ratios.
 
 ```{r}
-(full_coefs <- cbind(coefs, odds_ratio = exp(full_model$coefficients))) 
+(full_coefs <- cbind(coefs, 
+                     odds_ratio = exp(full_model$coefficients))) 
 ```
 
 Now we can interpret our model as follows:
 
-* Sales have a significant positive effect on the likelihood of promotion, with each additional thousand dollars of sales increasing the odds of promotion by 4%.
-* Customer ratings have a significant negative effect on the likelihood of promotion.  One full rating higher is associated with 67% lower odds of promotion.
-* Performance ratings have no significant effect on the likelihood of promotion.
+* All else being equal, sales have a significant positive effect on the likelihood of promotion, with each additional thousand dollars of sales increasing the odds of promotion by 4%.
+* All else being equal, customer ratings have a significant negative effect on the likelihood of promotion.  One full rating higher is associated with 67% lower odds of promotion.
+* All else being equal, performance ratings have no significant effect on the likelihood of promotion.
 
 The second conclusion may appear counterintuitive, but remember from our pairplot in \@ref(walkthrough-logit) that there is already moderate correlation between sales and customer ratings, and this model will be controlling for that relationship. Recall that our odds ratios act *assuming all other variables are the same*.  Therefore, if two individuals have the same sales and performance ratings, the one with the lower customer rating is more likely to have been promoted.  Similarly, if two individuals have the same level of sales and the same customer rating, their performance rating will have no significant bearing on the likelihood of promotion.
 
@@ -325,7 +327,7 @@ Therefore we can say that - all else being equal - every additional unit of sale
 
 Similar to other regression models, the unit scale needs to be taken into consideration during interpretation.  On first sight, a decrease of up to 89% in odds seems a lot more important than an increase of up to 5.7% in odds.  However, the increase of up to 5.7% is for one unit (\$1000) in many thousands of sales units, and over 10 or 100 additional units can have a substantial compound effect on odds of promotion.  The decrease of up to 89% is on a full customer rating point on a scale of only 4 full points.  
 
-### Understanding the fit and confidence of a binomial logistic regression model{#logistic-gof}
+### Understanding the fit and goodness-of-fit of a binomial logistic regression model{#logistic-gof}
 
 Understanding the fit of a binomial logistic regression model is not straightforward and sometimes controversial.   Before we discuss this, let's simplify our model based on our learning that the performance data has no significant effect on the outcome.
 
@@ -353,7 +355,7 @@ plot_ly(data = salespeople) %>%
 
 ```
 
-No let's look at the summary of our `simpler_model`.
+Now let's look at the summary of our `simpler_model`.
 
 ```{r}
 summary(simpler_model)
@@ -387,7 +389,8 @@ In R, the `LogisticDx` package offers a range of diagnostic tools for logistic r
 library(LogisticDx)
 
 # get range of goodness of fit diagnostics
-simpler_model_diagnostics <- LogisticDx::gof(simpler_model, plotROC = FALSE)
+simpler_model_diagnostics <- LogisticDx::gof(simpler_model, 
+                                             plotROC = FALSE)
 
 # returns a list
 names(simpler_model_diagnostics)
@@ -406,7 +409,7 @@ Various measures of predictive accuracy can also be used to assess a binomial lo
 
 We saw that in both our linear regression and our logistic regression approach, we decided to drop variables from our model when we determined that they had no significant effect on the outcome.  The principle of *Occam's Razor* states that - all else being equal - the simplest explanation is the best.  In this sense, a model that contains information that does not contribute to it primary inference objective is more complex than it needs to be.  Such a model increases the communication burden in explaining its results to others, with no notable analytic benefit in return.
 
-*Parsimony* describes the concept of being careful with resources or with information.  A model could be described as more parsimonious if it can achieve the same (or very close to the same) fit with a smaller number of inputs.  The *Aikake Information Criterion* or *AIC* is a measure of model parsimony that is computed for log-likelihood models like logistic regression models, with a lower AIC indicating a more parsimonious model.  AIC is often calculated as standard in summary reports of logistic regression models, but can also be calculated independently.  Let's compare the different iterations of our model in this chapter using AIC.
+*Parsimony* describes the concept of being careful with resources or with information.  A model could be described as more parsimonious if it can achieve the same (or very close to the same) fit with a smaller number of inputs.  The *Akaike Information Criterion* or *AIC* is a measure of model parsimony that is computed for log-likelihood models like logistic regression models, with a lower AIC indicating a more parsimonious model.  AIC is often calculated as standard in summary reports of logistic regression models, but can also be calculated independently.  Let's compare the different iterations of our model in this chapter using AIC.
 
 ```{r}
 # Sales only model
@@ -420,7 +423,7 @@ AIC(full_model)
 ```
 We can see that the model which is limited to our two significant inputs - sales and customer rating - is determined to be the most parsimonious model according to the AIC. Note that the AIC should not be used to interpret model quality or confidence - it is possible that the lowest AIC might still be a very poor fit.
 
-Model parsimony becomes a substantial concern when there is a large number of input variables.  As a general rule, the more input variables there are in a model the greater the chance that the model will be difficult to interpet clearly, and the greater the risk of measurement problems such as multicollinearity.  Analysts who are eager to please their customers, clients, professors or bosses can easily be tempted to think up new potential inputs to their model, often derived mathematically from measures that are already inputs in the model.  Before long the model is too complex and in extreme cases there are more inputs than there are observations.  The primary way to to manage model complexity is to exercise caution in selecting model inputs.  When large numbers of inputs are unavoidable, coefficient regularization methods such as LASSO regression can help with model parsimony.  We will look at this briefly in a later chapter.  
+Model parsimony becomes a substantial concern when there is a large number of input variables.  As a general rule, the more input variables there are in a model the greater the chance that the model will be difficult to interpet clearly, and the greater the risk of measurement problems such as multicollinearity.  Analysts who are eager to please their customers, clients, professors or bosses can easily be tempted to think up new potential inputs to their model, often derived mathematically from measures that are already inputs in the model.  Before long the model is too complex and in extreme cases there are more inputs than there are observations.  The primary way to to manage model complexity is to exercise caution in selecting model inputs.  When large numbers of inputs are unavoidable, coefficient regularization methods such as LASSO regression can help with model parsimony.  
 
 ## Other considerations in binomial logistic regression
 
@@ -428,7 +431,8 @@ To predict from new data, just use the `predict()` function as in the previous c
 
 ```{r}
 # define new observations
-(new_data <- data.frame(sales = c(420, 510, 710), customer_rate = c(3.4, 2.3, 4.2)))
+(new_data <- data.frame(sales = c(420, 510, 710), 
+                        customer_rate = c(3.4, 2.3, 4.2)))
 
 #predict probability of promotion
 predict(simpler_model, new_data, type = "response")
@@ -447,7 +451,7 @@ plot(d, main= "")
 
 ### Discussion questions
 
-1. Draw the shape of a logistic (sigmoid) function. Describe the three population growth phases it was originally intended to model.
+1. Draw the shape of a logistic function. Describe the three population growth phases it was originally intended to model.
 
 2. Explain why the logistic function is useful to statisticians in modeling.  
 

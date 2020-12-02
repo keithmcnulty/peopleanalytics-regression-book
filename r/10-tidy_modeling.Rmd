@@ -1,4 +1,4 @@
-# Alternative technical approaches in R and Python {#alt-approaches}
+# Alternative Technical Approaches in R and Python {#alt-approaches}
 
 As outlined earlier in this book, all technical implementations of the modeling techniques in previous chapters have relied wherever possible on base R code and specialist packages for specific methodologies - this allowed a focus on the basics of understanding, running and interpreting these models which is the key aim of this book.    For those interested in a wider range of technical options for running inferential statistical models, this chapter illustrates some alternative options and should be considered a starting point for those interested rather than an in-depth exposition.  
 
@@ -24,8 +24,8 @@ salespeople$promoted <- as.factor(salespeople$promoted)
 
 # build model to predict promotion based on sales and customer_rate
 promotion_model <- glm(formula = promoted ~ sales + customer_rate,
-             family = "binomial",
-             data = salespeople)
+                       family = "binomial",
+                       data = salespeople)
 
 ```
 
@@ -57,12 +57,15 @@ url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/soccer.
 soccer <- read.csv(url)
 
 # convert discipline to ordered factor
-soccer$discipline <- ordered(soccer$discipline, levels = c("None", "Yellow", "Red"))
+soccer$discipline <- ordered(soccer$discipline, 
+                             levels = c("None", "Yellow", "Red"))
 
 # run proportional odds model
 library(MASS)
-soccer_model <- polr(formula = discipline ~ n_yellow_25 + n_red_25 + position + country + level + result, 
-              data = soccer)
+soccer_model <- polr(
+  formula = discipline ~ n_yellow_25 + n_red_25 + position + country + level + result, 
+  data = soccer
+)
 
 # view model statistics
 broom::glance(soccer_model)
@@ -74,19 +77,25 @@ broom::glance(soccer_model)
 ```{r, warning = FALSE, message = FALSE}
 library(tidyverse)
 
-soccer %>% 
-  dplyr::nest_by(country) %>% 
-  dplyr::summarise(broom::glance(
-    polr(formula = discipline ~ n_yellow_25 + n_red_25 + position + level + result, 
-         data = data)
+# define function to run soccer model and glance at results
+soccer_model_glance <- function(df) {
+  broom::glance(
+    polr(
+      formula = discipline ~ n_yellow_25 + n_red_25 + position + level + result,
+      data = df
     )
   )
+}
 
-
+# run it nested by country
+soccer %>% 
+  dplyr::nest_by(country) %>% 
+  dplyr::summarise(soccer_model_glance(data))
 ```
+
 ### The `parsnip` package
 
-The `parsnip` package aims create a unified interface to running models, to avoid users needing to do understand different model terminology and other minutiae.   It also takes a more hierarchical approach to defining models that is similar in nature to the object-oriented approaches that Python users would be more familiar with.
+The `parsnip` package aims create a unified interface to running models, to avoid users needing to understand different model terminology and other minutiae.   It also takes a more hierarchical approach to defining models that is similar in nature to the object-oriented approaches that Python users would be more familiar with.
 
 Again let's use our salesperson promotion model example to illustrate.  We start by defining a model family that we wish to use, in this case logistic regression, and define a specific engine and mode.
 
@@ -183,7 +192,7 @@ y = pd.Categorical(health_insurance['product'])
 # create dummies for gender
 X1 = pd.get_dummies(health_insurance['gender'], drop_first = True)
 
-#replace back into input variables 
+# replace back into input variables 
 X2 = health_insurance.drop(['product', 'gender'], axis = 1)
 X = pd.concat([X1, X2], axis = 1)
 

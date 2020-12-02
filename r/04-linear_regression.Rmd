@@ -579,7 +579,7 @@ plot_ly(data = ugtests) %>%
 
 ```
 
-By examining the shape of this curved plane, we can observe that the model considers *trajectories* in the Year 2 and Year 3 examination scores.  Those individuals who have improved from one year to the next will perform better in this model than those who declined.  To demonstrate, lets look at the predicted scores from our interaction model for someone who declined and for someone who improved from Year 2 to Year 3.
+By examining the shape of this curved plane, we can observe that the model considers *trajectories* in the Year 2 and Year 3 examination scores.  Those individuals who have improved from one year to the next will perform better in this model than those who declined.  To demonstrate, let's look at the predicted scores from our interaction model for someone who declined and for someone who improved from Year 2 to Year 3.
 
 ```{r}
 # data frame with a declining and an improving observation
@@ -591,18 +591,19 @@ obs <- data.frame(
 predict(interaction_model, obs)
 ```
 
-Through including the interaction effect, the model interprets declining examination scores more negatively than improving examination scores.  This kinds of additional inferential insights may be of great interest.  However, consider the impact on interpretability of modeling too many combinations of interactions.  As always, there is a trade-off between intepretability and accuracy^[In a predictive context, there is also the issue of 'overfitting' the model, where the model is too 'tightly' aligned to the past data that was used in fitting it that it may be very inaccurate for new data.  For example, in our interaction model, someone who scores very low in both Year 2 and Year 3 will be awarded an unreasonably high score (see the intercept coefficient in the interactive model summary).  This reinforces the need to test and validate model fits in a predictive context].
+Through including the interaction effect, the model interprets declining examination scores more negatively than improving examination scores.  These kinds of additional inferential insights may be of great interest.  However, consider the impact on interpretability of modeling too many combinations of interactions.  As always, there is a trade-off between intepretability and accuracy^[In a predictive context, there is also the issue of 'overfitting' the model, where the model is too 'tightly' aligned to the past data that was used in fitting it that it may be very inaccurate for new data.  For example, in our interaction model, someone who scores very low in both Year 2 and Year 3 will be awarded an unreasonably high score (see the intercept coefficient in the interactive model summary).  This reinforces the need to test and validate model fits in a predictive context].
 
 When running models with interaction terms, you can expect to see a hierarchy in the coefficients according to the level of the interaction.  For example, single terms will usually generate higher coefficients than interactions of two terms, which will generate higher coefficients than interactions of three terms, and so on.   Given this, whenever an interaction of terms is considered significant in a model, then the single terms contained in that interaction should automatically be regarded as significant.
 
 ### Quadratic and higher-order polynomial terms
 
-In many situations the real underlying relationship between the outcome and the inputs may be non-linear.  For example, if the underlying relationship was throught to be quadratic on a given input variable $x$, then the formula would take the form $y = \beta_0 + \beta_1x + \beta_2x^2$.  We can easily trial polynomial terms using our linear model technology.
+In many situations the real underlying relationship between the outcome and the inputs may be non-linear.  For example, if the underlying relationship was thought to be quadratic on a given input variable $x$, then the formula would take the form $y = \beta_0 + \beta_1x + \beta_2x^2$.  We can easily trial polynomial terms using our linear model technology.
 
 For example, recall that we removed `Yr1` data from our model because it was not significant when modeled linearly.   We could test if a quadratic model on `Yr1` helps improve our fit^[Note the use of `I()` in the fomula notation here.  This is because the symbol `^` has a different meaning inside a formula and we use `I()` to *isolate* what is inside the parentheses to ensure that it is interpreted iterally as 'the square of `Yr1`']:
 
 ```{r}
-quadratic_yr1_model <- lm(data = ugtests, formula = Final ~ Yr3 + Yr2 + Yr1 + I(Yr1^2))
+quadratic_yr1_model <- lm(data = ugtests, 
+                          formula = Final ~ Yr3 + Yr2 + Yr1 + I(Yr1^2))
 summary(quadratic_yr1_model)
 ```
 
