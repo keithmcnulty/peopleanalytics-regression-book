@@ -217,7 +217,7 @@ Implementation of other model variants featured in earlier chapters becomes thin
 
 * Mixed models only currenly have an implementation for linear mixed modeling in `statsmodels`.  Generalized linear mixed models equivalent to those found in the `lme4` R package are not yet available in Python.
 
-* The `semopy` package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar the `lavaan` package in R.  A full tutorial is available [here](https://semopy.com/tutorial.html).
+* The `semopy` package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar to the `lavaan` package in R.  A full tutorial is available [here](https://semopy.com/tutorial.html).
 
 * The `lifelines` package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions.  A full tutorial is available [here](https://lifelines.readthedocs.io/en/latest/index.html).
 

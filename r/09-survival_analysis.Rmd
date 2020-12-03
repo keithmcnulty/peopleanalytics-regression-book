@@ -153,7 +153,7 @@ Importantly, as well as statistically validating that sentiment has a significan
 
 Note that we mentioned in the previous section a critical assumption for our Cox proportional hazard model to be valid, called the proportional hazard assumption.  As always, it is important to check this assumption before finalizing any inferences or conclusions from your model.  
 
-The most popular test of this assumption uses a residual known as a *Schoenfeld residual* which would be expected to be independent of time if the proportional hazard assumption holds.  The `cox.zph()` function in the `survival` package runs a statistical test on the null hypothesis that the Schoenfeld residuals are independent of time.  The test is conduced on every input variable and on the model as a whole, and a significant result would reject the proportional hazard assumption.
+The most popular test of this assumption uses a residual known as a *Schoenfeld residual* which would be expected to be independent of time if the proportional hazard assumption holds.  The `cox.zph()` function in the `survival` package runs a statistical test on the null hypothesis that the Schoenfeld residuals are independent of time.  The test is conducted on every input variable and on the model as a whole, and a significant result would reject the proportional hazard assumption.
 
 ```{r}
 survival::cox.zph(cox_model)

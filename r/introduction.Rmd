@@ -1,6 +1,8 @@
 # Foreword and introduction {-}
 
-As a fresh-faced undergraduate in Mathematics in the 1990s, I took an introductory course in statistics in my first term.  I would never take another.  I struggled with the subject and scored my lowest grade in it, and swore I would never go anywhere near it again.  How wrong I was.  Today I live and breathe statistics.  How did that happen?  
+As a fresh-faced undergraduate in mathematics in the 1990s, I took an introductory course in statistics in my first term.  I would never take another.  I struggled with the subject and scored my lowest grade in it, and swore I would never go anywhere near it again.  
+
+How wrong I was.  Today I live and breathe statistics.  How did that happen?  
 
 Firstly, statistics is about solving real world problems, and amazingly there was not a single mention of a relatable problem from real life in that course I took all those years ago, just abstract mathematics. Nowadays, I know from my work and my personal learning activities that the mathematics has no meaning without a motivating problem to apply it to, and you'll see example problems all through this book.  
 
@@ -10,7 +12,7 @@ But one more step solidified my new found love of statistics, and that was when 
 
 Hence my motivation for writing this book, which is to give others working in my increasingly growing field of people analytics a starting point for a practical learning of regression methods, with the hope that they will see immediate applications to their work and take advantage of a much-underused toolkit that provides strong support for evidence-based practice. 
 
-I am a mathematician who is now a practitioner of analytics.  For this reason you should see that this book in neither afraid of nor obsessed with the mathematics of the methodologies covered.  I also subscribe strongly to the principles of the open-source sharing of knowledge.  If you want to reference the material in this book or use the exercises or data sets in trainings or classes you are free to do so and you do not need to request my permission - I only request that you make reference to this book as the source.  
+I am a mathematician who is now a practitioner of analytics.  For this reason you should see that this book is neither afraid of nor obsessed with the mathematics of the methodologies covered.  I also subscribe strongly to the principles of the open-source sharing of knowledge.  If you want to reference the material in this book or use the exercises or data sets in trainings or classes you are free to do so and you do not need to request my permission - I only ask that you make reference to this book as the source.  
 
 This book is in permanent open review and I expect it to improve over time.  If you found this book or any part of it helpful to solving a problem, I'd love to hear about it.  If you have comments to improve or question any aspect of the contents of this book I encourage you to [leave an issue](https://github.com/keithmcnulty/peopleanalytics-regression-book/issues) on its Github repo.  This is the most reliable way for me to see your comment.  I promise to consider all comments and input but I do have to make a personal judgment about whether they are helpful to the aims and purpose of this book.  If I do make changes or additions based on your input I will make a point to acknowledge your contribution.
 

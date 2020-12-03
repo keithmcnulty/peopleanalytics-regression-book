@@ -8,7 +8,7 @@ documentclass: book
 bibliography: r/book.bib
 fig-caption: yes
 link-citations: yes
-github-repo: keithmcnulty/eampa
+github-repo: keithmcnulty/peopleanalytics-regression-book
 ---
 
 # Welcome {-}
