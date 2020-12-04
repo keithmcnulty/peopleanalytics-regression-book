@@ -16,7 +16,7 @@ Consistent with how it is named, `broom` aims to tidy up the output of the model
 
 ```{r}
 # obtain salespeople data
-url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/salespeople.csv"
+url <- "http://peopleanalytics-regression-book.org/data/salespeople.csv"
 salespeople <- read.csv(url)
 
 # convert promoted to factor
@@ -53,7 +53,7 @@ These functions are model-agnostic for a very wide range of common models in R. 
 
 ```{r}
 # get soccer data
-url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/soccer.csv"
+url <- "http://peopleanalytics-regression-book.org/data/soccer.csv"
 soccer <- read.csv(url)
 
 # convert discipline to ordered factor
@@ -126,7 +126,7 @@ model %>%
 
 ## Inferential statistical modeling in Python
 
-In general, the modeling functions contained in `scikit-learn` - which tends to be the go-to modeling package for most Python users - are oriented towards predictive modeling and can be challenging to navigate for those who are primarily interested in inferential modeling.  In this section we will briefly review approaches for running some of the models contained in this book in Python.  The `statsmodels` package is highly recommended as it offers a wide range of models which report similar statistics to those reviewed in this books.
+In general, the modeling functions contained in `scikit-learn` - which tends to be the go-to modeling package for most Python users - are oriented towards predictive modeling and can be challenging to navigate for those who are primarily interested in inferential modeling.  In this section we will briefly review approaches for running some of the models contained in this book in Python.  The `statsmodels` package is highly recommended as it offers a wide range of models which report similar statistics to those reviewed in this books.  Full `statsmodels` documentation can be found [here](https://www.statsmodels.org/stable/index.html).
 
 ### Ordinary least squares (OLS) linear regression
 
@@ -137,7 +137,7 @@ import pandas as pd
 import statsmodels.formula.api as smf
 
 # get data
-url = "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/ugtests.csv"
+url = "http://peopleanalytics-regression-book.org/data/ugtests.csv"
 ugtests = pd.read_csv(url)
 
 # define model
@@ -160,7 +160,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
 # obtain salespeople data
-url = "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/salespeople.csv"
+url = "http://peopleanalytics-regression-book.org/data/salespeople.csv"
 salespeople = pd.read_csv(url)
 
 # define model
@@ -183,7 +183,7 @@ import pandas as pd
 import statsmodels.formula.api as smf
 
 # load health insurance data
-url = "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/health_insurance.csv"
+url = "http://peopleanalytics-regression-book.org/data/health_insurance.csv"
 health_insurance = pd.read_csv(url)
 
 # convert product to categorical as an outcome variable

@@ -233,7 +233,7 @@ To work with data in R, you usually need to pull it in from an outside source in
 
 ```{r}
 # url of data set 
-url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/salespeople.csv"
+url <- "http://peopleanalytics-regression-book.org/data/salespeople.csv"
 
 # load the dataset and store it as a dataframe called salespeople
 salespeople <- read.csv(url)
@@ -500,7 +500,7 @@ When first faced with an error that you can't understand, try not to get frustra
 2.  Create a second numeric vector called `which` which corresponds to `my_names`. The entries should be the position of each name in the order of your full name.  Verify that it has the same length as `my_names`.
 3.  Create a dataframe called `names` which consists of the two vectors `my_names` and `which` as columns.  Calculate the dimensions of `names`.
 4.  Create a new dataframe `new_names` with the `which` column converted to character type.  Verify that your command worked using `str()`.
-5.  Use `read.csv()` to load the dataset of student test data found at https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/ugtests.csv into an object named `ugtests`.  Calculate the dimensions of `ugtests` and view the first three rows only. 
+5.  Use `read.csv()` to load the dataset of student test data found at http://peopleanalytics-regression-book.org/data/ugtests.csv into an object named `ugtests`.  Calculate the dimensions of `ugtests` and view the first three rows only. 
 6.  View a statistical summary of all of the columns of `ugtests`.  Determine if there are any missing values.
 7.  View the subset of `ugtests` for values of `Yr1` greater than 50.
 8.  Install and load the package `dplyr`.  Look up the help for the `filter()` function in this package and try to use it to repeat the task in the previous question.

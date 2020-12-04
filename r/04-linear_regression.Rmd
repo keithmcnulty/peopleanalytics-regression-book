@@ -43,11 +43,11 @@ You are working as an analyst for the Biology Department of a large academic ins
 
 To help with this, you have been provided with data for 975 individuals graduating in the past three years, and you have been asked to create a model to explain each individual's final examination score based on their examination scores for the first three years of their program.  The Year 1 examination scores are awarded on a scale of 0-100, Years 2 and 3 on a scale of 0-200, and the Final year is awarded on a scale of 0-300.
 
-The dataset is [here](https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/ugtests.csv), and we will load it into our session and take a brief look at it.
+The dataset is [here](http://peopleanalytics-regression-book.org/data/ugtests.csv), and we will load it into our session and take a brief look at it.
 
 ```{r}
 # obtain data from online csv at github
-url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/ugtests.csv"
+url <- "http://peopleanalytics-regression-book.org/data/ugtests.csv"
 ugtests <- read.csv(url)
 
 # look at the first few rows of data
@@ -444,7 +444,7 @@ It is worth a moment to consider how to interpret coefficients of dummy variable
 * If the vehicle is a Ford, the retail price increases/decreases by ...
 * If the vehicle is a Toyota, the retail price increases/decreases by ...
 
-This highlights the importance of appropriate interpretation of coefficients, and in particular the proper understanding of units.  It will be common to see much larger coefficients for dummy variables in regression models, because they represent a binary 'all' or 'nothing' variable in the model.  The coefficient for, say, manufacturing cost, would be much smaller because a unit in this case is a dollar of manufacturing spend, on a scale of many thousands of potential dollars in spend.  Care should be taken not to 'rank' coefficients by their value.  Higher coefficients in and of themselves do not imply greater importance.
+This highlights the importance of appropriate interpretation of coefficients, and in particular the proper understanding of units.  It will be common to see much larger coefficients for dummy variables in regression models, because they represent a binary 'all' or 'nothing' variable in the model.  The coefficient for, say, manufacturing cost, would be much smaller because a unit in this case is a dollar of manufacturing spend, on a scale of many thousands of potential dollars in spend.  Care should be taken not to 'rank' coefficients by their value.  Higher coefficients in and of themselves do not imply greater importance^[Rescaling numerical input variables onto common scales can help with understanding the ranked importance of these variables.  In some techniques, for example structural modeling which we will review in Section \@ref(struc-eq-model), scaled regression coefficients help determine the ranked importance of constructs to the outcome].
 
 ## Testing your model assumptions
 
@@ -636,7 +636,7 @@ In this case we find that modeling `Yr1` as a quadratic makes no difference to t
 
 ### Data exercise
 
-The `sociological_data` dataset can be obtained at https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/sociological_data.csv.  This data represents a sample of information obtained from individuals who participated in a global research study, and contains the following fields:
+The `sociological_data` dataset can be obtained at http://peopleanalytics-regression-book.org/data/sociological_data.csv.  This data represents a sample of information obtained from individuals who participated in a global research study, and contains the following fields:
 
 * `annual_income_ppp`:  The annual income of the individual in PPP adjusted US dollars
 * `average_wk_hrs`:  The average number of hours per week worked by the individual

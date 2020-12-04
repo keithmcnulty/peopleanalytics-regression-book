@@ -1,6 +1,6 @@
 # Modeling Explicit and Latent Hierarchical Structure in Data
 
-So far in this book we have learned all of the most common foundational regression methods for inferential modeling.  Starting with this chapter, we will look at common situations where we need to adapt or combine techniques to address common goals or data constraints.  In this chapter we look at some situations where data has a hierarchy and where we wish to consider this hierarchy in our modeling efforts.   
+So far in this book we have learned all of the most widely used and foundational regression techniques for inferential modeling.  Starting with this chapter, we will look at situations where we need to adapt or combine techniques to address certain inference goals or data characteristics.  In this chapter we look at some situations where data has a hierarchy and where we wish to consider this hierarchy in our modeling efforts.   
 
 It is very often the case that data has an explicit hierarchy.  For example, each observation in our data may refer to a different individual and each such individual may be a member of a few different groups.  Similarly, each observation might refer to an event involving an individual, and we may have data on multiple events for the same individual.  For a particular problem that we are modeling, we may wish to take into consideration the effect of the hierarchical grouping on the observations.  This requires a model which has a mixture of random effects and fixed effects - called a *mixed model*.
 
@@ -45,7 +45,7 @@ $$
 
 ### Running a mixed model
 
-Let's look at a fun and straightforward example of how mixed models can be useful. The speed dating data set can be found [here](https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/speed_dating.csv) and is a set of information captured during experiments with speed dating by students at Columbia University in New York^[I have simplified the data set, and the full version can be found at http://www.stat.columbia.edu/~gelman/arm/examples/speed.dating/].  Each row represents one meeting between an individual and a partner of the opposite sex.  The data contains the following fields:
+Let's look at a fun and straightforward example of how mixed models can be useful. The speed dating data set can be found [here](http://peopleanalytics-regression-book.org/data/speed_dating.csv) and is a set of information captured during experiments with speed dating by students at Columbia University in New York^[I have simplified the data set, and the full version can be found at http://www.stat.columbia.edu/~gelman/arm/examples/speed.dating/].  Each row represents one meeting between an individual and a partner of the opposite sex.  The data contains the following fields:
 
 * `iid` is an id number for the individual
 * `gender` is the gender of the individual with 0 as Female and 1 and Male
@@ -63,7 +63,7 @@ This data can be explored in numerous ways, but we will focus here on modeling o
 
 ```{r}
 # get data
-url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/speed_dating.csv"
+url <- "http://peopleanalytics-regression-book.org/data/speed_dating.csv"
 speed_dating <- read.csv(url)
 
 # run standard binomial model
@@ -96,7 +96,7 @@ We can see the two levels of results in this summary.  The fixed effects level g
 If we wished to extend our random effects to the slope coefficients of our model, we can do so easily.  For example we could use `(1 + agediff | iid)` to model a random effect of `iid` on the intercept and the `agediff` coefficient.  Similarly, if we wanted to consider two grouping variables - like `iid` and `goal` - on the intercept, we could add both `(1 | iid)` and `(1 | goal)` to our model formula.
 
 
-## Structural Equation Models for latent hierarchies in data
+## Structural Equation Models for latent hierarchies in data {#struc-eq-model}
 
 In this section we will focus entirely on survey data use cases, as this is the most common application of Structural Equation Modeling in People Analytics.  However it should be noted that survey data is not the only situation where latent variables may be modeled, and this technology has substantially broader applications.  Indeed, advanced practitioners may see opportunities to experiment with this technology in other use cases.
 
@@ -112,7 +112,7 @@ It is a common request for an analyst to model a certain outcome using the many 
 
 2.  *Structural Model*:  Assuming a satisfactory measurement model, the structural model is effectively a regression model which explains how each of the proposed factors relate to the outcome of interest.
 
-As a walkthrough example, the `politics_survey` dataset can be downloaded [here](https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/politics_survey.csv).  This represents the results of a survey conducted by a political party on a set of approximately 2100 voters.  The results are on a Likert scale of 1 to 10 where 1 indicates strong negative sentiment with a statement and 10 represents strong positive sentiment.  Subject matter experts have already grouped the items into proposed latent variables or factors, and the data takes the following form:
+As a walkthrough example, the `politics_survey` dataset can be downloaded [here](http://peopleanalytics-regression-book.org/data/politics_survey.csv).  This represents the results of a survey conducted by a political party on a set of approximately 2100 voters.  The results are on a Likert scale of 1 to 10 where 1 indicates strong negative sentiment with a statement and 10 represents strong positive sentiment.  Subject matter experts have already grouped the items into proposed latent variables or factors, and the data takes the following form:
 
 1.  `Overall` represents the overall intention to vote for the party in the next election.
 2.  Items beginning with `Pol` are considered to be related to the policies of the political party
@@ -134,7 +134,7 @@ The proposed measurement model can be seen in Figure \@ref(fig:semplot).  In thi
 library(lavaan)
 library(semPlot)
 
-politics_survey <- read.csv("https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/politics_survey.csv")
+politics_survey <- read.csv("http://peopleanalytics-regression-book.org/data/politics_survey.csv")
 
 measurement_model <- "
 # measurement model
@@ -273,14 +273,14 @@ The full structural equation model can be seen in Figure \@ref(fig:fullsemplot).
 
 ### Data exercises
 
-For Exercises 1-4, use the `speed_dating` set used earlier in the chapter which can be found at https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/speed_dating.csv.  
+For Exercises 1-4, use the `speed_dating` set used earlier in the chapter which can be found at http://peopleanalytics-regression-book.org/data/speed_dating.csv.  
 
 1.  Split the data into two sets according to the gender of the participant.  Run standard binomial logistic regression models on each set to determine the relationship between the `dec` decision outcome and the input variables `samerace`, `agediff`, `attr`, `intel` and `prob`.
 2.  Run similar mixed models on these sets with a random intercept for `iid`.
 3.  What different conclusions can you make in comparing the mixed models with the standard models?
 4.  Experiment with some random slope effects to see if they reveal anything new about the input variables.
 
-For exercises 5-10, use the `employee_survey` data set which can be found at https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/employee_survey.csv.  This data set contains the results of an engagement survey of employees of a technology company.  Each row represents the responses of an individual to the survey and each column represents a specific survey question, with responses on a Likert scale of 1 to 5, with 1 indicating strongly negative sentiment and 5 indicating strongly positive sentiment. Subject matter experts have grouped the items into hypothesized latent factors as follows:
+For exercises 5-10, use the `employee_survey` data set which can be found at http://peopleanalytics-regression-book.org/data/employee_survey.csv.  This data set contains the results of an engagement survey of employees of a technology company.  Each row represents the responses of an individual to the survey and each column represents a specific survey question, with responses on a Likert scale of 1 to 5, with 1 indicating strongly negative sentiment and 5 indicating strongly positive sentiment. Subject matter experts have grouped the items into hypothesized latent factors as follows:
 
 * `Happiness` is an overall measure of the employees current sentiment about their job
 *  Items beginning with `Ben` relate to employment benefits

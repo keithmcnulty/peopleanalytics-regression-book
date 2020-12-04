@@ -55,7 +55,7 @@ Examples of problems that can utilize a proportional odds logistic regression ap
 
 ### Walkthrough example {#ord-walkthrough}
 
-You are an analyst for a sports broadcaster who is doing a feature on player discipline in professional soccer games.  To prepare for the feature, you have been asked to verify whether certain metrics are significant in influencing the extent to which a player will be disciplined by the referee for unfair or dangerous play in a game.  You have been provided with data on over 2000 different players in different games [here](https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/soccer.csv) and the data contains these fields:
+You are an analyst for a sports broadcaster who is doing a feature on player discipline in professional soccer games.  To prepare for the feature, you have been asked to verify whether certain metrics are significant in influencing the extent to which a player will be disciplined by the referee for unfair or dangerous play in a game.  You have been provided with data on over 2000 different players in different games [here](http://peopleanalytics-regression-book.org/data/soccer.csv) and the data contains these fields:
 
 * `discipline`: A record of the maximum discipline taken by the referee against the player in the game.  "None" means no discipline was taken, "Yellow" means the player was issued a yellow card (warned), "Red" means the player was issued a red card and ordered off the field of play.
 * `n_yellow_25` is the total number of yellow cards issued to the player in the previous 25 games they played prior to this game
@@ -69,7 +69,7 @@ Let's download our data and take a quick look at it:
 
 ```{r}
 # download data
-url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/soccer.csv"
+url <- "http://peopleanalytics-regression-book.org/data/soccer.csv"
 soccer <- read.csv(url)
 
 head(soccer)
@@ -308,7 +308,7 @@ In the event where the option to remove variables is unattractive, alternative m
 
 ### Data exercises
 
-The `managers` data set can be found at https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/managers.csv.  It is a set of information of 571 managers in a sales organization, and consists of the following fields:
+The `managers` data set can be found at http://peopleanalytics-regression-book.org/data/managers.csv.  It is a set of information of 571 managers in a sales organization, and consists of the following fields:
 
 * `employee_id` for each manager
 * `performance_group` of each manager in a recent performance review: Bottom performer, Middle performer, Top performer

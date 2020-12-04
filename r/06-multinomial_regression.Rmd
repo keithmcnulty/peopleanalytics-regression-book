@@ -28,7 +28,7 @@ Examples of typical situations that might be modeled by multinomial logistic reg
 
 You are an analyst at a large technology company.  The company recently introduced a new healthcare provider for its employees.  At the beginning of the year the employees had to choose one of three different healthcare plan products from this provider to best suit their needs.  You have been asked to determine which factors influenced the choice in product.
 
-The data set can be found [here](https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/health_insurance.csv) and consists of:
+The data set can be found [here](http://peopleanalytics-regression-book.org/data/health_insurance.csv) and consists of:
 
 * `age`: The age of the individual when they made the choice
 * `gender`:  The gender of the individual as stated when they made the choice
@@ -40,7 +40,7 @@ First we load the data and take a look at it briefly:
 
 ```{r}
 # load data from github
-url <- "https://raw.githubusercontent.com/keithmcnulty/eampa/master/data/health_insurance.csv"
+url <- "http://peopleanalytics-regression-book.org/data/health_insurance.csv"
 health_insurance <- read.csv(url)
 
 # view first few rows
