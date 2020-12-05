@@ -49,10 +49,10 @@ However, as soon as the calculation is complete, it is forgotten by R because th
 
 ```{r}
 # store the result
-sum <- 3 + 3
+my_sum <- 3 + 3
 
 # now I can work with it
-sum + 3
+my_sum + 3
 ```
 
 You will see above that you can comment your code by simply adding a `#` to the start of a line to ensure that the line is ignored by the interpreter.
@@ -60,11 +60,11 @@ You will see above that you can comment your code by simply adding a `#` to the 
 Note that assignment to an object does not result in the value being displayed.  To display the value, the name of the object must be typed, the `print()` command used or the command should be wrapped in parentheses.
 
 ```{r}
-# show me the value of sum
-sum
+# show me the value of my_sum
+my_sum
 
-# assign sum + 3 to new_sum and show the result
-(new_sum <- sum + 3)
+# assign my_sum + 3 to new_sum and show the result
+(new_sum <- my_sum + 3)
 ```
 
 
@@ -98,11 +98,10 @@ typeof(my_logical)
 
 ### Homogeneous data structures
 
-**Vectors** are one dimensional structures containing data of the same type and are notated by using `c()`. The type of the vector can be viewed using the `str()` function:
+**Vectors** are one dimensional structures containing data of the same type and are notated by using `c()`. The type of the vector can also be viewed using the `typeof()` function, but the `str()` function can also be used to display both the contents of the vector and its type:
 
 ```{r}
 my_double_vector <- c(2.3, 6.8, 4.5, 65, 6)
-print(my_double_vector)
 str(my_double_vector)
 ```
 

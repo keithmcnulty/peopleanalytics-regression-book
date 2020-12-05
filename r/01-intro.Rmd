@@ -22,7 +22,7 @@ The current reality in the field of people analytics is that inferential models 
 
 Finally, the growing importance of evidence-based practice in many clinical and professional fields has generated a need for more advanced modeling skills to satisfy rising demand for quantitative evidence from decision makers.  In people-related fields such as human resources, many varieties of specialized regression-based models such as survival models or latent variable models have crossed from academic and clinical settings into business settings in recent years, and there is an increasing need for qualified individuals who understand and can implement and interpret these models in practice.
 
-## What do we mean by 'modeling'?
+## What do we mean by 'modeling'? {#theory-modeling}
 
 The term 'modeling' has a very wide range of meaning in everyday life and work. In this book we are focused on inferential modeling and we define that as a specific form of statistical learning which tries to discover and understand a mathematical relationship between a set of measurements of certain constructs and a measurement of an outcome of interest, based on a sample of data on each.  Modeling is both a concept and a process.  
 
