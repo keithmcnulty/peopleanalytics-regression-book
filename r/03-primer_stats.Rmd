@@ -451,7 +451,7 @@ Imagine that we are asked if the performance category of each person in the `sal
 First we can produce a *contingency table* which is matrix containing counts of how many people were promoted or not promoted in each category.
 
 ```{r}
-# create contingency table of promoted versus performance
+# create contingency table of promoted vs performance
 (contingency <- table(salespeople$promoted, salespeople$performance))
 ```
 
