@@ -306,7 +306,13 @@ The purpose of hypothesis testing is to establish a high degree of statistical c
 
 Most hypothesis tests can return a *p-value*, which effectively translates to a probability that the null hypothesis is true for our population.  There are some common standards to the level of p-value needed to reject a null hypothesis.  The most common standard is a p-value less than 0.05.  This means we are comfortable with the possibility that 1 in 20 times we will be wrong and we will conclude that there is a difference when in fact there is not.  As you can imagine, there will be many situations where we need an even greater level of certainty.  In pharmaceutical trials, for example, we might need a 1 in 10,000 or 1 in 100,000 chance that we are wrong when we conclude that a drug is safe to take. 
 
-Three common such hypothesis tests are testing for a difference in the means of two groups in a population, testing for a non-zero correlation between two variables, and testing for a difference in frequency distributions between different categories in a population.  We will go through an example of each of these.
+Three common such hypothesis tests are:
+
+1. Testing for a difference in the means of two groups in a population
+2. Testing for a non-zero correlation between two variables
+3. Testing for a difference in frequency distributions between different categories in a population.  
+
+We will go through an example of each of these.  During these examples we will go through the steps of manually calculating all the statistics needed to do the hypothesis testing, before we demonstrate the functions that perform the full test for you.  Users don't absolutely need to know all the details contained in this section, but a strong understanding of the underlying methods are encouraged.
 
 ### Testing for a difference in means (Welch's $t$-test) {#means-sig}
 
@@ -344,7 +350,7 @@ stderr <- sqrt(stderrx^2 + stderry^2)
 df <- stderr^4/(stderrx^4/(nx-1) + stderry^4/(ny-1))
 ```
 
-We use a special formula called the [Welch-Satterthwaite approximation](https://en.wikipedia.org/wiki/Welch%E2%80%93Satterthwaite_equation) to calculate the degrees of freedom for the two samples, which in this case calculates to `r round(df, 2)`.  This allows us to construct a 95% confidence interval for the difference between the means, and we can test whether this contains zero.
+We use a special formula called the [Welch-Satterthwaite approximation](https://en.wikipedia.org/wiki/Welch%E2%80%93Satterthwaite_equation) to calculate the degrees of freedom for the two samples, which in this case calculates to `r round(df, 2)`^[I've kept the gory details of how this is derived out of view, but you can see them if you view the source code for this book].  This allows us to construct a 95% confidence interval for the difference between the means, and we can test whether this contains zero.
 
 ```{r}
 # calculate standard error of the two sets
