@@ -156,7 +156,7 @@ Note that we mentioned in the previous section a critical assumption for our Cox
 The most popular test of this assumption uses a residual known as a *Schoenfeld residual* which would be expected to be independent of time if the proportional hazard assumption holds.  The `cox.zph()` function in the `survival` package runs a statistical test on the null hypothesis that the Schoenfeld residuals are independent of time.  The test is conducted on every input variable and on the model as a whole, and a significant result would reject the proportional hazard assumption.
 
 ```{r}
-survival::cox.zph(cox_model)
+(ph_check <- survival::cox.zph(cox_model))
 ```
 
 In our case, we can confirm that the proportional hazard assumption is not rejected.  The `ggcoxzph()` function in the `survminer` package takes the result of the `cox.zph()` check and allows a graphical check by plotting the residuals against time, as seen in Figure \@ref(fig:schoenfeld).

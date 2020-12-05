@@ -300,19 +300,19 @@ cat(paste0('[', lower_bound, ', ', upper_bound, ']'))
 
 ## Hypothesis testing
 
-Observations about the distribution of statistics on random variables allow us to construct tests for hypotheses of statistical difference or similarity.  Such hypothesis testing is useful in itself for simple bivariate analysis in practice settings, but it will be particularly critical in later chapters in determining whether models are useful or not.  Before we go through some technical examples of hypothesis testing, let's overview the logic and intuition for how hypothesis testing works.
+Observations about the distribution of statistics on samples of random variables allow us to construct tests for hypotheses of difference or similarity.  Such hypothesis testing is useful in itself for simple bivariate analysis in practice settings, but it will be particularly critical in later chapters in determining whether models are useful or not.  Before we go through some technical examples of hypothesis testing, let's overview the logic and intuition for how hypothesis testing works.
 
-The purpose of hypothesis testing is to establish a high degree of statistical certainty regarding a claim of statistical difference in a population based on the properties of a sample.  Consistent with a high statistical burden of proof, we start from the hypothesis that there is no statistical difference, called the *null hypothesis*.  We do not reject the null hypothesis unless the statistical properties of the data render the null hypothesis very unlikely.  If this is indeed the case, we reject the null hypothesis in favour of the *alternative hypothesis* that a statistical difference does exist in the population.  
+The purpose of hypothesis testing is to establish a high degree of statistical certainty regarding a claim of difference in a population based on the properties of a sample.  Consistent with a high burden of proof, we start from the hypothesis that there is no difference, called the *null hypothesis*.  We only reject the null hypothesis if the statistical properties of the data render it very unlikely, in which case we confirm the *alternative hypothesis* that a statistical difference does exist in the population.  
 
-Most hypothesis tests can return a *p-value*, which effectively translates to a probability that the null hypothesis is true for our population.  There are some common standards to the level of p-value needed to reject a null hypothesis.  The most common standard is a p-value less than 0.05.  This means we are comfortable with the possibility that 1 in 20 times we will be wrong and we will conclude that there is a difference when in fact there is not.  As you can imagine, there will be many situations where we need an even greater level of certainty.  In pharmaceutical trials, for example, we might need a 1 in 10,000 or 1 in 100,000 chance that we are wrong when we conclude that a drug is safe to take. 
+Most hypothesis tests can return a *p-value*, which effectively translates to a probability that the null hypothesis is true for our population.  There are some common standards to the level of p-value needed to reject a null hypothesis.  The most common standard is a p-value less than 0.05.  This means that 19 out of 20 times the null hypothesis will be false. It also means that we are comfortable with the possibility that 1 in 20 times we will be wrong and we will conclude that there is a difference when in fact there is not.  A p-value of 0.05 in not the only standard of certainty used in research and practice, and in some fields of study smaller p-values are sought after, particularly if erroneous conclusions might have very serious consequences.
 
-Three common such hypothesis tests are:
+Three of the most common types of hypothesis tests are:
 
-1. Testing for a difference in the means of two groups in a population
+1. Testing for a difference in the means of two groups
 2. Testing for a non-zero correlation between two variables
-3. Testing for a difference in frequency distributions between different categories in a population.  
+3. Testing for a difference in frequency distributions between different categories  
 
-We will go through an example of each of these.  During these examples we will go through the steps of manually calculating all the statistics needed to do the hypothesis testing, before we demonstrate the functions that perform the full test for you.  Users don't absolutely need to know all the details contained in this section, but a strong understanding of the underlying methods are encouraged.
+We will go through an example of each of these.  During these examples we will go through the steps of manually calculating all the statistics needed to do the hypothesis testing, before we demonstrate the simple functions that perform the full test for you in R.  Users don't absolutely need to know all the details contained in this section, but a strong understanding of the underlying methods is encouraged.
 
 ### Testing for a difference in means (Welch's $t$-test) {#means-sig}
 
@@ -337,17 +337,24 @@ We calculate the standard error of the combined sample using the fomula^[If you 
 $$
 \sqrt{\frac{\sigma_{\mathrm{perf1}}^2}{n_{\mathrm{perf1}}} + \frac{\sigma_{\mathrm{perf4}}^2}{n_{\mathrm{perf4}}}}
 $$
-where $\sigma_{\mathrm{perf1}}$ and $\sigma_{\mathrm{perf2}}$ are the standard deviations of the two samples and $n_{\mathrm{perf1}}$ and $n_{\mathrm{perf2}}$ are the two sample sizes.  
+where $\sigma_{\mathrm{perf1}}$ and $\sigma_{\mathrm{perf4}}$ are the standard deviations of the two samples and $n_{\mathrm{perf1}}$ and $n_{\mathrm{perf4}}$ are the two sample sizes.  
 
 ```{r, include = FALSE}
 # calculate welch-satterthwaite estimate of degrees of freedom
-nx <- length(perf1$sales)
-ny <- length(perf4$sales)
-stderrx <- sqrt(var(perf1$sales)/nx)
-stderry <- sqrt(var(perf4$sales)/ny)
 
-stderr <- sqrt(stderrx^2 + stderry^2)
-df <- stderr^4/(stderrx^4/(nx-1) + stderry^4/(ny-1))
+# sample sizes
+n_perf1 <- length(perf1$sales)
+n_perf4 <- length(perf4$sales)
+
+# standard errors of samples
+se_perf1 <- sqrt(var(perf1$sales)/n_perf1)
+se_perf4 <- sqrt(var(perf4$sales)/n_perf4)
+
+# combined standard error
+se <- sqrt(se_perf1^2 + se_perf4^2)
+
+# calculate degrees of freedom
+df <- se^4/(se_perf1^4/(n_perf1-1) + se_perf4^4/(n_perf4-1))
 ```
 
 We use a special formula called the [Welch-Satterthwaite approximation](https://en.wikipedia.org/wiki/Welch%E2%80%93Satterthwaite_equation) to calculate the degrees of freedom for the two samples, which in this case calculates to `r round(df, 2)`^[I've kept the gory details of how this is derived out of view, but you can see them if you view the source code for this book].  This allows us to construct a 95% confidence interval for the difference between the means, and we can test whether this contains zero.
@@ -444,18 +451,19 @@ Imagine that we are asked if the performance category of each person in the `sal
 First we can produce a *contingency table* which is matrix containing counts of how many people were promoted or not promoted in each category.
 
 ```{r}
-## create contingency table of promoted versus performance
+# create contingency table of promoted versus performance
 (contingency <- table(salespeople$promoted, salespeople$performance))
 ```
 
 We can see by summing each row that for the total sample we can expect `r sum(contingency[2, ])` people to be promoted and `r sum(contingency[1, ])` to miss out on promotion.  We can use this ratio to compute an expected proportion in each performance category under the assumption that the distribution was exactly the same across all four categories.
 
 ```{r}
+# calculate expected promoted and not promoted
 (expected_promoted <- (sum(contingency[2, ])/sum(contingency)) * colSums(contingency))
 (expected_notpromoted <- (sum(contingency[1, ])/sum(contingency)) * colSums(contingency))
 ```
 
-Now we can compare our observed versus expected values using the metric:
+Now we can compare our observed versus expected values using the difference metric:
 
 $$
 \frac{(\mathrm{observed} - \mathrm{expected})^2}{\mathrm{expected}}
@@ -463,8 +471,11 @@ $$
 and add these all up to get a total, known as the $\chi^2$ statistic.
 
 ```{r}
-notpromoted <- sum((expected_notpromoted - contingency[1, ])^2/expected_notpromoted)
+# calculate the difference metrics for promoted and not promoted
 promoted <- sum((expected_promoted - contingency[2, ])^2/expected_promoted)
+notpromoted <- sum((expected_notpromoted - contingency[1, ])^2/expected_notpromoted)
+
+# calculate chi-squared statistic
 (chi_sq_stat = notpromoted + promoted)
 ```
 
