@@ -3,6 +3,7 @@ output_dir: "_book_r/gitbook"
 
 rmd_files:
 - "index.Rmd"
+- "r/foreword.Rmd"
 - "r/introduction.Rmd"
 - "r/01-intro.Rmd"
 - "r/02-basic_r.Rmd"
