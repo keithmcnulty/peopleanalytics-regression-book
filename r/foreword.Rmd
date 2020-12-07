@@ -5,38 +5,38 @@ explosion of data have created a wonderful opportunity to bring more analytical 
 imaginable question. Not coincidentally, organizations are increasingly looking to apply all that data and
 capability to what is typically their greatest area of expense and their greatest strategic differentiator –
 their people. For too long, many of the most critical decisions in an organization – people decisions –
-had been guided by gut instinct or borrowed “best practices” and the democratization of People
-Analytics opened up enticing pathways to fix that. Suddenly, analysts who were originally interested in
-data problems began to be interested in people problems, and HR professionals who’d dedicated their
+had been guided by gut instinct or borrowed “best practices” and the democratization of people
+analytics opened up enticing pathways to fix that. Suddenly, analysts who were originally interested in
+data problems began to be interested in people problems, and HR professionals who had dedicated their
 careers to solving people problems needed more sophisticated analysis and data storytelling to make
 their cases and to refine their approaches for greater efficiency, effectiveness and impact.
 
 Doing data work with people in organizations has complexities that some other types of data work
-doesn’t. Often, the employee populations are relatively smaller than datasets used in other areas,
+doesn’t. Often, the employee populations are relatively smaller than data sets used in other areas,
 sometimes limiting the methods than can be used. Various regulatory requirements may dictate what
 data can be gathered and used, and what types of evidence might be required for various programs or
 people strategies. Human behavior and organizations are sufficiently complex that typically, multiple
 factors work together in influencing an outcome. Effects can be subtle, or meaningful only in
 combination, or difficult to tease apart. While in many disciplines, prediction is the most important aim,
-for most People Analytics projects and practitioners, understanding why something is happening is
+for most people analytics projects and practitioners, understanding *why* something is happening is
 critical.
 
 While the universe of analytical approaches is wonderful and vast, the best “swiss army knife” we have
-in People Analytics is regression. This volume is an accessible, targeted work aimed directly at
-supporting professionals doing People Analytics work. I’ve had the privilege of knowing and respecting
+in people analytics is regression. This volume is an accessible, targeted work aimed directly at
+supporting professionals doing people analytics work. I’ve had the privilege of knowing and respecting
 Keith McNulty for many years – he is the rare and marvelous individual who is deeply expert in the
 mechanics of data and analytics, curious about and steeped in the opportunities to improve the
 effectiveness and well-being of people at work, and a gifted teacher and storyteller. He is among the
-most prolific standard bearers for People Analytics. This new open source volume is in keeping with
+most prolific standard bearers for people analytics. This new open source volume is in keeping with
 many years of contributions to the practice of understanding people at work.
 
-After nearly 30 years of doing People Analytics work and the privilege of leading People Analytics teams
+After nearly 30 years of doing people analytics work and the privilege of leading people analytics teams
 at several leading global organizations, I am still excited by the problems we get to solve, the insights we
 get to spawn, and the tremendous impact we can have on organizations and the people that comprise
 them. This work is human and technical and important and exciting and deeply gratifying. I hope that
 you will find Keith’s *Handbook of Regression Modeling in People Analytics* helps you uncover new
 truths and create positive impacts in your own work.
 
-Alexis A. Fink \
+[Alexis A. Fink](https://www.linkedin.com/in/alexisfink/) \
 December 5, 2020
 

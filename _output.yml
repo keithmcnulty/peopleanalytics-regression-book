@@ -1,7 +1,8 @@
 bookdown::bs4_book:
   theme:
     primary: "#0C1480"
-  repo: https://github.com/keithmcnulty/eampa
+  repo: https://github.com/keithmcnulty/peopleanalytics-regression-book
+  css: r/adjusted_bs4_book.css
 bookdown::gitbook:
   config:
     toc:
@@ -9,7 +10,7 @@ bookdown::gitbook:
       before: |
         <li><a href="./">Handbook of Regression Modeling in People Analytics</a></li>
     sharing: yes
-  css: style.css
+  css: r/style.css
 bookdown::pdf_book:
   latex_engine: xelatex
   citation_package: natbib
