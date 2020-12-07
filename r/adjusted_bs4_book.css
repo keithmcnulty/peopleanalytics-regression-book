@@ -1,7 +1,0 @@
-pre .copy button {
-  visibility: hidden;
-}
-
-div.sourceCode:hover > pre .copy button {
-  visibility: visible;
-}

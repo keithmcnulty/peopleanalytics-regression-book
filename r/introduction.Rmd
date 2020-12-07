@@ -16,7 +16,7 @@ I am a mathematician who is now a practitioner of analytics.  For this reason yo
 
 This book is in permanent open review and I expect it to improve over time.  If you found this book or any part of it helpful to solving a problem, I'd love to hear about it.  If you have comments to improve or question any aspect of the contents of this book I encourage you to [leave an issue](https://github.com/keithmcnulty/peopleanalytics-regression-book/issues) on its Github repo.  This is the most reliable way for me to see your comment.  I promise to consider all comments and input but I do have to make a personal judgment about whether they are helpful to the aims and purpose of this book.  If I do make changes or additions based on your input I will make a point to acknowledge your contribution.
 
-I would like to thank the following individuals who have reviewed or contributed to this book: 
+I would like to thank the following individuals who have reviewed or contributed to this book at some point during its development: [Liz Romero](https://www.linkedin.com/in/liz-romero-664a6533/), [Alex LoPilato](https://www.linkedin.com/in/alexander-lopilato-0ba5a132/), [Kevin Jaggs](https://www.linkedin.com/in/kevin-jaggs-a2116b94/).  My sincere thanks to [Alexis Fink](https://www.linkedin.com/in/alexisfink/) for drawing on her years of people analytics experience to set the context for this book in her foreword. My thanks to the active people analytics community on *LinkedIn* for their constant encouragement and support.  Finally, my thanks to the R community for all the work they do in giving us amazing and constantly improving statistical tools to work with, and for developing the Bookdown package which I used to create this book. 
 
 
 Keith McNulty \

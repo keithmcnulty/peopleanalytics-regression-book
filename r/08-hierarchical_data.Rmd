@@ -181,7 +181,7 @@ lavaan::summary(cfa_meas_mod, fit.measures = TRUE, standardized = TRUE)
 
 This is a large set of results, but we can focus in on some important parameters to examine.  First we note that the results did not come attached to a warning.  One particular warning to look out for relates to the covariance matrix being non-positive definite.  This renders some of the attempted measurement invalid and is usually caused by too small a sample size for the complexity of the measurement model.  Since we did not receive this warning, we can proceed to examine the fit of the measurement model.
 
-Second, we can examine the fit statistics.  Numerous statistics are reported^[Other reported measures include statistical tests of perfect fit for the measurement model and for the baseline model, which in general should be disregarded for large samples, and AIC and BIC which are valuable for comparing different measurement model options], but for larger samples such as this dataset, the following measures should be examined:
+Second, we can examine the fit statistics.  Numerous statistics are reported^[Other reported measures include chi-square statistical tests of perfect fit for the measurement model and for the baseline model, and AIC and BIC.  While these generally are not very helpful in determining the quality of a specific measurement model, they are valuable for comparing different measurement model options], but for larger samples such as this dataset, the following measures should be examined:
 
 * CFI and TLI, which compare the proposed model to a baseline (null or random) model to determine if it is better.  Ideally we look for both of these measures to exceed 0.95.  We see that our measurement model comes very close to meeting these criteria
 

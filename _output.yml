@@ -2,7 +2,6 @@ bookdown::bs4_book:
   theme:
     primary: "#0C1480"
   repo: https://github.com/keithmcnulty/peopleanalytics-regression-book
-  css: r/adjusted_bs4_book.css
 bookdown::gitbook:
   config:
     toc:
