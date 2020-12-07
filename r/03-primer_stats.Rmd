@@ -306,13 +306,13 @@ The purpose of hypothesis testing is to establish a high degree of statistical c
 
 Most hypothesis tests can return a *p-value*, which effectively translates to a probability that the null hypothesis is true for our population.  There are some common standards to the level of p-value needed to reject a null hypothesis.  The most common standard is a p-value less than 0.05.  This means that 19 out of 20 times the null hypothesis will be false. It also means that we are comfortable with the possibility that 1 in 20 times we will be wrong and we will conclude that there is a difference when in fact there is not.  A p-value of 0.05 in not the only standard of certainty used in research and practice, and in some fields of study smaller p-values are sought after, particularly if erroneous conclusions might have very serious consequences.
 
-Three of the most common types of hypothesis tests are:
+Three of the most common types of hypothesis tests are^[We go through these three examples both because they are relatively common, but also to illustrate the details of the logic behind hypothesis testing.  By understanding how hypothesis tests work, this will allow the reader to grasp the meaning of other such tests like the F-test or the Wald test which we will be referring to in later chapters of this book]:
 
 1. Testing for a difference in the means of two groups
 2. Testing for a non-zero correlation between two variables
 3. Testing for a difference in frequency distributions between different categories  
 
-We will go through an example of each of these.  During these examples we will go through the steps of manually calculating all the statistics needed to do the hypothesis testing, before we demonstrate the simple functions that perform the full test for you in R.  Users don't absolutely need to know all the details contained in this section, but a strong understanding of the underlying methods is encouraged.
+We will go through an example of each of these.  In each case you will see a three step process.  First, we calculate a test statistic.  Second, we determine an expected distribution for that test statistic.  Finally, we determine where our calculated statistic falls in that distribution in order to assess the likelihood that our null hypothesis is true.  During these examples we will go through the steps of manually calculating all the steps needed to do the hypothesis testing, before we demonstrate the simple functions that perform all the steps for you in R.  Users don't absolutely need to know all the details contained in this section, but a strong understanding of the underlying methods is encouraged.
 
 ### Testing for a difference in means (Welch's $t$-test) {#means-sig}
 
