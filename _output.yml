@@ -8,7 +8,9 @@ bookdown::gitbook:
       collapse: section
       before: |
         <li><a href="./">Handbook of Regression Modeling in People Analytics</a></li>
-    sharing: yes
+    sharing:
+      twitter: yes
+      linkedin: yes
   css: r/style.css
 bookdown::pdf_book:
   latex_engine: xelatex

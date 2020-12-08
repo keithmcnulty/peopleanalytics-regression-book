@@ -95,7 +95,7 @@ We see that all variables except tenure seem to play a significant role in the c
 These results need to be interpreted carefully.  For example, the odds ratios for the Product A choice based on a simplified model are as follows:
 
 ```{r}
-A_simple <- glm(formula = productA ~ age + children + gender, 
+A_simple <- glm(formula = productA ~ age + children + gender + position_level, 
                 data = health_insurance)
 
 exp(A_simple$coefficients)
