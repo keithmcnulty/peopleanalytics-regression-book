@@ -19,8 +19,6 @@ This book is available in [bootstrap format](http://peopleanalytics-regression-b
 
 This book is in permanent open review.  Feedback and requests for new content should be made via the [issues](https://github.com/keithmcnulty/peopleanalytics-regression-book/issues) section of the book's Github repo.
 
-The [Github discussion board](https://github.com/keithmcnulty/peopleanalytics-regression-book/discussions) for the book is open, and a great place to make general comments, ask clarifying questions or seek help from other readers.  
-
 Happy modeling!
 
 *Last update:  `r format(Sys.Date(), "%d %B %Y")`*
