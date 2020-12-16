@@ -168,6 +168,27 @@ survminer::ggcoxzph(ph_check,
                     font.y = 10)
 ```
 
+## Frailty models
+
+We noticed in our example in the previous section that certain fields of employment appeared to have a significant effect on the attrition hazard.  It is therefore possible that different fields of employment have different base hazard functions, and we may wish to take this into account in determining if input variables have a significant relationship with attrition.  This is analogous to a mixed model which we looked at in Section \@ref(mixed).
+
+In this case we would apply a random intercept effect to the base hazard function $h_0(t)$ according to the field of employment of an individual, in order to take this into account in our modeling.  This kind of model is called a *frailty model*, taken from the clinical context, where different groups of patients may have different frailties (background risks of death).
+
+There are many variants of how frailty models are run in the clinical context (see @collett for an excellent exposition of these), but the main application of a frailty model in people analytics would be to adapt a Cox proportional hazard model to take into account different background risks of the hazard event occurring among different groups in the data.  This is called a *shared frailty model*.   The `frailtypack` R package allows various frailty models to be run with relative ease.  This is how we would run a shared frailty model on our `job_retention` data to take account of the different background attrition risk for the different fields of employment.
+
+```{r, warning = FALSE, message = FALSE}
+library(frailtypack)
+
+frailtypack::frailtyPenal(
+  formula = Surv(event = left, time = month) ~ gender + level + sentiment + cluster(field),
+  data = job_retention,
+  n.knots = 12, 
+  kappa = 10000
+)
+```
+
+We can see that the frailty parameter is significant, indicating that there is sufficient difference in the background attrition risk to justify the application of a random hazard effect.  We also see that the level of employment now becomes significant in addition to sentiment, with Low and Medium level employees more likely to leave compared to High level employees.
+
 ## Learning exercises
 
 ### Discussion questions
@@ -187,3 +208,4 @@ For these exercises, use the same `job_retention` dataset as in the walkthrough 
 3.  Determine the effect of `intention` on retention using a Cox proportional hazard model, controlling for `gender`, `field` and `level`.  
 4.  Perform an appropriate check that the proportional hazard assumption holds for your model.
 5.  Run a similar model but this time include the `sentiment` input variable.  How would you interpret the results?
+6.  Experiment with running a frailty model to take into account the different background attrition risk by field of employment.

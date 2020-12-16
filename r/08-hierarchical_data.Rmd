@@ -8,7 +8,7 @@ Separately, it can be the case that data we are given could have a latent hierar
 
 These topics are quite broad and there are many different approaches, techniques and terms involved in mixed modeling and latent variable modeling.  In this chapter we will only cover some of the simpler approaches, which would suffice for the majority of common situations in people analytics.  For a deeper treatment of these topics, see @jiang for mixed models and @bartholomew or @skrondal for latent variable models.
 
-## Mixed models for explicit hierarchy in data
+## Mixed models for explicit hierarchy in data {#mixed}
 
 The most common explicit hierarchies that we see in data are group-based and time-based.  A group-based hierarchy occurs when we are taking observations that belong to different groups. For example, in our first walkthrough example in Chapter \@ref(linear-reg-ols), we modeled final examination performance against examination performance for the previous three years. In this case we considered each student observation to be independent and identically distributed and we ran a linear regression model on all the students.  If we were to receive additional information that these students were actually a mix of students on different degree programs, then we may wish to take this into account in how we model the problem - that is, we would want to assume that each student observation is only independent and identically distributed within each degree program.
 
