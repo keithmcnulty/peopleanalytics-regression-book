@@ -149,6 +149,7 @@ The model returns the following^[The concordance measure returned is a measure o
 
 Importantly, as well as statistically validating that sentiment has a significant effect on retention, our Cox model has allowed us to control for possible mediating variables.  We can now say that sentiment has a significant effect on retention even for individuals of the same gender, in the same field and at the same level. 
 
+
 ### Checking the proportional hazard assumption
 
 Note that we mentioned in the previous section a critical assumption for our Cox proportional hazard model to be valid, called the proportional hazard assumption.  As always, it is important to check this assumption before finalizing any inferences or conclusions from your model.  
@@ -179,15 +180,34 @@ There are many variants of how frailty models are run in the clinical context (s
 ```{r, warning = FALSE, message = FALSE}
 library(frailtypack)
 
-frailtypack::frailtyPenal(
+(frailty_model <- frailtypack::frailtyPenal(
   formula = Surv(event = left, time = month) ~ gender + level + sentiment + cluster(field),
   data = job_retention,
   n.knots = 12, 
   kappa = 10000
-)
+))
 ```
 
 We can see that the frailty parameter is significant, indicating that there is sufficient difference in the background attrition risk to justify the application of a random hazard effect.  We also see that the level of employment now becomes significant in addition to sentiment, with Low and Medium level employees more likely to leave compared to High level employees.
+
+The `frailtyPenal()` function can also be a useful way to observe the different baseline survivals for groups in the data.  For example, a simple stratified Cox proportional hazard model based on sentiment category can be constructed^[Note there needs to be a `kappa` for each level of the stratification].  
+
+```{r, results = "hide"}
+stratified_base <- frailtypack::frailtyPenal(
+  formula = Surv(event = left, time = month) ~ strata(sentiment_category),
+  data = job_retention,
+  n.knots = 12,
+  kappa = rep(10000, 2)
+)
+```
+
+This can then be plotted to observe how baseline retention differs by group, as in Figure \@ref(fig:stratified)^[This is another route to calculating survival curves similar to Figure \@ref(fig:survivalplot)].
+
+```{r stratified, fig.align = "center", fig.cap = "Baseline retention curves for the two sentiment categories in the `job_retention` data set", echo = FALSE, warning = FALSE, message = FALSE}
+plot(stratified_base, conf.bands = FALSE, type.plot = "Survival", 
+     pos.legend = "topright", Xlab = "Month",
+     Ylab = "Baseline retention rate")
+```
 
 ## Learning exercises
 

@@ -219,6 +219,6 @@ Implementation of other model variants featured in earlier chapters becomes thin
 
 * The `semopy` package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar to the `lavaan` package in R.  A full tutorial is available [here](https://semopy.com/tutorial.html).
 
-* The `lifelines` package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions.  A full tutorial is available [here](https://lifelines.readthedocs.io/en/latest/index.html).
+* The `lifelines` package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions.  A full tutorial is available [here](https://lifelines.readthedocs.io/en/latest/index.html).  I am not aware of any Python resources for frailty modeling at this time.
 
 
