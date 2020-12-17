@@ -203,7 +203,7 @@ stratified_base <- frailtypack::frailtyPenal(
 
 This can then be plotted to observe how baseline retention differs by group, as in Figure \@ref(fig:stratified)^[This is another route to calculating survival curves similar to Figure \@ref(fig:survivalplot)].
 
-```{r stratified, fig.align = "center", fig.cap = "Baseline retention curves for the two sentiment categories in the `job_retention` data set", echo = FALSE, warning = FALSE, message = FALSE}
+```{r stratified, fig.align = "center", fig.cap = "Baseline retention curves for the two sentiment categories in the `job_retention` data set"}
 plot(stratified_base, conf.bands = FALSE, type.plot = "Survival", 
      pos.legend = "topright", Xlab = "Month",
      Ylab = "Baseline retention rate")
