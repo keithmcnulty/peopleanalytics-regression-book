@@ -45,7 +45,7 @@ As you start to do tasks involving data in R, you will generally want to store t
 3 + 3
 ```
 
-However, as soon as the calculation is complete, it is forgotten by R because the result hasn't been assigned anywhere.  To store something in your R session, you will assign it a name using the `<-` command.  So I can assign my previous calculation to an object called `sum`, and this allows me to access the answer at any time.
+However, as soon as the calculation is complete, it is forgotten by R because the result hasn't been assigned anywhere.  To store something in your R session, you will assign it a name using the `<-` command.  So I can assign my previous calculation to an object called `my_sum`, and this allows me to access the answer at any time.
 
 ```{r}
 # store the result
