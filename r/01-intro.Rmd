@@ -96,6 +96,7 @@ The subsequent chapters are organized as follows:
 * Chapter 8 covers modeling options for data with explicit or latent hierarchy.  The first part covers mixed modeling and uses a model of speed dating decisions as a walkthrough and example.  The second part covers structural equation modeling and uses a survey for a political party as a walkthrough example.  The exercises involve modeling latent variables in an employee engagement survey.
 * Chapter 9 covers survival analysis, Cox proportional hazards regression and frailty models. The chapter uses employee attrition as a walkthrough example and exercise.
 * Chapter 10 outlines alternative technical approaches to regression modeling in both R and Python.
+* Chapter 11 covers power analysis, focusing in particular on estimating the required minimum sample sizes in establishing meaningful inferences for both simple statistical tests and multivariate models.
 
 
 

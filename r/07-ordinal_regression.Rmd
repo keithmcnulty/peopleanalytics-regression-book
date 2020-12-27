@@ -270,7 +270,7 @@ We can now display the coefficients of both models and examine the difference be
 Ignoring the intercept which is not of concern here, the differences appear relatively small.  Large differences in coefficients would indicate that the proportional odds assumption is likely violated and alternative approaches to the problem should be considered.
 
 
-### The Brant-Wald test
+### The Brant-Wald test {#wald}
 
 In the previous method, some judgment is required to decide whether the coefficients of the stratified binomial models are 'different enough' to decide on violation of the proportional odds assumption.  For those requiring more formal support, an option is the Brant-Wald test.  Under this test, a generalized ordinal logistic regression model is approximated and compared to the calculated proportional odds model.  A generalized ordinal logistic regression model is simply a relaxing of the proportional odds model to allow for different coefficients at each level of the ordinal outcome variable.
 

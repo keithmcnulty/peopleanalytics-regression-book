@@ -15,7 +15,9 @@ rmd_files:
 - "r/08-hierarchical_data.Rmd"
 - "r/09-survival_analysis.Rmd"
 - "r/10-tidy_modeling.Rmd"
-- "r/11-bibliography.Rmd"
+- "r/11-power_tests.Rmd"
+- "r/12-bibliography.Rmd"
+
 
 
 # language:

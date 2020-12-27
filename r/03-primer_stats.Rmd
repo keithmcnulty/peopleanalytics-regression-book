@@ -1,4 +1,4 @@
-# Statistics Foundations
+# Statistics Foundations {#found-stats}
 
 To properly understand multivariate models, an analyst needs to have a decent grasp of foundational statistics.  Many of the assumptions and results of multivariate models require an understanding of these foundations in order to be properly interpreted.  There are three topics that are particularly important for those proceeding further in this book:
 
@@ -298,7 +298,7 @@ upper_bound <- sample_mean + t*se
 cat(paste0('[', lower_bound, ', ', upper_bound, ']')) 
 ```
 
-## Hypothesis testing
+## Hypothesis testing {#hyp-tests}
 
 Observations about the distribution of statistics on samples of random variables allow us to construct tests for hypotheses of difference or similarity.  Such hypothesis testing is useful in itself for simple bivariate analysis in practice settings, but it will be particularly critical in later chapters in determining whether models are useful or not.  Before we go through some technical examples of hypothesis testing, let's overview the logic and intuition for how hypothesis testing works.
 
