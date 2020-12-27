@@ -106,7 +106,7 @@ plot(correl_powers)
 ```
 This informs us that we will likely want to be hitting at least 100 employees in our study to have any reasonable chance of establishing possible validity for our screening test.  
 
-## Power testing for linear regression models
+## Power analysis for linear regression models
 
 In power tests of linear regression models, the effect size is a statistic of the difference in model fit between the two models being compared.  Most commonly this will be a comparison of a 'full' fitted model involving specific input variables compared to a 'reduced' model with fewer input variables (often a random variance model with no input variables).   
 
@@ -124,7 +124,7 @@ f_sq_power <- WebPower::wp.regression(n = sample_sizes, p1 = 2, p2 = 1, f2 = 0.0
 plot(f_sq_power)
 ```
 
-## Power testing for log-likelihood regression models
+## Power analysis for log-likelihood regression models
 
 In Chapter \@ref(bin-log-reg), we reviewed how measures of fit for log-likelihood models are still the subject of some debate.  Given this, it is unsurprising that measures of effect size for log-likelihood models are not well established.  The most well-developed current method appeared in @demidenko, and works when we want to do a power test on a single input variable $x$ using the Wald test on the significance of model coefficients (see Section \@ref(wald) for a reminder of the Wald test).
 
@@ -148,7 +148,7 @@ plot(logistic_power)
 ```
 This test suggests that we would need a bare minimum of around 100 individuals in our experiment in order to have a chance of establishing the statistical significance of the relationship between screening test score and promotion likelihood.
 
-## Power tests for hierarchical regression models
+## Power analysis for hierarchical regression models
 
 Power tests for explicit hierarchical models usually originate from the clinical context and concern the design of clinical trials, which not only concern themselves with the entire sample size of a study but also need to determine the split of that sample between treatment and control.  It is rare that power analysis would need to be conducted for hierarchical models in people analytics but the technology is available in the `WebPower` package to explore this.
 
