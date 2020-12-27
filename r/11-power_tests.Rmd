@@ -31,18 +31,16 @@ Recall also that we use the statistical properties of the samples to make infere
 * The size $n$ of the sample being used
 * The size of the difference observed in the sample, known as the *effect size*.  There are numerous definitions of the effect size that depend on the specific type of power test being conducted.
 
-As an example to illustrate the mathematical relationship between these criteria, let's assume that we run an experiment on a group of employees of size $n$ where we introduce a new benefit and then test their satisfaction levels before and after its introduction.  As a statistic of a random variable, we can expect the mean difference in satisfaction to have a normal distribution.  Therefore we define the effect size in this case as the difference in the before and after means as a proportion of the combined standard deviation - known as Cohen's $d$:
+As an example to illustrate the mathematical relationship between these criteria, let's assume that we run an experiment on a group of employees of size $n$ where we introduce a new benefit and then test their satisfaction levels before and after its introduction.  As a statistic of a random variable, we can expect the mean difference in satisfaction to have a normal distribution.  Let $\mu_0$ and $\mu_1$ be the means of the before and after samples.  Recall from Chapter \@ref(found-stats) that to meet a statistical significance standard of $\alpha$, we will need $\mu_1 -\mu_0$ to be greater than a certain multiple of the standard error $\frac{\sigma}{\sqrt{n}}$ based on the normal distribution.  Let's call that multiple $z_{\alpha}$.   Therefore, we can say that the statistical power of our hypothesis test is:
 
 $$
-d = \frac{\mu_1 - \mu_0}{\sigma}
+\begin{align}
+\mathrm{Power} &= P(\mu_1 - \mu_0 > z_{\alpha}\frac{\sigma}{\sqrt{n}}) \\
+&= P(\frac{\mu_1 - \mu_0}{\sigma} > \frac{z_{\alpha}}{\sqrt{n}})
+\end{align}
 $$
 
-where $\mu_0$ and $\mu_1$ are the means of the before and after samples respectively and $\sigma$ is the standard deviation of the combined samples. Recall from Chapter \@ref(found-stats) that to meet a statistical significance standard of $\alpha$, we will need $d$ to be greater than a certain multiple of the standard error $\frac{\sigma}{\sqrt{n}}$.  Let's call that multiple $z_{\alpha}$.   Therefore, we can say that the statistical power of our hypothesis test is:
-
-$$
-P(\frac{\mu_1 - \mu_0}{\sigma} > \mu_0 + z_{\alpha}\frac{\sigma}{\sqrt{n}})
-$$
-Therefore, we can see that to calculate power depends on a measure of the observed difference between our two samples (through knowing $\mu_0$, $\mu_1$ and $\sigma$), the significance level $\alpha$ and the sample size $n$^[We will also need to know the expected distribution of the statistics that we are analyzing in order to determine the power probability].
+Therefore, we can see that to calculate power depends on a measure of the observed effect size between our two samples (defined as $\frac{\mu_1 - \mu_0}{\sigma}$), the significance level $\alpha$ and the sample size $n$^[We will also need to know the expected distribution of the statistics that we are analyzing in order to determine the power probability].
 
 The reader may immediately observe that many of these measures are not known at the typical point at which we would wish to do a power analysis.  We can assert a minimum level of statistical power that we would wish for - usually this is somewhere between 0.8 and 0.9.  We can also assert our $\alpha$.  But at a point of experimental design, we usually do not know the sample size and we do not know what difference would be observed in that sample (the effect size).  This implies that we are dealing with a single equation with more than one unknown, and this means that there is no unique solution^[In reality there are more unknowns that this math would imply, due to the imperfection of what we are trying to measure.  For example measurement error and reliability will often be an unmeasurable unknown.  For this reason you will often need a larger sample size than that indicated by power tests].  Practically speaking, looking at ranges of values will be common in power analysis.
 
