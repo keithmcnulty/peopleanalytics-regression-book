@@ -176,9 +176,9 @@ print(math.ceil(n_test))
 
 ```
 
-And a power curve can be constructed in this way:
+And a power curve can be constructed as in Figure \@ref(fig:pythonpowerplot).
 
-```{python}
+```{python pythonpowerplot, fig.cap="Plot of power against sample size for a paired t-test", fig.align="center"}
 import matplotlib.pyplot as plt
 import numpy as np
 
