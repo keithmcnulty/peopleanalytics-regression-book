@@ -10,9 +10,9 @@ That said, there are situations where running *power tests* - that is, tests of 
 
 2.  *Retrospective experiments* involve the use of historical data to test if a certain measure has a hypothesized effect.  This usually occurs opportunistically when it is apparent that a certain measure has occurred in the past and for a limited time, and data can be drawn to test whether or not that measure resulted in the hypothesized effect.
 
-Often both prospective and retrospective experiments can involve a lot of work - either in setting up experiments or in extracting data from history.  Therefore it will in these cases be sensible to get a point of view on the likely power of the experiment and what level of sample size might be needed in order to establish a meaningful inference before proceeding. For this reason, power analysis is a common component of research proposals in the medical or social sciences.  
+Both prospective and retrospective experiments can involve a lot of work - either in setting up experiments or in extracting data from history.  There is a natural question as to whether the chances of success justify the required resources and effort.  Before proceeding in these cases, it is sensible to get a point of view on the likely power of the experiment and what level of sample size might be needed in order to establish a meaningful inference. For this reason, power analysis is a common component of research proposals in the medical or social sciences.  
 
-Power analysis can be regarded to some extent as a relatively blunt instrument whose primary value is to make sure that substantial effort is not being wasted on foolhardy research.   It is important to note the 'substantial effort' part of this.  If the analyst already has reasonably available data and wants to test for the effect of a certain phenomenon, the most direct approach is to just go and run the appropriate model assuming that it is relatively straightforward to do so. Power tests should only be considered if there is clearly some substantial labor involved in the proposed work. 
+Power analysis is a relatively blunt instrument whose primary value is to make sure that substantial effort is not being wasted on foolhardy research.   If the analyst already has reasonably available data and wants to test for the effect of a certain phenomenon, the most direct approach is to just go and run the appropriate model assuming that it is relatively straightforward to do so. Power tests should only be considered if there is clearly some substantial labor involved in the proposed modeling work. 
 
 ## Errors, effect sizes and statistical power
 
@@ -43,13 +43,13 @@ $$
 \end{align}
 $$
 
-where $\Phi$ is the normal probability distribution, and $d = \frac{\mu_1 - \mu_0}{\sigma}$, known as *Cohen's effect size*. Therefore, we can see that to calculate power depends on a measure of the observed effect size between our two samples (defined as Cohen's $d$) the significance level $\alpha$ and the sample size $n$^[We will also need to know the expected distribution of the statistics that we are analyzing in order to determine the power probability].
+where $\Phi$ is the normal probability distribution, and $d = \frac{\mu_1 - \mu_0}{\sigma}$ is known as *Cohen's effect size*. Therefore, we can see that power depends on a measure of the observed effect size between our two samples (defined as Cohen's $d$) the significance level $\alpha$ and the sample size $n$^[We will also need to know the expected distribution of the statistics that we are analyzing in order to determine the power probability].
 
 The reader may immediately observe that many of these measures are not known at the typical point at which we would wish to do a power analysis.  We can assert a minimum level of statistical power that we would wish for - usually this is somewhere between 0.8 and 0.9.  We can also assert our $\alpha$.  But at a point of experimental design, we usually do not know the sample size and we do not know what difference would be observed in that sample (the effect size).  This implies that we are dealing with a single equation with more than one unknown, and this means that there is no unique solution^[In reality there are more unknowns that this math would imply, due to the imperfection of what we are trying to measure.  For example measurement error and reliability will often be an unmeasurable unknown.  For this reason you will often need a larger sample size than that indicated by power tests].  Practically speaking, looking at ranges of values will be common in power analysis.
 
-## Power analysis for simple statistical tests
+## Power analysis for simple statistical tests {#simple-stats}
 
-Usually we will run power analyses to get a sense of required sample sizes.  Given the observations on unknowns in the previous section, we will have to assert certain possible statistical results in order to estimate possible sample sizes.  Most often, we will need to suggest the observed effect size in order to obtain the minimum sample size for that effect size to return a statistically significant result at a desired level of statistical power.  
+Usually we will run power analyses to get a sense of required sample sizes.  Given the observations on unknowns in the previous section, we will have to assert certain possible statistical results in order to estimate required sample sizes.  Most often, we will need to suggest the observed effect size in order to obtain the minimum sample size for that effect size to return a statistically significant result at a desired level of statistical power.  
 
 Using our example from the previous section, let's assume that we would see a 'medium' effect size on our samples.  *Cohen's Rule of Thumb* for $d$ states that $d = 0.2$ is a small effect size, $d = 0.5$ a medium effect size and $d = 0.8$ a large effect size.  We can use the `wp.t()` function from the `WebPower` package in R to do a power analysis on a paired two-sample $t$-test and return a minimum required sample size.  We can assume $d = 0.5$ and that we require a power of 0.8 - that is, we want an 80% probability that the test will return an accurate rejection of the null hypothesis.  
 
@@ -57,7 +57,7 @@ Using our example from the previous section, let's assume that we would see a 'm
 library(WebPower)
 
 # get minimum n for power of 0.8
-(n_test <- WebPower::wp.t(n1 = NULL, d = 0.5, p = 0.8, type = "paired"))
+(n_test <- WebPower::wp.t(d = 0.5, p = 0.8, type = "paired"))
 ```
 
 This tells us that we need an absolute minimum of `r ceiling(n_test$n)` individuals in our sample for an effect size of 0.5 to return a significant difference at an alpha of 0.05 with 80% probability.  Alternatively we can test the power of a specific proposed sample size.
@@ -115,7 +115,7 @@ The $f^2$ statistic is defined as follows:
 $$
 f^2 = \frac{R_{\mathrm{full}}^2 - R_{\mathrm{reduced}}^2}{1 - R_{\mathrm{full}}^2}
 $$
-where the formula refers to the $R^2$ fit statistics for the two models being compared.  As an example, imagine we already know that GPA in college has a significant relationship with job performance and we wish to determine if our proposed screening test had incremental validity on top of knowing college GPA.  We might run two linear regression models, one relating job performance to GPA, and another relating job performance to *both* GPA and screening test score.  Assuming we would observe a relatively small effect size for our screening test, we assume $f^2 = 0.05$^[Cohen's rule of thumb for $f^2$ effect sizes as Small: 0.02, Medium: 0.15, Large: 0.35], we can plot sample size against power in determining whether the two models are significantly different.  We will also need to define the number of predictors in the full model (`p1 = 2`) and the reduced model (`p2 = 1`).  The plot is shown in Figure \@ref(fig:regressionpower).
+where the formula refers to the $R^2$ fit statistics for the two models being compared.  As an example, imagine we already know that GPA in college has a significant relationship with job performance and we wish to determine if our proposed screening test had incremental validity on top of knowing college GPA.  We might run two linear regression models, one relating job performance to GPA, and another relating job performance to *both* GPA and screening test score.  Assuming we would observe a relatively small effect size for our screening test, we assume $f^2 = 0.05$^[Cohen's rule of thumb for $f^2$ effect sizes is Small: 0.02, Medium: 0.15, Large: 0.35], we can plot sample size against power in determining whether the two models are significantly different.  We will also need to define the number of predictors in the full model (`p1 = 2`) and the reduced model (`p2 = 1`).  The plot is shown in Figure \@ref(fig:regressionpower).
 
 ```{r regressionpower, fig.cap="Plot of power against sample size for a small effect of a second input variable in a linear regression model", fig.align="center"}
 sample_sizes <- 100:300
@@ -132,10 +132,10 @@ In this method, the statistical power of a significance test on the input variab
 
 1.  The likelihood of a positive outcome when $x = 0$ is used to determine the intercept (`p0` in the code below)
 2.  The likelihood of a positive outcome when $x = 1$ is then used to determine the regression coefficient for $x$ (`p1` in the code below).
-3.  A distribution for the $x$ is inputted (`family` below) and the parameters of that distibution are also entered (`parameter` below).  For example, if the distribution is assumed to be normal then the mean and standard deviation would be entered as parameters.
+3.  A distribution for $x$ is inputted (`family` below) and the parameters of that distibution are also entered (`parameter` below).  For example, if the distribution is assumed to be normal then the mean and standard deviation would be entered as parameters.
 4.  This information is fed into the Wald test and the power for specific sample sizes is calculated.
 
-For example, let's assume that we wanted to determine if our new screening test had a significant effect on promotion likelihood by running an experiment on employees who were being considered for promotion.   We assume that our screening test is scored on a percentile scale and has a mean of 53 and a standard deviation of 21.  We know that approximately 50% of those being considered for promotion will be promoted, and we believe that the screening test may have a small effect whereby those who score zero would still have a 40% chance of promotion and every additional point scored would increase this chance by 0.2%.  We run the `wp.logistic()` function in `WebPower` to plot a power curve for various sample sizes as in Figure \@ref(fig:logisticpower).
+For example, let's assume that we wanted to determine if our new screening test had a significant effect on promotion likelihood by running an experiment on employees who were being considered for promotion.   We assume that our screening test is scored on a percentile scale and has a mean of 53 and a standard deviation of 21.  We know that approximately 50% of those being considered for promotion will be promoted, and we believe that the screening test may have a small effect whereby those who score zero would still have a 40% chance of promotion and every additional point scored would increase this chance by 0.2 percentage points.  We run the `wp.logistic()` function in `WebPower` to plot a power curve for various sample sizes as in Figure \@ref(fig:logisticpower).
 
 ```{r logisticpower, fig.cap="Plot of power against sample size for a single input variable in logistic regression", fig.align="center"}
 sample_sizes <- 50:200
@@ -156,6 +156,37 @@ Power tests for explicit hierarchical models usually originate from the clinical
 
 *Multisite randomized trials* are trials where individuals are assigned to treatment or control groups at random, but where these individuals also belong to different clusters which are important in modeling - for example they may be members of clinical groups based on pre-existing conditions, or they may be being treated in different hospitals or outpatient facilities. Again, this makes for a substantially more complex calculation of statistical power.  The `wp.mrt2arm()` and `wp.mrt3arm()` functions offer support for this.
 
-Power tests are also available for Structural Equation models.  This involves comparing a more 'complete' structural model to a 'subset' model where some of the coefficients from the more 'complete' model are set to zero. Such power tests can be valuable when structural models have been applied previously on responses to survey instruments and there is an intention to test alternative models in the future.  They can provide information on required future survey participation and response rates in order to establish whether the improved fit can be established for the alternative models.
+Power tests are also available for structural equation models.  This involves comparing a more 'complete' structural model to a 'subset' model where some of the coefficients from the more 'complete' model are set to zero. Such power tests can be valuable when structural models have been applied previously on responses to survey instruments and there is an intention to test alternative models in the future.  They can provide information on required future survey participation and response rates in order to establish whether the improved fit can be established for the alternative models.
 
 There are two approaches to power tests for structural equation models, using a chi square test and a root mean squared error (RMSEA) approach.   Both of these methods take a substantial number of input parameters, consistent with the complexity of structural equation model parameters and the various alternatives for measuring fit of these models.  The chi square test approach is implemented by the `wp.sem.chisq()` function, and the RMSEA approach is implemented by the `wp.sem.rmsea()` function in `WebPower`.
+
+## Power analysis using Python
+
+A limited set of resources for doing power analysis is available in the `stats.power` module of the `statsmodels` package.  As an example, here is how we would conduct the power analysis for a paired $t$-test as in Section \@ref(simple-stats) above.
+
+```{python}
+import math
+from statsmodels.stats.power import TTestPower
+
+power = TTestPower()
+n_test = power.solve_power(effect_size = 0.5,
+                           power = 0.8,
+                           alpha = 0.05)
+print(math.ceil(n_test))
+
+```
+
+And a power curve can be constructed in this way:
+
+```{python}
+import matplotlib.pyplot as plt
+import numpy as np
+
+fig = plt.figure()
+fig = TTestPower().plot_power(dep_var = 'nobs',
+                              nobs = np.arange(20, 100),
+                              effect_size = np.array([0.5]),
+                              alpha = 0.05)
+plt.show()
+
+```
