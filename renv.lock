@@ -135,6 +135,13 @@
       "Repository": "CRAN",
       "Hash": "ded0f01c709c21ef050620187f4006bd"
     },
+    "PearsonDS": {
+      "Package": "PearsonDS",
+      "Version": "1.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "ffe681f55a4cad00140a3381dd9f1f43"
+    },
     "R6": {
       "Package": "R6",
       "Version": "2.5.0",
@@ -218,6 +225,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "84dffc44f23c419537c1c79cc46347a5"
+    },
+    "WebPower": {
+      "Package": "WebPower",
+      "Version": "0.5.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "3a7e297f4a2fe65de2e6f84e6e285246"
     },
     "XML": {
       "Package": "XML",
