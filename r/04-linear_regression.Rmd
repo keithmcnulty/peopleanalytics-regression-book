@@ -195,7 +195,7 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
 
 ```
 
-Recall from our previous chapter the definition of the population variance of $y$, notated as $\mathrm{Var}(y)$.  Note that it is defined as the average of the squares of the residuals around the mean of $y$. Therefore $\mathrm{Var}(y)$ represents the mean sum of squares error of a random model.  This calculates in this case to `r round((5/6)*var(d$Final), 2)`.
+Recall from our previous chapter the definition of the population variance of $y$, notated as $\mathrm{Var}(y)$.  Note that it is defined as the average of the squares of the residuals around the mean of $y$. Therefore $\mathrm{Var}(y)$ represents the mean sum of squares error of a random model.  This calculates in this case to `r round((9/10)*var(d$Final), 2)`.
 
 Now let's overlay our fitted model onto this random model in Figure \@ref(fig:model-overlay):
 
@@ -230,7 +230,7 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
 
 ```
 
-So for most of our observations (though not all) we seem to have reduced the 'distance' from the random model by fitting our new model.  If we average the square of our residuals for the fitted model, we obtain the mean sum of squares error of our fitted model, which calculates to `r round(sum(model$residuals^2)/6, 2)`.
+So for most of our observations (though not all) we seem to have reduced the 'distance' from the random model by fitting our new model.  If we average the square of our residuals for the fitted model, we obtain the mean sum of squares error of our fitted model, which calculates to `r round(sum(model$residuals^2)/10, 2)`.
 
 Therefore before we fit our model, we have an average error of `r round((9/10)*var(d$Final), 2)`, and after we fit it, we have an average error of `r round(sum(model$residuals^2)/10, 2)`.  So we have reduced the average error of our model by `r round((9/10)*var(d$Final), 2) - round(sum(model$residuals^2)/10, 2)` or, expressed as a proportion, by `r round((round((9/10)*var(d$Final), 2) - round(sum(model$residuals^2)/10, 2))/((9/10)*var(d$Final)), 2)`.  In other words, we can say that our model explains `r  round(((9/10)*var(d$Final) - sum(model$residuals^2)/10)/((9/10)*var(d$Final)), 2)` (or `r  round(((9/10)*var(d$Final) - sum(model$residuals^2)/10)/((9/10)*var(d$Final)), 2) * 100`%) of the variance of our outcome.  
 
