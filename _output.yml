@@ -19,6 +19,8 @@ bookdown::gitbook:
 bookdown::pdf_book:
   latex_engine: xelatex
   citation_package: natbib
+  fontsize: 10pt
+  geometry: margin=2cm
   keep_tex: yes
   pandoc_args: ["--top-level-division=chapter"]
   quote_footer: ["\\begin{flushright}", "\\end{flushright}"]

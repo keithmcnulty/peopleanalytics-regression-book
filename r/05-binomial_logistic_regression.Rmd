@@ -224,7 +224,7 @@ ggplot2::ggplot() +
 
 The consequences of this is that a given increase in odds can have very different effects on probability depending on what original probability was in the first place.  If the probability was already quite low, for example 0.1, then a 4% increase in odds translates to odds of `r round((1/9)*1.04, 3)` which translates to a new probability of `r round((0.1*1.04)/(1 + 0.1*0.04), 6)`, representing an increase in probability of `r round((0.1*1.04)/(1 + 0.1*0.04)*100/0.1, 2) - 100`%, which is very close to the increase in odds.  If the probability was already high, say 0.9, then a 4% increase in odds translates to odds of `r round((9/1)*1.04, 3)`, which translates to a new probability of `r round((0.9*1.04)/(1 + 0.9*0.04), 6)` representing an increase in probability of `r round((0.9*1.04)/(1 + 0.9*0.04)*100/0.9, 2) - 100`%, which is very different from the increase in odds.  Figure \@ref(fig:pcoddsplot) shows the impact of a 4% increase in odds according to the original probability of the event.
 
-```{r pcoddsplot, fig.cap="Effect of 4% increase in odds plotted against original probability", fig.align="center", echo = FALSE, message = FALSE, warning = FALSE}
+```{r pcoddsplot, fig.cap= "Effect of 4% increase in odds plotted against original probability", fig.align="center", echo = FALSE, message = FALSE, warning = FALSE}
 
 library(latex2exp)
 
@@ -241,8 +241,10 @@ ggplot2::ggplot() +
 We can see that the closer the base probability is to zero, the similar the effect of the increase on both odds and on probability.  However, the higher the probability of the event, the less impact the increase in odds has.  In any case, it's useful to remember the formulas for convertings odds to probability and vice-versa.  If $O$ represents odds and $P$ represents probability then we have:
 
 $$
-O = \frac{P}{1 - P} \\
-P = \frac{O}{1 + O}
+\begin{aligned}
+O &= \frac{P}{1 - P} \\
+P &= \frac{O}{1 + O}
+\end{aligned}
 $$
 
 ## Running a multivariate logistic regression model
@@ -260,11 +262,12 @@ for coefficients $\beta_0, \beta_1,..., \beta_p$.  As before:
 Applying an exponent as before, we have
 
 $$
-\begin{align*}
+\begin{aligned}
 \frac{P(y = 1)}{P(y = 0)} &= e^{\beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p} \\
 &= e^{\beta_0}(e^{\beta_1})^{x_1}(e^{\beta_2})^{x_2}...(e^{\beta_p})^{x_p} 
-\end{align*}
+\end{aligned}
 $$
+
 Therefore we can conclude that:
 
 * $e^{\beta_0}$ represents the odds of the outcome when all inputs are zero

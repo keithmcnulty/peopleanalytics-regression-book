@@ -1,4 +1,4 @@
-# Power Analysis to Estimate Required Sample Sizes for Inferential Modeling
+# Power Analysis to Estimate Required Sample Sizes for Inferential Modeling {#power-tests}
 
 In the vast majority of situations in people analytics, researchers and analysts have limited control over the size of their samples.  The most common situation is, of course, that analyses are run with whatever data can be gleaned and cleaned in the time available.  At the same time, as we have seen in all of our previous work, even if a certain difference might exist in real life in the populations being studied, it is by no means certain that a specific analysis on samples from these populations will elucidate that difference.  Whether that difference is visible depends on the statistical properties of the samples used.  Therefore, researchers and analysts are living in the reality that when they conduct inferential analysis, the usefulness of their work depends to a very large degree on the samples they have available.
 
@@ -43,7 +43,7 @@ $$
 \end{align}
 $$
 
-where $\Phi$ is the normal probability distribution, and $d = \frac{\mu_1 - \mu_0}{\sigma}$ is known as *Cohen's effect size*. Therefore, we can see that power depends on a measure of the observed effect size between our two samples (defined as Cohen's $d$) the significance level $\alpha$ and the sample size $n$^[We will also need to know the expected distribution of the statistics that we are analyzing in order to determine the power probability].
+where $\Phi$ is the cumulative normal probability distribution function, and $d = \frac{\mu_1 - \mu_0}{\sigma}$ is known as *Cohen's effect size*. Therefore, we can see that power depends on a measure of the observed effect size between our two samples (defined as Cohen's $d$) the significance level $\alpha$ and the sample size $n$^[We will also need to know the expected distribution of the statistics that we are analyzing in order to determine the power probability].
 
 The reader may immediately observe that many of these measures are not known at the typical point at which we would wish to do a power analysis.  We can assert a minimum level of statistical power that we would wish for - usually this is somewhere between 0.8 and 0.9.  We can also assert our $\alpha$.  But at a point of experimental design, we usually do not know the sample size and we do not know what difference would be observed in that sample (the effect size).  This implies that we are dealing with a single equation with more than one unknown, and this means that there is no unique solution^[In reality there are more unknowns that this math would imply, due to the imperfection of what we are trying to measure.  For example measurement error and reliability will often be an unmeasurable unknown.  For this reason you will often need a larger sample size than that indicated by power tests].  Practically speaking, looking at ranges of values will be common in power analysis.
 
