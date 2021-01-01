@@ -1,7 +1,6 @@
 ---
 title: "Exercise solutions"
 author: "Keith McNulty"
-date: "01/01/2021"
 output: html_document
 ---
 
