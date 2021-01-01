@@ -1,0 +1,10 @@
+---
+title: "Exercise solutions"
+author: "Keith McNulty"
+date: "01/01/2021"
+output: html_document
+---
+
+Solutions to exercises requested by readers will be progressively added here.
+
+[Chapter 3, Exercise 9](c3_e9.html)
