@@ -427,8 +427,8 @@ donation &lt;- read.csv(url)
 # subset ages for those who recently donated and those who didn&#39;t
 x1 &lt;- subset(donation, subset = recent_donation == 1, select = &quot;age&quot;)
 x0 &lt;- subset(donation, subset = recent_donation == 0, select = &quot;age&quot;)</code></pre>
-<p>We are trying to establish if <span class="math inline">\(\bar{x_1} - 10 &gt; \bar{x_0}\)</span> in the population. Alternatively stated, we are testing if <span class="math inline">\(\overline{x_1 - 10} &gt; \bar{x_0}\)</span> in the population, so we are doing a <span class="math inline">\(t\)</span>-test in our sample to compare <code>x1 - 10</code> with <code>x0</code>. Also, since we are testing for “greater than”, we need to use a one-sided <span class="math inline">\(t\)</span>-test with “greater” as the alternative hypothesis:</p>
-<pre class="r"><code># run t-test 
+<p>We are trying to establish if <span class="math inline">\(\bar{x_1} - 10 &gt; \bar{x_0}\)</span> in the population. Alternatively stated, we are testing if <span class="math inline">\(\overline{x_1 - 10} &gt; \bar{x_0}\)</span> in the population, so we are doing a <span class="math inline">\(t\)</span>-test in our sample to compare <code>x1 - 10</code> with <code>x0</code>. Our null hypothesis is that there is no difference between the means of <code>x1 - 10</code> and <code>x0</code>. Our alternative hypothesis is that the mean of <code>x1 - 10</code> is greater than the mean of <code>x0</code>. This requires a one sided <span class="math inline">\(t\)</span>-test.</p>
+<pre class="r"><code># run one sided t-test to compare means of x1 - 10 and x0
 t.test(x1 - 10, x0, alternative = &quot;greater&quot;)</code></pre>
 <pre><code>## 
 ##  Welch Two Sample t-test
@@ -441,7 +441,7 @@ t.test(x1 - 10, x0, alternative = &quot;greater&quot;)</code></pre>
 ## sample estimates:
 ## mean of x mean of y 
 ##  52.68675  42.19188</code></pre>
-<p>The p-value of this test confirms that those who donated are at least ten years older than those who did not.</p>
+<p>The p-value of this test meets an alpha standard of 0.001 and this confirms the alternate hypothesis that those who donated are at least ten years older than those who did not.</p>
 <p><a href="index.html">Back to solutions</a></p>
 
 
