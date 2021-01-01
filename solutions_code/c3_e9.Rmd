@@ -1,0 +1,31 @@
+---
+title: "Chapter 3 Exercise 9 Solution"
+author: "Keith McNulty"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Question:** By using an appropriate hypothesis test, determine if the age of those who have recently donated is at least 10 years older than those who have not recently donated in the population.
+
+**Solution:** Let $x_1$ be the vector of ages of those who have recently donated and let $x_0$ be the vector of ages of those who have not recently donated. 
+
+```{r}
+#get data
+url <- "http://peopleanalytics-regression-book.org/data/charity_donation.csv"
+donation <- read.csv(url)
+
+
+x1 <- subset(donation, subset = recent_donation == 1, select = "age")
+x0 <- subset(donation, subset = recent_donation == 0, select = "age")
+```
+
+We are trying to establish if $\bar{x_1} - 10 > \bar{x_0}$ in the population. Alternatively stated, we are testing if $\overline{x_1 - 10} > \bar{x_0}$ in the population, so we are doing a $t$-test in our sample to compare `x1 - 10` with `x0`.  Also, since we are testing for "greater than", we need to use a one-sided $t$-test with "greater" as the alternative hypothesis:
+
+```{r}
+t.test(x1 - 10, x0, alternative = "greater")
+```
+
+The p-value of this test confirms that those who donated are at least ten years older than those who did not.
