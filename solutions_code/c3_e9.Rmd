@@ -1,5 +1,5 @@
 ---
-title: "Chapter 3 Exercise 9 Solution"
+title: "Chapter 3 Data Exercise 9 Solution"
 author: "Keith McNulty"
 output: html_document
 ---

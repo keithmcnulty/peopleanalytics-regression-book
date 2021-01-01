@@ -1,6 +1,5 @@
 ---
 title: "Exercise solutions"
-author: "Keith McNulty"
 output: html_document
 ---
 
@@ -8,4 +7,4 @@ Solutions to exercises from [Handbook of Regression Modeling in People Analytics
 
 If you want to request a solution please do so via Github issues (https://github.com/keithmcnulty/peopleanalytics-regression-book/issues).
 
-[Chapter 3, Exercise 9](c3_e9.html)
+[Chapter 3, Data Exercise 9](c3_e9.html)
