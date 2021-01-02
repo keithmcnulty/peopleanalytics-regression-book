@@ -5,7 +5,7 @@ output: html_document
 
 Solutions to exercises from [Handbook of Regression Modeling in People Analytics](http://peopleanalytics-regression-book.org) requested by readers will be progressively added here.
 
-If you want to request a solution please do so via Github issues (https://github.com/keithmcnulty/peopleanalytics-regression-book/issues).
+If you want to request a solution please do so via [Github issues](https://github.com/keithmcnulty/peopleanalytics-regression-book/issues).
 
 * [Chapter 3, Discussion Exercise 3](c3_de3.html)
 * [Chapter 3, Discussion Exercise 9](c3_de9.html)
