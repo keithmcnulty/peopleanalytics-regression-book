@@ -7,5 +7,5 @@ Solutions to exercises from [Handbook of Regression Modeling in People Analytics
 
 If you want to request a solution please do so via Github issues (https://github.com/keithmcnulty/peopleanalytics-regression-book/issues).
 
-[Chapter 3, Discussion Exercise 9](c3_de9.html)
-[Chapter 3, Data Exercise 9](c3_e9.html)
+* [Chapter 3, Discussion Exercise 9](c3_de9.html)
+* [Chapter 3, Data Exercise 9](c3_e9.html)
