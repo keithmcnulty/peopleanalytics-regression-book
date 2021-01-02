@@ -418,6 +418,8 @@ summary {
 </div>
 
 
+<div id="solution-in-r" class="section level3">
+<h3>Solution in R</h3>
 <p><strong>Question:</strong> By using an appropriate hypothesis test, determine if the age of those who have recently donated is at least 10 years older than those who have not recently donated in the population.</p>
 <p><strong>Solution:</strong> Let <span class="math inline">\(x_1\)</span> be the vector of ages of those who have recently donated and let <span class="math inline">\(x_0\)</span> be the vector of ages of those who have not recently donated.</p>
 <pre class="r"><code># get data
@@ -442,7 +444,38 @@ t.test(x1 - 10, x0, alternative = &quot;greater&quot;)</code></pre>
 ## mean of x mean of y 
 ##  52.68675  42.19188</code></pre>
 <p>The p-value of this test meets an alpha standard of 0.001 and this confirms the alternate hypothesis that those who donated are at least ten years older than those who did not.</p>
+<p>Alternatively, as submitted by <a href="https://github.com/sasnnm">sasnnm</a>, the <code>mu</code> parameter in the <code>t.test()</code> function can be used to test for a specified minimum difference:</p>
+<pre class="r"><code># one sided t-test for minimum difference of 10
+t.test(x1, x0, alternative = &quot;greater&quot;, mu = 10)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  x1 and x0
+## t = 5.2268, df = 105.15, p-value = 4.403e-07
+## alternative hypothesis: true difference in means is greater than 10
+## 95 percent confidence interval:
+##  17.16282      Inf
+## sample estimates:
+## mean of x mean of y 
+##  62.68675  42.19188</code></pre>
+</div>
+<div id="solution-in-python" class="section level3">
+<h3>Solution in Python</h3>
+<p>This solution was submitted by <a href="https://github.com/NicoleRL25">NicoleRL25</a>.</p>
+<pre class="python"><code>import statsmodels.api as sm
+
+# get data
+donation=pd.read_csv(&#39;http://peopleanalytics-regression-book.org/data/charity_donation.csv&#39;)
+
+# subset ages for those who recently donated and those who didn&#39;t
+x1=donation.loc[donation.recent_donation==1,&#39;age&#39;]
+x0=donation.loc[donation.recent_donation==0,&#39;age&#39;]</code></pre>
+<p>To perform the Welch’s t-test using statsmodels with <code>usevar= &#39;unequal&#39;</code>. The default is <code>&#39;pooled&#39;</code> which will perform the student’s t-test. The <code>value</code> parameter can be used to test for a specific minimum difference. This returns a tuple of the t-statistic, p-value and degrees of freedom of the hypothesis test.</p>
+<pre class="python"><code># one sided t-test for minimum difference of 10
+sm.stats.ttest_ind(x1, x0, usevar=&#39;unequal&#39;, alternative=&#39;larger&#39;, value=10)</code></pre>
+<pre><code>## (5.226802173285962, 4.4030947228348763e-07, 105.150577594637)</code></pre>
 <p><a href="index.html">Back to solutions</a></p>
+</div>
 
 
 
