@@ -1,0 +1,44 @@
+---
+title: "Chapter 3 Discussion Exercise 9 Solution"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Question:** The sum of variance law states that, for independent random variables $x$ and $y$, $\mathrm{Var}(x \pm y) = \mathrm{Var}(x) + \mathrm{Var}(y)$.  Use this together with the identity from Exercise 3 to derive the formula for the standard error of the mean of $x = x_1, x_2, ..., x_n$:
+
+$$
+SE = \frac{\sigma(x)}{\sqrt{n}}
+$$
+
+**Solution:** First we derive the variance of the mean.  Pulling in definitions from Section 3.1:
+
+$$
+\begin{aligned}
+\mathrm{Var}(\bar{x}) &= \mathrm{Var}\left(\frac{1}{n}\sum_{i = 1}^{n}x_i\right) \\
+&= \sum_{i = 1}^{n}\mathrm{Var}\left(\frac{1}{n}x_i\right)
+\end{aligned}
+$$
+by the sum of variance law.  Now using the result $\mathrm{Var}(ax) = a^2\mathrm{Var}(x)$ from Exercise 3:
+
+$$
+\begin{aligned}
+\mathrm{Var}(\bar{x}) &= \sum_{i = 1}^{n}\mathrm{Var}\left(\frac{1}{n}x_i\right) \\
+&= \frac{1}{n^2}\sum_{i = 1}^{n}\mathrm{Var}\left(x_i\right) \\
+&= \frac{n}{n^2}\mathrm{Var}\left(x\right) \\
+&= \frac{1}{n}\mathrm{Var}\left(x\right) \\
+\end{aligned}
+$$
+since each $x_i$ is independent and identically distributed.  Now, the standard error of the mean is the standard deviation of the mean, which is the square root of the variance of the mean.  So taking the square root of the previous derivation:
+
+$$
+\begin{aligned}
+SE &= \sqrt{\mathrm{Var}(\bar{x})} \\
+&= \frac{\sqrt{\mathrm{Var}(x)}}{\sqrt{n}} \\
+&= \frac{\sigma(x)}{\sqrt{n}}
+\end{aligned}
+$$
+
+[Back to solutions](index.html)
