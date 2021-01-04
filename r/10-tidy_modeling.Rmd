@@ -209,16 +209,117 @@ print(insurance_model.summary())
 
 ```
 
+### Structural equation models
+
+The `semopy` package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar to the `lavaan` package in R.  However, its reporting is not as intuitive compared to `lavaan`.  A full tutorial is available [here](https://semopy.com/tutorial.html).  Here is an example of how to run the same model as that studied in Section \@ref(struc-eq-model) using `semopy`.
+
+
+```{python, results = "hide"}
+import pandas as pd
+from semopy import Model
+
+# get data
+url = "http://peopleanalytics-regression-book.org/data/politics_survey.csv"
+politics_survey = pd.read_csv(url)
+
+# define full measurement and strucural model
+measurement_model = """
+# measurement model
+Pol =~ Pol1 + Pol2
+Hab =~ Hab1 + Hab2 + Hab3
+Loc =~ Loc2 + Loc3
+Env =~ Env1 + Env2
+Int =~ Int1 + Int2
+Pers =~ Pers2 + Pers3
+Nat =~ Nat1 + Nat2
+Eco =~ Eco1 + Eco2
+
+# structural model
+Overall ~ Pol + Hab + Loc + Env + Int + Pers + Nat + Eco
+"""
+
+full_model = Model(measurement_model)
+
+# fit model to data and inspect
+full_model.fit(politics_survey)
+```
+
+Then to inspect the results:
+
+```{python}
+# inspect the results of SEM 
+full_model.inspect()
+```
+
+### Survival analysis
+
+The `lifelines` package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions.  A full tutorial is available [here](https://lifelines.readthedocs.io/en/latest/index.html).  
+
+Here is an example of how to plot Kaplan-Meier survival curves in Python using our Chapter \@ref(survival) walkthrough example. The survival curves are displayed in Figure \@ref(fig:survival-python).
+
+```{python survival-python, fig.align = "center", fig.cap = "Survival curves by sentiment category in the `job_retention` data"}
+import pandas as pd
+from lifelines import KaplanMeierFitter
+from matplotlib import pyplot as plt
+
+# get data
+url = "http://peopleanalytics-regression-book.org/data/job_retention.csv"
+job_retention = pd.read_csv(url)
+
+# fit our data to Kaplan-Meier estimates
+T = job_retention["month"]
+E = job_retention["left"]
+kmf = KaplanMeierFitter()
+kmf.fit(T, event_observed = E)
+
+# split into high and not high sentiment
+highsent = (job_retention["sentiment"] >= 7)
+
+# set up plot
+survplot = plt.subplot()
+
+# plot high sentiment survival function
+kmf.fit(T[highsent], event_observed = E[highsent], label = "High Sentiment")
+kmf.plot_survival_function(ax = survplot)
+
+# plot not high sentiment survival function
+kmf.fit(T[~highsent], event_observed = E[~highsent], label = "Not High Sentiment")
+kmf.plot_survival_function(ax = survplot)
+
+# show survival curves by sentiment category
+plt.show()
+```
+
+And here is an example of how to fit a Cox Proportional Hazard model similarly to Section \@ref(coxphmodel)^[I am not aware of any way of running frailty models currently in Python].
+
+```{python, results = "hide"}
+from lifelines import CoxPHFitter
+
+# fit Cox PH model to job_retention data
+cph = CoxPHFitter()
+cph.fit(job_retention, duration_col = 'month', event_col = 'left', 
+        formula = "gender + field + level + sentiment")
+```
+
+```{python}
+# view results
+cph.print_summary()
+```
+
+Proportional Hazard assumptions can be checked using the `check_assumptions()` method^[Schoenfeld residual plots can be seen by setting `show_plots = True` in the parameters].
+
+```{python}
+cph.check_assumptions(job_retention, p_value_threshold = 0.05)
+```
+
 ### Other model variants
 
-Implementation of other model variants featured in earlier chapters becomes thinner in Python as the models become more unique to applications in statistical inference.  However, of note are the following:
+Implementation of other model variants featured in earlier chapters becomes thinner in Python.  However, of note are the following:
 
 * Ordinal regression is a recent addition to the `statsmodels` package and is still only available in the development version.  The `mord` package offers an implementation for predictive analytics purposes, but for inferential modeling users will need to wait for the next release of `statsmodels` or for immediate use they will need to install the development version from source.
 
 * Mixed models only currenly have an implementation for linear mixed modeling in `statsmodels`.  Generalized linear mixed models equivalent to those found in the `lme4` R package are not yet available in Python.
 
-* The `semopy` package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar to the `lavaan` package in R.  A full tutorial is available [here](https://semopy.com/tutorial.html).
 
-* The `lifelines` package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions.  A full tutorial is available [here](https://lifelines.readthedocs.io/en/latest/index.html).  I am not aware of any Python resources for frailty modeling at this time.
 
 

@@ -1,4 +1,4 @@
-# Survival Analysis for Modeling the Occurrence of Singular Events Over Time
+# Survival Analysis for Modeling the Occurrence of Singular Events Over Time {#survival}
 
 In previous chapters, the outcomes we have been modeling have or have not occurred at a particular point in time following when the input variables were measured.  For example, in Chapter \@ref(linear-reg-ols) input variables were measured in the first three years of an education program and the outcome was measured at the end of the fourth year.  In many situations, the outcome we are interested in is a singular event that can occur at any time following when the input variables were measured, can occur at a different time for different individuals, and once it has occurred it cannot reoccur or repeat.  In medical studies, death can occur or the onset of a disease can be diagnosed at any time during the study period.  In employment contexts an attrition event can occur at various times through the year.  
 
@@ -107,7 +107,7 @@ survminer::ggsurvplot(
 ```
 This confirms that the survival difference between the two sentiment groups is statistically significant and provides a highly intuitive visualization of the effect of sentiment on retention throughout the period of study.
 
-## Cox proportional hazard models for estimating the effect of input variables on a survival outcome
+## Cox proportional hazard models for estimating the effect of input variables on a survival outcome {#coxphmodel}
 
 Let's imagine that we have a survival outcome that we are modeling for a population over a time $t$, and we are interested in how a set of input variables $x_1, x_2, ..., x_p$ influences that survival outcome.  Given that our survival outcome is a binary variable, we can model survival at any time $t$ as a binary logistic regression.  We define $h(t)$ as the proportion who have not survived at time $t$, called the *hazard function*, and based on our work in Chapter \@ref(bin-log-reg):
 
