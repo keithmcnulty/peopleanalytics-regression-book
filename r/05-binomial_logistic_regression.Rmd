@@ -137,18 +137,18 @@ ggplot2::ggplot(data = salespeople, aes(x = sales, y = as.numeric(as.character(p
 Let's look more carefully at the index of $e$ in the denominator of our logistic function.  Note that, because $x_{0}$ is a constant, we have:
 
 $$
--k(x - x_{0}) = - kx_{0} - kx = - (\beta_{0} + \beta_1x)
+-k(x - x_{0}) = kx_{0} - kx = \beta_{0} + \beta_1x
 $$
-where $\beta_0 = kx_0$  and $\beta_{1} = k$.  Therefore,
+where $\beta_0 = kx_0$  and $\beta_{1} = -k$.  Therefore,
 
 $$
-P(y = 1) = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}}
+P(y = 1) = \frac{1}{1 + e^{\beta_0 + \beta_1x}}
 $$
 
 Now we know that for any binary event $y$, $P(y = 0)$ is equal to $1 - P(y = 1)$, so 
 
 $$
-P(y = 0) = 1 - \frac{1}{1 + e^{-(\beta_1x + \beta_0)}}
+P(y = 0) = 1 - \frac{1}{1 + e^{\beta_0 + \beta_1x}}
 $$
 
 Putting these together, and using some manipulation, we find that
