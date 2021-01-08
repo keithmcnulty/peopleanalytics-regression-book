@@ -496,6 +496,115 @@ chisq.test(contingency)
 
 Again, we can reject the null hypothesis and confirm the alternative hypothesis:  that there is a difference in the distribution of promoted/not promoted individuals between the four performance categories.
 
+## Foundational statistics in Python
+
+Elementary desciptive statistics can be performed in Python using various packages.  Descriptive statistics of `numpy` arrays are usually available as methods.
+
+```{python}
+import pandas as pd
+
+# get data
+url = "http://peopleanalytics-regression-book.org/data/salespeople.csv"
+salespeople = pd.read_csv(url)
+
+# mean sales
+mean_sales = salespeople.sales.mean()
+print(mean_sales)
+```
+
+```{python}
+# sample variance
+var_sales = salespeople.sales.var()
+print(var_sales)
+```
+
+```{python}
+# sample standard deviation
+sd_sales = salespeople.sales.std()
+print(sd_sales)
+```
+
+Population statistics can be obtained by setting the `ddof` parameter to zero.
+
+```{python}
+# population standard deviation
+popsd_sales = salespeople.sales.std(ddof = 0)
+print(popsd_sales)
+```
+
+The `numpy` covariance function produces a covariance matrix.
+
+```{python}
+# generate a sample covariance matrix between two variables
+sales_rate = salespeople[['sales', 'customer_rate']]
+sales_rate = sales_rate[~np.isnan(sales_rate)]
+cov = sales_rate.cov()
+print(cov)
+```
+
+Specific covariances between variable pairs can be pulled out of the matrix.
+
+```{python}
+# pull out specific covariances
+print(cov['sales']['customer_rate'])
+```
+
+Similarly for Pearson correlation.
+
+```{python}
+# sample pearson correlation matrix
+cor = sales_rate.corr()
+print(cor)
+```
+
+Specific types of correlation coefficients can be accessed via the `stats` module of the `scipy` package.  
+
+```{python}
+from scipy import stats
+
+# spearman's correlation
+stats.spearmanr(salespeople.sales, salespeople.performance, nan_policy='omit')
+```
+
+```{python}
+# kendall's tau
+stats.kendalltau(salespeople.sales, salespeople.performance, nan_policy='omit')
+```
+
+Common hypothesis testing tools are available in `scipy.stats`.  Here is an example of how to perform Welch's $t$-test on a difference in means of samples of unequal variance.
+
+```{python}
+# get sales for top and bottom performers
+perf1 = salespeople[salespeople.performance == 1].sales
+perf4 = salespeople[salespeople.performance == 4].sales
+
+# welch's t-test with unequal variance
+ttest = stats.ttest_ind(perf4, perf1, equal_var=False)
+print(ttest)
+```
+
+As seen above, hypothesis tests for non-zero correlation coefficients are performed automatically as part of `scipy.stats` correlation calculations.
+
+```{python}
+# calculate correlation and p-value 
+sales = salespeople.sales[~np.isnan(salespeople.sales)]
+cust_rate = salespeople.customer_rate[~np.isnan(salespeople.customer_rate)]
+cor = stats.pearsonr(sales, cust_rate)
+print(cor)
+
+```
+
+Finally, a chi-square test of difference in frequency distribution can be performed on a contingency table as follows.  The first value of the output is the $\chi^2$ statistic and the second value is the p-value.
+
+```{python}
+# create contingency table for promoted versus performance
+contingency = pd.crosstab(salespeople.promoted, salespeople.performance)
+
+# perform chi-square test
+chi2_test = stats.chi2_contingency(contingency)
+print(chi2_test)
+
+```
 
 ## Learning exercises
 

@@ -1,5 +1,6 @@
 --- 
 title: "Handbook of Regression Modeling in People Analytics"
+subtitle: "With Examples in R and Python"
 author: "Keith McNulty"
 site: bookdown::bookdown_site
 
