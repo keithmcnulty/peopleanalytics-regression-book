@@ -228,7 +228,7 @@ The dataframe is the most common data structure used by analysts in R, due to it
 
 ### Loading and tidying data in dataframes
 
-To work with data in R, you usually need to pull it in from an outside source into a dataframe^[R also has some inbuilt data sets which are for testing and playing with, for example check out `mtcars` by typing it into the terminal, or type `data()` to see a full list of in built data sets].  R facilitates numerous ways of importing data from simple csv files, from Excel files, from online sources or from databases.  In this book we will be loading all our datasets from online csv files, and the `read.csv()` function makes this easy.  Let's load a data set that we will be using later - the `salespeople` data set, which contains some information on the sales, average customer ratings and performance ratings of salespeople.  The `read.csv()` function can accept a URL address of the file if it is online.
+To work with data in R, you usually need to pull it in from an outside source into a dataframe^[R also has some inbuilt data sets which are for testing and playing with, for example check out `mtcars` by typing it into the terminal, or type `data()` to see a full list of in built data sets.  The `peopleanalyticsdata` R package actually contains all the datasets in this book.].  R facilitates numerous ways of importing data from simple csv files, from Excel files, from online sources or from databases.  Let's load a data set that we will be using later - the `salespeople` data set, which contains some information on the sales, average customer ratings and performance ratings of salespeople.  The `read.csv()` function can accept a URL address of the file if it is online.
 
 ```{r}
 # url of data set 
@@ -396,7 +396,14 @@ my_packages <- c("MASS", "DescTools", "dplyr")
 install.packages(my_packages)
 ```
 
-Once you have installed a package, you can see what functions are available by calling for help on it, for example using `help(package = MASS)`.
+Once you have installed a package, you can see what functions are available by calling for help on it, for example using `help(package = MASS)`.  One package you may wish to install now is the `peopleanalyticsdata` package, which actually contains all the datasets used in this book.  By installing and loading this package, all the datasets used in this book will be loaded into your R session and ready to work with.  If you do this, you can ignore the `read.csv()` commands later in the book which download the data from the internet.
+
+```{r, eval = FALSE}
+install.packages("peopleanalyticsdata")
+library(peopleanalyticsdata)
+```
+
+
 
 ### Using packages
 
@@ -499,7 +506,7 @@ When first faced with an error that you can't understand, try not to get frustra
 2.  Create a second numeric vector called `which` which corresponds to `my_names`. The entries should be the position of each name in the order of your full name.  Verify that it has the same length as `my_names`.
 3.  Create a dataframe called `names` which consists of the two vectors `my_names` and `which` as columns.  Calculate the dimensions of `names`.
 4.  Create a new dataframe `new_names` with the `which` column converted to character type.  Verify that your command worked using `str()`.
-5.  Use `read.csv()` to load the dataset of student test data found at http://peopleanalytics-regression-book.org/data/ugtests.csv into an object named `ugtests`.  Calculate the dimensions of `ugtests` and view the first three rows only. 
+5.  Load the `ugtests` dataset via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/ugtests.csv].  Calculate the dimensions of `ugtests` and view the first three rows only. 
 6.  View a statistical summary of all of the columns of `ugtests`.  Determine if there are any missing values.
 7.  View the subset of `ugtests` for values of `Yr1` greater than 50.
 8.  Install and load the package `dplyr`.  Look up the help for the `filter()` function in this package and try to use it to repeat the task in the previous question.

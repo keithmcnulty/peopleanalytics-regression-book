@@ -68,14 +68,15 @@ You are an analyst for a sports broadcaster who is doing a feature on player dis
 Let's download our data and take a quick look at it:
 
 ```{r}
-# download data
+# if needed, download data
 url <- "http://peopleanalytics-regression-book.org/data/soccer.csv"
 soccer <- read.csv(url)
+```
 
+```{r}
 head(soccer)
 
 summary(soccer)
-
 ```
 
 We see that there are numerous fields that need to be converted to factors before we can model them.  Firstly, our outcome of interest is `discipline` and this needs to be an ordered factor, which we can choose to increase with the seriousness of the disciplinary action.  
@@ -308,7 +309,7 @@ In the event where the option to remove variables is unattractive, alternative m
 
 ### Data exercises
 
-The `managers` data set can be found at http://peopleanalytics-regression-book.org/data/managers.csv.  It is a set of information of 571 managers in a sales organization, and consists of the following fields:
+Load the `managers` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/managers.csv].  It is a set of information of 571 managers in a sales organization, and consists of the following fields:
 
 * `employee_id` for each manager
 * `performance_group` of each manager in a recent performance review: Bottom performer, Middle performer, Top performer

@@ -39,10 +39,12 @@ The data set can be found [here](http://peopleanalytics-regression-book.org/data
 First we load the data and take a look at it briefly:
 
 ```{r}
-# load data from github
+# if needed, download health_insurance data
 url <- "http://peopleanalytics-regression-book.org/data/health_insurance.csv"
 health_insurance <- read.csv(url)
+```
 
+```{r}
 # view first few rows
 head(health_insurance)
 

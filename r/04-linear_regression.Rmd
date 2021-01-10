@@ -46,10 +46,12 @@ To help with this, you have been provided with data for 975 individuals graduati
 The dataset is [here](http://peopleanalytics-regression-book.org/data/ugtests.csv), and we will load it into our session and take a brief look at it.
 
 ```{r}
-# obtain data from online csv at github
+# if needed, download ugtests data
 url <- "http://peopleanalytics-regression-book.org/data/ugtests.csv"
 ugtests <- read.csv(url)
+```
 
+```{r}
 # look at the first few rows of data
 head(ugtests)
 ```
@@ -636,7 +638,7 @@ In this case we find that modeling `Yr1` as a quadratic makes no difference to t
 
 ### Data exercise
 
-The `sociological_data` dataset can be obtained at http://peopleanalytics-regression-book.org/data/sociological_data.csv.  This data represents a sample of information obtained from individuals who participated in a global research study, and contains the following fields:
+Load the `sociological_data` dataset via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/sociological_data.csv].  This data represents a sample of information obtained from individuals who participated in a global research study, and contains the following fields:
 
 * `annual_income_ppp`:  The annual income of the individual in PPP adjusted US dollars
 * `average_wk_hrs`:  The average number of hours per week worked by the individual

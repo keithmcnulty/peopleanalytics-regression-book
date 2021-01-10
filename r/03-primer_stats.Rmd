@@ -11,7 +11,7 @@ If you have never really studied these topics, I would strongly recommend taking
 In preparation for this chapter we are going to download a data set that we will work through in a later chapter, and use it for practical examples and illustration purposes.  The data are a set of information on the sales, customer ratings and performance ratings on a set of 351 salespeople as well as an indication of whether or not they were promoted.
 
 ```{r}
-# use online url to download salespeople data
+# if needed, use online url to download salespeople data
 url <- "http://peopleanalytics-regression-book.org/data/salespeople.csv"
 salespeople <- read.csv(url)
 ```
@@ -502,6 +502,7 @@ Elementary desciptive statistics can be performed in Python using various packag
 
 ```{python}
 import pandas as pd
+import numpy as np
 
 # get data
 url = "http://peopleanalytics-regression-book.org/data/salespeople.csv"
@@ -634,7 +635,7 @@ $$
 
 ### Data exercises
 
-For these exercises, download the charity donation dataset from http://peopleanalytics-regression-book.org/data/charity_donation.csv.  This dataset contains information on a sample of individuals who made donations to a nature charity.
+For these exercises, load the `charity_donation` dataset via the `peopleanalyticsdata` package, or download it from the internet^[http://peopleanalytics-regression-book.org/data/charity_donation.csv].  This dataset contains information on a sample of individuals who made donations to a nature charity.
 
 1.  Calculate the mean `total_donations` from the data set.
 2.  Calculate the sample variance for `total_donation` and convert this to a population variance.

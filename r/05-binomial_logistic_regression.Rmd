@@ -65,10 +65,12 @@ You are asked by the management of the company to conduct an analysis to determi
 * `performance`: the most recent performance rating prior to promotion, from 1 (lowest) to 4 (highest) 
 
 ```{r}
-# obtain data from online csv at github
+# if needed, download salespeople data
 url <- "http://peopleanalytics-regression-book.org/data/salespeople.csv"
 salespeople <- read.csv(url)
+```
 
+```{r}
 # look at the first few rows of data
 head(salespeople)
 
@@ -478,7 +480,7 @@ plot(d, main= "")
 
 ### Data exercises
 
-A nature preservation charity has asked you to analyze some data to help them understand the features of those members of the public who donated in a given month.  The `charity_donation` data set can be found at http://peopleanalytics-regression-book.org/data/charity_donation.csv.  It contains the following data:
+A nature preservation charity has asked you to analyze some data to help them understand the features of those members of the public who donated in a given month.  Load the `charity_donation` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/charity_donation.csv].  It contains the following data:
 
 * `n_donations`:  The total number of times the individual donated previous to the month being studied.
 * `total_donations`: The total amount of money donated by the individual previous to the month being studied

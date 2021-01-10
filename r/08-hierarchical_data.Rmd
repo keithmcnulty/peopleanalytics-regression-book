@@ -62,10 +62,12 @@ Let's look at a fun and straightforward example of how mixed models can be usefu
 This data can be explored in numerous ways, but we will focus here on modeling options.  We are interested in the binary outcome `dec` (the decision of the individual) and we would like to understand how it relates to the age difference, the racial similarity and the ratings on `attr`, `intel` and `prob`.  First, let's assume that we don't care about how an individual makes up their mind about their speed date, and that we are only interested in the dynamics of speed date decisions. Then we would simply run a binomial logistic regression on our data set, ignoring `iid` and other grouping variables like `race`, `goal` and `gender`.
 
 ```{r}
-# get data
+# if needed, get data
 url <- "http://peopleanalytics-regression-book.org/data/speed_dating.csv"
 speed_dating <- read.csv(url)
+```
 
+```{r}
 # run standard binomial model
 model <- glm(dec ~ agediff + samerace + attr + intel + prob, 
              data = speed_dating, 
@@ -76,9 +78,9 @@ summary(model)
 
 In general, we see that the factors which significantly influence the speed dating decision seem to be the attractiveness of the partner and the feeling of reciprocation of interest from the partner, and that age difference, racial similarity and intelligence do not seem to play a significant role at the level of the speed date itself. 
 
-Now let's say that we are interested in how a given *individual* weighs up these factors in coming to a decision.  Then we will need to assign a random effect for individuals based on `iid`.  The `lme4` package in R contains functions for performing mixed linear regression models and mixed generalized linear regression models.  These functions take formulas with additional terms to define the random effects to be estimated.  The function for a linear model is `lmer()` and for a generalized linear model is `glmer()`.
+Now let's say that we are interested in how a given *individual* weighs up these factors in coming to a decision.  Different individuals may have different ingoing criteria for making speed dating decisions. As a result, each individual may have varying base likelihoods of a positive decision, and each individual may be affected by the input variables in different ways as they come to their decision.  Therefore we will need to assign random effects for individuals based on `iid`.  The `lme4` package in R contains functions for performing mixed linear regression models and mixed generalized linear regression models.  These functions take formulas with additional terms to define the random effects to be estimated.  The function for a linear model is `lmer()` and for a generalized linear model is `glmer()`.
 
-In the simple case, let's just model a random intercept according to the `iid` of the individual.  Here we would use the formula `dec ~ agediff + samerace + attr + intel + prob + (1 | iid)`, where `(1 | iid)` means 'a random effect for `iid` on the intercept of the model'.
+In the simple case, let's assume that each individual has a different ingoing base likelihood of making a positive decision on a speed date.  We will therefore model a random intercept according to the `iid` of the individual.  Here we would use the formula `dec ~ agediff + samerace + attr + intel + prob + (1 | iid)`, where `(1 | iid)` means 'a random effect for `iid` on the intercept of the model'.
 
 ```{r, message = FALSE, warning = FALSE}
 # run binomial mixed effects model
@@ -91,9 +93,9 @@ iid_intercept_model <- lme4:::glmer(dec ~ agediff + samerace + attr + intel + pr
 summary(iid_intercept_model, correlation = FALSE)
 ```
 
-We can see the two levels of results in this summary.  The fixed effects level gives the the coefficients of the model at an observation (speed date) level, and the random effects tell us how the intercept of that model can vary according to the individual.  We see that there is considerable variance in the intercept from individual to individual, and taking this into account, we now see that the decision of an individual on a given date is significantly influenced by all the factors in this model.  If we had stuck with the simple binomial model, the effects of age difference, racial similarity and intelligence at an individual level would have gotten lost, and we could have reached the erroneous conclusion that none of these really matter in speed dating. 
+We can see the two levels of results in this summary.  The fixed effects level gives the the coefficients of the model at an observation (speed date) level, and the random effects tell us how the intercept (or base likelihood) of that model can vary according to the individual.  We see that there is considerable variance in the intercept from individual to individual, and taking this into account, we now see that the decision of an individual on a given date is significantly influenced by all the factors in this model.  If we had stuck with the simple binomial model, the effects of age difference, racial similarity and intelligence at an individual level would have gotten lost, and we could have reached the erroneous conclusion that none of these really matter in speed dating. 
 
-If we wished to extend our random effects to the slope coefficients of our model, we can do so easily.  For example we could use `(1 + agediff | iid)` to model a random effect of `iid` on the intercept and the `agediff` coefficient.  Similarly, if we wanted to consider two grouping variables - like `iid` and `goal` - on the intercept, we could add both `(1 | iid)` and `(1 | goal)` to our model formula.
+If we believe that different individuals are influenced differently by one or more of the various decision factors they consider during a speed date, we can extend our random effects to the slope coefficients of our model.  For example we could use `(1 + agediff | iid)` to model a random effect of `iid` on the intercept and the `agediff` coefficient.  Similarly, if we wanted to consider two grouping variables - like `iid` and `goal` - on the intercept, we could add both `(1 | iid)` and `(1 | goal)` to our model formula.
 
 
 ## Structural Equation Models for latent hierarchies in data {#struc-eq-model}
@@ -112,7 +114,15 @@ It is a common request for an analyst to model a certain outcome using the many 
 
 2.  *Structural Model*:  Assuming a satisfactory measurement model, the structural model is effectively a regression model which explains how each of the proposed factors relate to the outcome of interest.
 
-As a walkthrough example, the `politics_survey` dataset can be downloaded [here](http://peopleanalytics-regression-book.org/data/politics_survey.csv).  This represents the results of a survey conducted by a political party on a set of approximately 2100 voters.  The results are on a Likert scale of 1 to 10 where 1 indicates strong negative sentiment with a statement and 10 represents strong positive sentiment.  Subject matter experts have already grouped the items into proposed latent variables or factors, and the data takes the following form:
+As a walkthrough example, we will work with the `politics_survey` data set.  
+
+```{r}
+# if needed, get data
+url <- "http://peopleanalytics-regression-book.org/data/politics_survey.csv"
+politics_survey <- read.csv(url)
+```
+
+This data set represents the results of a survey conducted by a political party on a set of approximately 2100 voters.  The results are on a Likert scale of 1 to 10 where 1 indicates strong negative sentiment with a statement and 10 represents strong positive sentiment.  Subject matter experts have already grouped the items into proposed latent variables or factors, and the data takes the following form:
 
 1.  `Overall` represents the overall intention to vote for the party in the next election.
 2.  Items beginning with `Pol` are considered to be related to the policies of the political party
@@ -133,8 +143,6 @@ The proposed measurement model can be seen in Figure \@ref(fig:semplot).  In thi
 ```{r semplot, fig.cap = "Simple path diagram showing proposed measurement model for `politics_survey`", fig.align = "center", echo = FALSE, warning = FALSE, message = FALSE}
 library(lavaan)
 library(semPlot)
-
-politics_survey <- read.csv("http://peopleanalytics-regression-book.org/data/politics_survey.csv")
 
 measurement_model <- "
 # measurement model
@@ -280,7 +288,7 @@ For Exercises 1-4, use the `speed_dating` set used earlier in the chapter which 
 3.  What different conclusions can you make in comparing the mixed models with the standard models?
 4.  Experiment with some random slope effects to see if they reveal anything new about the input variables.
 
-For exercises 5-10, use the `employee_survey` data set which can be found at http://peopleanalytics-regression-book.org/data/employee_survey.csv.  This data set contains the results of an engagement survey of employees of a technology company.  Each row represents the responses of an individual to the survey and each column represents a specific survey question, with responses on a Likert scale of 1 to 5, with 1 indicating strongly negative sentiment and 5 indicating strongly positive sentiment. Subject matter experts have grouped the items into hypothesized latent factors as follows:
+For exercises 5-10, load the `employee_survey` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/employee_survey.csv].  This data set contains the results of an engagement survey of employees of a technology company.  Each row represents the responses of an individual to the survey and each column represents a specific survey question, with responses on a Likert scale of 1 to 5, with 1 indicating strongly negative sentiment and 5 indicating strongly positive sentiment. Subject matter experts have grouped the items into hypothesized latent factors as follows:
 
 * `Happiness` is an overall measure of the employees current sentiment about their job
 *  Items beginning with `Ben` relate to employment benefits
