@@ -88,7 +88,7 @@ Each chapter involves a walkthrough example to illustrate the specific method an
 The subsequent chapters are organized as follows:
 
 * Chapter 2 covers the basics of the R programming language for those who want to attempt to jump straight in to the work in subsequent chapters but have very little R experience.  Experienced R programmers can skip this chapter.  
-* Chapter 3 covers the bare essential statistical concepts needed to understand subsequent chapters, illustrated with real data.
+* Chapter 3 covers the bare essential statistical concepts needed to understand multivariate regression models. It also serves as a tutorial in univariate and bivariate statistics illustrated with real data.  If you need help to form a decent understanding of descriptive statistics, random distribution and hypothesis testing, this is an important chapter to study.
 * Chapter 4 covers linear regression and in the course of that introduces many other foundational concepts.  The walkthrough example involves modeling academic results from prior results.  The exercises involve modeling income levels based on various work and demographic factors.
 * Chapter 5 covers binomial logistic regression.  The walkthrough example involves modeling promotion likelihood based on performance metrics.  The exercises involve modeling charitable donation likelihood based on prior donation behavior and demographics.
 * Chapter 6 covers multinomial regression.  The walkthrough example and exercise involves modeling the choice of three health insurance policies by company employees based on demographic and position data.
