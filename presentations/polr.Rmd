@@ -1,5 +1,5 @@
 ---
-title: "Modeling Ordered Ratings using Proportional Odds Regression"
+title: "Explaining Performance Ratings Using Proportional Odds Regression"
 author: "Keith McNulty"
 output:
   xaringan::moon_reader:
@@ -25,15 +25,14 @@ This document is a summary learning developed for the NY Strategic HR Analytics 
 
 ## Note on languages
 
-This document is coded in R.  The model type used in this document (proportional odds logistic regression) is not currently well supported in Python.  It will become available in the next release of the `statsmodels` package.
-
+This document is coded in R.  The model type used in this document (proportional odds logistic regression) is not currently well supported in Python.
 
 ---
 class: left, middle, r-logo
 
 ## Example data set:  salespeople performance ratings
 
-Let's look at some data that relates to the performance ratings of sales people in an organization on a scale of 1 to 5 of increasing performance:
+Let's look at some data that relates to the performance ratings of sales people in an organization on a scale of 1 to 3 of increasing performance:
 
 ```{r}
 ## download data
@@ -45,7 +44,7 @@ employee_performance <- read.csv(url)
 head(employee_performance)
 ```
 
-We are being asked which of the other four factors influence the performance rating and how do they influence it.
+Sales is in $m.  We are being asked which of the other four factors influence the performance rating and how do they influence it.
 
 ---
 class: left, middle, r-logo
@@ -74,7 +73,7 @@ employee_performance[cat_columns] <-
 ## ordered categories
 employee_performance$rating <- 
   ordered(employee_performance$rating,
-          levels = 1:5)
+          levels = 1:3)
 
 str(employee_performance)
 ```
@@ -156,8 +155,6 @@ class: left, middle, r-logo
 To determine this we need to convert our `statistic` into a p-value, and determine if the p-value is less than an alpha which is usually 0.05.
 
 ```{r}
-library(dplyr)
-
 ## add p-value
 (model_results <- model_results %>% 
   dplyr::mutate(
@@ -197,4 +194,99 @@ We need to take exponents of the `estimate` to get an interpretable *odds ratio*
    dplyr::mutate(
      odds_ratio = exp(estimate)
    ))
+```
+The odds ratio is the multiplier of the odds of a higher category associated with a one unit increase in the input variable **assuming all other variables are equal**.  Here's how we interpret this:
+
+1.  For individuals with similar new customers, each additional $1m of sales is associated with ~46% increase in the odds of higher performance.
+2.  For individuals with similar sales, each additional new customer is associated with ~48% increase in the odds of higher performance.
+
+---
+class: left, middle, r-logo
+
+## How much of the overall variance in performance is explained by this model?
+
+In a linear model we would use an $R^2$ value to get a good point of view on this.  In a logistic model there are several variants of this called *pseudo-* $R^2$.  Let's look at a few popular variants.
+
+```{r}
+library(DescTools)
+
+PseudoR2(simpler_model, 
+          which = c("CoxSnell", "Nagelkerke"))
+```
+
+This statistic should be referenced with care.  For example:
+
+>"It is estimated that sales and new customer acquisition explain somewhere around half of the variance in performance"
+
+---
+class: left, middle, r-logo
+
+## Graphing the model
+
+If you want to you can visualize this model because it has only 3 dimensions.  Different surfaces can represent the probability of each performance level.  See appendix for code.
+
+```{r, echo = FALSE, fig.align = "center"}
+library(plotly)
+
+plot_ly(data = employee_performance) %>%
+  add_trace(z = simpler_model$fitted.values[ , 1], x = ~sales, y = ~new_customers, type = "mesh3d", 
+            name = "P(Low Performance)") %>%
+  add_trace(z = simpler_model$fitted.values[ , 2], x = ~sales, y = ~new_customers, type = "mesh3d", 
+            name = "P(Middle Performance)") %>%
+  add_trace(z = simpler_model$fitted.values[ , 3], x = ~sales, y = ~new_customers, type = "mesh3d", 
+            name = "P(High Performance)") %>%
+  layout(scene = list(xaxis = list(title = 'sales'), yaxis = list(title = 'new_customers'),
+                     zaxis = list(title = 'Probability'), aspectmode='cube')) 
+
+```
+
+
+---
+class: left, middle, r-logo
+
+## Which chapters of the book should I read to fully understand this model?
+
+1.  Chapter 3 on foundational statistics
+2.  Chapter 4 on the foundations of regression
+3.  Chapter 5 on logistic regression
+4.  Chapter 7 on proportional odds
+
+---
+class: center, middle, r-logo
+
+# Thank you!  Questions?
+
+---
+class: left, middle, r-logo
+
+## Appendix: Checking our assumption of proportional odds
+
+The quickest way is to do a Brant-Wald test on your model, looking for p-values less than 0.05 to indicate failure of the test.
+
+```{r}
+library(brant)
+brant(simpler_model)
+```
+Here we can see that we pass the Brant test, but only just.  If the Brant test is failed, this indicates that you would need to model each level of the rating separately using different binomial models.
+
+---
+class: left, middle, r-logo
+
+## Appendix: Code for 3D-plot
+
+
+```{r, eval = FALSE}
+library(plotly)
+
+plot_ly(data = employee_performance) %>%
+  add_trace(z = simpler_model$fitted.values[ , 1], x = ~sales, y = ~new_customers, type = "mesh3d", 
+            name = "P(Low Performance)") %>%
+  add_trace(z = simpler_model$fitted.values[ , 2], x = ~sales, y = ~new_customers, type = "mesh3d", 
+            name = "P(Middle Performance)") %>%
+  add_trace(z = simpler_model$fitted.values[ , 3], x = ~sales, y = ~new_customers, type = "mesh3d", 
+            name = "P(High Performance)") %>%
+  layout(scene = list(xaxis = list(title = 'sales'), yaxis = list(title = 'new_customers'),
+                     zaxis = list(title = 'Probability'), aspectmode='cube')) 
+
+
 ```

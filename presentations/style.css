@@ -134,7 +134,7 @@ thead, tfoot, tr:nth-child(even) { background: none; }
   font-weight: bold;
   font-family: 'Oswald', sans-serif;
   font-size: 45px;
-  line-height: 0.05;
+  line-height: 40px;
   text-align: left;
   text-shadow: none;
   padding-bottom: 18px;
