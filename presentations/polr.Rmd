@@ -23,6 +23,8 @@ class: left, middle, r-logo
 
 This document is a summary learning developed for the NY Strategic HR Analytics Meetup on 15 January 2021.  It is based on material in the open source book *[Handbook of Regression Modeling in People Analytics](http://peopleanalytics-regression-book.org)*. Please consult this book for a deeper understanding/treatment. 
 
+The code for this document is [here](https://github.com/keithmcnulty/peopleanalytics-regression-book/tree/master/presentations).
+
 ## Note on languages
 
 This document is coded in R.  The model type used in this document (proportional odds logistic regression) is not currently well supported in Python.
