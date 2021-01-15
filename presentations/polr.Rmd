@@ -48,6 +48,8 @@ head(employee_performance)
 We are being asked which of the other four factors influence the performance rating and how do they influence it.
 
 ---
+class: left, middle, r-logo
+
 ## What does our data look like?
 
 ```{r}
@@ -56,6 +58,8 @@ str(employee_performance)
 ```
 
 ---
+class: left, middle, r-logo
+
 ## Adjusting data types for appropriate modeling
 
 We need to make sure that `region` and `gender` is understood as an **unordered** categorical column of data.  We also need to make sure that the `rating` column is understood as an **ordered** categorical column.
@@ -73,4 +77,16 @@ employee_performance$rating <-
           levels = 1:5)
 
 str(employee_performance)
+```
+
+---
+class: left, middle, r-logo
+
+## Quick visualizations of bivariate relationships in the data
+
+```{r, fig.height=6}
+library(GGally)
+
+## create a pairplot
+GGally::ggpairs(employee_performance)
 ```
