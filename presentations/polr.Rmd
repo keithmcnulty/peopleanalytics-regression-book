@@ -84,9 +84,117 @@ class: left, middle, r-logo
 
 ## Quick visualizations of bivariate relationships in the data
 
-```{r, fig.height=6}
+```{r, fig.height=6, fig.align = "center"}
 library(GGally)
 
 ## create a pairplot
 GGally::ggpairs(employee_performance)
+```
+
+---
+class: left, middle, r-logo
+
+## We want to answer a few questions as precisely as we can
+
+1.  Which variables are meaningful in explaining employee performance? 
+2.  To what extent does each meaningful variable influence performance?
+3.  How much of the entire variance of performance do these variables explain?
+
+---
+class: left, middle, r-logo
+
+## First we need to select the right type of model
+
+Through asking some questions about the data that we have, we can determine an appropriate model to use.
+
+**Question 1:** What type of outcome are we studying?  *Ordered categories* 
+
+**Question 2:** Can we assume that each input acts similarly on each level of the outcome?  *Yes for now and we can check this later.  This is called the proportional odds assumption*.
+
+Then we should use a proportional odds logistic regression model. This model will tell us how each input variable affects the *odds of someone having a higher performance rating*.
+
+---
+class: left, middle, r-logo
+
+## Run the model
+
+We can use the `polr()` function from the `MASS` package to run the model.
+
+```{r}
+library(MASS)
+
+# formula for the model
+our_formula = "rating ~ ."
+
+# run model
+model <- polr(data = employee_performance,
+              formula = our_formula)
+```
+
+Now we have model sitting ready to be viewed.
+
+---
+class: left, middle, r-logo
+
+## Viewing and clarifying the results
+
+I like to use the `broom` package to view model results in a tidy way and to easily add columns to the results.
+
+```{r}
+library(dplyr)
+library(broom)
+
+(model_results <- tidy(model) %>% 
+    filter(coef.type == "coefficient"))
+```
+
+---
+class: left, middle, r-logo
+
+## Are variables significant in explaining performance?
+
+To determine this we need to convert our `statistic` into a p-value, and determine if the p-value is less than an alpha which is usually 0.05.
+
+```{r}
+library(dplyr)
+
+## add p-value
+(model_results <- model_results %>% 
+  dplyr::mutate(
+    pval = (1 - pnorm(abs(statistic), 0, 1))*2
+  ))
+```
+
+We can safely drop everything except `sales` and `new_customers`, because `region` and `gender` have no significant effect.
+
+---
+class: left, middle, r-logo
+
+## Simplify the model
+
+```{r}
+simpler_formula <- "rating ~ sales + new_customers"
+
+## create simpler model
+simpler_model <- polr(data = employee_performance,
+                     formula = simpler_formula)
+
+## generate tidy results
+(simpler_results <- tidy(simpler_model) %>% 
+    filter(coef.type == "coefficient"))
+```
+
+---
+class: left, middle, r-logo
+
+## How does each variable affect performance?
+
+We need to take exponents of the `estimate` to get an interpretable *odds ratio*.
+
+```{r}
+## create odds ratio column
+(simpler_results <- simpler_results %>% 
+   dplyr::mutate(
+     odds_ratio = exp(estimate)
+   ))
 ```
