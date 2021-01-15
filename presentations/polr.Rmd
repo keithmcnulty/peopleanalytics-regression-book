@@ -21,7 +21,7 @@ class: left, middle, r-logo
 
 ## Note on source
 
-This document is a summary learning developed for the NY Strategic HR Analytics Meetup on 15 January 2021.  It is based on material in the open source book *[Handbook for Regression Modeling in People Analytics](http://peopleanalytics-regression-book.org)*. Please consult this book for a deeper understanding/treatment. 
+This document is a summary learning developed for the NY Strategic HR Analytics Meetup on 15 January 2021.  It is based on material in the open source book *[Handbook of Regression Modeling in People Analytics](http://peopleanalytics-regression-book.org)*. Please consult this book for a deeper understanding/treatment. 
 
 ## Note on languages
 
@@ -51,8 +51,10 @@ class: left, middle, r-logo
 
 ## What does our data look like?
 
+The first data step in any modeling process is to make sure your data is in good shape.
+
 ```{r}
-## look at the data type - are they appropriate?
+## look at the data types - are they appropriate?
 str(employee_performance)
 ```
 
@@ -112,6 +114,7 @@ Through asking some questions about the data that we have, we can determine an a
 
 Then we should use a proportional odds logistic regression model. This model will tell us how each input variable affects the *odds of someone having a higher performance rating*.
 
+See [Section 7.1](http://peopleanalytics-regression-book.org/ord-reg.html#when-to-use-it-2) for more details.
 ---
 class: left, middle, r-logo
 
@@ -146,13 +149,14 @@ library(broom)
 (model_results <- tidy(model) %>% 
     filter(coef.type == "coefficient"))
 ```
+See [Section 10.1.1](http://peopleanalytics-regression-book.org/alt-approaches.html#the-broom-package) for more information on tidy output and `broom`.
 
 ---
 class: left, middle, r-logo
 
 ## Are variables significant in explaining performance?
 
-To determine this we need to convert our `statistic` into a p-value, and determine if the p-value is less than an alpha which is usually 0.05.
+To determine this we need to convert our `statistic` into a p-value, and determine if the p-value is less than an alpha which is usually 0.05. See [Section 3.3](http://peopleanalytics-regression-book.org/found-stats.html#hyp-tests).
 
 ```{r}
 ## add p-value
@@ -186,7 +190,7 @@ class: left, middle, r-logo
 
 ## How does each variable affect performance?
 
-We need to take exponents of the `estimate` to get an interpretable *odds ratio*.
+We need to take exponents of the `estimate` to get an interpretable *odds ratio*.  See [Section 7.2](http://peopleanalytics-regression-book.org/ord-reg.html#modeling-ordinal-outcomes-under-the-assumption-of-proportional-odds).
 
 ```{r}
 ## create odds ratio column
@@ -205,7 +209,7 @@ class: left, middle, r-logo
 
 ## How much of the overall variance in performance is explained by this model?
 
-In a linear model we would use an $R^2$ value to get a good point of view on this.  In a logistic model there are several variants of this called *pseudo-* $R^2$.  Let's look at a few popular variants.
+In a linear model we would use an $R^2$ value to get a good point of view on this.  In a logistic model there are several variants of this called *pseudo-* $R^2$.  Let's look at a few popular variants.  See [Section 5.3.2](http://peopleanalytics-regression-book.org/bin-log-reg.html#logistic-gof) for more information on these metrics.
 
 ```{r}
 library(DescTools)
@@ -214,7 +218,7 @@ PseudoR2(simpler_model,
           which = c("CoxSnell", "Nagelkerke"))
 ```
 
-This statistic should be referenced with care.  For example:
+This statistic should be interpreted and referenced with care.  For example:
 
 >"It is estimated that sales and new customer acquisition explain somewhere around half of the variance in performance"
 
@@ -261,7 +265,7 @@ class: left, middle, r-logo
 
 ## Appendix: Checking our assumption of proportional odds
 
-The quickest way is to do a Brant-Wald test on your model, looking for p-values less than 0.05 to indicate failure of the test.
+See [Section 7.3](http://peopleanalytics-regression-book.org/ord-reg.html#testing-the-proportional-odds-assumption) for more info on how to test your proportional odds assumption.  The quickest way is to do a Brant-Wald test on your model, looking for p-values less than 0.05 to indicate failure of the test.
 
 ```{r}
 library(brant)
