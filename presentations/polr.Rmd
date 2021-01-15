@@ -278,6 +278,19 @@ Here we can see that we pass the Brant test, but only just.  If the Brant test i
 ---
 class: left, middle, r-logo
 
+## Appendix: Testing goodness of fit of the model
+
+The goodness of fit test is an indicator of whether we have used an appropriate model to explain the data.  For a proportional odds model, this test fails if the p-value is less than 0.05.  Here is an example which confirms a good fit for our model.  See [Section 7.3.2](http://peopleanalytics-regression-book.org/ord-reg.html#model-diagnostics) for further information.
+
+```{r}
+library(generalhoslem)
+
+lipsitz.test(simpler_model)
+```
+
+---
+class: left, middle, r-logo
+
 ## Appendix: Code for 3D-plot
 
 
