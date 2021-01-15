@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Modeling Ordered Ratings using Proportional Odds Regression</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Keith McNulty" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Modeling Ordered Ratings using Proportional Odds Regression
+### Keith McNulty
+
+---
+
+
+
+
+class: left, middle, r-logo
+
+## Note on source
+
+This document is a summary learning developed for the NY Strategic HR Analytics Meetup on 15 January 2021.  It is based on material in the open source book *[Handbook for Regression Modeling in People Analytics](http://peopleanalytics-regression-book.org)*. Please consult this book for a deeper understanding/treatment. 
+
+## Note on languages
+
+This document is coded in R.  The model type used in this document (proportional odds logistic regression) is not currently well supported in Python.  It will become available in the next release of the `statsmodels` package.
+
+
+---
+class: left, middle, r-logo
+
+## Example data set:  salespeople performance ratings
+
+Let's look at some data that relates to the performance ratings of sales people in an organization on a scale of 1 to 5 of increasing performance:
+
+
+```r
+## download data
+url &lt;- "https://raw.githubusercontent.com/keithmcnulty/peopleanalytics-regression-book/master/presentations/employee_performance.csv"
+
+employee_performance &lt;- read.csv(url)
+
+## look at the data
+head(employee_performance)
+```
+
+```
+##   sales new_customers region gender rating
+## 1   323             4  North      M      3
+## 2   256            10   West      F      4
+## 3   494             8  North      M      5
+## 4   252             8  South      F      3
+## 5   256             7  North      M      2
+## 6   256             4  North      M      2
+```
+
+We are being asked which of the other four factors influence the performance rating and how do they influence it.
+
+---
+## What does our data look like?
+
+
+```r
+## look at the data type - are they appropriate?
+str(employee_performance)
+```
+
+```
+## 'data.frame':	366 obs. of  5 variables:
+##  $ sales        : int  323 256 494 252 256 256 309 336 237 254 ...
+##  $ new_customers: int  4 10 8 8 7 4 6 1 2 1 ...
+##  $ region       : chr  "North" "West" "North" "South" ...
+##  $ gender       : chr  "M" "F" "M" "F" ...
+##  $ rating       : int  3 4 5 3 2 2 4 2 2 2 ...
+```
+
+---
+## Adjusting data types for appropriate modeling
+
+We need to make sure that `region` and `gender` is understood as an **unordered** categorical column of data.  We also need to make sure that the `rating` column is understood as an **ordered** categorical column.
+
+
+```r
+## unordered categories
+cat_columns &lt;- c("region", "gender")
+employee_performance[cat_columns] &lt;- 
+  lapply(employee_performance[cat_columns], 
+         as.factor)
+
+## ordered categories
+employee_performance$rating &lt;- 
+  ordered(employee_performance$rating,
+          levels = 1:5)
+
+str(employee_performance)
+```
+
+```
+## 'data.frame':	366 obs. of  5 variables:
+##  $ sales        : int  323 256 494 252 256 256 309 336 237 254 ...
+##  $ new_customers: int  4 10 8 8 7 4 6 1 2 1 ...
+##  $ region       : Factor w/ 4 levels "East","North",..: 2 4 2 3 2 2 2 2 1 2 ...
+##  $ gender       : Factor w/ 2 levels "F","M": 2 1 2 1 2 2 2 1 2 2 ...
+##  $ rating       : Ord.factor w/ 5 levels "1"&lt;"2"&lt;"3"&lt;"4"&lt;..: 3 4 5 3 2 2 4 2 2 2 ...
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
