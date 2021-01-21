@@ -12,6 +12,12 @@ link-citations: yes
 github-repo: keithmcnulty/peopleanalytics-regression-book
 ---
 
+```{r, echo = FALSE}
+library(reticulate)
+matplotlib <- import("matplotlib")
+matplotlib$use("Agg", force = TRUE)
+```
+
 # Welcome {-}
 
 Welcome to the website for the book *Handbook of Regression Modeling in People Analytics* by [Keith McNulty](https://twitter.com/dr_keithmcnulty).  Content can be used freely with appropriate referencing.
