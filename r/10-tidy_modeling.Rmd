@@ -8,7 +8,7 @@ Second, for those whose preference is to use Python, we provide some examples fo
 
 ## 'Tidier' modeling approaches in R
 
-The `tidymodels` meta-package is a collection of packages which collectively apply the principles of tidy data to the construction of statistical models.  More information and learning resources on `tidymodels` can be found [here](https://www.tidymodels.org/).  Within `tidymodels` there are two packages which are particular useful in controlling the output of models in R:  the `broom` and `parsnip` packages.
+The `tidymodels` meta-package is a collection of packages which collectively apply the principles of tidy data to the construction of statistical models.  More information and learning resources on `tidymodels` can be found `r if (knitr::is_latex_output()) {"at \\texttt{https://www.tidymodels.org/}"} else {"[here](https://www.tidymodels.org/)"}`.  Within `tidymodels` there are two packages which are particular useful in controlling the output of models in R:  the `broom` and `parsnip` packages.
 
 ### The `broom` package
 
@@ -18,7 +18,11 @@ Consistent with how it is named, `broom` aims to tidy up the output of the model
 # obtain salespeople data
 url <- "http://peopleanalytics-regression-book.org/data/salespeople.csv"
 salespeople <- read.csv(url)
+```
 
+As in Chapter \@ref(bin-log-reg), we convert the `promoted` column to a factor and run a binomial logistic regression model on the `promoted` outcome.
+
+```{r}
 # convert promoted to factor
 salespeople$promoted <- as.factor(salespeople$promoted)
 
@@ -32,7 +36,10 @@ promotion_model <- glm(formula = promoted ~ sales + customer_rate,
 We now have our model sitting in memory.  We can use three key functions in the `broom` package to view a variety of model statistics.  First, the `tidy()` function allows us to see the coefficient statistics of the model.
 
 ```{r}
+# load tidymodels metapackage
 library(tidymodels)
+
+# view coefficient statistics
 broom::tidy(promotion_model)
 
 ```
@@ -40,14 +47,22 @@ broom::tidy(promotion_model)
 The `glance()` function allows us to see a row of overall model statistics:
 
 ```{r}
+# view model statistics
 broom::glance(promotion_model)
 ```
 
 And the `augment()` function augments the observations in the dataset with a range of observation-level model statistics such as residuals:
 
-```{r}
+```{r, eval = FALSE}
+# view augmented data
 head(broom::augment(promotion_model))
 ```
+
+`r if (knitr::is_latex_output()) '\\small'`
+```{r, echo = FALSE}
+head(broom::augment(promotion_model))
+```
+`r if (knitr::is_latex_output()) '\\normalsize'`
 
 These functions are model-agnostic for a very wide range of common models in R.  For example, we can use them on our proportional odds model on soccer discipline from Chapter \@ref(ord-reg) and they will generate the relevant statistics in tidy tables.
 
@@ -63,7 +78,8 @@ soccer$discipline <- ordered(soccer$discipline,
 # run proportional odds model
 library(MASS)
 soccer_model <- polr(
-  formula = discipline ~ n_yellow_25 + n_red_25 + position + country + level + result, 
+  formula = discipline ~ n_yellow_25 + n_red_25 + position + 
+    country + level + result, 
   data = soccer
 )
 
@@ -74,14 +90,18 @@ broom::glance(soccer_model)
 
 `broom` functions integrate well into other tidyverse methods, and allow easy running of models over nested subsets of data.  For example, if we want to run our soccer discipline model across the different countries in the dataset and see all the model statistics in a neat table, we can use typical tidyverse grammar to do so using `dplyr`.
 
+`r if (knitr::is_latex_output()) '\\newpage'`
+
 ```{r, warning = FALSE, message = FALSE}
+# load the tidyverse metapackage (includes dplyr)
 library(tidyverse)
 
 # define function to run soccer model and glance at results
 soccer_model_glance <- function(df) {
   broom::glance(
     polr(
-      formula = discipline ~ n_yellow_25 + n_red_25 + position + level + result,
+      formula = discipline ~ n_yellow_25 + n_red_25 + 
+        position + level + result,
       data = df
     )
   )
@@ -103,15 +123,21 @@ Again let's use our salesperson promotion model example to illustrate.  We start
 model <- parsnip::logistic_reg() %>% 
   parsnip::set_engine("glm") %>% 
   parsnip::set_mode("classification")
-
 ```
 
 We can use the `translate()` function to see what kind of model we have created:
 
-```{r}
+```{r, eval = FALSE}
 model %>% 
   parsnip::translate()
 ```
+
+`r if (knitr::is_latex_output()) '\\small'`
+```{r, echo = FALSE}
+model %>% 
+  parsnip::translate()
+```
+`r if (knitr::is_latex_output()) '\\normalsize'`
 
 Now with our model defined, we can fit it using a formula and data and then use `broom` to view the coefficients:
 
@@ -126,13 +152,13 @@ model %>%
 
 ## Inferential statistical modeling in Python
 
-In general, the modeling functions contained in `scikit-learn` - which tends to be the go-to modeling package for most Python users - are oriented towards predictive modeling and can be challenging to navigate for those who are primarily interested in inferential modeling.  In this section we will briefly review approaches for running some of the models contained in this book in Python.  The `statsmodels` package is highly recommended as it offers a wide range of models which report similar statistics to those reviewed in this books.  Full `statsmodels` documentation can be found [here](https://www.statsmodels.org/stable/index.html).
+In general, the modeling functions contained in `scikit-learn` - which tends to be the go-to modeling package for most Python users - are oriented towards predictive modeling and can be challenging to navigate for those who are primarily interested in inferential modeling.  In this section we will briefly review approaches for running some of the models contained in this book in Python.  The `statsmodels` package is highly recommended as it offers a wide range of models which report similar statistics to those reviewed in this books.  Full `statsmodels` documentation can be found `r if (knitr::is_latex_output()) {"at \\texttt{https://www.statsmodels.org/stable/index.html}"} else {"[here](https://www.statsmodels.org/stable/index.html)"}`.
 
 ### Ordinary least squares (OLS) linear regression
 
 The OLS linear regression model reviewed in Chapter \@ref(linear-reg-ols) can be generated using the `statsmodels` package, which can report a reasonably thorough set of model statistics.  By using the `statsmodels` formula API, model formulas similar to those used in R can be used.  
 
-```{python}
+```{python, eval = FALSE}
 import pandas as pd
 import statsmodels.formula.api as smf
 
@@ -150,11 +176,56 @@ ugtests_model = model.fit()
 print(ugtests_model.summary())
 ```
 
+`r if (knitr::is_latex_output()) '\\small'`
+```{python, echo = FALSE}
+import pandas as pd
+import statsmodels.formula.api as smf
+
+# get data
+url = "http://peopleanalytics-regression-book.org/data/ugtests.csv"
+ugtests = pd.read_csv(url)
+
+# define model
+model = smf.ols(formula = "Final ~ Yr3 + Yr2 + Yr1", data = ugtests)
+
+# fit model
+ugtests_model = model.fit()
+
+# see results summary
+print(ugtests_model.summary())
+```
+`r if (knitr::is_latex_output()) '\\normalsize'`
+
+
 ### Binomial logistic regression
 
 Binomial logistic regression models can be generated in a similar way to OLS linear regression models using the `statsmodels` formula API, calling the binomial family from the general `statsmodels` API.
 
-```{python}
+```{python, eval = FALSE}
+import pandas as pd
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
+# obtain salespeople data
+url = "http://peopleanalytics-regression-book.org/data/salespeople.csv"
+salespeople = pd.read_csv(url)
+
+# define model
+model = smf.glm(formula = "promoted ~ sales + customer_rate", 
+                data = salespeople, 
+                family = sm.families.Binomial())
+
+
+# fit model
+promotion_model = model.fit()
+
+
+# see results summary
+print(promotion_model.summary())
+```
+
+`r if (knitr::is_latex_output()) '\\small'`
+```{python, echo = FALSE}
 import pandas as pd
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
@@ -173,12 +244,13 @@ promotion_model = model.fit()
 # see results summary
 print(promotion_model.summary())
 ```
+`r if (knitr::is_latex_output()) '\\normalsize'`
 
 ### Multinomial logistic regression
 
 Multinomial logistic regression is similarly available using the `statsmodels` formula API.  As usual, care must be taken to ensure that the reference category is appropriately defined, dummy input variables need to be explictly constructed, and a constant input variable must be added to ensure an intercept is calculated.
 
-```{python}
+```{python, eval = FALSE}
 import pandas as pd
 import statsmodels.formula.api as smf
 
@@ -209,18 +281,54 @@ print(insurance_model.summary())
 
 ```
 
+`r if (knitr::is_latex_output()) '\\small'`
+```{python, echo = FALSE, results = FALSE}
+import pandas as pd
+import statsmodels.formula.api as smf
+
+# load health insurance data
+url = "http://peopleanalytics-regression-book.org/data/health_insurance.csv"
+health_insurance = pd.read_csv(url)
+
+# convert product to categorical as an outcome variable
+y = pd.Categorical(health_insurance['product'])
+
+# create dummies for gender
+X1 = pd.get_dummies(health_insurance['gender'], drop_first = True)
+
+# replace back into input variables 
+X2 = health_insurance.drop(['product', 'gender'], axis = 1)
+X = pd.concat([X1, X2], axis = 1)
+
+Xc = sm.add_constant(X)
+
+# define model
+model = sm.MNLogit(y, Xc)
+
+# fit model
+insurance_model = model.fit()
+```
+
+```{python, echo = FALSE}
+# see results summary
+print(insurance_model.summary())
+```
+`r if (knitr::is_latex_output()) '\\normalsize'`
+
 ### Structural equation models
 
-The `semopy` package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar to the `lavaan` package in R.  However, its reporting is not as intuitive compared to `lavaan`.  A full tutorial is available [here](https://semopy.com/tutorial.html).  Here is an example of how to run the same model as that studied in Section \@ref(struc-eq-model) using `semopy`.
+The `semopy` package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar to the `lavaan` package in R.  However, its reporting is not as intuitive compared to `lavaan`.  A full tutorial is available `r if (knitr::is_latex_output()) {"at \\texttt{https://semopy.com/tutorial.html}"} else {"[here](https://semopy.com/tutorial.html)"}`.  Here is an example of how to run the same model as that studied in Section \@ref(struc-eq-model) using `semopy`.
 
-
+`r if (knitr::is_latex_output()) '\\small'`
 ```{python, results = "hide"}
 import pandas as pd
 from semopy import Model
 
+
 # get data
 url = "http://peopleanalytics-regression-book.org/data/politics_survey.csv"
 politics_survey = pd.read_csv(url)
+
 
 # define full measurement and strucural model
 measurement_model = """
@@ -240,9 +348,11 @@ Overall ~ Pol + Hab + Loc + Env + Int + Pers + Nat + Eco
 
 full_model = Model(measurement_model)
 
+
 # fit model to data and inspect
 full_model.fit(politics_survey)
 ```
+`r if (knitr::is_latex_output()) '\\normalsize'`
 
 Then to inspect the results:
 
@@ -253,11 +363,51 @@ full_model.inspect()
 
 ### Survival analysis
 
-The `lifelines` package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions.  A full tutorial is available [here](https://lifelines.readthedocs.io/en/latest/index.html).  
+The `lifelines` package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions.  A full tutorial is available `r if (knitr::is_latex_output()) {"at \\texttt{https://lifelines.readthedocs.io/en/latest/index.html}"} else {"[here](https://lifelines.readthedocs.io/en/latest/index.html)"}`.  
 
 Here is an example of how to plot Kaplan-Meier survival curves in Python using our Chapter \@ref(survival) walkthrough example. The survival curves are displayed in Figure \@ref(fig:survival-python).
 
-```{python survival-python, fig.align = "center", fig.cap = "Survival curves by sentiment category in the `job_retention` data"}
+`r if (knitr::is_latex_output()) '\\small'`
+```{python, eval = FALSE}
+import pandas as pd
+from lifelines import KaplanMeierFitter
+from matplotlib import pyplot as plt
+
+# get data
+url = "http://peopleanalytics-regression-book.org/data/job_retention.csv"
+job_retention = pd.read_csv(url)
+
+# fit our data to Kaplan-Meier estimates
+T = job_retention["month"]
+E = job_retention["left"]
+kmf = KaplanMeierFitter()
+kmf.fit(T, event_observed = E)
+
+# split into high and not high sentiment
+highsent = (job_retention["sentiment"] >= 7)
+
+
+# set up plot
+survplot = plt.subplot()
+
+# plot high sentiment survival function
+kmf.fit(T[highsent], event_observed = E[highsent], 
+label = "High Sentiment")
+
+kmf.plot_survival_function(ax = survplot)
+
+# plot not high sentiment survival function
+kmf.fit(T[~highsent], event_observed = E[~highsent], 
+label = "Not High Sentiment")
+
+kmf.plot_survival_function(ax = survplot)
+
+# show survival curves by sentiment category
+plt.show()
+```
+`r if (knitr::is_latex_output()) '\\normalsize'`
+
+```{python survival-python, fig.align = "center", fig.cap = "Survival curves by sentiment category in the job retention data", out.width = if (knitr::is_latex_output()) {"90%"}, echo = FALSE, results = FALSE}
 import pandas as pd
 from lifelines import KaplanMeierFitter
 from matplotlib import pyplot as plt
@@ -279,16 +429,22 @@ highsent = (job_retention["sentiment"] >= 7)
 survplot = plt.subplot()
 
 # plot high sentiment survival function
-kmf.fit(T[highsent], event_observed = E[highsent], label = "High Sentiment")
+kmf.fit(T[highsent], event_observed = E[highsent], 
+label = "High Sentiment")
+
 kmf.plot_survival_function(ax = survplot)
 
 # plot not high sentiment survival function
-kmf.fit(T[~highsent], event_observed = E[~highsent], label = "Not High Sentiment")
+kmf.fit(T[~highsent], event_observed = E[~highsent], 
+label = "Not High Sentiment")
+
 kmf.plot_survival_function(ax = survplot)
 
 # show survival curves by sentiment category
 plt.show()
 ```
+
+
 
 And here is an example of how to fit a Cox Proportional Hazard model similarly to Section \@ref(coxphmodel)^[I am not aware of any way of running frailty models currently in Python].
 
@@ -301,16 +457,29 @@ cph.fit(job_retention, duration_col = 'month', event_col = 'left',
         formula = "gender + field + level + sentiment")
 ```
 
-```{python}
+```{python, eval = FALSE}
 # view results
 cph.print_summary()
 ```
 
+`r if (knitr::is_latex_output()) '\\tiny'`
+```{python, echo = FALSE}
+# view results
+cph.print_summary()
+```
+`r if (knitr::is_latex_output()) '\\normalsize'`
+
 Proportional Hazard assumptions can be checked using the `check_assumptions()` method^[Schoenfeld residual plots can be seen by setting `show_plots = True` in the parameters].
 
-```{python}
+```{python, eval = FALSE}
 cph.check_assumptions(job_retention, p_value_threshold = 0.05)
 ```
+
+`r if (knitr::is_latex_output()) '\\scriptsize'`
+```{python, echo = FALSE}
+cph.check_assumptions(job_retention, p_value_threshold = 0.05)
+```
+`r if (knitr::is_latex_output()) '\\normalsize'`
 
 ### Other model variants
 

@@ -28,7 +28,7 @@ Examples of typical situations that might be modeled by multinomial logistic reg
 
 You are an analyst at a large technology company.  The company recently introduced a new healthcare provider for its employees.  At the beginning of the year the employees had to choose one of three different healthcare plan products from this provider to best suit their needs.  You have been asked to determine which factors influenced the choice in product.
 
-The data set can be found [here](http://peopleanalytics-regression-book.org/data/health_insurance.csv) and consists of the following fields:
+The data set consists of the following fields:
 
 * `product`: The choice of product of the individual - A, B or C
 * `age`: The age of the individual when they made the choice
@@ -39,23 +39,32 @@ The data set can be found [here](http://peopleanalytics-regression-book.org/data
 
 First we load the data and take a look at it briefly:
 
+`r if (knitr::is_latex_output()) '\\small'`
 ```{r}
 # if needed, download health_insurance data
 url <- "http://peopleanalytics-regression-book.org/data/health_insurance.csv"
 health_insurance <- read.csv(url)
 ```
+`r if (knitr::is_latex_output()) '\\normalsize'`
 
 ```{r}
 # view first few rows
 head(health_insurance)
+```
 
+```{r, eval = FALSE}
 # view structure
+str(health_insurance)
+```
+
+`r if (knitr::is_latex_output()) '\\newpage'`
+```{r, echo = FALSE}
 str(health_insurance)
 ```
 
 It looks like two of these columns should be converted to factor - `product` and `gender`, so let's do that and then run a pairplot for a quick overview of any patterns, which can be seen in Figure \@ref(fig:insurance-pairplot).
 
-```{r insurance-pairplot, fig.cap = "Pairplot of the `health_insurance` data set", fig.align = "center", message = FALSE, warning = FALSE}
+```{r insurance-pairplot, fig.cap = if (knitr::is_latex_output()) {"Pairplot of the \\texttt{health\\_insurance} data set"} else {"Pairplot of the `health_insurance` data set"}, fig.align = "center", message = FALSE, warning = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 library(ggplot2)
 library(GGally)
 
@@ -85,9 +94,15 @@ dummy_product <- dummies::dummy("product", data = health_insurance)
 # combine to original set
 health_insurance <- cbind(health_insurance, dummy_product)
 
-# run a binomial model for the Product A dummy against all input variables (let glm() handle dummy variables)
-A_model <- glm(formula = productA ~ age + gender + children + position_level + tenure, 
-               data = health_insurance, family = "binomial")
+# run a binomial model for the Product A dummy against 
+# all input variables (let glm() handle dummy variables)
+A_model <- glm(
+  formula = productA ~ age + gender + children + 
+    position_level + tenure, 
+  data = health_insurance, 
+  family = "binomial"
+)
+
 
 # summary
 summary(A_model)
@@ -97,11 +112,17 @@ We see that all variables except tenure seem to play a significant role in the c
 
 These results need to be interpreted carefully.  For example, the odds ratios for the Product A choice based on a simplified model are as follows:
 
-```{r}
-A_simple <- glm(formula = productA ~ age + children + gender + position_level, 
-                data = health_insurance)
+`r if (knitr::is_latex_output()) '\\newpage'`
 
-exp(A_simple$coefficients)
+```{r}
+# simpler model
+A_simple <- glm(
+  formula = productA ~ age + children + gender + position_level, 
+  data = health_insurance
+)
+
+# view odds ratio as a data frame
+as.data.frame(exp(A_simple$coefficients))
 ```
 
 As an example, and as a reminder from our previous chapter, we interpret the odds ratio for `age` as follows: all else being equal, every additional year of age is associated with an approximately 2.2% decrease in the odds of choosing Product A over the other products.
@@ -138,23 +159,46 @@ levels(health_insurance$product)
 
 Once the reference outcome is defined, the `multinom()` function from the `nnet` package will run a series of binomial models comparing the reference to each of the other categories.
 
-```{r}
+First we will calculate our multinomial logistic regression model.
+
+`r if (knitr::is_latex_output()) '\\newpage'`
+
+```{r, results = FALSE}
 library(nnet)
 
-multi_model <- multinom(formula = product ~ age + gender + children + position_level + tenure, 
-                        data = health_insurance)
+multi_model <- multinom(
+  formula = product ~ age + gender + children + 
+    position_level + tenure, 
+  data = health_insurance
+)
+```
 
+Now we will look at a summary of the results.
+
+```{r, eval = FALSE}
 summary(multi_model)
 ```
 
-Notice that the output of `multi_model` is much less detailed than for our binomial models, and it effectively just delivers the coefficients and standard errors of the two models against the reference.  To determine whether specific input variables are significant we will need to calculate the p-values of the coefficients manually by calculating the t-statistics and converting (we covered this hypothesis testing methodology in \@ref(means-sig)).
+`r if (knitr::is_latex_output()) '\\scriptsize'`
+```{r, echo = FALSE}
+summary(multi_model)
+```
+`r if (knitr::is_latex_output()) '\\normalsize'`
+
+Notice that the output of `summary(multi_model)` is much less detailed than for our binomial models, and it effectively just delivers the coefficients and standard errors of the two models against the reference.  To determine whether specific input variables are significant we will need to calculate the p-values of the coefficients manually by calculating the t-statistics and converting (we covered this hypothesis testing methodology in \@ref(means-sig)).
 
 ```{r}
 # calculate t-statistics of coefficients
-t_stats <- summary(multi_model)$coefficients/summary(multi_model)$standard.errors
+t_stats <- summary(multi_model)$coefficients/
+  summary(multi_model)$standard.errors
 
 # convert to p-values
-(p_values <- (1 - pnorm(abs(t_stats)))*2)
+p_values <- (1 - pnorm(abs(t_stats)))*2
+
+
+# display p-values in transposed data frame
+data.frame(t(p_values))
+
 ```
 
 ### Interpreting the model
@@ -162,7 +206,9 @@ t_stats <- summary(multi_model)$coefficients/summary(multi_model)$standard.error
 This confirms that all variables except `tenure` play a role in the choice between all products relative to a reference of Product A.  We can also calculate odds ratios as before:
 
 ```{r}
-exp(summary(multi_model)$coefficients)
+# display odds ratios in transposed data frame
+odds_ratios <- exp(summary(multi_model)$coefficients)
+data.frame(t(odds_ratios))
 ```
 
 Here are some examples of how these odds ratios can be interpreted in the multinomial context (used in combination with the p-values above):
@@ -176,11 +222,9 @@ Here are some examples of how these odds ratios can be interpreted in the multin
 It may be the case that someone would like to hear the odds ratios stated against the reference of an individual choosing Product B.  For example, what are the odds ratios of Product C relative to a reference of Product B?  One way to do this would be to change the reference and run the model again.  Another option is to note that:
 
 $$
-\begin{align*}
 \frac{P(y = C)}{P(y=B)} = \frac{\frac{P(y = C)}{P(y = A)}}{\frac{P(y=B)}{P(y = A)}} 
 = \frac{e^{\beta{X}}}{e^{\alpha{X}}} 
 = e^{(\beta - \alpha)X}
-\end{align*}
 $$
 Therefore 
 
@@ -190,9 +234,11 @@ $$
 This means we can obtain the coefficients of C against the reference of B by simply calculating the difference between the coefficients of C and B against the common reference of A.  Let's do this.
 
 ```{r}
-# calculate difference between coefficients
-(coefs_c_to_b <- summary(multi_model)$coefficients[2, ] - summary(multi_model)$coefficients[1, ])
+# calculate difference between coefficients and view as column
+coefs_c_to_b <- summary(multi_model)$coefficients[2, ] - 
+   summary(multi_model)$coefficients[1, ]
 
+data.frame(coefs_c_to_b)
 ```
 
 If the number of categories in the outcome variable is limited, this can be an efficient way to obtain the model coefficients against various reference points without having to rerun models.  However, to determine standard errors and p-values for these coefficients the model will need to be recalculated against the new reference.
@@ -214,15 +260,23 @@ In @hosmer-logistic, a gradual process of elimination of variables is recommende
 
 In our case, we can compare the coefficients of the model with and without `tenure` included and verify that the changes in the coefficients are not substantial.
 
-```{r}
+```{r, results = FALSE}
 # remove tenure
-simpler_multi_model <- multinom(formula = product ~ age + gender + children + position_level, 
-                                data = health_insurance, model = TRUE)
+simpler_multi_model <- multinom(
+  formula = product ~ age + gender + children + position_level,
+  data = health_insurance, 
+  model = TRUE
+)
+```
 
-# compare coefficients
-summary(multi_model)$coefficients
-summary(simpler_multi_model)$coefficients
+```{r}
+# view coefficients with tenure
+data.frame(t(summary(multi_model)$coefficients))
+```
 
+```{r}
+# view coefficients without tenure
+data.frame(t(summary(simpler_multi_model)$coefficients))
 ```
 
 We can see that only `genderNon-binary` changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model^[Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done.  In the case of these observations of `genderNon-binary`, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a miniscule effect].  It therefore appears safe to remove `tenure`.  Furthermore, the Aikake Information Criterion is equally valid in multinomial models for evaluating model parsimony.   Here we can calculate that the AIC of our model with and without `tenure` is `r round(AIC(multi_model), 2)` and `r round(AIC(simpler_multi_model), 2)` respectively, confirming that the model without `tenure` is marginally more parsimonious.

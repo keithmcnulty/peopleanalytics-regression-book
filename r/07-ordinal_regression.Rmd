@@ -14,7 +14,7 @@ To formalize this intuition, we can imagine a latent version of our outcome vari
 
 This leads to a highly interpretable model that provides a single set of coefficients that are agnostic to the outcome category.  For example, we can say that each unit increase in input variable $x$ increases the odds of $y$ being in a *higher category* by a certain ratio. In Figure \@ref(fig:prop-odds-int) you can see a graphical illustration of the proportional odds technology on a Likert style survey outcome.
 
-```{r prop-odds-int, fig.cap="Proportional odds model illustration for a 5-point Likert survey scale outcome greater than 3 on a single input variable.  Each cutoff point in the latent continuous outcome variable $y'$ gives rise to a binomial logistic function.", fig.align = "center", echo = FALSE}
+```{r prop-odds-int, fig.cap="Proportional odds model illustration for a 5-point Likert survey scale outcome greater than 3 on a single input variable.  Each cutoff point in the latent continuous outcome variable $y'$ gives rise to a binomial logistic function.", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 library(ggplot2)
 
 p1 <- ggplot() +
@@ -55,7 +55,7 @@ Examples of problems that can utilize a proportional odds logistic regression ap
 
 ### Walkthrough example {#ord-walkthrough}
 
-You are an analyst for a sports broadcaster who is doing a feature on player discipline in professional soccer games.  To prepare for the feature, you have been asked to verify whether certain metrics are significant in influencing the extent to which a player will be disciplined by the referee for unfair or dangerous play in a game.  You have been provided with data on over 2000 different players in different games [here](http://peopleanalytics-regression-book.org/data/soccer.csv) and the data contains these fields:
+You are an analyst for a sports broadcaster who is doing a feature on player discipline in professional soccer games.  To prepare for the feature, you have been asked to verify whether certain metrics are significant in influencing the extent to which a player will be disciplined by the referee for unfair or dangerous play in a game.  You have been provided with data on over 2000 different players in different games and the data contains these fields:
 
 * `discipline`: A record of the maximum discipline taken by the referee against the player in the game.  "None" means no discipline was taken, "Yellow" means the player was issued a yellow card (warned), "Red" means the player was issued a red card and ordered off the field of play.
 * `n_yellow_25` is the total number of yellow cards issued to the player in the previous 25 games they played prior to this game
@@ -75,8 +75,17 @@ soccer <- read.csv(url)
 
 ```{r}
 head(soccer)
+```
 
-summary(soccer)
+Let's also take a look at the structure of the data.
+
+```{r, eval = FALSE}
+str(soccer)
+```
+
+`r if (knitr::is_latex_output()) '\\newpage'`
+```{r, echo = FALSE}
+str(soccer)
 ```
 
 We see that there are numerous fields that need to be converted to factors before we can model them.  Firstly, our outcome of interest is `discipline` and this needs to be an ordered factor, which we can choose to increase with the seriousness of the disciplinary action.  
@@ -86,7 +95,7 @@ We see that there are numerous fields that need to be converted to factors befor
 soccer$discipline <- ordered(soccer$discipline, 
                              levels = c("None", "Yellow", "Red"))
 
-#check conversion
+# check conversion
 str(soccer)
 ```
 
@@ -118,14 +127,15 @@ $$
 Let's look at the probability that our ordinal outcome variable $y$ is in its lowest category 1.
 
 $$
-\begin{align*}
+\begin{aligned}
 P(y = 1) &= P(y' \le 1.00) \\
 &= P(\alpha_1x + \alpha_0 + \sigma\epsilon \leq 1.00) \\
 &= P(\epsilon \leq \frac{1.00 - \alpha_1x - \alpha_0}{\sigma}) \\
 &= P(\epsilon \le \gamma_1 - \beta{x}) \\
 &= \frac{1}{1 + e^{-(\gamma_1 - \beta{x})}}
-\end{align*}
+\end{aligned}
 $$
+
 where $\gamma_1 = \frac{1-\alpha_0}{\sigma}$ and $\beta = \frac{\alpha_1}{\sigma}$.  
 
 Since our only values for $y$ are 1, 2 and 3, similar to our derivations in \@ref(mod-prob), we conclude that $P(y > 1) = 1 - P(y = 1)$, which calculates to
@@ -135,11 +145,11 @@ P(y > 1) = \frac{e^{-(\gamma_1 - \beta{x})}}{1 + e^{-(\gamma_1 -\beta{x})}}
 $$
 Therefore
 $$
-\begin{align*}
+\begin{aligned}
 \frac{P(y > 1)}{P(y \leq 1)} = \frac{\frac{e^{-(\gamma_1-\beta{x})}}{1 + e^{-(\gamma_1 - \beta{x})}}}{\frac{1}{1 + e^{-(\gamma_1 -\beta{x})}}}
 = e^{-(\gamma_1 - \beta{x})}
 = e^{\beta{x} - \gamma_1}
-\end{align*}
+\end{aligned}
 $$
 
 By applying the natural logarithm, we conclude that the log odds of $y$ being in our top two ordinal categories of 1 or 2 as
@@ -164,8 +174,11 @@ The `MASS` package provides a function `polr()` for running a proportional odds 
 ```{r, warning = FALSE, message = FALSE}
 # run proportional odds model
 library(MASS)
-model <- polr(formula = discipline ~ n_yellow_25 + n_red_25 + position + country + level + result, 
-              data = soccer)
+model <- polr(
+  formula = discipline ~ n_yellow_25 + n_red_25 + position + 
+    country + level + result, 
+  data = soccer
+)
 
 # get summary
 summary(model)
@@ -189,9 +202,16 @@ Next we can convert our coefficients to odds ratios.
 ```{r}
 # calculate odds ratios
 odds_ratio <- exp(coefficients[ ,"Value"])
+```
 
-# combine with coefficient table
-(coefficients <- cbind(coefficients, odds_ratio))
+We can display all our critical statistics by combining a few of these statistics into a dataframe.
+
+```{r}
+# combine with coefficient and p_value
+(coefficients <- cbind(
+  coefficients[ ,c("Value", "p_value")],
+  odds_ratio
+))
 ```
 
 
@@ -211,14 +231,16 @@ Similar to binomial and multinomial models, pseudo-$R^2$ methods are available f
 
 ```{r}
 # diagnostics of simpler model
-DescTools::PseudoR2(model, 
-                    which = c("McFadden", "CoxSnell", "Nagelkerke", "AIC"))
+DescTools::PseudoR2(
+  model, 
+  which = c("McFadden", "CoxSnell", "Nagelkerke", "AIC")
+)
 ```
 
 There are numerous tests of goodness of fit/model confidence that can apply to ordinal logistic regression models, and this area is the subject of considerable recent research.  The `generalhoslem` package in R contains routes to four possible tests, with two of them particularly recommended for ordinal models.  Each work in a similar way to the Hosmer-Lemeshow test discussed in \@ref(logistic-gof), by dividing the sample into groups and comparing the observed versus the fitted outcomes using a chi-square test.  Since the null hypothesis is a good model fit, low p-values indicate potential problems with the model.   We run these tests below for reference. For more information, see @fagerland-hosmer, and for a really intensive treatment of ordinal data modeling @ordinal is recommended. 
 
 
-```{r}
+```{r, eval = FALSE}
 # lipsitz test 
 generalhoslem::lipsitz.test(model)
 
@@ -226,6 +248,17 @@ generalhoslem::lipsitz.test(model)
 # (requires the vector of categorical input variables as an argument)
 generalhoslem::pulkrob.chisq(model, catvars = cats)
 ```
+
+`r if (knitr::is_latex_output()) '\\scriptsize'`
+```{r, echo = FALSE}
+# lipsitz test 
+generalhoslem::lipsitz.test(model)
+
+# pulkstenis-robinson test 
+# (requires the vector of categorical input variables as an argument)
+generalhoslem::pulkrob.chisq(model, catvars = cats)
+```
+`r if (knitr::is_latex_output()) '\\normalsize'`
 
 ## Testing the proportional odds assumption
 
@@ -249,12 +282,20 @@ Now let's create two binomial logistic regression models for the two higher leve
 
 ```{r}
 # model for al least a yellow card
-yellowplus_model <- glm(yellow_plus ~ n_yellow_25 + n_red_25 + position + result + country + level, 
-                        data = soccer, family = "binomial")
+yellowplus_model <- glm(
+  yellow_plus ~ n_yellow_25 + n_red_25 + position + 
+    result + country + level, 
+  data = soccer, 
+  family = "binomial"
+)
 
 # model for a red card
-red_model <- glm(red ~ n_yellow_25 + n_red_25 + position + result + country + level,
-                 data = soccer, family = "binomial")
+red_model <- glm(
+  red ~ n_yellow_25 + n_red_25 + position + 
+    result + country + level,
+  data = soccer, 
+  family = "binomial"
+)
 ```
 
 We can now display the coefficients of both models and examine the difference between them:
@@ -264,7 +305,8 @@ We can now display the coefficients of both models and examine the difference be
 (coefficient_comparison <- data.frame(
   yellowplus = summary(yellowplus_model)$coefficients[ , "Estimate"],
   red = summary(red_model)$coefficients[ ,"Estimate"],
-  diff = summary(red_model)$coefficients[ ,"Estimate"] - summary(yellowplus_model)$coefficients[ , "Estimate"]
+  diff = summary(red_model)$coefficients[ ,"Estimate"] - 
+    summary(yellowplus_model)$coefficients[ , "Estimate"]
 ))
 ```
 

@@ -17,11 +17,21 @@ bookdown::gitbook:
       linkedin: yes
   css: r/style.css
 bookdown::pdf_book:
+  fontsize: 12pt
+  monofont: "Source Code Pro"
+  monofontoptions: "Scale=0.7"
+  includes:
+    in_header: latex/preamble.tex
+    before_body: latex/before_body.tex
+    after_body: latex/after_body.tex
+  keep_tex: true
+  dev: "pdf"
   latex_engine: xelatex
-  citation_package: natbib
-  fontsize: 10pt
-  geometry: margin=2cm
-  keep_tex: yes
-  pandoc_args: ["--top-level-division=chapter"]
-  quote_footer: ["\\begin{flushright}", "\\end{flushright}"]
-bookdown::epub_book: default
+  pandoc_args: --top-level-division=chapter
+  toc_depth: 3
+  toc_unnumbered: no
+  toc_appendix: yes
+  quote_footer: ["\\VA{", "}{}"]
+  highlight_bw: false
+bookdown::epub_book:
+  stylesheet: css/style.css

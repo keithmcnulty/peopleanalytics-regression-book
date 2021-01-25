@@ -137,7 +137,8 @@ $$
 Again, the sample covariance is the default in R and we need to transform to obtain the population covariance:
 
 ```{r}
-# get sample covariance for sales and customer_rate, ignoring observations with missing data
+# get sample covariance for sales and customer_rate, 
+# ignoring observations with missing data
 (sample_cov <- cov(salespeople$sales, salespeople$customer_rate, 
                    use = "complete.obs"))
 
@@ -197,7 +198,7 @@ When we describe variables as random, we are assuming that they take a form whic
 Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let's test this with a little experiment on our `salespeople` data.  Figure \@ref(fig:sales-sample) shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the `salespeople` dataset and creating a histogram of the resulting mean sales values.  We can see how greater numbers of samples (down the rows) leads to a more normal distribution curve and larger sample sizes (across the columns) leads to a 'spikier' distribution with a smaller standard deviation.
 
 
-```{r sales-sample, fig.cap="Histogram and density of mean `sales` based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)", fig.align = "center", echo = FALSE, warning = FALSE, message = FALSE}
+```{r sales-sample, fig.cap= if (knitr::is_latex_output()) {"Histogram and density of mean \\texttt{sales} based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)"} else {"Histogram and density of mean `sales` based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)"}, fig.align = "center", echo = FALSE, warning = FALSE, message = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 set.seed(124)
 library(ggplot2)
 
@@ -357,11 +358,12 @@ se <- sqrt(se_perf1^2 + se_perf4^2)
 df <- se^4/(se_perf1^4/(n_perf1-1) + se_perf4^4/(n_perf4-1))
 ```
 
-We use a special formula called the [Welch-Satterthwaite approximation](https://en.wikipedia.org/wiki/Welch%E2%80%93Satterthwaite_equation) to calculate the degrees of freedom for the two samples, which in this case calculates to `r round(df, 2)`^[I've kept the gory details of how this is derived out of view, but you can see them if you view the source code for this book].  This allows us to construct a 95% confidence interval for the difference between the means, and we can test whether this contains zero.
+We use a special formula called the [Welch-Satterthwaite approximation](https://en.wikipedia.org/wiki/Welch–Satterthwaite_equation) to calculate the degrees of freedom for the two samples, which in this case calculates to `r round(df, 2)`^[I've kept the gory details of how this is derived out of view, but you can see them if you view the source code for this book].  This allows us to construct a 95% confidence interval for the difference between the means, and we can test whether this contains zero.
 
 ```{r}
 # calculate standard error of the two sets
-se <- sqrt(sd(perf1$sales)^2/length(perf1$sales) + sd(perf4$sales)^2/length(perf4$sales))
+se <- sqrt(sd(perf1$sales)^2/length(perf1$sales) 
+           + sd(perf4$sales)^2/length(perf4$sales))
 
 # calculate the required t-statistic
 t <- qt(p = 0.975, df = 100.98)
@@ -379,7 +381,7 @@ Since this has returned `FALSE`, we conclude that a mean difference of zero is o
 Looking at this graphically, we are assuming a $t$-distribution of the mean difference, and we are determining where zero sits in that distribution, as in Figure \@ref(fig:norm-dist).
 
 
-```{r norm-dist, fig.cap = if (knitr::is_latex_output()) {"t-distribution of the mean sales difference between perf1 and perf4"} else {"t-distribution of the mean sales difference between `perf1` and `perf4`, 95% confidence intervals (red lines) and a zero difference (blue line)"}, fig.align = "center", echo = FALSE}
+```{r norm-dist, fig.cap = if (knitr::is_latex_output()) {"t-distribution of the mean sales difference between \\texttt{perf1} and \\texttt{perf4}, 95\\% confidence intervals (red lines) and a zero difference (blue line)"} else {"t-distribution of the mean sales difference between `perf1` and `perf4`, 95% confidence intervals (red lines) and a zero difference (blue line)"}, fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 ggplot(data = data.frame(x = c(-5, 5)), aes(x)) +
   stat_function(fun = dt, n = 101, args = list(df = 101)) + ylab("") +
   xlab("Standard errors around sample mean difference") +
@@ -414,7 +416,7 @@ In practice, there are numerous alphas that are of interest to analysts, each re
 
 Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data.  In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards - a process known as "p-hacking" - has been of increasing concern recently.  See Chapter \@ref(power-tests) for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.
 
-### Testing for a non-zero correlation between two variables (t-test for correlation)
+### Testing for a non-zero correlation between two variables ($t$-test for correlation)
 
 Imagine that we are given a sample of data for two variables and we are asked if the variables are correlated in the overall population.  We can take a null hypothesis that the variables are not correlated, determine a t-statistic associated with a zero correlation and convert this to a p-value.  The t-statistic associated with a correlation $r$ between two samples of length $n$ is often notated $t^*$ and is defined as 
 
@@ -425,7 +427,7 @@ $t^*$ can be converted to an associated p-value using a $t$-distribution in a si
 
 ```{r}
 
-## remove NAs from salespeople
+# remove NAs from salespeople
 salespeople <- salespeople[complete.cases(salespeople), ]
 
 # calculate t_star
@@ -461,8 +463,11 @@ We can see by summing each row that for the total sample we can expect `r sum(co
 
 ```{r}
 # calculate expected promoted and not promoted
-(expected_promoted <- (sum(contingency[2, ])/sum(contingency)) * colSums(contingency))
-(expected_notpromoted <- (sum(contingency[1, ])/sum(contingency)) * colSums(contingency))
+(expected_promoted <- (sum(contingency[2, ])/sum(contingency)) * 
+   colSums(contingency))
+
+(expected_notpromoted <- (sum(contingency[1, ])/sum(contingency)) * 
+    colSums(contingency))
 ```
 
 Now we can compare our observed versus expected values using the difference metric:
@@ -474,11 +479,14 @@ and add these all up to get a total, known as the $\chi^2$ statistic.
 
 ```{r}
 # calculate the difference metrics for promoted and not promoted
-promoted <- sum((expected_promoted - contingency[2, ])^2/expected_promoted)
-notpromoted <- sum((expected_notpromoted - contingency[1, ])^2/expected_notpromoted)
+promoted <- sum((expected_promoted - contingency[2, ])^2/
+                  expected_promoted)
+
+notpromoted <- sum((expected_notpromoted - contingency[1, ])^2/
+                     expected_notpromoted)
 
 # calculate chi-squared statistic
-(chi_sq_stat = notpromoted + promoted)
+(chi_sq_stat <- notpromoted + promoted)
 ```
 
 The $\chi^2$ statistic has an expected distribution that can be used to determine the p-value associated with this statistic.  As with the $t$-distribution, the $\chi^2$-distribution depends on the degrees of freedom.  This is calculated by subtracting one from the number of rows and from the number of columns in the contingency table and multiplying them together.  In this case we have 2 rows and 4 columns which calculates to 3 degrees of freedom.  Armed with our $\chi^2$ statistic and our degrees of freedom, we can now calculate the p-value for the hypothesis test using the `pchisq()` function.  
@@ -564,12 +572,14 @@ Specific types of correlation coefficients can be accessed via the `stats` modul
 from scipy import stats
 
 # spearman's correlation
-stats.spearmanr(salespeople.sales, salespeople.performance, nan_policy='omit')
+stats.spearmanr(salespeople.sales, salespeople.performance, 
+nan_policy='omit')
 ```
 
 ```{python}
 # kendall's tau
-stats.kendalltau(salespeople.sales, salespeople.performance, nan_policy='omit')
+stats.kendalltau(salespeople.sales, salespeople.performance, 
+nan_policy='omit')
 ```
 
 Common hypothesis testing tools are available in `scipy.stats`.  Here is an example of how to perform Welch's $t$-test on a difference in means of samples of unequal variance.
@@ -589,7 +599,11 @@ As seen above, hypothesis tests for non-zero correlation coefficients are perfor
 ```{python}
 # calculate correlation and p-value 
 sales = salespeople.sales[~np.isnan(salespeople.sales)]
-cust_rate = salespeople.customer_rate[~np.isnan(salespeople.customer_rate)]
+
+cust_rate = salespeople.customer_rate[
+  ~np.isnan(salespeople.customer_rate)
+]
+
 cor = stats.pearsonr(sales, cust_rate)
 print(cor)
 

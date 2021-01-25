@@ -1,4 +1,4 @@
-# Power Analysis to Estimate Required Sample Sizes for Inferential Modeling {#power-tests}
+# Power Analysis to Estimate Required Sample Sizes for Modeling {#power-tests}
 
 In the vast majority of situations in people analytics, researchers and analysts have limited control over the size of their samples.  The most common situation is, of course, that analyses are run with whatever data can be gleaned and cleaned in the time available.  At the same time, as we have seen in all of our previous work, even if a certain difference might exist in real life in the populations being studied, it is by no means certain that a specific analysis on samples from these populations will elucidate that difference.  Whether that difference is visible depends on the statistical properties of the samples used.  Therefore, researchers and analysts are living in the reality that when they conduct inferential analysis, the usefulness of their work depends to a very large degree on the samples they have available.
 
@@ -34,13 +34,13 @@ Recall also that we use the statistical properties of the samples to make infere
 As an example to illustrate the mathematical relationship between these criteria, let's assume that we run an experiment on a group of employees of size $n$ where we introduce a new benefit and then test their satisfaction levels before and after its introduction.  As a statistic of a random variable, we can expect the mean difference in satisfaction to have a normal distribution.  Let $\mu_0$ be the mean of the population under the null hypothesis and let $\mu_1$ be the mean of the population under the alternative hypothesis.  Now let's assume that in our sample we observe a mean satisfaction of $\mu^*$ after the experiment.   Recall from Chapter \@ref(found-stats) that to meet a statistical significance standard of $\alpha$, we will need $\mu^*$ to be greater than a certain multiple of the standard error $\frac{\sigma}{\sqrt{n}}$ above $\mu_0$ based on the normal distribution.  Let's call that multiple $z_{\alpha}$.   Therefore, we can say that the statistical power of our hypothesis test is:
 
 $$
-\begin{align}
+\begin{aligned}
 \mathrm{Power} &= P(\mu^* > \mu_0 + z_{\alpha}\frac{\sigma}{\sqrt{n}}\vert{\mu = \mu_1}) \\
 &= P(\frac{\mu^* - \mu_1}{\frac{\sigma}{\sqrt{n}}} > -\frac{\mu_1 - \mu_0}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}\vert{\mu = \mu_1}) \\
 &= 1 - \Phi(-\frac{\mu_1 - \mu_0}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}) \\
 &= 1 - \Phi(-\frac{\mu_1 - \mu_0}{\sigma}\sqrt{n} + z_{\alpha}) \\
 &=  1 - \Phi(-d\sqrt{n} + z_{\alpha}) 
-\end{align}
+\end{aligned}
 $$
 
 where $\Phi$ is the cumulative normal probability distribution function, and $d = \frac{\mu_1 - \mu_0}{\sigma}$ is known as *Cohen's effect size*. Therefore, we can see that power depends on a measure of the observed effect size between our two samples (defined as Cohen's $d$) the significance level $\alpha$ and the sample size $n$^[We will also need to know the expected distribution of the statistics that we are analyzing in order to determine the power probability].
@@ -70,7 +70,7 @@ This tells us that we need an absolute minimum of `r ceiling(n_test$n)` individu
 
 This tells us that a minimum sample size of 40 would result in a power of `r round(p_test$p, 2)`.  A similar process can be used to plot the dependence between power and sample size under various conditions as in Figure \@ref(fig:powersampleplot).  This is known as a *power curve*.
 
-```{r powersampleplot, fig.cap="Plot of power against sample size for a paired t-test", fig.align="center"}
+```{r powersampleplot, fig.cap="Plot of power against sample size for a paired t-test", fig.align="center", out.width = if(knitr::is_latex_output()) {"90%"}}
 # test a range of sample sizes
 sample_sizes <- 20:100
 power <- WebPower::wp.t(n1 = sample_sizes, d = 0.5, type = "paired")
@@ -82,29 +82,26 @@ plot(power)
 
 We can see a 'sweet spot' of approximately 40-60 minimum required participants, and a diminishing return on statistical power over and above this. Similarly we can plot a proposed minimum sample size against a range of effect sizes as in Figure \@ref(fig:powerdplot).
 
-```{r powerdplot, fig.cap="Plot of power against effect size for a paired t-test", fig.align="center"}
+```{r powerdplot, fig.pos = "!h", fig.cap="Plot of power against effect size for a paired t-test", fig.align="center", out.width = if(knitr::is_latex_output()) {"90%"}}
 
 # test a range of effect sizes
 effect_sizes <- 2:8/10
 samples <- WebPower::wp.t(n1 = rep(40, 7), 
                           d = effect_sizes, 
                           type = "paired")
-
 plot(samples$d, samples$power, type = "b",
      xlab = "Effect size", ylab = "Power")
-
-
 ```
 
 Similar power test variants exist for other common simple hypothesis tests.  Let's assume that we want to institute a screening test in a recruiting process and we want to validate this test by running it on a random set of employees with the aim of proving that the test score has a significant non-zero correlation with job performance.  If we assume that we will see a moderate correlation of $r = 0.3$ in our sample^[Cohen's rule of thumb for correlation coefficients is Weak: 0.1, Moderate: 0.3 and Strong: 0.5], we can use the `wp.correlation()` function in `WebPower` to do a power analysis, resulting in Figure \@ref(fig:correlpower).
 
-```{r correlpower, fig.cap="Plot of power against sample size for a correlation test", fig.align="center"}
+```{r correlpower, fig.cap="Plot of power against sample size for a correlation test", fig.align="center", out.width = if(knitr::is_latex_output()) {"90%"}}
 sample_sizes <- 50:150
 correl_powers <- WebPower::wp.correlation(n = sample_sizes, r = 0.3)
-
 plot(correl_powers)
 ```
-This informs us that we will likely want to be hitting at least 100 employees in our study to have any reasonable chance of establishing possible validity for our screening test.  
+
+Figure \@ref(fig:correlpower) informs us that we will likely want to be hitting at least 100 employees in our study to have any reasonable chance of establishing possible validity for our screening test.  
 
 ## Power analysis for linear regression models
 
@@ -117,13 +114,15 @@ f^2 = \frac{R_{\mathrm{full}}^2 - R_{\mathrm{reduced}}^2}{1 - R_{\mathrm{full}}^
 $$
 where the formula refers to the $R^2$ fit statistics for the two models being compared.  As an example, imagine we already know that GPA in college has a significant relationship with job performance and we wish to determine if our proposed screening test had incremental validity on top of knowing college GPA.  We might run two linear regression models, one relating job performance to GPA, and another relating job performance to *both* GPA and screening test score.  Assuming we would observe a relatively small effect size for our screening test, we assume $f^2 = 0.05$^[Cohen's rule of thumb for $f^2$ effect sizes is Small: 0.02, Medium: 0.15, Large: 0.35], we can plot sample size against power in determining whether the two models are significantly different.  We will also need to define the number of predictors in the full model (`p1 = 2`) and the reduced model (`p2 = 1`).  The plot is shown in Figure \@ref(fig:regressionpower).
 
-```{r regressionpower, fig.cap="Plot of power against sample size for a small effect of a second input variable in a linear regression model", fig.align="center"}
+```{r regressionpower, fig.cap="Plot of power against sample size for a small effect of a second input variable in a linear regression model", fig.align="center", out.width = if(knitr::is_latex_output()) {"90%"}}
 sample_sizes <- 100:300
-f_sq_power <- WebPower::wp.regression(n = sample_sizes, p1 = 2, p2 = 1, f2 = 0.05)
+f_sq_power <- WebPower::wp.regression(n = sample_sizes, 
+                                      p1 = 2, p2 = 1, f2 = 0.05)
 
 plot(f_sq_power)
 ```
 
+`r if (knitr::is_latex_output()) '\\newpage'`
 ## Power analysis for log-likelihood regression models
 
 In Chapter \@ref(bin-log-reg), we reviewed how measures of fit for log-likelihood models are still the subject of some debate.  Given this, it is unsurprising that measures of effect size for log-likelihood models are not well established.  The most well-developed current method appeared in @demidenko, and works when we want to do a power test on a single input variable $x$ using the Wald test on the significance of model coefficients (see Section \@ref(wald) for a reminder of the Wald test).
@@ -137,7 +136,7 @@ In this method, the statistical power of a significance test on the input variab
 
 For example, let's assume that we wanted to determine if our new screening test had a significant effect on promotion likelihood by running an experiment on employees who were being considered for promotion.   We assume that our screening test is scored on a percentile scale and has a mean of 53 and a standard deviation of 21.  We know that approximately 50% of those being considered for promotion will be promoted, and we believe that the screening test may have a small effect whereby those who score zero would still have a 40% chance of promotion and every additional point scored would increase this chance by 0.2 percentage points.  We run the `wp.logistic()` function in `WebPower` to plot a power curve for various sample sizes as in Figure \@ref(fig:logisticpower).
 
-```{r logisticpower, fig.cap="Plot of power against sample size for a single input variable in logistic regression", fig.align="center"}
+```{r logisticpower, fig.cap="Plot of power against sample size for a single input variable in logistic regression", fig.align="center", out.width = if(knitr::is_latex_output()) {"90%"}}
 sample_sizes <- 50:200
 logistic_power <- WebPower::wp.logistic(n = sample_sizes, 
                                         p0 = 0.4, p1 = 0.42,
@@ -178,7 +177,7 @@ print(math.ceil(n_test))
 
 And a power curve can be constructed as in Figure \@ref(fig:pythonpowerplot).
 
-```{python pythonpowerplot, fig.cap="Plot of power against sample size for a paired t-test", fig.align="center"}
+```{python pythonpowerplot, fig.cap="Plot of power against sample size for a paired t-test", fig.align="center", out.width = if(knitr::is_latex_output()) {"90%"}}
 import matplotlib.pyplot as plt
 import numpy as np
 

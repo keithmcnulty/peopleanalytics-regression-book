@@ -34,9 +34,9 @@ After nearly 30 years of doing people analytics work and the privilege of leadin
 at several leading global organizations, I am still excited by the problems we get to solve, the insights we
 get to spawn, and the tremendous impact we can have on organizations and the people that comprise
 them. This work is human and technical and important and exciting and deeply gratifying. I hope that
-you will find Keith’s *Handbook of Regression Modeling in People Analytics* helps you uncover new
+you will find this *Handbook of Regression Modeling in People Analytics* helps you uncover new
 truths and create positive impacts in your own work.
 
-[Alexis A. Fink](https://www.linkedin.com/in/alexisfink/) \
+`r if (knitr::is_html_output()) {"[Alexis A. Fink](https://www.linkedin.com/in/alexisfink/)"} else {"Alexis A. Fink"}` \
 December 5, 2020
 

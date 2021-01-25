@@ -24,7 +24,7 @@ There is often heated debate about which languages/tools are better for doing no
 
 Just like most programming languages, R itself is an interpreter which receives input and returns output.  It is not very easy to use without an IDE.  An IDE is an *Integrated Development Environment*, which is a convenient user interface allowing an R programmer to do all their main tasks including writing and running R code, saving files, viewing data and plots, integrating code into documents and many other things.  By far the most popular IDE for R is RStudio.  An example of what the RStudio IDE looks like can be seen in Figure \@ref(fig:rstudio-ide). 
 
-```{r rstudio-ide, fig.cap="The RStudio IDE", fig.align="center", echo = FALSE}
+```{r rstudio-ide, fig.cap="The RStudio IDE", fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 knitr::include_graphics("./www/R/rstudio-windows.png")
  
 ```
@@ -75,7 +75,8 @@ All data in R has an associated type, to reflect the wide range of data that R i
 **Numeric data** can be in integer form or double (decimal) form
 
 ```{r}
-my_integer <- 1L  #integers can be signified by adding an 'L' to the end
+#integers can be signified by adding an 'L' to the end
+my_integer <- 1L  
 my_double <- 6.38
 
 typeof(my_integer)
@@ -108,7 +109,10 @@ str(my_double_vector)
 Categorical data - which takes only a finite number of possible values, can be stored as a factor vector to make it easier to perform grouping and manipulation:
 
 ```{r}
-categories <- factor(c("Category A", "Category B", "Category C", "Category A", "Category C"))
+categories <- factor(
+  c("Category A", "Category B", "Category C", "Category A", "Category C")
+)
+
 str(categories)
 ```
 
@@ -120,7 +124,10 @@ ranking <- c("Medium", "High", "Low")
 str(ranking)
 
 # turn it into an ordered factor
-ranking_factors <- ordered(ranking, levels = c("Low", "Medium", "High"))
+ranking_factors <- ordered(
+  ranking, levels = c("Low", "Medium", "High")
+)
+
 str(ranking_factors)
 
 ```
@@ -163,7 +170,7 @@ str(mix)
 # try to add a numeric to our previous categories factor vector
 new_categories <- c(categories, 1)
 
-# categories have been coerced to their background integer representations
+# categories have been coerced to background integer representations
 str(new_categories)
 
 
@@ -319,7 +326,8 @@ head(high_sales)
 To select specific columns use the `select` argument:
 
 ```{r}
-salespeople_sales_perf <- subset(salespeople, select = c("sales", "performance"))
+salespeople_sales_perf <- subset(salespeople, 
+                                 select = c("sales", "performance"))
 head(salespeople_sales_perf)
 ```
 
@@ -337,8 +345,10 @@ Two dataframes with different column names can be combined by their columns:
 
 ```{r}
 # two dataframes with two columns each
-sales_perf <- subset(salespeople, select = c("sales", "performance"))
-prom_custrate <- subset(salespeople, select = c("promoted", "customer_rate"))
+sales_perf <- subset(salespeople, 
+                     select = c("sales", "performance"))
+prom_custrate <- subset(salespeople, 
+                        select = c("promoted", "customer_rate"))
 
 # bind the columns to create a dataframe with four columns
 full_df <- cbind(sales_perf, prom_custrate)
@@ -362,7 +372,8 @@ head(salespeople)
 # see fewer rows - arguments need to be in the right order if not named
 head(salespeople, 3)
 
-# or if you don't know the right order, name your arguments and you can put them in any order
+# or if you don't know the right order, 
+# name your arguments and you can put them in any order
 head(n = 3, x = salespeople)
 ```
 
@@ -370,7 +381,7 @@ head(n = 3, x = salespeople)
 
 Most functions in R have excellent help documentation.  To get help on the `head()` function, type `help(head)` or `?head`.  This will display the results in the Help browser window in RStudio.  Alternatively you can open the `Help` browser window directly in RStudio and do a search there. An example of the browser results for `head()` is in Figure \@ref(fig:head-help).
 
-```{r head-help, fig.cap="Results of a search for the `head()` function in the RStudio Help browser", fig.align="center", echo = FALSE}
+```{r head-help, fig.cap="Results of a search for the `head()` function in the RStudio Help browser", fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 knitr::include_graphics("./www/R/head-help.png")
 ```
 
@@ -402,8 +413,6 @@ Once you have installed a package, you can see what functions are available by c
 install.packages("peopleanalyticsdata")
 library(peopleanalyticsdata)
 ```
-
-
 
 ### Using packages
 
@@ -445,7 +454,8 @@ subset(salespeople$sales, subset = salespeople$sales < 500) %>%
 This can be extended to perform arbitrarily many operations in one piped command:
 
 ```{r}
-subset(salespeople$sales, subset = salespeople$sales < 500) %>% # get the subsetted data
+subset(salespeople$sales, 
+       subset = salespeople$sales < 500) %>% # get the subsetted data
   mean() %>% # take the mean value
   round() # round to the nearest integer
 
@@ -484,6 +494,131 @@ When first faced with an error that you can't understand, try not to get frustra
 
 *Messages* are pieces of information that may or may not be useful to you at a particular point in time.  Sometimes you will receive messages when you load a package from your library.  Sometimes messages will keep you up to date on the progress of a process that is taking a long time to execute.   
 
+## Plotting and graphing
+
+As you might expect in a well developed programming language, there are numerous ways to plot and graph information in R.  If you are doing exploratory data analysis on fairly simple data and you don't need to worry about pretty appearance or formatting, the inbuilt plot capabilities of base R are fine.  If you need a pretty appearance, more precision, color coding or even 3D graphics or animation, there are also specialized plotting and graphing packages for these purposes.  In general, when working interactively in RStudio graphical output will be rendered in the Plots pane, where you can copy it or save it as an image.
+
+### Plotting in base R
+
+The simplest plot function in base R is `plot()`.  This performs basic X-Y plotting.  As an example, this command will perform a scatter plot of `customer_rate` against `sales` in the `salespeople` data set, with the results displayed in Figure \@ref(fig:basicscatter).  Note the use of the arguments `main`, `xlab` and `ylab` for customizing the axis labels and title for the plot.
+
+```{r basicscatter, fig.cap=if (knitr::is_latex_output()) {"Simple scatterplot of \\texttt{customer\\_rate} against \\texttt{sales} in the \\texttt{salespeople} data set"} else {"Simple scatterplot of `customer_rate` against `sales` in the `salespeople` data set"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
+# scatterplot of customer_rate against sales
+plot(x = salespeople$sales, y = salespeople$customer_rate,
+     xlab = "Sales ($m)", ylab = "Average customer rating",
+     main = "Scatterplot of Sales vs Customer Rating")
+```
+Histograms of data can be generated using the `hist()` function.  This command will generate a histogram of `performance` as displayed in Figure \@ref(fig:basichist).  Note the use of `breaks` to customize how the bars appear.
+
+```{r basichist, fig.cap=if (knitr::is_latex_output()) {"Simple histogram of \\texttt{performance} in the \\texttt{salespeople} data set"} else {"Simple histogram of `performance` in the `salespeople` data set"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
+# convert performance ratings back to numeric data type for histogram
+salespeople$performance <- as.numeric(salespeople$performance)
+
+# histogram of performance ratings
+hist(salespeople$performance, breaks = 0:4,
+     xlab = "Performance Rating", 
+     main = "Histogram of Performance Ratings")
+```
+
+Box and whisker plots are excellent ways to see the distribution of a variable, and can be grouped against another variable to see bivariate patterns.  For example, this command will show a box and whisker plot of `sales` grouped against `performance`, with the output shown in Figure \@ref(fig:basicbox).  Note the use of the `formula` and `data` notation here to define the variable we are interested in and how we want it grouped.  We will study this formula notation in greater depth later in this book. 
+
+```{r basicbox, fig.cap=if (knitr::is_latex_output()) {"Simple box plot of \\texttt{sales} grouped against \\texttt{performance} in the \\texttt{salespeople} data set"} else {"Simple box plot of `sales` grouped against `performance` in the `salespeople` data set"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
+# box plot of sales by performance rating
+boxplot(formula = sales ~ performance, data = salespeople,
+        xlab = "Performance Rating", ylab = "Sales ($m)",
+        main = "Boxplot of Sales by Performance Rating")
+```
+
+These are common plot syles used for statistics in base R but merely illustrations of a wider range of base plotting and graphics available, such as line plots, bar plots and other varieties which you may see later this this book.
+
+### Specialist plotting and graphing packages
+
+By far the most commonly used specialist plotting and graphing package in R is `ggplot2`.  `ggplot2` allows the flexible construction of a very wide range of charts and graphs, but uses a very specific command grammar which can take some getting used to.  However, once learned, this can be an extremely powerful tool.  Many of the illustratory figures used in this book are developed using `ggplot2` and while the code for these figures is generally is not included for the sake of brevity, you can always find it in the source code of this book on Github.  A great learning resource for `ggplot2` is @ggplot2.
+
+The `plotly` package allows the use of the `plotly` interactive graphing library in R.  This is an excellent package for interactive graphing and is used for 3D illustrations in this book.  Output can be rendered in HTML, allowing the user to play with and explore the graphs interactively, or can be saved as static 2D images.
+
+`GGally` is a package which extends `ggplot2` to allow easy combination of charts and graphs.  This is particularly valuable for quicker exploratory data analysis.  One of its most popular function is `ggpairs()` which produces a pairplot.  A pairplot is a visualization of all univariate and bivariate patterns in a numerical data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed off-diagonal.  Figure \@ref(fig:basicpair) is an example of a pairplot for the `salespeople` dataset which we will explore further in Chapter \@ref(bin-log-reg).
+
+```{r basicpair, fig.cap=if (knitr::is_latex_output()) {"Pairplot of the \\texttt{salespeople} data set"} else {"Pairplot of the `salespeople` data set"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}, warning = FALSE, message = FALSE}
+library(GGally)
+
+# convert performance and promotion to categorical
+salespeople$promoted <- as.factor(salespeople$promoted)
+salespeople$performance <- as.factor(salespeople$performance)
+
+# pairplot of salespeople
+GGally::ggpairs(salespeople)
+```
+
+## Documenting your work using R Markdown
+
+For anyone performing any sort of multivariate analysis using a statistical programming language, appropriate documentation and reproducibility of the work is essential to its success and longevity.  If your code is not easy to be obtained or run by others, it is likely to have a very limited impact and lifetime.  Learning how to create integrated documents that contain both text and code is critical to providing access to your code and narration to your work.  
+
+R Markdown is a package which allows you to create integrated documents containing both formatted text and executable code.  It is, in my opinion, one of the best resources available currently for this purpose. For example, this entire book has been created using R Markdown. You can start an R Markdown document in RStudio by installing the `rmarkdown` package and then opening a new R Markdown document file, which will have the suffix `.Rmd`.
+
+R Markdown documents always start with a particular heading type called a YAML header, which contains overall information on the document you are creating.  Care must be taken with the precise formatting of the YAML header, as it is sensitive to spacing and appropriate indentation.  Usually a basic YAML header is created for you in RStudio when you start a new `.Rmd` file.  Here is an example.
+
+```
+---
+title: "My new document"
+author: "Keith McNulty"
+date: "25/01/2021"
+output: html_document
+---
+```
+
+The `output` part of this header has numerous options, but the most commonly used are `html_document`, which generates your document as a web page, and `pdf_document`, which generates your document as a PDF using the open source `LaTeX` software package.  If you wish to create PDF documents you will need to have a vertion of `LaTeX` installed on your system.  One R package that can do this for you is the `tinytex` package.  The command `tinytex::install_tinytex()` will install a minimal version of `LaTeX` which is fine for most purposes.
+
+R Markdown allows you to build a formatted document using many shorthand formatting commands.  Here are a few examples of how to format headings and place web links or images in your document:
+
+```
+# My top heading
+
+This section is about this general topic.
+
+## My first sub heading 
+
+To see more information on this sub-topic visit [here](https://my.web.link).
+
+## My second sub heading
+
+Here is a nice picture about this sub-topic.
+
+![](path/to/image)
+```
+
+Code can be written and executed and the results displayed inline using backticks.  For example, writing 
+
+```{r, echo = FALSE}
+salespeople <- read.csv(url)
+```
+
+````
+`r`r ''` nrow(salespeople)`
+````
+
+inline will display `r nrow(salespeople)` in the final document.  Code blocks can be included and executed by using triple-backticks.  The following code block:
+
+````
+```{r}`r ''`
+# show the first few rows of salespeople
+head(salespeople)
+```
+````
+
+will display this output:
+
+```{r, echo = FALSE}
+head(salespeople)
+```
+
+The `{}` wrapping allows you to specify different languages for your code chunk.  For example, if you wanted to run Python code instead of R code you can use `{python}`.  It also allows you to set options for the code chunk display separated by commas.  For example, if you want the results of your code to be displayed, but without the code itself being displayed, you can use `{r, echo = FALSE}`.
+
+The process of compiling your R Markdown code to produce a document is known as 'knitting'. To create a knitted document, you simply need to click on the 'Knit' button that appears above your R Markdown code.  
+
+If you are not familiar with R Markdown, I strongly encourage you to learn it alongside R and to challenge yourself to write up your work and exercises in this book using R Markdown.  Useful cheat sheets and reference guides for R Markdown formatting and commands are available through the Cheatsheets section of the Help menu in RStudio.  I also recommend @rmarkdown for a really thorough instruction and reference guide.
+
+
 ## Learning exercises
 
 ### Discussion questions
@@ -498,6 +633,9 @@ When first faced with an error that you can't understand, try not to get frustra
 8.  Describe what is meant by 'namespacing' and why it might be useful.
 9.  What is the pipe operator and why is it popular in R?
 10. What is the difference between an error and a warning in R?
+11.  Name some simple plotting functions in base R.
+12.  Name some common specialist plotting and graphing packages in R.
+13.  What is R Markdown and why is it useful to someone performing analysis using programming languages?
 
 
 ### Data exercises
@@ -510,7 +648,11 @@ When first faced with an error that you can't understand, try not to get frustra
 6.  View a statistical summary of all of the columns of `ugtests`.  Determine if there are any missing values.
 7.  View the subset of `ugtests` for values of `Yr1` greater than 50.
 8.  Install and load the package `dplyr`.  Look up the help for the `filter()` function in this package and try to use it to repeat the task in the previous question.
-9.  Write code to find the mean of the `Yr1` test scores for all those who achieved `Yr3` test scores greater than 100.  Round this mean to the nearest integer.  
+9.  Write code to find the mean of the `Yr1` test scores for all those who achieved `Yr3` test scores greater than 100.  Round this mean to the nearest integer.
 10. Familiarize yourself with the two functions `filter()` and `pull()` from `dplyr`.  Use these functions to try to do the same calculation in the previous question using a single unbroken piped command.  Be sure to namespace where necessary.
+11.  Create a scatter plot using the `ugtests` data with `Final` scores on the y axis and `Yr3` scores on the x axis.
+12.  Create your own 5 level grading logic and use it to create a new `finalgrade` column in the `ugtests` dataset with grades 1 thru 5 of increasing attainment based on the `Final` score in `ugtests`.  Generate a histogram of this `finalgrade` column.
+13.  Using your new `ugtests` data with the extra column from the previous exercise, create a box plot of `Yr3` scores grouped by `finalgrade`.
+14.  Knit all of your answers to these exercises into an R Markdown document.  Create one version that displays your code and answers, and another that just displays the answers.
 
 

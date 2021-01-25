@@ -3,9 +3,8 @@ title: "Handbook of Regression Modeling in People Analytics"
 subtitle: "With Examples in R and Python"
 author: "Keith McNulty"
 site: bookdown::bookdown_site
-
 always_allow_html: true
-documentclass: book
+documentclass: krantz
 bibliography: r/book.bib
 fig-caption: yes
 link-citations: yes
@@ -16,13 +15,20 @@ github-repo: keithmcnulty/peopleanalytics-regression-book
 library(reticulate)
 matplotlib <- import("matplotlib")
 matplotlib$use("Agg", force = TRUE)
+
+if (knitr::is_latex_output()) {
+  options(width = 100)
+}
 ```
 
+
+`r if (knitr::is_latex_output()) '<!--'`
 # Welcome {-}
 
 Welcome to the website for the book *Handbook of Regression Modeling in People Analytics* by [Keith McNulty](https://twitter.com/dr_keithmcnulty).  Content can be used freely with appropriate referencing.
 
 This book is available in [bootstrap format](http://peopleanalytics-regression-book.org) and, for those who prefer, in a more plain [gitbook format](http://peopleanalytics-regression-book.org/gitbook).
+`r if (knitr::is_latex_output()) '--> \\newpage\\thispagestyle{empty}\\null'`
 
 ### Notes on data used in this book {-}
 
@@ -40,6 +46,7 @@ data(package = "peopleanalyticsdata")
 help(managers)
 ```
 
+`r if (knitr::is_latex_output()) '<!--'`
 ### Comments on this book {-}
 
 This book is in permanent open review.  Feedback and requests for new content should be made via the [issues](https://github.com/keithmcnulty/peopleanalytics-regression-book/issues) section of the book's Github repo.
@@ -53,7 +60,7 @@ Happy modeling!
 
 *Last update:  `r format(Sys.Date(), "%d %B %Y")`*
 
-
+`r if (knitr::is_latex_output()) '-->'`
 
 
 
