@@ -99,6 +99,7 @@ The subsequent chapters are organized as follows:
 * Chapter 9 covers survival analysis, Cox proportional hazards regression and frailty models. The chapter uses employee attrition as a walkthrough example and exercise.
 * Chapter 10 outlines alternative technical approaches to regression modeling in both R and Python.  Models from previous chapters are used to illustrate these alternative approaches.
 * Chapter 11 covers power analysis, focusing in particular on estimating the required minimum sample sizes in establishing meaningful inferences for both simple statistical tests and multivariate models.  Examples related to experimental studies are used to illustrate, such as concurrent validity studies of selection instruments.  Example implementations in R and Python are outlined. 
+`r if (knitr::is_latex_output()) '* Chapter 12 is a set of people analytics scenarios and data sets which will allow you to practice the skills you have learned in this book.  These scenarios span multiple methods and give you an opportunity to consider a broad problem and determine how to apply appropriate statistical inference techniques to answer specific questions related to that problem.  You will be guided in your approach through a series of discussion questions and data exercises.'`
 
 
 

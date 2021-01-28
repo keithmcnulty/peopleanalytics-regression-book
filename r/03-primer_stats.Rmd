@@ -199,7 +199,7 @@ Under the central limit theorem, if we take samples from a random variable and c
 
 
 ```{r sales-sample, fig.cap= if (knitr::is_latex_output()) {"Histogram and density of mean \\texttt{sales} based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)"} else {"Histogram and density of mean `sales` based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)"}, fig.align = "center", echo = FALSE, warning = FALSE, message = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
-set.seed(124)
+set.seed(123)
 library(ggplot2)
 
 salespeople_ <- salespeople[complete.cases(salespeople), ]
@@ -245,7 +245,7 @@ plotdist <- function(i, j) {
 }
 
 gridExtra::grid.arrange(plotdist(50, 10), plotdist(100, 10), plotdist(150, 10),
-                        plotdist(50, 10), plotdist(100, 100), plotdist(150, 100),
+                        plotdist(50, 100), plotdist(100, 100), plotdist(150, 100),
                         plotdist(50, 1000), plotdist(100, 1000), plotdist(150, 1000),
                         nrow = 3, ncol = 3)
 ```

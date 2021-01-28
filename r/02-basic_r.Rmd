@@ -496,11 +496,11 @@ When first faced with an error that you can't understand, try not to get frustra
 
 ## Plotting and graphing
 
-As you might expect in a well developed programming language, there are numerous ways to plot and graph information in R.  If you are doing exploratory data analysis on fairly simple data and you don't need to worry about pretty appearance or formatting, the inbuilt plot capabilities of base R are fine.  If you need a pretty appearance, more precision, color coding or even 3D graphics or animation, there are also specialized plotting and graphing packages for these purposes.  In general, when working interactively in RStudio graphical output will be rendered in the Plots pane, where you can copy it or save it as an image.
+As you might expect in a well developed programming language, there are numerous ways to plot and graph information in R.  If you are doing exploratory data analysis on fairly simple data and you don't need to worry about pretty appearance or formatting, the in-built plot capabilities of base R are fine.  If you need a pretty appearance, more precision, color coding or even 3D graphics or animation, there are also specialized plotting and graphing packages for these purposes.  In general when working interactively in RStudio, graphical output will be rendered in the Plots pane, where you can copy it or save it as an image.
 
 ### Plotting in base R
 
-The simplest plot function in base R is `plot()`.  This performs basic X-Y plotting.  As an example, this command will perform a scatter plot of `customer_rate` against `sales` in the `salespeople` data set, with the results displayed in Figure \@ref(fig:basicscatter).  Note the use of the arguments `main`, `xlab` and `ylab` for customizing the axis labels and title for the plot.
+The simplest plot function in base R is `plot()`.  This performs basic X-Y plotting.  As an example, this code will generate a scatter plot of `customer_rate` against `sales` in the `salespeople` data set, with the results displayed in Figure \@ref(fig:basicscatter).  Note the use of the arguments `main`, `xlab` and `ylab` for customizing the axis labels and title for the plot.
 
 ```{r basicscatter, fig.cap=if (knitr::is_latex_output()) {"Simple scatterplot of \\texttt{customer\\_rate} against \\texttt{sales} in the \\texttt{salespeople} data set"} else {"Simple scatterplot of `customer_rate` against `sales` in the `salespeople` data set"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
 # scatterplot of customer_rate against sales
@@ -529,15 +529,15 @@ boxplot(formula = sales ~ performance, data = salespeople,
         main = "Boxplot of Sales by Performance Rating")
 ```
 
-These are common plot syles used for statistics in base R but merely illustrations of a wider range of base plotting and graphics available, such as line plots, bar plots and other varieties which you may see later this this book.
+These are among the most common plots used for data exploration purposes.  They are examples of a wider range of plotting and graphing functions available in base R, such as line plots, bar plots and other varieties which you may see later in this book.
 
 ### Specialist plotting and graphing packages
 
-By far the most commonly used specialist plotting and graphing package in R is `ggplot2`.  `ggplot2` allows the flexible construction of a very wide range of charts and graphs, but uses a very specific command grammar which can take some getting used to.  However, once learned, this can be an extremely powerful tool.  Many of the illustratory figures used in this book are developed using `ggplot2` and while the code for these figures is generally is not included for the sake of brevity, you can always find it in the source code of this book on Github.  A great learning resource for `ggplot2` is @ggplot2.
+By far the most commonly used specialist plotting and graphing package in R is `ggplot2`.  `ggplot2` allows the flexible construction of a very wide range of charts and graphs, but uses a very specific command grammar which can take some getting used to.  However, once learned, `ggplot2` can be an extremely powerful tool.  Many of the illustratory figures used in this book are developed using `ggplot2` and while the code for these figures is generally not included for the sake of brevity, you can always find it in the source code of this book on Github.  A great learning resource for `ggplot2` is @ggplot2.
 
-The `plotly` package allows the use of the `plotly` interactive graphing library in R.  This is an excellent package for interactive graphing and is used for 3D illustrations in this book.  Output can be rendered in HTML, allowing the user to play with and explore the graphs interactively, or can be saved as static 2D images.
+The `plotly` package allows the use of the `plotly` graphing library in R.  This is an excellent package for interactive graphing and is used for 3D illustrations in this book.  Output can be rendered in HTML - allowing the user to play with and explore the graphs interactively - or can be saved as static 2D images.
 
-`GGally` is a package which extends `ggplot2` to allow easy combination of charts and graphs.  This is particularly valuable for quicker exploratory data analysis.  One of its most popular function is `ggpairs()` which produces a pairplot.  A pairplot is a visualization of all univariate and bivariate patterns in a numerical data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed off-diagonal.  Figure \@ref(fig:basicpair) is an example of a pairplot for the `salespeople` dataset which we will explore further in Chapter \@ref(bin-log-reg).
+`GGally` is a package which extends `ggplot2` to allow easy combination of charts and graphs.  This is particularly valuable for quicker exploratory data analysis.  One of its most popular function is `ggpairs()` which produces a pairplot.  A pairplot is a visualization of all univariate and bivariate patterns in a numerical data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed in the off-diagonal.  Figure \@ref(fig:basicpair) is an example of a pairplot for the `salespeople` dataset which we will explore further in Chapter \@ref(bin-log-reg).
 
 ```{r basicpair, fig.cap=if (knitr::is_latex_output()) {"Pairplot of the \\texttt{salespeople} data set"} else {"Pairplot of the `salespeople` data set"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}, warning = FALSE, message = FALSE}
 library(GGally)
@@ -552,11 +552,13 @@ GGally::ggpairs(salespeople)
 
 ## Documenting your work using R Markdown
 
-For anyone performing any sort of multivariate analysis using a statistical programming language, appropriate documentation and reproducibility of the work is essential to its success and longevity.  If your code is not easy to be obtained or run by others, it is likely to have a very limited impact and lifetime.  Learning how to create integrated documents that contain both text and code is critical to providing access to your code and narration to your work.  
+For anyone performing any sort of multivariate analysis using a statistical programming language, appropriate documentation and reproducibility of the work is essential to its success and longevity.  If your code is not easily obtained or run by others, it is likely to have a very limited impact and lifetime.  Learning how to create integrated documents that contain both text and code is critical to providing access to your code and narration of your work.  
 
-R Markdown is a package which allows you to create integrated documents containing both formatted text and executable code.  It is, in my opinion, one of the best resources available currently for this purpose. For example, this entire book has been created using R Markdown. You can start an R Markdown document in RStudio by installing the `rmarkdown` package and then opening a new R Markdown document file, which will have the suffix `.Rmd`.
+R Markdown is a package which allows you to create integrated documents containing both formatted text and executed code.  It is, in my opinion, one of the best resources available currently for this purpose. This entire book has been created using R Markdown. You can start an R Markdown document in RStudio by installing the `rmarkdown` package and then opening a new R Markdown document file, which will have the suffix `.Rmd`.
 
-R Markdown documents always start with a particular heading type called a YAML header, which contains overall information on the document you are creating.  Care must be taken with the precise formatting of the YAML header, as it is sensitive to spacing and appropriate indentation.  Usually a basic YAML header is created for you in RStudio when you start a new `.Rmd` file.  Here is an example.
+R Markdown documents always start with a particular heading type called a YAML header, which contains overall information on the document you are creating.  Care must be taken with the precise formatting of the YAML header, as it is sensitive to spacing and indentation.  Usually a basic YAML header is created for you in RStudio when you start a new `.Rmd` file.  Here is an example.
+
+`r if (knitr::is_latex_output()) '\\newpage'`
 
 ```
 ---
@@ -567,7 +569,7 @@ output: html_document
 ---
 ```
 
-The `output` part of this header has numerous options, but the most commonly used are `html_document`, which generates your document as a web page, and `pdf_document`, which generates your document as a PDF using the open source `LaTeX` software package.  If you wish to create PDF documents you will need to have a vertion of `LaTeX` installed on your system.  One R package that can do this for you is the `tinytex` package.  The command `tinytex::install_tinytex()` will install a minimal version of `LaTeX` which is fine for most purposes.
+The `output` part of this header has numerous options, but the most commonly used are `html_document`, which generates your document as a web page, and `pdf_document`, which generates your document as a PDF using the open source `LaTeX` software package.  If you wish to create PDF documents you will need to have a version of `LaTeX` installed on your system.  One R package that can do this for you easily is the `tinytex` package.  The function `install_tinytex()` from this package will install a minimal version of `LaTeX` which is fine for most purposes.
 
 R Markdown allows you to build a formatted document using many shorthand formatting commands.  Here are a few examples of how to format headings and place web links or images in your document:
 
@@ -597,7 +599,7 @@ salespeople <- read.csv(url)
 `r`r ''` nrow(salespeople)`
 ````
 
-inline will display `r nrow(salespeople)` in the final document.  Code blocks can be included and executed by using triple-backticks.  The following code block:
+inline will display `r nrow(salespeople)` in the final document.  Entire code blocks can be included and executed by using triple-backticks.  The following code block:
 
 ````
 ```{r}`r ''`
@@ -614,9 +616,9 @@ head(salespeople)
 
 The `{}` wrapping allows you to specify different languages for your code chunk.  For example, if you wanted to run Python code instead of R code you can use `{python}`.  It also allows you to set options for the code chunk display separated by commas.  For example, if you want the results of your code to be displayed, but without the code itself being displayed, you can use `{r, echo = FALSE}`.
 
-The process of compiling your R Markdown code to produce a document is known as 'knitting'. To create a knitted document, you simply need to click on the 'Knit' button that appears above your R Markdown code.  
+The process of compiling your R Markdown code to produce a document is known as 'knitting'. To create a knitted document, you simply need to click on the 'Knit' button in RStudio that appears above your R Markdown code.  
 
-If you are not familiar with R Markdown, I strongly encourage you to learn it alongside R and to challenge yourself to write up your work and exercises in this book using R Markdown.  Useful cheat sheets and reference guides for R Markdown formatting and commands are available through the Cheatsheets section of the Help menu in RStudio.  I also recommend @rmarkdown for a really thorough instruction and reference guide.
+If you are not familiar with R Markdown, I strongly encourage you to learn it alongside R and to challenge yourself to write up any practice exercises you take on in this book using R Markdown.  Useful cheat sheets and reference guides for R Markdown formatting and commands are available through the Cheatsheets section of the Help menu in RStudio.  I also recommend @rmarkdown for a really thorough instruction and reference guide.
 
 
 ## Learning exercises

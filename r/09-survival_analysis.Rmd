@@ -175,7 +175,7 @@ The model returns the following^[The concordance measure returned is a measure o
 
 * Coefficients for each input variable and their p-values.  Here we can conclude that working in Finance or Health is associated in a significantly greater likelihood of leaving over the period studied, and that higher sentiment is associated with a significantly lower likelihood of leaving.
 
-* Relative odds ratios associated with each input variable.  For example, a single extra point in sentiment reduces the odds of leaving by ~11%.  A single less point increases the odds of leaving by ~13%.  Confidence intervals for the coefficients are also provided.
+* Relative odds ratios associated with each input variable.  For example, a single extra point in sentiment reduces the odds of leaving by ~11%.  A single less point increases the odds of leaving by ~12%.  Confidence intervals for the coefficients are also provided.
 
 * Three statistical tests on the null hypothesis that the coefficients are zero.  This null hypothesis is rejected by all three tests which can be interpreted as meaning that the model is significant. 
 
@@ -238,7 +238,7 @@ library(frailtypack)
 ```
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
-We can see that the frailty parameter is significant, indicating that there is sufficient difference in the background attrition risk to justify the application of a random hazard effect.  We also see that the level of employment now becomes significant in addition to sentiment, with Low and Medium level employees more likely to leave compared to High level employees.
+We can see that the frailty parameter is significant, indicating that there is sufficient difference in the background attrition risk to justify the application of a random hazard effect.  We also see that the level of employment now becomes more significant in addition to sentiment, with Low and Medium level employees more likely to leave compared to High level employees.
 
 The `frailtyPenal()` function can also be a useful way to observe the different baseline survivals for groups in the data.  For example, a simple stratified Cox proportional hazard model based on sentiment category can be constructed^[Note there needs to be a `kappa` for each level of the stratification].  
 

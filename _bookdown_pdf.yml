@@ -17,7 +17,8 @@ rmd_files:
 - "r/09-survival_analysis.Rmd"
 - "r/10-tidy_modeling.Rmd"
 - "r/11-power_tests.Rmd"
-- "r/12-bibliography.Rmd"
+- "r/12-further.Rmd"
+- "r/13-bibliography.Rmd"
 
 
 

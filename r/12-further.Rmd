@@ -1,0 +1,131 @@
+# Further Exercises for Practice
+
+This final chapter contains a set of scenarios and exercises that will allow you to put into further practice some of the techniques you have learned in this book, and are supplementary to the exercises provided at the end of each of the earlier chapters.  All the exercises are based on data that is available in the `peopleanalyticsdata` package in R, or alternatively can be downloaded from the internet.  While the scenarios are fictitious, they are intended to represent typical questions and situations that arise when doing statistical modeling in people analytics.
+
+As you work through these scenarios, I encourage you to document your work using either an R Markdown document or a Jupyter Notebook if you prefer.  This will help you keep a record of your method, approach and code in case you need to put it into practice again in the future.  It will also make it easy for you to share your work with others (for example by putting it in a Github repo), which will allow you to collaborate, discuss and open your work to critique.  If you are starting out on your analytics journey, exposing your work to others is one of the best ways to learn.  If you are more experienced, then there are others that will undoubtedly benefit from seeing how you went about solving these problems.
+
+## Analyzing a recruiting process
+
+Organizations are often very interested in analyzing data from recruiting processes, usually with a couple of goals in mind.  Firstly, there is an interest in whether the process is efficient and effective.  Secondly, there is an interest in whether the process is fair to different groups and a foundation for the recruiting of a sufficiently diverse set of employees.
+
+The efficiency and effectiveness of a recruiting process can depend heavily on how it is organized, what methods are used and whether those methods are helpful in determining hiring decisions.  Statistics from individual elements of the process such as interviews or assessments are often studied.  Models can be built to determine which elements influence the decision to hire or not hire.  In an ideal world, some sort of future job performance outcome would be particularly useful in studying the efficiency and effectiveness of a recruiting process, but often this is a very difficult thing to do, especially if the process is very selective.  Hiring only a small proportion of applicants usually results in a statistical phenomenon known as *range restriction*, where the statistics of those hired fall in a very narrow range that makes useful analysis extremely challenging.  For this reason, many organizations focus primarily on the final hiring decision as an outcome of interest.
+
+Understanding fairness in a recruiting process usually involves studying how the statistics of that process differ between subgroups of interest and whether any of the differences are significant enough to infer potential bias.  Understanding whether these differences are attributable to a particular element of the process, whether it be a test or the rating behaviors of interviewers, is also important in determining whether specific action can be taken to remedy the situation.
+
+### The `recruiting` data set
+
+```{r, echo = FALSE}
+recruiting <- read.csv("data/recruiting.csv")
+```
+
+The `recruiting` data set contains information on `r nrow(recruiting)` applicants who went through the final stages of a recruiting process for graduate positions at a large international financial services company.  The recruiting process operates as follows:
+
+1. Applications are screened according to a number of criteria, including their SAT scores and their undergraduate GPA as well as an online aptitude test they are requested to take, and numerous other judgments made by the individuals screening the applications.
+2. Applicants who pass the screening stage are invited for three interviews, two of them with line managers and a third with a human resources professional.  Different line managers or HR professionals conduct the interviews on different interview days.  Each interviewer independently gives an applicant a score on a Likert scale of 1 thru 5 indicating increasing positivity.
+3. Interviewers and human resources professionals gather to discuss each case and make a final decision on whether to hire or not hire.  All the information used in screening and evaluating applicants is made available to decision makers during this discussion.
+
+Load the `recruiting` data set via the `peopleanalyticssdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/recruiting.csv].  The fields in the `recruiting` data set are as follows:
+
+* `gender` is the gender of the applicant
+* `sat` is the SAT score of the applicant
+* `gpa` is the Undergraduate GPA of the applicant
+* `apttest` is the score on the aptitude test given to the applicant
+* `int1` is the rating of the first line manager interviewer
+* `int2` is the rating of the second line manager interviewer
+* `int3` is the rating of the human resources interviewer
+* `hired` is a binary indicator of whether a decision was made to hire the applicant
+
+### Discussion questions
+
+1.  Considering the way the recruiting process works, what kinds of inferential analysis or modeling would you be interested in applying to help understand its efficiency and effectiveness?
+2.  What kind of model is most appropriate for explaining the `hired` outcome?
+3.  One of your stakeholders is suggesting that the aptitude test is a waste of time and that the information it provides can already be gleaned from the applicants SAT scores and GPA.  What kind of statistical analysis or model would help you confirm or reject this? 
+4.  Do you think that collinearity might pose a risk in this data?  If so, what variables would you be concerned about?
+5.  What kind of hypothesis test would you use to determine if the hiring outcome may be different by gender?
+6.  What kind of hypothesis test would you use to determine if the aptitude test score may be different by gender?
+7.  How would you go about determining if any gender difference in the hiring outcome can be attributed to a specific part of the process? 
+
+### Data exercises
+
+1.  Perform an exploratory data analysis on the recruiting data set.  Be sure to convert data to the best type for your purposes.
+2.  Develop a model to test how the aptitude test results are explained by an applicant's SAT and GPA.  What can you conclude from this?  Have you considered possible collinearity in this model?
+3.  Develop a model to explain how all the inputs in the hiring decision (interview ratings, aptitude test, SAT and GPA) influence the hiring decision.  Reduce this to the most parsimonious model you are comfortable with.  What can you conclude from this model about the role of the different elements of the recruiting process in the final hiring decision?
+4.  Test whether there is a statistically significant difference in the hiring outcome for males versus females.
+5.  By adding gender into your model from Data Exercise 3, determine what element or elements of the recruiting process may be related to any differences in gender in the hiring outcome.
+
+## Analyzing the drivers of performance ratings
+
+In many organizations and for many job types, promotion and performance ratings are the primary indicators of the success of employees.  However, promotion is not always available to employees and can be very dependent on role and timing.  Since performance ratings are usually generated on a regular basis, it is usually these that garner the most attention in the analysis of success.
+
+However, performance ratings are not perfect indicators.  They are usually the result of some judgment from one or more evaluators.  Part of that judgment will be informed by data and part will be informed by contextual considerations or personal preferences outside of the data.  Therefore it is frequently of interest to analyze performance ratings as the outcome of a decision making process.  Such analysis can inform us as to what parts of the evaluation process are operating as intended and what parts are not.  Multivariate models around performance can help us understand the degree to which the evaluation process is data driven, the degree to which unfairness might exist in some evaluation decisions, and what might be the source of that unfairness.
+
+### The `employee_performance` data set
+
+```{r, echo = FALSE}
+employee_performance <- read.csv("data/employee_performance.csv")
+```
+
+The `employee_performance` data set contains data on the most recent performance evaluations of `r nrow(employee_performance)` salespeople in a technology company.  Each employee is evaluated by their manager, who considers certain performance indicators together with their own judgment and awards a performance rating from 1 to 3, where 1 means 'Needs improvement', 2 means 'Performing well' and 3 means 'Outstanding'.  
+
+Load the `employee_performance` data set via the `peopleanalyticssdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/employee_performance.csv].  The fields in the `employee_performance` data set are as follows:
+
+* `sales`:  The sales in millions of dollars made by the salesperson during the evaluation period
+* `new_customers`:  The number of new customers acquired by the salesperson during the evaluation period
+* `region`:  The region that the salesperson operates in:  North, South, East or West
+* `gender`:  The gender of the salesperson
+* `rating`:  The performance rating awarded by the manager
+
+### Discussion questions
+
+1.  What hypothesis test should be used to determine if there is a significant relationship between sales and performance rating?
+2.  What hypothesis test should be used to determine if there is a similar distribution of performance ratings between the four regions?
+3.  What type of an outcome is the performance rating?  What kind of model is appropriate for explaining what influences performance ratings?
+4.  Which input variables would you want to be significant and which would you want to be insignificant in your model in order to support an argument that the evaluation process is fair and relevant to the job?
+5.  What assumptions would you need to check after you have run your model to have confidence that you can trust your inferences?
+
+### Data exercises
+
+1.  Run separate and appropriate hypothesis tests on each of the input variables to determine if they have a significant effect on the performance outcome.
+2.  Prepare your data for running an appropriate multivariate model to explain the performance outcome.  Be sure to convert to appropriate data types.
+3.  Run an appropriate multivariate model to explain the performance outcome.  Report on which variables are significant and estimate the effects of the significant variables.
+4.  Determine and comment on the overall fit and goodness of fit of your model.  Use this to make a comment on how 'data driven' you believe the evaluation process to be.
+5.  Perform appropriate checks on the assumptions of your model.  What approach might you take if any of these tests fail?
+
+
+## Analyzing promotion differences between groups
+
+As mentioned in the previous section, promotion is a more challenging outcome to analyze because it can happen at different times for different people or groups.  Nevertheless, over certain time periods - usually several years - organizations will be interested in understanding what affects the likelihood of promotion among their employees.  
+
+It is particularly interesting to compare subgroups of employees that have common characteristics to see if there is a difference in their likelihood of promotion over a specified time period.  This is highly analogous to the study of retention or attrition in that promotion can be considered a singular event that can happen to different individuals at different points in  time.  Like retention or attrition, we are not only interested in whether this event occurred as at the end of a period of time, we are also interested in when it occurred throughout the period.
+
+### The `promotion` data set
+
+```{r, echo = FALSE}
+promotion <- read.csv("data/promotion.csv")
+```
+
+The `promotion` data set contains data on `r nrow(promotion)` individuals who joined a retailer in an entry level job, and tracks them for up to eight subsequent years post joining.  For each individual the data records whether or not they were promoted, and if so in which year the promotion occurred, where the date of their joining is Year 0.  Once promotion occurs, an individual is no longer tracked.  If an individual was not promoted, then the year in which the last record occurred is captured.  
+
+Load the `promotion` data set via the `peopleanalyticssdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/promotion.csv].  The fields in the data are as follows:
+
+* `diverse` indicates whether or not the individual is a member of one of the organization's diversity programs
+* `flexible` indicates whether the individual worked on a part-time program for at least 6 months
+* `store` indicates if the individual joined the company in a retail store position
+* `promoted` indicates whether the individual was promoted 
+* `year` indicates the year in which the last record was made of the individual
+
+### Discussion questions
+
+1.  What type of analysis is most appropriate to understand if there is a difference in promotion likelihood for employees who are on flexible hours, in diversity programs or who work in-store?
+2.  What type of illustration would you use to show whether each of these three factors individually have an effect on promotion likelihood?
+3.  What type of model would be most appropriate to determine the combined effects of all of these factors on promotion likelihood?
+4.  How would you go about determining whether any differences in promotion likelihood in a given group (eg the flexible working group) is mediated by membership of another group?
+5.  What assumptions would you need to check to validate that your analysis is trustworthy?
+
+### Data exercises
+
+1.  Run an exploratory data analysis to understand any general patterns of interest in the data.
+2.  Perform an analysis and generate an appropriate graph to illustrate the impact of flexible working on the likelihood of promotion.  Determine if there is a statistically significant effect.
+3.  Repeat this analysis to determine the impact of diversity program membership.
+4.  Run an appropriate multivariate model to determine how all three variables of flexible working, diversity and in-store working affect the likelihood of promotion.  Remember to check the assumptions of your model.
+5.  How would you explain your conclusions?  Are there any corrective actions that this analysis might point to?

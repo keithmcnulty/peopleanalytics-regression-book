@@ -137,7 +137,7 @@ politics_survey <- read.csv(url)
 ```
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
-This data set represents the results of a survey conducted by a political party on a set of approximately 2100 voters. The results are on a Likert scale of 1 to 10 where 1 indicates strong negative sentiment with a statement and 10 represents strong positive sentiment. Subject matter experts have already grouped the items into proposed latent variables or factors, and the data takes the following form:
+This data set represents the results of a survey conducted by a political party on a set of approximately 2100 voters. The results are on a Likert scale of 1 to 4 where 1 indicates strong negative sentiment with a statement and 4 represents strong positive sentiment. Subject matter experts have already grouped the items into proposed latent variables or factors, and the data takes the following form:
 
 1.  `Overall` represents the overall intention to vote for the party in the next election.
 2.  Items beginning with `Pol` are considered to be related to the policies of the political party
@@ -148,6 +148,18 @@ This data set represents the results of a survey conducted by a political party 
 7.  Items beginning with `Pers` are considered to be related to the personalities of the party representatives/leaders
 8.  Items beginning with `Nat` are considered to be related to interest in national issues
 9.  Items beginning with `Eco` are considered to be related to interest in economic issues
+
+`r if (knitr::is_html_output()) {"Let's take a quick look at the data."} else {"This is a lot of data so let's just take a quick look at the first few rows and columns."}`
+
+```{r, eval = knitr::is_html_output(), echo = knitr::is_html_output()}
+head(politics_survey)
+```
+
+
+```{r, eval = knitr::is_latex_output(), echo = knitr::is_latex_output()}
+head(politics_survey[ ,1:7])
+```
+
 
 The outcome of interest here is the `Overall` rating. Our first aim is to confirm that the eight factors suggested by the subject matter experts represent a satisfactory measurement model (that they reasonably explain the responses to the 22 items), adjusting or refining if needed. Assuming we can confirm a satisfactory measurement model, our second aim is to run a structural model to determine how each factor relates to the overall intention to vote for the party in the next election.
 
@@ -299,14 +311,14 @@ The full structural equation model can be seen in Figure \@ref(fig:fullsemplot).
 
 ### Data exercises
 
-For Exercises 1-4, use the `speed_dating` set used earlier in the chapter which can be found at <http://peopleanalytics-regression-book.org/data/speed_dating.csv>.
+For Exercises 1-4, use the `speed_dating` set used earlier in this chapter^[http://peopleanalytics-regression-book.org/data/speed_dating.csv].
 
 1.  Split the data into two sets according to the gender of the participant. Run standard binomial logistic regression models on each set to determine the relationship between the `dec` decision outcome and the input variables `samerace`, `agediff`, `attr`, `intel` and `prob`.
 2.  Run similar mixed models on these sets with a random intercept for `iid`.
 3.  What different conclusions can you make in comparing the mixed models with the standard models?
 4.  Experiment with some random slope effects to see if they reveal anything new about the input variables.
 
-For exercises 5-10, load the `employee_survey` data set via the `peopleanalyticsdata` package or download it from the internet[^hierarchical_data-3]. This data set contains the results of an engagement survey of employees of a technology company. Each row represents the responses of an individual to the survey and each column represents a specific survey question, with responses on a Likert scale of 1 to 5, with 1 indicating strongly negative sentiment and 5 indicating strongly positive sentiment. Subject matter experts have grouped the items into hypothesized latent factors as follows:
+For exercises 5-10, load the `employee_survey` data set via the `peopleanalyticsdata` package or download it from the internet[^hierarchical_data-3]. This data set contains the results of an engagement survey of employees of a technology company. Each row represents the responses of an individual to the survey and each column represents a specific survey question, with responses on a Likert scale of 1 to 4, with 1 indicating strongly negative sentiment and 4 indicating strongly positive sentiment. Subject matter experts have grouped the items into hypothesized latent factors as follows:
 
 [^hierarchical_data-3]: <http://peopleanalytics-regression-book.org/data/employee_survey.csv>
 

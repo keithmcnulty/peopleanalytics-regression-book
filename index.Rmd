@@ -35,8 +35,10 @@ This book is available in [bootstrap format](http://peopleanalytics-regression-b
 For R and Python users, each of the data sets used in this book can be downloaded individually by following the code in each chapter.  Alternatively for R users who intend to work through all of the chapters, all data sets can be loaded into an R session in advance by installing and loading the `peopleanalyticsdata` R package.  
 
 ```{r, eval = FALSE}
-# install and load all data sets in the book
-install.packages("peopleanalyticsdata")
+# install development version of peopleanalyticsdata package
+# requires devtools package installed
+devtools::install_github("keithmcnulty/peopleanalyticsdata", 
+                         ref = "main")
 library(peopleanalyticsdata)
 
 # see a list of data sets

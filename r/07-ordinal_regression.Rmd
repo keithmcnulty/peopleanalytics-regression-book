@@ -169,7 +169,7 @@ By taking exponents we see that the impact of a unit change in $x$ on the odds o
 
 ### Running an ordinal logistic regression model
 
-The `MASS` package provides a function `polr()` for running a proportional odds logistic regression on a dataset in a similar way to our previous models.  The key (and obvious) requirement is that the outcome is an ordered factor.  Since we did our conversions in \@ref(ord-walkthrough) we are ready to run this model, and we will start by running it on all input variables, and let the `polr()` function handle our dummy variables automatically.
+The `MASS` package provides a function `polr()` for running a proportional odds logistic regression on a dataset in a similar way to our previous models.  The key (and obvious) requirement is that the outcome is an ordered factor.  Since we did our conversions in Section \@ref(ord-walkthrough) we are ready to run this model, and we will start by running it on all input variables, and let the `polr()` function handle our dummy variables automatically.
 
 ```{r, warning = FALSE, message = FALSE}
 # run proportional odds model
@@ -333,14 +333,14 @@ The proportional odds model is by far the most utilized approach to modeling ord
 In the event where the option to remove variables is unattractive, alternative models for ordinal outcomes should be considered.  The most common alternatives (which we will not cover in depth here, but are explored in @ordinal) are:
 
 * *Baseline* logistic model.  This model is the same as the multinomial regression model covered in the previous chapter, using the lowest ordinal value as the reference.
-* *Adjacent-category* logistic model.  This model compares each level of the ordinal variable to the next highest level, and it is a constrained version of the baseline logistic model. The `brglm2` package in R offers a function `bracl()` for calculating an adjacent category logistic model.  
+* *Adjacent-category* logistic model.  This model compares each level of the ordinal variable to the next highest level, and it is a constrained version of the baseline logistic model. The `brglm2` package in R offers a function `bracl()` for calculating an adjacent category logistic model.
 * *Continuation-ratio* logistic model.  This model compares each level of the ordinal variable to all lower levels.  This can be modeled using binary logistic regression techniques, but new variables need to be constructed from the dataset to allow this.  The R package `rms` has a function `cr.setup()` which is a utility for preparing an outcome variable for a continuation ratio model.
 
 ## Learning exercises
 
 ### Discussion questions
 
-1.  Describe what is meant by an ordinal variable.  
+1.  Describe what is meant by an ordinal variable.
 2.  Which key assumption of linear regression is relaxed in order to model ordinal variables using proportional odds?
 3.  Describe the series of binomial logistic regression models that are components of a proportional odds regression model.  What can you say about their coefficients?
 4.  If $y$ is an ordinal outcome variable with at least three levels, and if $x$ is an input variable that has coefficient $\beta$ in a proportional odds logistic regression model, describe how to interpret the odds ratio $e^{\beta}$.
