@@ -97,21 +97,55 @@ broom::glance(soccer_model)
 library(tidyverse)
 
 # define function to run soccer model and glance at results
-soccer_model_glance <- function(df) {
-  broom::glance(
-    polr(
-      formula = discipline ~ n_yellow_25 + n_red_25 + 
-        position + level + result,
-      data = df
-    )
-  )
+soccer_model_glance <- function(form, df) {
+  model <- polr(formula = form, data = df)
+  broom::glance(model)
 }
 
 # run it nested by country
 soccer %>% 
   dplyr::nest_by(country) %>% 
-  dplyr::summarise(soccer_model_glance(data))
+  dplyr::summarise(
+    soccer_model_glance("discipline ~ n_yellow_25 + n_red_25", data)
+  )
 ```
+
+In a similar way, by putting model formulas in a dataframe column, numerous models can be run in a single command and results viewed in a tidy dataframe.
+
+```{r, eval = FALSE}
+# create model formula column
+formula <- c(
+  "discipline ~ n_yellow_25", 
+  "discipline ~ n_yellow_25 + n_red_25",
+  "discipline ~ n_yellow_25 + n_red_25 + position"
+)
+
+#create dataframe
+models <- data.frame(formula)
+
+# run models and glance at results
+models %>% 
+  dplyr::group_by(formula) %>% 
+  dplyr::summarise(soccer_model_glance(formula, soccer))
+```
+`r if (knitr::is_latex_output()) '\\newpage \\scriptsize'`
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+# create model formula column
+formula <- c(
+  "discipline ~ n_yellow_25", 
+  "discipline ~ n_yellow_25 + n_red_25",
+  "discipline ~ n_yellow_25 + n_red_25 + position"
+)
+
+# create dataframe
+models <- data.frame(formula)
+
+# run models and glance at results
+models %>% 
+  dplyr::group_by(formula) %>% 
+  dplyr::summarise(soccer_model_glance(formula, soccer))
+```
+`r if (knitr::is_latex_output()) '\\normalsize'`
 
 ### The `parsnip` package
 
