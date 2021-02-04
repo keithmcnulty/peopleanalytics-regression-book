@@ -22,21 +22,21 @@ where $e$ is the exponential constant, $x_0$ is the value of $x$ at the midpoint
 
 The logistic function, as shown in Figure \@ref(fig:logistic-function-verhulst), was felt to accurately capture the theorized stages of population growths, with slower growth in the initial stage, moving to exponential growth during the intermediate stage and then to slower growth as the population approaches its carrying capacity.  
 
-```{r logistic-function-verhulst, fig.align = "center", fig.cap = "Verhulst's Logistic Function modeled both the exponential nature and the natural limit of population expansion", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
-
+```{r logistic-function-verhulst, fig.align = "center", fig.cap = "Verhulst's Logistic Function modeled both the exponential nature and the natural limit of population growth", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+# creative commons license https://socratic.org/questions/why-is-logistic-growth-more-realistic-than-exponential-growth
 knitr::include_graphics("./www/02/logistic-curve.png")
 
 
 ```
 
-In the early 20th century, starting with applications in economics and in chemistry, the logistic function was adopted in a wide array of fields as a useful tool for modeling phenomena.  In statistics, it was quickly noted that the logistic function has a similar S-shape (or *sigmoid*) to a cumulative normal distribution of probability, as depicted in Figure \@ref(fig:norm-log-curves)^[The logistic function plotted in Figure \@ref(fig:norm-log-curves) takes the simple form $y = \frac{1}{1 + e^{-x}}$]).  However, as we will learn, the logistic function gives rise to a mathematical model where the coefficients are more easily interpreted in terms of likelihood of the outcome.  Unsurprisingly, therefore, the logistic model soon became a common approach to modeling probabilistic phenomena.
+In the early 20th century, starting with applications in economics and in chemistry, the logistic function was adopted in a wide array of fields as a useful tool for modeling phenomena.  In statistics, it was observed that the logistic function has a similar S-shape (or *sigmoid*) to a cumulative normal distribution of probability, as depicted in Figure \@ref(fig:norm-log-curves)^[The logistic function plotted in Figure \@ref(fig:norm-log-curves) takes the simple form $y = \frac{1}{1 + e^{-x}}$] where the $x$ scale represents standard deviations around a mean.  As we will learn, the logistic function gives rise to a mathematical model where the coefficients are easily interpreted in terms of likelihood of the outcome.  Unsurprisingly, therefore, the logistic model soon became a common approach to modeling probabilistic phenomena.
 
 ```{r norm-log-curves, fig.align = "center", fig.cap = "The logistic function (blue dashed line) is very similar to a cumulative normal distribution (red solid line), but easier to interpret", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 library(ggplot2)
 
 ggplot2::ggplot() +
   ggplot2::xlim(-5, 5) +
-  xlab("\u03C3") +
+  xlab("x") +
   ylab("P (cumulative)") +
   ggplot2::geom_function(fun = pnorm, color = "red") +
   ggplot2::geom_function(fun = plogis, color = "blue", linetype = "dashed")
@@ -59,7 +59,7 @@ You are an analyst for a large company consisting of regional sales teams across
 
 You are asked by the management of the company to conduct an analysis to determine how the factors of financial performance, customer ratings and performance ratings influence the likelihood of a given salesperson being promoted.  You are provided with a dataset containing data for the last three years of salespeople considered for promotion.  The data contains the following fields:
 
-* `promoted`:  A binary value indicating 1 if the individual was promoted and 0 if not.
+* `promoted`:  A binary value indicating 1 if the individual was promoted and 0 if not
 * `sales`: the sales (in thousands of dollars) attributed to the individual in the period of the promotion
 * `customer_rate`:  the average satisfaction rating from a survey of the individual's customers during the promotion period
 * `performance`: the most recent performance rating prior to promotion, from 1 (lowest) to 4 (highest) 
@@ -86,10 +86,9 @@ The data looks as expected.  Let's get a summary of the data:
 summary(salespeople)
 ```
 
-First we see a small number of missing values, and we should remove those observations.  We see that about a third of individuals were promoted, that sales ranged from \$151k to \$945k, that as expected the average satisfaction ratings range from 1 to 5, and finally we see four performance ratings, although the performance categories are numeric when they should be an ordered factor, and `promoted` is numeric when it should be categorical.   Let's convert these and then let's do a pairplot to get a quick view on some possible underlying relationships (Figure \@ref(fig:log-pairplot)).
+First we see a small number of missing values, and we should remove those observations.  We see that about a third of individuals were promoted, that sales ranged from \$151k to \$945k, that as expected the average satisfaction ratings range from 1 to 5, and finally we see four performance ratings, although the performance categories are numeric when they should be an ordered factor, and `promoted` is numeric when it should be categorical.   Let's convert these and then let's do a pairplot to get a quick view on some possible underlying relationships, as in Figure \@ref(fig:log-pairplot).
 
-```{r log-pairplot, fig.cap = "Pairplot for the `salespeople` data set", fig.align="center", warning = FALSE, message = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
-library(ggplot2)
+```{r log-pairplot, fig.cap = if(knitr::is_latex_output()) {"Pairplot for the \\texttt{salespeople} data set"} else {"Pairplot for the `salespeople` data set"}, fig.align="center", warning = FALSE, message = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 library(GGally)
 
 # remove NAs
@@ -115,7 +114,7 @@ Imagine that you have an outcome event $y$ which either occurs or does not occur
 
 In our `salespeople` data set, let's plot our `promotion` outcome against the `sales` input.  This can be seen in Figure \@ref(fig:prom-sales-plot).
 
-```{r prom-sales-plot, fig.cap = "Plot of promotion against sales in `salespeople` data set", fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+```{r prom-sales-plot, fig.cap = if (knitr::is_latex_output()) {"Plot of promotion against sales in the  \\texttt{salespeople} data set"} else {"Plot of promotion against sales in the `salespeople` data set"}, fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 
 ggplot2::ggplot(data = salespeople, aes(x = sales, y = promoted)) +
   ggplot2::geom_point()
@@ -133,9 +132,9 @@ on this data, where we set $x_0$ to the mean of `sales` and $k$ to be some maxim
 
 ggplot2::ggplot(data = salespeople, aes(x = sales, y = as.numeric(as.character(promoted)))) +
   ggplot2::geom_point() +
-  ggplot2::geom_function(fun = function(x) plogis(x, mean(salespeople$sales), 0.75*sd(salespeople$sales)), color = "blue") +
-  ggplot2::geom_function(fun = function(x) plogis(x, mean(salespeople$sales), 0.5*sd(salespeople$sales)), color = "green") +
-  ggplot2::geom_function(fun = function(x) plogis(x, mean(salespeople$sales), 0.25*sd(salespeople$sales)), color = "red") +
+  ggplot2::geom_function(fun = function(x) plogis(x, mean(salespeople$sales), 0.75*sd(salespeople$sales)), color = "black", linetype = "solid") +
+  ggplot2::geom_function(fun = function(x) plogis(x, mean(salespeople$sales), 0.5*sd(salespeople$sales)), color = "blue", linetype = "dashed") +
+  ggplot2::geom_function(fun = function(x) plogis(x, mean(salespeople$sales), 0.25*sd(salespeople$sales)), color = "red", linetype = "dotdash") +
   ylab("promoted")
 
 ```
@@ -153,7 +152,7 @@ $$
 P(y = 1) = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}}
 $$
 
-This equation makes intuitive sense.  As the value of $x$ increases, the value $e^{-(\beta_0 + \beta_1x)}$ gets smaller and smaller towards zero, and thus $P(y = 1)$ approaches its theoretical maximum value of 1. As the value of $x$ decreases towards zero, we see that the value of $P(y = 1)$ approaches a minimum value of $\frac{1}{1 + e^{-\beta_0}}$.  Referring back to our salespeople example, we can thus see that $\beta_0$ helps determine the baseline probability of promotion assuming no sales at all.  If $\beta_0$ has a very high negative value, this baseline probability will approach its theoretical minimum of zero.  
+This equation makes intuitive sense.  As the value of $x$ increases, the value $e^{-(\beta_0 + \beta_1x)}$ gets smaller and smaller towards zero, and thus $P(y = 1)$ approaches its theoretical maximum value of 1. As the value of $x$ decreases towards zero, we see that the value of $P(y = 1)$ approaches a minimum value of $\frac{1}{1 + e^{-\beta_0}}$.  Referring back to our salespeople example, we can thus see that $\beta_0$ helps determine the baseline probability of promotion assuming no sales at all.  If $\beta_0$ has an extremely negative value, this baseline probability will approach its theoretical minimum of zero.  
 
 Let's formalize the role of $\beta_0$ and $\beta_1$ in the likelihood of a positive outcome.  We know that for any binary event $y$, $P(y = 0)$ is equal to $1 - P(y = 1)$, so 
 
@@ -185,7 +184,7 @@ The right hand side should look familiar from the previous chapter on linear reg
 
 $P(y = 1)$ is the probability that the event will occur, while $P(y = 0)$ is the probability that the event will not occur.  You may be familiar from sports like horse racing or other gambling situations that the ratio of these two represents the *odds* of an event.  For example, if a given horse has odds of 1:4, this means that there is a 20% probability they will win and an 80% probability they will not^[Often in sports the odds are expressed in the reverse order but the concept is the same].
 
-Therefore we can conclude that the natural logarithm of the odds of $y$ - usually termed the *log odds* of $y$ - is linear in $x$ and therefore we can model the log odds of $y$ using similar linear regression methods to those studied in Chapter \@ref(linear-reg-ols)^[In this case a more general form of the Ordinary Least Squares procedure is used to fit the model, known as *maximum likelihood*].
+Therefore we can conclude that the natural logarithm of the odds of $y$ - usually termed the *log odds* of $y$ - is linear in $x$ and therefore we can model the log odds of $y$ using similar linear regression methods to those studied in Chapter \@ref(linear-reg-ols)^[In this case a more general form of the Ordinary Least Squares procedure is used to fit the model, known as *maximum likelihood estimation*].
 
 ### Modeling the log odds and interpreting the coefficients
 
@@ -240,7 +239,7 @@ ggplot2::ggplot() +
 
 ```
 
-The consequences of this is that a given increase in odds can have very different effects on probability depending on what the original probability was in the first place.  If the probability was already quite low, for example 0.1, then a 4% increase in odds translates to odds of `r round((1/9)*1.04, 3)` which translates to a new probability of `r round((0.1*1.04)/(1 + 0.1*0.04), 6)`, representing an increase in probability of `r round((0.1*1.04)/(1 + 0.1*0.04)*100/0.1, 2) - 100`%, which is very close to the increase in odds.  If the probability was already high, say 0.9, then a 4% increase in odds translates to odds of `r round((9/1)*1.04, 3)`, which translates to a new probability of `r round((0.9*1.04)/(1 + 0.9*0.04), 6)` representing an increase in probability of `r round((0.9*1.04)/(1 + 0.9*0.04)*100/0.9, 2) - 100`%, which is very different from the increase in odds.  Figure \@ref(fig:pcoddsplot) shows the impact of a 4% increase in odds according to the original probability of the event.
+The consequence of this is that a given increase in odds can have a different effect on probability depending on what the original probability was in the first place.  If the probability was already quite low, for example 0.1, then a 4% increase in odds translates to odds of `r round((1/9)*1.04, 3)` which translates to a new probability of `r round((0.1*1.04)/(1 + 0.1*0.04), 6)`, representing an increase in probability of `r round((0.1*1.04)/(1 + 0.1*0.04)*100/0.1, 2) - 100`%, which is very close to the increase in odds.  If the probability was already high, say 0.9, then a 4% increase in odds translates to odds of `r round((9/1)*1.04, 3)`, which translates to a new probability of `r round((0.9*1.04)/(1 + 0.9*0.04), 6)` representing an increase in probability of `r round((0.9*1.04)/(1 + 0.9*0.04)*100/0.9, 2) - 100`%, which is very different from the increase in odds.  Figure \@ref(fig:pcoddsplot) shows the impact of a 4% increase in odds according to the original probability of the event.
 
 ```{r pcoddsplot, fig.cap= "Effect of 4\\% increase in odds plotted against original probability", fig.align="center", echo = FALSE, message = FALSE, warning = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 
@@ -265,7 +264,7 @@ P &= \frac{O}{1 + O}
 \end{aligned}
 $$
 
-## Running a multivariate logistic regression model
+## Running a multivariate binomial logistic regression model
 
 The derivations in the previous section easily extend to multivariate data.  Let $y$ be a dichotomous outcome and let $x_1, x_2, ..., x_p$ be our input variables.  Then
 
@@ -289,11 +288,13 @@ $$
 Therefore we can conclude that:
 
 * $e^{\beta_0}$ represents the odds of the outcome when all inputs are zero
-* Each $e^{\beta_i}$ represents the *odds ratio* associated with a unit increase in $x_i$ assuming no change in the other inputs (that is, a unit increase in $x_i$ multiplies the odds of our outcome by $e^{\beta_i}$).  Let's put this into practice.
+* Each $e^{\beta_i}$ represents the *odds ratio* associated with a unit increase in $x_i$ assuming no change in the other inputs (that is, a unit increase in $x_i$ multiplies the odds of our outcome by $e^{\beta_i}$) 
 
-### Running and interpreting a multivariate logistic regression model
+Let's put this into practice.
 
-Let's use a binomial logistic regression model to understand how each of the three inputs in our `salespeople` data set influences the likelihood of promotion.
+### Running and interpreting a multivariate binomial logistic regression model
+
+Let's use a binomial logistic regression model to understand how each of the three inputs in our `salespeople` data set influence the likelihood of promotion.
 
 First, as we learned previously, it is good practice to convert the categorical `performance` variable to a dummy variable^[Note that most standard modeling functions have a built in capability to deal with categorical variables, meaning that it's often not necessary to explicitly construct dummies.  However, it is shown here for completion sake.  You may wish to try running the subsequent code without explicitly constructing dummies, but note that constructing your own dummies gives you greater control over how they are labelled in any modeling output]. 
 
@@ -347,9 +348,10 @@ full_model <- glm(formula = "promoted ~ .",
 
 Note how only three of the `performance` dummies have displayed.  This is because everyone is in one of the four performance categories, so the model is using `performance4` as the base case, so we can interpret each performance coefficient as the effect of a move to that performance category from `performance4`.
 
-We can already see from the `P (> |z|)` column that only `sales` and `customer_rate` meet the significance threshold of less than 0.05.  Interestingly, it appears from the `Estimate` column that `customer_rate` has a negative effect on the log odds of promotion.    We can add an extra column to create the exponents of our estimated coefficients so that we can see the odds ratios.
+We can already see from the last column of our coefficient summary - the coefficient p-values - that only `sales` and `customer_rate` meet the significance threshold of less than 0.05.  Interestingly, it appears from the `Estimate` column that `customer_rate` has a negative effect on the log odds of promotion.    For convenience, we can add an extra column to our coefficient summary to create the exponents of our estimated coefficients so that we can see the odds ratios.  We can also remove columns that are less useful to us if we wish.
 
 ```{r}
+# create coefficient table with estimates, p-values and odds ratios
 (full_coefs <- cbind(coefs[ ,c("Estimate", "Pr(>|z|)")], 
                      odds_ratio = exp(full_model$coefficients))) 
 ```
@@ -385,7 +387,7 @@ simpler_model <- glm(formula = promoted ~ sales + customer_rate,
 
 As in the previous chapter, again we have the luxury of a three-dimensional model, so we can visualize it in `r if (knitr::is_latex_output()) '<!--'`Interactive `r if (knitr::is_latex_output()) '-->'`Figure \@ref(fig:log-reg-3d), revealing a 3D sigmoid curve which 'twists' to reflect the relative influence of `sales` and `customer_rate` on the outcome.
 
-```{r log-reg-3d, fig.pos = "!h", fig.cap = if (knitr::is_latex_output()) {"3D Visualization of the fitted \\texttt{simpler\\_model} against the `salespeople` data"} else {"3D Visualization of the fitted `simpler_model` against the `salespeople` data"}, fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+```{r log-reg-3d, fig.pos = "!h", fig.cap = if (knitr::is_latex_output()) {"3D Visualization of the fitted \\texttt{simpler\\_model} against the \\texttt{salespeople} data"} else {"3D Visualization of the fitted `simpler_model` against the `salespeople` data"}, fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 
 if (knitr::is_html_output()) {
   library(plotly)
@@ -411,14 +413,14 @@ Now let's look at the summary of our `simpler_model`.
 summary(simpler_model)
 ```
 
-Note that our summary does not provide any of the statistics on overall model fit or confidence that we see in linear regression.  The main reason for this is that there is no clear unified point of view in the statistics community on appropriate measures for these concepts in the case of logistic regression.  Nevertheless, a number of options are available to modelers for estimating fit and confidence for these models.
+Note that, unlike what we saw for linear regression in Section \@ref(lin-good-fit), our summary does not provide a statistic on overall model fit or goodness-of-fit.  The main reason for this is that there is no clear unified point of view in the statistics community on a single appropriate measure for model fit in the case of logistic regression.  Nevertheless, a number of options are available to analysts for estimating fit and goodness-of-fit for these models.
 
-*Pseudo-$R^2$* measures are attempts to estimate the amount of variance in the outcome that is explained by the fitted model, analogous to the $R^2$ in linear regression.  There are numerous variants of pseudo-$R^2$ with some of the most common listed here.
+*Pseudo-$R^2$* measures are attempts to estimate the amount of variance in the outcome that is explained by the fitted model, analogous to the $R^2$ in linear regression.  There are numerous variants of pseudo-$R^2$ with some of the most common listed here:
 
-* McFadden's $R^2$ works by comparing the likelihood function of the fitted model with that of a random model and using this to estimate the explained variance in the outcome.
+* McFadden's $R^2$ works by comparing the likelihood function of the fitted model with that of a random model and using this to estimate the explained variance in the outcome
 * Cox and Snell's $R^2$ works by applying a 'sum of squares' analogy to the likelihood functions to align more closely with the precise methodology for calculating $R^2$ in linear regression.  However, this usually means that the maximum value is less than 1, and in certain circumstances substantially less than 1, which can be problematic and unintuitive for an $R^2$
-* Nagelkerke's $R^2$ resolves the issue with the upper bound for Cox and Snell by dividing Cox and Snell's $R^2$ by its upper bound.  This restores an intuitive scale with a maximum of 1, but is considered somewhat arbitrary with limited theoretical foundation.
-* Tjur's $R^2$ is a more recent and simpler concept.  It is defined as simply the absolute difference between the predicted probabilities of the positive observations and those of the negative observations.
+* Nagelkerke's $R^2$ resolves the issue with the upper bound for Cox and Snell by dividing Cox and Snell's $R^2$ by its upper bound.  This restores an intuitive scale with a maximum of 1, but is considered somewhat arbitrary with limited theoretical foundation
+* Tjur's $R^2$ is a more recent and simpler concept.  It is defined as simply the absolute difference between the predicted probabilities of the positive observations and those of the negative observations
 
 Standard modeling functions generally do not offer the calculation of pseudo-$R^2$ as standard, but numerous methods are available for their calculation.  For example:
 
@@ -433,7 +435,7 @@ DescTools::PseudoR2(
 
 We see that the Cox and Snell variant is notably lower than the other estimates, which is consistent with the known issues with its upper bound.  However, the other estimates are reasonably aligned and suggest a strong fit.
 
-Confidence or 'goodness of fit' tests for logistic regression models compare the predictions to the observed outcome and test the hypothesis that they are similar.  This means that, unlike in linear regression, a low p-value indicates a poor fit.  One commonly used method is the Hosmer-Lemeshow test, which divides the observations into a number of groups (usually ten) according to their fitted probabilities, calculates the proportion of each group that is positive and then compares this to the expected proportions based on the model prediction using a Chi-squared test.  However, this method has limitations.  It is particularly problematic for situations where there a low sample size and can return highly varied results based on the number of groups used.  It is therefore recommended to use a range of goodness of fit tests, and not rely entirely on any one specific approach.
+Goodness-of-fit tests for logistic regression models compare the predictions to the observed outcome and test the hypothesis that they are similar.  This means that, unlike in linear regression, a low p-value indicates a poor fit.  One commonly used method is the Hosmer-Lemeshow test, which divides the observations into a number of groups (usually ten) according to their fitted probabilities, calculates the proportion of each group that is positive and then compares this to the expected proportions based on the model prediction using a Chi-squared test.  However, this method has limitations.  It is particularly problematic for situations where there a low sample size and can return highly varied results based on the number of groups used.  It is therefore recommended to use a range of goodness of fit tests, and not rely entirely on any one specific approach.
 
 In R, the `LogisticDx` package offers a range of diagnostic tools for logistic regression models, and is recommended for exploration.  Here is an example using the `gof()` function for assessing goodness of fit. 
 
@@ -465,12 +467,12 @@ Various measures of predictive accuracy can also be used to assess a binomial lo
 
 ### Model parsimony
 
-We saw that in both our linear regression and our logistic regression approach, we decided to drop variables from our model when we determined that they had no significant effect on the outcome.  The principle of *Occam's Razor* states that - all else being equal - the simplest explanation is the best.  In this sense, a model that contains information that does not contribute to it primary inference objective is more complex than it needs to be.  Such a model increases the communication burden in explaining its results to others, with no notable analytic benefit in return.
+We saw that in both our linear regression and our logistic regression approach, we decided to drop variables from our model when we determined that they had no significant effect on the outcome.  The principle of *Occam's Razor* states that - all else being equal - the simplest explanation is the best.  In this sense, a model that contains information that does not contribute to its primary inference objective is more complex than it needs to be.  Such a model increases the communication burden in explaining its results to others, with no notable analytic benefit in return.
 
 *Parsimony* describes the concept of being careful with resources or with information.  A model could be described as more parsimonious if it can achieve the same (or very close to the same) fit with a smaller number of inputs.  The *Akaike Information Criterion* or *AIC* is a measure of model parsimony that is computed for log-likelihood models like logistic regression models, with a lower AIC indicating a more parsimonious model.  AIC is often calculated as standard in summary reports of logistic regression models, but can also be calculated independently.  Let's compare the different iterations of our model in this chapter using AIC.
 
 ```{r}
-# Sales only model
+# sales only model
 AIC(sales_model)
 
 # sales and customer rating model
@@ -496,7 +498,7 @@ To predict from new data, just use the `predict()` function as in the previous c
 predict(simpler_model, new_data, type = "response")
 ```
 
-Many of the principles covered in the previous chapter on linear regression are equally important in logistic regression.  For example, input variables should be managed in a similar way.  Collinearity and multicollinearity should be of concern.  Interaction of input variables can be modeled.  For the most part, analysts should be aware of the fundamental transformations which take place on the outcome $y$ during logistic regression when they consider some of these issues (another reason to ensure that the mathematics covered earlier in this chapter is well understood).  For example, while coefficients in linear regression have a direct additive impact on $y$, in logistic regression they have a direct additive impact on the log odds of $y$, or alternatively their exponents have a direct multiplicative impact on the odds of $y$.  Therefore multicollinear variables, as an example, risk introducing overestimated coefficients which inflate the log odds additively.  The exponents of these overestimated coefficients will then inflate the odds multiplicatively.
+Many of the principles covered in the previous chapter on linear regression are equally important in logistic regression.  For example, input variables should be managed in a similar way.  Collinearity and multicollinearity should be of concern.  Interaction of input variables can be modeled.  For the most part, analysts should be aware of the fundamental mathematical transformations which take place in a logistic regression model when they consider some of these issues (another reason to ensure that the mathematics covered earlier in this chapter is well understood).  For example, while coefficients in linear regression have a direct additive impact on $y$, in logistic regression they have a direct additive impact on the log odds of $y$, or alternatively their exponents have a direct multiplicative impact on the odds of $y$.  Therefore coefficient overestimation such as that which can occur when collinearity is not managed can result in inferences that could substantially overstate the importance or effect of input variables.
 
 Because of the binary nature of our outcome variable, the residuals of a logistic regression model have limited direct application to the problem being studied.  In practical contexts the residuals of logistic regression models are rarely examined, but they can be useful in identifying outliers or particularly influential observations and in assessing goodness of fit, as in \@ref(logistic-gof).  When residuals are examined, they need to be transformed in order to be analyzed appropriately.  For example, the *Pearson residual* is a standardized form of residual from logistic regression which can be expected to have a normal distribution over large enough samples.  We can see in Figure \@ref(fig:pearson-resids) that this is the case for our `simpler_model`, but that there are a small number of substantial underestimates in our model.  A good source of further learning on diagnostics of logistic regression models is @menard.
 
@@ -529,7 +531,7 @@ plot(d, main= "")
 
 8. Describe how the coefficients of a logistic regression model affect the fitted outcome.  If $\beta$ is a coefficient estimate, how is the odds ratio associated with $\beta$ calculated and what does it mean?
 
-9. What are some of the options for determining how well a regression model fits? 
+9. What are some of the options for determining the fit of a binomial logistic regression model? 
 
 10. Describe the concept of model parsimony.  What measure is commonly used to determine the most parsimonious logistic regression model?
 
@@ -554,5 +556,5 @@ A nature preservation charity has asked you to analyze some data to help them un
 6. Experiment with model parsimony by reducing input variables that do not have a significant impact on the outcome.  Decide on the most parsimonious model.
 7. Calculate a variety of Pseudo-$R^2$ variants for your model.  How would you explain these to someone with no statistics expertise?
 8. Report the conclusions of your modeling exercise to the charity by writing a simple explanation that assumes no knowledge of statistics.
-9. Extension:  Using a variety of methods of your choice, test the hypothesis that your model fits the data.  How conclusive are your tests?
+9. **Extension:**  Using a variety of methods of your choice, test the hypothesis that your model fits the data.  How conclusive are your tests?
 

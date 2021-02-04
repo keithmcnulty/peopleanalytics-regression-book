@@ -45,7 +45,7 @@ $$
 
 ### Running a mixed model
 
-Let's look at a fun and straightforward example of how mixed models can be useful. The speed dating data set can be found [here](http://peopleanalytics-regression-book.org/data/speed_dating.csv) and is a set of information captured during experiments with speed dating by students at Columbia University in New York^[I have simplified the data set, and the full version can be found at http://www.stat.columbia.edu/~gelman/arm/examples/speed.dating/]. Each row represents one meeting between an individual and a partner of the opposite sex. The data contains the following fields:
+Let's look at a fun and straightforward example of how mixed models can be useful. The `speed_dating` data set is a set of information captured during experiments with speed dating by students at Columbia University in New York^[I have simplified the data set, and the full version can be found at http://www.stat.columbia.edu/~gelman/arm/examples/speed.dating/]. Each row represents one meeting between an individual and a partner of the opposite sex. The data contains the following fields:
 
 -   `iid` is an id number for the individual
 -   `gender` is the gender of the individual with 0 as Female and 1 and Male

@@ -2,7 +2,46 @@
 
 This final chapter contains a set of scenarios and exercises that will allow you to put into further practice some of the techniques you have learned in this book, and are supplementary to the exercises provided at the end of each of the earlier chapters.  All the exercises are based on data that is available in the `peopleanalyticsdata` package in R, or alternatively can be downloaded from the internet.  While the scenarios are fictitious, they are intended to represent typical questions and situations that arise when doing statistical modeling in people analytics.
 
-As you work through these scenarios, I encourage you to document your work using either an R Markdown document or a Jupyter Notebook if you prefer.  This will help you keep a record of your method, approach and code in case you need to put it into practice again in the future.  It will also make it easy for you to share your work with others (for example by putting it in a Github repo), which will allow you to collaborate, discuss and open your work to critique.  If you are starting out on your analytics journey, exposing your work to others is one of the best ways to learn.  If you are more experienced, then there are others that will undoubtedly benefit from seeing how you went about solving these problems.
+As you work through these scenarios, I encourage you to document your work using either an R Markdown document or a Jupyter Notebook if you prefer.  This will help you keep a record of your method, approach and code in case you need to put it into practice again in the future.  It will also make it easy for you to share your work with others (for example by putting it in a Github repository), which will allow you to collaborate, discuss and open your work to critique.  If you are starting out on your analytics journey, exposing your work to others is one of the best ways to learn.  If you are more experienced, then there are others that will undoubtedly benefit from seeing how you went about solving these problems.
+
+## Analyzing graduate salaries
+
+Graduate salary levels are important economic indicators of the value of tertiary education.  They can provide important insight about the value of education to employers or to the economy as a whole. When studied in detail they can highlight which particular disciplines have higher or lower levels of demand for graduates, and they can be important factors in determining what subjects or majors students choose to specialize in.
+
+Government agencies and educational institutions will analyze graduate salaries regularly to help critique or validate policy or strategy.  Employers will also regularly study publicly available graduate salary information to help them benchmark their compensation and benefits against the external market for graduates.
+
+### The `graduates` data set
+
+```{r, echo = FALSE}
+graduates <- read.csv("data/graduates.csv")
+```
+
+The `graduates` data set contains information on graduates currently in the United States across `r nrow(graduates)` specific subject majors grouped into `r length(unique(graduates$Discipline))` disciplines of study.  This data set is sourced from the *FiveThirtyEight* data repository^[https://github.com/fivethirtyeight/data].
+
+Load the `graduates` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/graduates.csv].  The fields in the `graduate` data set are as follows:
+
+* `Major` is the specific subject major
+* `Discipline` is the broad subject discipline
+* `Total` is the number of graduates of working age in the US 
+* `Unemployment_rate` is the proportion of graduates currently unemployed
+* `Median_salary` is the current median salary of those employed in US dollars
+
+### Discussion questions
+
+1.  What kind of outcome is the `Median_salary` column?
+2.  Which of the variables in the data set would you be interested in using to explain the `Median_salary` outcome? Why?
+3.  Are there any transformations you would consider on any of the input variables to help with interpreting the model?
+4.  What type of model would you use to try to explain the `Median_salary` outcome using these variables?
+5.  Describe the data type of each of the input variables. How you would interpret the coefficients of the model for each of these data types?
+
+### Data exercises
+
+1.  Perform an exploratory data analysis on the data set.  Do you see any interesting patterns?
+2.  Transform any categorical data you intend to use as an input variable into dummy variables.
+3.  Perform any other transformations on the data to help with the interpretation of model results.  For example, are the numerical scales intuitive for interpretation?
+4.  Run an appropriate multivariate model to determine which input variables have a significant effect on median graduate salary.
+5.  Articulate the results of your model, including an estimate of the effect of the input variables and the overall fit and goodness of fit of the model.
+
 
 ## Analyzing a recruiting process
 
@@ -24,7 +63,7 @@ The `recruiting` data set contains information on `r nrow(recruiting)` applicant
 2. Applicants who pass the screening stage are invited for three interviews, two of them with line managers and a third with a human resources professional.  Different line managers or HR professionals conduct the interviews on different interview days.  Each interviewer independently gives an applicant a score on a Likert scale of 1 thru 5 indicating increasing positivity.
 3. Interviewers and human resources professionals gather to discuss each case and make a final decision on whether to hire or not hire.  All the information used in screening and evaluating applicants is made available to decision makers during this discussion.
 
-Load the `recruiting` data set via the `peopleanalyticssdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/recruiting.csv].  The fields in the `recruiting` data set are as follows:
+Load the `recruiting` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/recruiting.csv].  The fields in the `recruiting` data set are as follows:
 
 * `gender` is the gender of the applicant
 * `sat` is the SAT score of the applicant
@@ -67,7 +106,7 @@ employee_performance <- read.csv("data/employee_performance.csv")
 
 The `employee_performance` data set contains data on the most recent performance evaluations of `r nrow(employee_performance)` salespeople in a technology company.  Each employee is evaluated by their manager, who considers certain performance indicators together with their own judgment and awards a performance rating from 1 to 3, where 1 means 'Needs improvement', 2 means 'Performing well' and 3 means 'Outstanding'.  
 
-Load the `employee_performance` data set via the `peopleanalyticssdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/employee_performance.csv].  The fields in the `employee_performance` data set are as follows:
+Load the `employee_performance` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/employee_performance.csv].  The fields in the `employee_performance` data set are as follows:
 
 * `sales`:  The sales in millions of dollars made by the salesperson during the evaluation period
 * `new_customers`:  The number of new customers acquired by the salesperson during the evaluation period
@@ -106,7 +145,7 @@ promotion <- read.csv("data/promotion.csv")
 
 The `promotion` data set contains data on `r nrow(promotion)` individuals who joined a retailer in an entry level job, and tracks them for up to eight subsequent years post joining.  For each individual the data records whether or not they were promoted, and if so in which year the promotion occurred, where the date of their joining is Year 0.  Once promotion occurs, an individual is no longer tracked.  If an individual was not promoted, then the year in which the last record occurred is captured.  
 
-Load the `promotion` data set via the `peopleanalyticssdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/promotion.csv].  The fields in the data are as follows:
+Load the `promotion` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/promotion.csv].  The fields in the data are as follows:
 
 * `diverse` indicates whether or not the individual is a member of one of the organization's diversity programs
 * `flexible` indicates whether the individual worked on a part-time program for at least 6 months
@@ -129,3 +168,46 @@ Load the `promotion` data set via the `peopleanalyticssdata` package or download
 3.  Repeat this analysis to determine the impact of diversity program membership.
 4.  Run an appropriate multivariate model to determine how all three variables of flexible working, diversity and in-store working affect the likelihood of promotion.  Remember to check the assumptions of your model.
 5.  How would you explain your conclusions?  Are there any corrective actions that this analysis might point to?
+
+
+## Analyzing feedback on learning programs
+
+Assessing the effectiveness of learning programs remains one of the most challenging problems in people analytics.  As with many challenging analytics problems, measurement is the key issue.  It is exceptionally difficult to track and measure the impact of learning on the future day-to-day success of the individuals who have had access to it.  While it makes sense to try to understand the influence of learning on important outcomes like employment, promotion or attrition, these outcomes can often be too distant, too generic in nature and too influenced by context and other factors to expect specific learning participation to show any meaningful influence on them.  
+
+Because of the challenges in objectively measuring the impact of learning, analysts often rely on the reaction and feedback of learning participants as an important measure of the success of learning programs.  If the content of the program is known to be important to future work and related to future success, and if the participants report that the program was effective for them, then this can create a compelling argument for the success of the program.
+
+### The `learning` data set
+
+```{r, echo = FALSE}
+learning <- read.csv("data/learning.csv")
+```
+
+The `learning` data set contains `r nrow(learning)` instances of feedback from `r length(unique(learning$idcode))` different participants in a range of learning programs offered by an executive education provider.  Each row of data represents the feedback of a specific participant on a specific program that they participated in.  Participants where not required to respond to all feedback questions and any question where no response was given is indicated as `NA`.
+
+Load the `learning` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/learning.csv].  The fields in the `learning` data set are as follows:
+
+* `idcode` is the unique ID of the participant
+* `rec` is a binary value indicating whether the participant would recommend the program to others
+* `rel` is a rating from the participant on the relevance of the program to their work, where 1 is Very Low and 5 is Very High
+* `fun` is a rating on how enjoyable and fun the participant found the program, where 1 is Very Low and 5 is Very High
+* `clar` is a rating from the participant on the clarity of the content and teaching in the program, where 1 is Very Low and 5 is Very High
+* `home` is a rating from the participant on the quality of the homework or project work in the program, where 1 is Very Low and 5 is Very High
+* `class` is a rating from the participant on the quality of the overall class who attended the program, where 1 is Very Low and 5 is Very High
+* `fac` is a rating from the participant on the quality of the program faculty and instructors, where 1 is Very Low and 5 is Very High  
+
+### Discussion questions
+
+1.  What kind of outcome is the `rec` column and which kind of model best suits this outcome type?
+2.  Describe the nature of the hierarchy in this data set.
+3.  Describe what question we would be answering if we ignored the hierarchy in modeling what influences `rec`.
+4.  Describe what question we would be answering if we considered the hierarchy in modeling what influences `rec`.
+5.  What kind of model would you use to explicitly consider this hierarchy in modeling what influences `rec`?  What kinds of parameters would you experiment with in running this model?
+6.  Describe what you would expect to see in the output of a model that considered the hierarchy in modeling what influences `rec`.
+
+### Data exercises
+
+1. Prepare and run a model to determine which elements of feedback influence whether or not the program will be recommended to others.
+2. Prepare and run a separate model to determine which elements of feedback *influence a participant* in deciding if they would recommend a program to others.
+3. Experiment with the model from Data Exercise 2 by adjusting which parameters you model at the participant level.
+4. Describe the different outputs of your models from Data Exercises 2 and 3 and how to interpret them.
+5. Compare the outputs of your models from Data Exercises 2 and 3 to those from Data Exercise 1.  How might your conclusions differ between the two modeling approaches?

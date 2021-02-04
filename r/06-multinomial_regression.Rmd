@@ -10,13 +10,13 @@ A binary or dichotomous outcome like we studied in the previous chapter is alrea
 
 If we only wish to make inferences about the choice of each specific category - what drives whether an observation is in Category A versus the others, or Category B versus the others - then we have the option of running separate binomial logistic regression models on a 'one versus the rest' basis.  In this case we can refine our model differently for each category, eliminating variables that are not significant in determining membership of that category.  This could potentially lead to models being defined differently for different target outcome categories.  Notably, there will be no common comparison category between these models.  This is sometimes called a *stratified* approach.
 
-However, in many studies there is a need for a 'reference' category to better understand the relative odds of category membership.  For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the 'most healthy' or 'most recovered' patients)^[In @hosmer-logistic, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare placement, with Outpatient  Care as the reference]. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different, we would need to make decisions on refining the model differently and we interpret the coefficients in a different way.
+However, in many studies there is a need for a 'reference' category to better understand the relative odds of category membership.  For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the 'most healthy' or 'most recovered' patients)^[In @hosmer-logistic, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient  Care as the reference]. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different, we would need to make decisions on refining the model differently and we interpret the coefficients in a different way.
 
 In this chapter we will briefly look at the stratified approach (which is effectively a repetition of work done in the previous chapter) before focusing more intently on how we construct models and make inferences using a multinomial approach. 
 
 ### Use cases for multinomial logistic regression
 
-Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order.  An underlying assumption is the independence of irrelevant alternatives (IIA).  Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, that would disproportionately influence the membership of one of the other categories^[Put differently, it assumes that adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption].  In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives which are beyond the scope of this book.
+Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order.  An underlying assumption is the independence of irrelevant alternatives (IIA).  Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, would disproportionately influence the membership of one of the other categories^[Put differently, it assumes that adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption].  In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives which are beyond the scope of this book.
 
 Examples of typical situations that might be modeled by multinomial logistic regression include:
 
@@ -28,7 +28,7 @@ Examples of typical situations that might be modeled by multinomial logistic reg
 
 You are an analyst at a large technology company.  The company recently introduced a new healthcare provider for its employees.  At the beginning of the year the employees had to choose one of three different healthcare plan products from this provider to best suit their needs.  You have been asked to determine which factors influenced the choice in product.
 
-The data set consists of the following fields:
+The `health_insurance` data set consists of the following fields:
 
 * `product`: The choice of product of the individual - A, B or C
 * `age`: The age of the individual when they made the choice
@@ -65,7 +65,6 @@ str(health_insurance)
 It looks like two of these columns should be converted to factor - `product` and `gender`, so let's do that and then run a pairplot for a quick overview of any patterns, which can be seen in Figure \@ref(fig:insurance-pairplot).
 
 ```{r insurance-pairplot, fig.cap = if (knitr::is_latex_output()) {"Pairplot of the \\texttt{health\\_insurance} data set"} else {"Pairplot of the `health_insurance` data set"}, fig.align = "center", message = FALSE, warning = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
-library(ggplot2)
 library(GGally)
 
 # convert product and gender to factors
@@ -75,7 +74,7 @@ health_insurance$gender <- as.factor(health_insurance$gender)
 GGally::ggpairs(health_insurance)
 ```
 
-The data appears somewhat chaotic here.  However there are a few things to note.  Firstly we notice that there is a relatively even spread in choice between the products.  We also notice that age seems to be playing a role in product choice.  There are also some mild-to-moderate correlations in the data - in particular between `age` and `position_level`, and between `tenure` and `position_level`.  However, this problem is clearly more complex than we can determine from a bivariate perspective.
+The data appears somewhat chaotic here.  However, there are a few things to note.  Firstly, we notice that there is a relatively even spread in choice between the products.  We also notice that age seems to be playing a role in product choice.  There are also some mild-to-moderate correlations in the data - in particular between `age` and `position_level`, and between `tenure` and `position_level`.  However, this problem is clearly more complex than we can determine from a bivariate perspective.
 
 ## Running stratified binomial models {#stratified}
 
@@ -88,14 +87,14 @@ Let's first create and refine a binomial model for the choice of Product A.
 ```{r}
 library(dummies)
 
-# create dummies for product choice
+# create dummies for product choice outcome
 dummy_product <- dummies::dummy("product", data = health_insurance)
 
 # combine to original set
 health_insurance <- cbind(health_insurance, dummy_product)
 
 # run a binomial model for the Product A dummy against 
-# all input variables (let glm() handle dummy variables)
+# all input variables (let glm() handle dummy input variables)
 A_model <- glm(
   formula = productA ~ age + gender + children + 
     position_level + tenure, 
@@ -185,7 +184,7 @@ summary(multi_model)
 ```
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
-Notice that the output of `summary(multi_model)` is much less detailed than for our binomial models, and it effectively just delivers the coefficients and standard errors of the two models against the reference.  To determine whether specific input variables are significant we will need to calculate the p-values of the coefficients manually by calculating the t-statistics and converting (we covered this hypothesis testing methodology in \@ref(means-sig)).
+Notice that the output of `summary(multi_model)` is much less detailed than for our standard binomial models, and it effectively just delivers the coefficients and standard errors of the two models against the reference.  To determine whether specific input variables are significant we will need to calculate the p-values of the coefficients manually by calculating the t-statistics and converting (we covered this hypothesis testing methodology in Section \@ref(means-sig)).
 
 ```{r}
 # calculate t-statistics of coefficients
@@ -249,7 +248,7 @@ Simplifying a multinomial regression model needs to be done with care.  In a bin
 
 ### Gradual safe elimination of variables {#elim}
 
-In @hosmer-logistic, a gradual process of elimination of variables is recommended to ensure that variables that confound each other in the different logistic models are not accidentally dropped from the final model. The recommended approach is as follows:
+In @hosmer-logistic, a gradual process of elimination of variables is recommended to ensure that significant variables that confound each other in the different logistic models are not accidentally dropped from the final model. The recommended approach is as follows:
 
 * Start with the variable with the least significant p-values in all sets of coefficients - in our case `tenure` would be the obvious first candidate
 * Run the multinomial model without this variable
@@ -283,7 +282,7 @@ We can see that only `genderNon-binary` changed substantially, but we note that 
 
 ### Model fit and goodness-of-fit
 
-As with the binomial case, a variety of Pseudo-$R^2$ methods are available to assess the fit of a multinomial logistic regression model, although some of our previous variants (particularly Tjur) are not defined on models with more than one outcome category.
+As with the binomial case, a variety of Pseudo-$R^2$ methods are available to assess the fit of a multinomial logistic regression model, although some of our previous variants (particularly Tjur) are not defined on models with more than two outcome categories.
 
 ```{r}
 DescTools::PseudoR2(simpler_multi_model, 

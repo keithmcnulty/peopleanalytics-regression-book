@@ -6,7 +6,7 @@ To properly understand multivariate models, an analyst needs to have a decent gr
 2.  Distribution of random variables
 3.  Hypothesis testing
 
-If you have never really studied these topics, I would strongly recommend taking a course in them and spending good time getting to know them.  Again, just as the last chapter was not intended to be a comprehensive tutorial on R, neither is this chapter intended to be a comprehensive tutorial on introductory statistics. However, we will introduce some key concepts here that are critical to understanding later chapters, and as always we will illustrate using real data examples in R.
+If you have never really studied these topics, I would strongly recommend taking a course in them and spending good time getting to know them.  Again, just as the last chapter was not intended to be a comprehensive tutorial on R, neither is this chapter intended to be a comprehensive tutorial on introductory statistics. However, we will introduce some key concepts here that are critical to understanding later chapters, and as always we will illustrate using real data examples.
 
 In preparation for this chapter we are going to download a data set that we will work through in a later chapter, and use it for practical examples and illustration purposes.  The data are a set of information on the sales, customer ratings and performance ratings on a set of 351 salespeople as well as an indication of whether or not they were promoted.
 
@@ -36,17 +36,16 @@ It looks like:
 
 ## Elementary descriptive statistics of populations and samples
 
-Any collection of numerical data on a given measure will have a mean and a variance around that mean.  
+Any collection of numerical data on one or more variables can be described using a number of common statistical concepts.  Let $x = x_1, x_2, ..., x_n$ be a sample of $n$ observations of a variable drawn from a population.
 
-### Mean, variance and standard deviation
+### Mean, variance and standard deviation {#mean-var-sd}
 
-The **mean** is the average value of the data and is defined by adding up all the values and dividing by the number of observations.  If the data set $x$ contains the $n$ observations $x_1, x_2, ..., x_n$, then the mean $\bar{x}$ is defined as:
+The **mean** is the average value of the observations and is defined by adding up all the values and dividing by the number of observations.  The mean $\bar{x}$ of our sample $x$ is defined as:
 
 $$
 \bar{x} = \frac{1}{n}\sum_{i = 1}^{n}x_i
 $$
-
-The mean can have a different interpretation depending on the type of data being studied.  Let's look at the mean of three different columns of our `salespeople` data, making sure to ignore any missing data.
+While the mean of a sample $x$ is denoted by $\bar{x}$, the mean of an entire population is usually denoted by $\mu$.  The mean can have a different interpretation depending on the type of data being studied.  Let's look at the mean of three different columns of our `salespeople` data, making sure to ignore any missing data.
 
 ```{r}
 mean(salespeople$sales, na.rm = TRUE)
@@ -68,7 +67,7 @@ Given that this data can only have the values 1, 2, 3 or 4, we interpret this as
 
 Other common statistical summary measures include the *median*, which is the middle value when the values are ranked in order, and the *mode*, which is the most frequently occurring value.
 
-The **variance** is a measure of how much the data varies around its mean.  There are two different definitions of variance.  The **population variance** assumes that that we are working with the entire population and is defined as the average squared difference from the mean.  If $\bar{x}$ is the mean value of $x = x_1, x_2, ..., x_n$, then the population variance is
+The **variance** is a measure of how much the data varies around its mean.  There are two different definitions of variance.  The **population variance** assumes that that we are working with the entire population and is defined as the average squared difference from the mean:
 
 $$
 \mathrm{Var}_p(x) = \frac{1}{n}\sum_{i = 1}^{n}(x_i - \bar{x})^2
@@ -79,7 +78,7 @@ $$
 \mathrm{Var}_s(x) = \frac{1}{n-1}\sum_{i = 1}^{n}(x_i - \bar{x})^2
 $$
 
-You can see that, on the same data set,
+You can see that
 
 $$
 \mathrm{Var}_p(x) = \frac{n - 1}{n}\mathrm{Var}_s(x)
@@ -123,7 +122,7 @@ Given the range of sales is [`r range(salespeople$sales, na.rm = TRUE)`] and the
 
 ### Covariance and correlation
 
-The *covariance* between two variables is a measure of the extent to which one changes as the other changes.  If $y = y_1, y_2, ..., y_n$ is a second variable, and $\bar{x}$ and $\bar{y}$ are the means of $x$ and $y$ respectively, then the **sample covariance** of $x$ and $y$ is defined as:
+The **covariance** between two variables is a measure of the extent to which one changes as the other changes.  If $y = y_1, y_2, ..., y_n$ is a second variable, and $\bar{x}$ and $\bar{y}$ are the means of $x$ and $y$ respectively, then the **sample covariance** of $x$ and $y$ is defined as
 
 $$
 \mathrm{cov}_s(x, y) = \frac{1}{n - 1}\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})
@@ -150,7 +149,7 @@ n <- nrow(cols[complete.cases(cols), ])
 
 As can be seen, the difference in covariance is very small between the sample and population versions, and both confirm a positive relationship between sales and customer rating.  However, we again see this issue that there is no intuitive sense of scale for this measure.  
 
-**Pearson's correlation** coefficient divides the covariance by the product of the standard deviations of the two variables. 
+**Pearson's correlation** coefficient divides the covariance by the product of the standard deviations of the two variables: 
 
 $$
 r_{x, y} = \frac{\mathrm{cov}(x, y)}{\sigma(x)\sigma(y)}
@@ -172,19 +171,19 @@ You will notice that we have so far used two variables on a continuous scale to 
 cor(salespeople$sales, salespeople$promoted, use = "complete.obs")
 ```
 
-Correlating ranked variables involves an adjusted approach leading to **Spearman's correlation** coefficient or **Kendall's Tau**, among others.  We will not dive into the mathematics of this here, but a good source is @bhattacharya.  Spearman's or Kendall's variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.
+Correlating ranked variables involves an adjusted approach leading to **Spearman's rho** ($\rho$) or **Kendall's tau** ($\tau$), among others.  We will not dive into the mathematics of this here, but a good source is @bhattacharya.  Spearman's or Kendall's variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.
 
 ```{r}
-# spearman's correlation
+# spearman's rho correlation
 cor(salespeople$sales, salespeople$performance, 
     method = "spearman", use = "complete.obs")
 
-# kendall's correlation
+# kendall's tau correlation
 cor(salespeople$sales, salespeople$performance, 
     method = "kendall", use = "complete.obs")
 ```
 
-Both in this case indicate a low to moderate correlation.  Spearman or Kendall can also be used to correlate a ranked and a dichotomous variable, and this is known as a **rank-biserial correlation**.
+In this case, both indicate a low to moderate correlation.  Spearman's rho or Kendall's tau can also be used to correlate a ranked and a dichotomous variable, and this is known as a **rank-biserial correlation**.
 
 
 ## Distribution of random variables
@@ -198,7 +197,7 @@ When we describe variables as random, we are assuming that they take a form whic
 Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let's test this with a little experiment on our `salespeople` data.  Figure \@ref(fig:sales-sample) shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the `salespeople` dataset and creating a histogram of the resulting mean sales values.  We can see how greater numbers of samples (down the rows) leads to a more normal distribution curve and larger sample sizes (across the columns) leads to a 'spikier' distribution with a smaller standard deviation.
 
 
-```{r sales-sample, fig.cap= if (knitr::is_latex_output()) {"Histogram and density of mean \\texttt{sales} based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)"} else {"Histogram and density of mean `sales` based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)"}, fig.align = "center", echo = FALSE, warning = FALSE, message = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+```{r sales-sample, fig.cap= if (knitr::is_latex_output()) {"Histogram and density of mean \\texttt{sales} from the \\texttt{salespeople} data set based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)"} else {"Histogram and density of mean `sales` from the `salespeople` data set based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)"}, fig.align = "center", echo = FALSE, warning = FALSE, message = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 set.seed(123)
 library(ggplot2)
 
@@ -257,7 +256,7 @@ One consequence of the observations in Figure \@ref(fig:sales-sample) is that th
 $$
 SE = \frac{\sigma}{\sqrt{n}}
 $$
-Where $\sigma$ is the (sample) standard deviation and $n$ is the sample size^[Note that this formula assumes that the sample standard deviation is a close approximation of the population standard deviation, which is generally fine for samples that are not very small].  This confirms that the standard error of the mean decreases with greater sample size, confirming our intuition that the estimation of the mean is more precise with larger samples.
+where $\sigma$ is the (sample) standard deviation and $n$ is the sample size^[Note that this formula assumes that the sample standard deviation is a close approximation of the population standard deviation, which is generally fine for samples that are not very small].  This confirms that the standard error of the mean decreases with greater sample size, confirming our intuition that the estimation of the mean is more precise with larger samples.
 
 To apply this logic to our `salespeople` data set, let's take a random sample of 100 values of `customer_rate`.
 
@@ -292,7 +291,7 @@ To calculate how many standard errors we would need around the sample mean to ha
 We see that approx `r round(t, 2)` standard errors either side of our sample mean will give us 95% confidence that our range contains the true population mean.  This is called the *95% confidence interval*^[Often we can use a rough estimate for larger samples that the 95% confidence interval is 2 standard errors either side of the sample mean].
 
 ```{r}
-## 95% confidence interval lower and upper bounds
+# 95% confidence interval lower and upper bounds
 lower_bound <- sample_mean - t*se
 upper_bound <- sample_mean + t*se
 
@@ -313,11 +312,11 @@ Three of the most common types of hypothesis tests are^[We go through these thre
 2. Testing for a non-zero correlation between two variables
 3. Testing for a difference in frequency distributions between different categories  
 
-We will go through an example of each of these.  In each case you will see a three step process.  First, we calculate a test statistic.  Second, we determine an expected distribution for that test statistic.  Finally, we determine where our calculated statistic falls in that distribution in order to assess the likelihood that our null hypothesis is true.  During these examples we will go through the steps of manually calculating all the steps needed to do the hypothesis testing, before we demonstrate the simple functions that perform all the steps for you in R.  Users don't absolutely need to know all the details contained in this section, but a strong understanding of the underlying methods is encouraged.
+We will go through an example of each of these.  In each case you will see a three step process.  First, we calculate a test statistic.  Second, we determine an expected distribution for that test statistic.  Finally, we determine where our calculated statistic falls in that distribution in order to assess the likelihood that our null hypothesis is true.  During these examples we will go through the steps of manually calculating all the steps needed to do the hypothesis testing, before we demonstrate the simple functions that perform all the steps for you in R.  Readers don't absolutely need to know all the details contained in this section, but a strong understanding of the underlying methods is encouraged.
 
 ### Testing for a difference in means (Welch's $t$-test) {#means-sig}
 
-Imagine that we are asked if, in general, the sales of low performing salespeople are the same as the sales of high performing salespeople, but we only have access to the data sample in our `salespeople` data set.  Let's take two subsets of our data for those with a performance ratiing of 1 and those with a performance rating of 4, and calculate the difference in mean sales.
+Imagine that we are asked if, in general, the sales of low performing salespeople are different from the sales of high performing salespeople.  This question refers to all salespeople, but we only have data for the sample in our `salespeople` data set.  Let's take two subsets of our data for those with a performance rating of 1 and those with a performance rating of 4, and calculate the difference in mean sales.
 
 ```{r}
 # take two performance group samples 
@@ -381,13 +380,13 @@ Since this has returned `FALSE`, we conclude that a mean difference of zero is o
 Looking at this graphically, we are assuming a $t$-distribution of the mean difference, and we are determining where zero sits in that distribution, as in Figure \@ref(fig:norm-dist).
 
 
-```{r norm-dist, fig.cap = if (knitr::is_latex_output()) {"t-distribution of the mean sales difference between \\texttt{perf1} and \\texttt{perf4}, 95\\% confidence intervals (red lines) and a zero difference (blue line)"} else {"t-distribution of the mean sales difference between `perf1` and `perf4`, 95% confidence intervals (red lines) and a zero difference (blue line)"}, fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+```{r norm-dist, fig.cap = if (knitr::is_latex_output()) {"t-distribution of the mean sales difference between \\texttt{perf1} and \\texttt{perf4}, 95\\% confidence intervals (red dashed lines) and a zero difference (blue dotdash line)"} else {"t-distribution of the mean sales difference between `perf1` and `perf4`, 95% confidence intervals (red dashed lines) and a zero difference (blue dotdash line)"}, fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 ggplot(data = data.frame(x = c(-5, 5)), aes(x)) +
   stat_function(fun = dt, n = 101, args = list(df = 101)) + ylab("") +
   xlab("Standard errors around sample mean difference") +
   geom_vline(xintercept = -t, color = "red", linetype = "dashed") +
   geom_vline(xintercept = t, color = "red", linetype = "dashed") +
-  geom_vline(xintercept = diff/se, color = "blue", linetype = "solid")
+  geom_vline(xintercept = diff/se, color = "blue", linetype = "dotdash")
 ```
 
 

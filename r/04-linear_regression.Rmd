@@ -4,7 +4,7 @@ In this chapter we will introduce and explore linear regression, one of the firs
 
 ## When to use it {#when-ols}
 
-### Origins and Intuition of Linear Regression {#origins-ols}
+### Origins and intuition of linear regression {#origins-ols}
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
@@ -12,7 +12,7 @@ library(latex2exp)
 
 ```
 
-Linear Regression, also known as *Ordinary Least Squares Linear Regression* or *OLS Regression* for short, was developed independently by the mathematicians Gauss and Legendre at or around the first decade of the 19th century, and there remains today some controversy about who should take credit for its discovery.  However,  at the time of its discovery it was not actually known as "regression".  This term became more popular following the work of Francis Galton - a British intellectual jack-of-all-trades and a cousin of Charles Darwin.  In the late 1800s, Galton had researched the relationship between the heights of a population of almost 1,000 children and the average height of their parents (mid-parent height).  He was surprised to discover that the height of parents was not a perfect predictor of the height of children, and that in general children's heights were more likely to be in a 'narrower' range that was closer to the mean for the total population.  He described this statistical phenomenon as a "regression towards mediocrity" ("regression" comes from a Latin term approximately meaning "go back").  
+Linear Regression, also known as *Ordinary Least Squares Linear Regression* or *OLS Regression* for short, was developed independently by the mathematicians Gauss and Legendre at or around the first decade of the 19th century, and there remains today some controversy about who should take credit for its discovery.  However,  at the time of its discovery it was not actually known as "regression".  This term became more popular following the work of Francis Galton - a British intellectual jack-of-all-trades and a cousin of Charles Darwin.  In the late 1800s, Galton had researched the relationship between the heights of a population of almost 1,000 children and the average height of their parents (mid-parent height).  He was surprised to discover that there was not a perfect relationship between the height of a child and the average height of its parents, and that in general children's heights were more likely to be in a range that was closer to the mean for the total population.  He described this statistical phenomenon as a "regression towards mediocrity" ("regression" comes from a Latin term approximately meaning "go back").  
 
 Figure \@ref(fig:galton-fig) is an illustration of Galton's data with the black solid line showing what a perfect relationship would look like, and the red dashed line showing the actual relationship he determined.  You can regard the red dashed line as 'going back' from the perfect relationship (symbolized by the black line) in the direction of a horizontal line representing the mean of the child heights.  This might give you an intuition that will help you understand later sections of this chapter. In an arbitrary data set, the red dashed line can lie anywhere between a horizontal line at the mean of $y$ (no relationship) and the solid black line (a perfect relationship). Linear Regression is about finding the red dashed line in your data and using it to explain the degree to which your input data (the $x$ axis) explains your outcome data (the $y$ axis). 
 
@@ -20,26 +20,21 @@ Figure \@ref(fig:galton-fig) is an illustration of Galton's data with the black 
 knitr::include_graphics("./www/01/Regression-to-the-mean.png")
 ```
 
-### Use cases for Linear Regression {#use-cases-ols}
+### Use cases for linear regression {#use-cases-ols}
 
-Linear regression is particularly suited to a problem where:
-
-1.  The outcome of interest is on some sort of continuous scale (for example quantity, money, height, weight)
-2.  There is reason to believe that the relationship between the outcome and the inputs can be approximated linearly
-
-In reality, number 2 is not that easy to determine with any certainty, although running some simple bivariate correlations between inputs and outcome can give a sense of linearity/non-linearity.  Linear Regression can be a first port of call before trying more complex modeling approaches.  It is simple and easy to explain, and analysts will often accept a somewhat poorer fit using Linear Regression in order to avoid having to interpret a more complex model. 
+Linear regression is particularly suited to a problem where the outcome of interest is on some sort of continuous scale (for example quantity, money, height, weight).  For outcomes of this type, it can be a first port of call before trying more complex modeling approaches.  It is simple and easy to explain, and analysts will often accept a somewhat poorer fit using Linear Regression in order to avoid having to interpret a more complex model. 
 
 Here are some illustratory examples of questions that could be tackled with a Linear Regression approach:
 
-* Given a data set of age, education level, education discipline, years of employment, industry employed in and current salary, to what extent can current salary be explained by the rest of the data?
+* Given a data set of demographic data, job data and current salary data, to what extent can current salary be explained by the rest of the data?
 
 * Given annual test scores for a set of students over a four year period, what is the relationship between the final test score and earlier test scores?
 
-* Given information on the demographics, personal characteristics and prior qualifications of a set of PhD students, to what degree can these explain the time taken to complete their studies?
+* Given a set of GPA data, SAT data and data on the percentile score on an aptitude test for a set of job applicants, to what extent can the GPA and SAT data explain the aptitude test score?
 
-### Walkthrough Example {#walkthrough-ols}
+### Walkthrough example {#walkthrough-ols}
 
-You are working as an analyst for the Biology Department of a large academic institution, which offers a four year Undergraduate degree program.  The academic leaders of the department are interested in understanding how student performance in the final year examination of the degree program relates to performance in the prior three years. 
+You are working as an analyst for the Biology Department of a large academic institution which offers a four year Undergraduate degree program.  The academic leaders of the department are interested in understanding how student performance in the final year examination of the degree program relates to performance in the prior three years. 
 
 To help with this, you have been provided with data for 975 individuals graduating in the past three years, and you have been asked to create a model to explain each individual's final examination score based on their examination scores for the first three years of their program.  The Year 1 examination scores are awarded on a scale of 0-100, Years 2 and 3 on a scale of 0-200, and the Final year is awarded on a scale of 0-300.
 
@@ -51,7 +46,14 @@ url <- "http://peopleanalytics-regression-book.org/data/ugtests.csv"
 ugtests <- read.csv(url)
 ```
 
-```{r}
+```{r, eval = FALSE}
+# look at the first few rows of data
+head(ugtests)
+```
+
+`r if (knitr::is_latex_output()) '\\newpage'`
+
+```{r, echo = FALSE}
 # look at the first few rows of data
 head(ugtests)
 ```
@@ -72,7 +74,6 @@ We can see that the results do seem to have different scales in the different ye
 We can also plot our four years of test scores pairwise to see any initial relationships of interest, as displayed in Figure \@ref(fig:pairplot-ugtests) .
 
 ```{r pairplot-ugtests, fig.cap = if (knitr::is_latex_output()) {"Pairplot of the \\texttt{ugtests} data set"} else {"Pairplot of the `ugtests` data set"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
-library(ggplot2)
 library(GGally)
 
 # display a pair plot of all four columns of data
@@ -83,7 +84,7 @@ GGally::ggpairs(ugtests)
 In the diagonal we can see the distributions of the data in each column.  We observe relatively normal looking distributions in each year.  We can see scatter plots and pairwise correlation statistics off the diagonal.  For example, we see a particularly strong correlation between `Yr3` and `Final` test scores, a moderate correlation between `Yr2` and `Final` and relative independence elsewhere.
 
 
-## Simple Linear Regression {#simple-ols}
+## Simple linear regression {#simple-ols}
 
 In order to visualize our approach and improve our intuition, we will start with *simple* linear regression, which is the case where there is only a single input variable and outcome variable.
 
@@ -140,7 +141,7 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_segment(aes(x = Yr3[10], y = 1.2*Yr3[10] + 5, xend = Yr3[10], yend = Final[10]), color = "red")
 ```
 
-The total error of our model, which we want to minimize could be defined in a number of ways:
+The total error of our model - which we want to minimize - could be defined in a number of ways:
 
 1.  The sum of the residuals
 2.  The sum of the *absolute values* of our residuals (so that negative values are converted to positive values)
@@ -201,9 +202,7 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
 
 ```
 
-Recall from our previous chapter the definition of the population variance of $y$, notated as $\mathrm{Var}(y)$.  Note that it is defined as the average of the squares of the residuals around the mean of $y$. Therefore $\mathrm{Var}(y)$ represents the mean sum of squares error of a random model.  This calculates in this case to `r round((9/10)*var(d$Final), 2)`.
-
-Now let's overlay our fitted model onto this random model in Figure \@ref(fig:model-overlay):
+Recall from Section \@ref(mean-var-sd) the definition of the population variance of $y$, notated as $\mathrm{Var}(y)$.  Note that it is defined as the average of the squares of the residuals around the mean of $y$. Therefore $\mathrm{Var}(y)$ represents the mean sum of squares error of a random model.  This calculates in this case to `r round((9/10)*var(d$Final), 2)`.  Let's overlay our fitted model onto this random model in Figure \@ref(fig:model-overlay).
 
 ```{r model-overlay, fig.cap = "Comparison of residuals of fitted model (red) against random variable (blue)", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
@@ -247,7 +246,7 @@ This metric is known as the $R^2$ of our model and is the primary metric used in
 
 In reality, regression problems rarely involve one single input variable, but rather multiple variables. The methodology for multiple linear regression is similar in nature to a simple linear regression, but obviously more difficult to visualize because of its increased dimensionality.
 
-In this case, our input is a set of $p$ variables $x_1, x_2, ..., x_p$.  Extending the linear equation in Figure \@ref(linear-single), we seek to develop an equation of the form:
+In this case, our input is a set of $p$ variables $x_1, x_2, ..., x_p$.  Extending the linear equation in Section \@ref(linear-single), we seek to develop an equation of the form:
 
 $$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p$$
 so that our sum of squares residual error is minimized.  
@@ -321,7 +320,7 @@ if (knitr::is_html_output()) {
 ```
 
 
-### Model 'goodness of fit'
+### Model 'goodness of fit' {#lin-good-fit}
 
 At this point we can further explore the overall summary of our model.  As you saw in the previous section, our model summary contains numerous objects of interest, including statistics on the coefficients of our model.  We can see what is inside our summary by looking at the names of its contents, and we can then dive in and explore specific objects of interest.  For example:
 
@@ -334,7 +333,7 @@ names(newmodel_summary)
 ```
 
 ```{r, eval = knitr::is_latex_output(), echo = knitr::is_latex_output()}
-# get summary of model
+# get summary of new model
 newmodel_summary <- summary(newmodel)
 
 
@@ -355,13 +354,13 @@ We can see that our model explains more than half of the variance in the Final e
 newmodel_summary
 ```
 
-This provides us with some of the most important metrics from our model.  In particular, the last line gives us a report on our overall model confidence or 'goodness of fit' - that is, how confident can we be that our model fits the outcome better than the alternative of a random model.  The F-statistic is an evaluation of the confidence of the entire model, with a higher F-statistic indicating a strong likelihood that the model fits the data better than a random model.  More intuitively, perhaps, we also have the p-value for the F-statistic.  In this case it is extremely small, so we can conclude that our model has some explanatory/predictive power over and above a random model.
+This provides us with some of the most important metrics from our model.  In particular, the last line gives us a report on our overall model confidence or 'goodness of fit' - that is, how confident can we be that our model fits the outcome better than the alternative of a random model.  The F-statistic is an evaluation of the confidence of the entire model, with a higher F-statistic indicating a strong likelihood that the model fits the data better than a random model.  More intuitively, perhaps, we also have the p-value for the F-statistic.  In this case it is extremely small, so we can conclude that our model has some explanatory power over and above a random model.
 
 Be careful not to confuse model goodness of fit with $R^2$.  Depending on your sample, it is entirely possible for a model with a low $R^2$ to have high goodness of fit and vice versa.  
 
 ### Making predictions from your model
 
-While the book focuses on inferential rather than predictive analytics, we briefly touch here on the mechanics of generating predictions from models. As you might imagine, once the model has been fitted, prediction is a relatively straightforward process.  We feed in the `Yr2` and `Yr3` examination scores into our fitted model, and it applies the coefficients to calculate the predicted outcome.  Let's look at three fictitious students, and create a dataframe with their scores to input into the model.
+While this book focuses on inferential rather than predictive analytics, we briefly touch here on the mechanics of generating predictions from models. As you might imagine, once the model has been fitted, prediction is a relatively straightforward process.  We feed in the `Yr2` and `Yr3` examination scores into our fitted model, and it applies the coefficients to calculate the predicted outcome.  Let's look at three fictitious students, and create a dataframe with their scores to input into the model.
 
 ```{r}
 (new_students <- data.frame(
@@ -464,17 +463,17 @@ It is worth a moment to consider how to interpret coefficients of dummy variable
 * For cars of the same manufacturing cost, if the vehicle is a Ford, the retail price changes by ...
 * For cars of the same manufacturing cost, if the vehicle is a Toyota, the retail price changes by ...
 
-This highlights the importance of appropriate interpretation of coefficients, and in particular the proper understanding of units.  It will be common to see much larger coefficients for dummy variables in regression models, because they represent a binary 'all' or 'nothing' variable in the model.  The coefficient for, say, manufacturing cost, would be much smaller because a unit in this case is a dollar of manufacturing spend, on a scale of many thousands of potential dollars in spend.  Care should be taken not to 'rank' coefficients by their value.  Higher coefficients in and of themselves do not imply greater importance^[Rescaling numerical input variables onto common scales can help with understanding the ranked importance of these variables.  In some techniques, for example structural modeling which we will review in Section \@ref(struc-eq-model), scaled regression coefficients help determine the ranked importance of constructs to the outcome].
+This highlights the importance of appropriate interpretation of coefficients, and in particular the proper understanding of units.  It will be common to see much larger coefficients for dummy variables in regression models, because they represent a binary 'all' or 'nothing' variable in the model.  The coefficient for manufacturing cost would be much smaller because a unit in this case is a dollar of manufacturing spend, on a scale of many thousands of potential dollars in spend.  Care should be taken not to 'rank' coefficients by their value.  Higher coefficients in and of themselves do not imply greater importance^[Rescaling numerical input variables onto common scales can help with understanding the ranked importance of these variables.  In some techniques, for example structural modeling which we will review in Section \@ref(struc-eq-model), scaled regression coefficients help determine the ranked importance of constructs to the outcome].
 
 ## Testing your model assumptions
 
-All modeling techniques have underlying assumptions about the data that they model, and can generate inaccurate results when those assumptions do not hold true.  Conscientious analysts will verify that these assumptions are satisfied before finalizing their modeling efforts.  In this section we will outline some common diagnostics of model assumptions when running linear regression models.
+All modeling techniques have underlying assumptions about the data that they model, and can generate inaccurate results when those assumptions do not hold true.  Conscientious analysts will verify that these assumptions are satisfied before finalizing their modeling efforts.  In this section we will outline some common checks of model assumptions when running linear regression models.
 
 ### Assumption of linearity and additivity
 
-We mentioned earlier that linear regression assumes that the relationship we are trying to model is linear and additive in nature.  Therefore you can expect problems if you are using this approach to model a pattern that is non-linear.  
+Linear regression assumes that the relationship we are trying to model is linear and additive in nature.  Therefore you can expect problems if you are using this approach to model a pattern that is not linear or additive.  
 
-You can check whether your linearity assumption was reasonable in a couple of ways.  You can plot the true versus the predicted (fitted) values to see if they look correlated.  You can see such a plot on our student examination model in Figure \@ref(fig:predplot):
+You can check whether your linearity assumption was reasonable in a couple of ways.  You can plot the true versus the predicted (fitted) values to see if they look correlated.  You can see such a plot on our student examination model in Figure \@ref(fig:predplot).
 
 ```{r predplot, fig.cap = "Plot of true versus fitted/predicted student scores", fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
 predicted_values <- newmodel$fitted.values
@@ -485,7 +484,7 @@ plot(predicted_values, true_values)
 
 ```
 
-Alternatively, you can plot the residuals of your model against the predicted values, and look for the pattern of a random distribution (ie no major discernible pattern), such as in Figure \@ref(fig:resplot):
+Alternatively, you can plot the residuals of your model against the predicted values, and look for the pattern of a random distribution (ie no major discernible pattern), such as in Figure \@ref(fig:resplot).
 
 ```{r resplot, fig.cap = "Plot of residuals against fitted/predicted scores", fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
 residuals <- newmodel$residuals
@@ -500,9 +499,8 @@ You can also plot the residuals against each input variable as an extra check of
 
 It is assumed in a linear model that the errors or residuals are *homoscedastic* - this means that their variance is constant across the values of the input variables.  If the errors of your model *heteroscedastic* - that is, if they increase or decrease according to the value of the model inputs, this can lead to poor estimations of confidence intervals and fits.
 
-While a simple plot of residuals against predicted values (such as in Figure \@ref(fig:resplot)) can give a quick indication on homoscedacity, to be thorough the residuals should be plotted against each input variable, and it should be verified that the range of the residuals remains broadly stable.  In our student examination model, we can first plot the residuals against the values of `Yr2` in Figure \@ref(fig:resyr2):
+While a simple plot of residuals against predicted values (such as in Figure \@ref(fig:resplot)) can give a quick indication on homoscedacity, to be thorough the residuals should be plotted against each input variable, and it should be verified that the range of the residuals remains broadly stable.  In our student examination model, we can first plot the residuals against the values of `Yr2` in Figure \@ref(fig:resyr2).
 
-`r if (knitr::is_latex_output()) '\\newpage'`
 
 ```{r resyr2, fig.cap = if (knitr::is_latex_output()) {"Plot of residuals against \\texttt{Yr2} values"} else {"Plot of residuals against `Yr2` values"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
 Yr2 <- ugtests$Yr2
@@ -511,7 +509,7 @@ Yr2 <- ugtests$Yr2
 plot(Yr2, residuals)
 ```
 
-Then we can plot against `Yr3` in Figure \@ref(fig:resyr3):
+We see a pretty consistent range of values for the residuals in \@ref(fig:resyr2).  Similarly we can plot the residuals against the values of `Yr3`, as in Figure \@ref(fig:resyr3). 
 
 ```{r resyr3, fig.cap = if (knitr::is_latex_output()) {"Plot of residuals against \\texttt{Yr3} values"} else {"Plot of residuals against `Yr3` values"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
 Yr3 <- ugtests$Yr3
@@ -520,13 +518,13 @@ Yr3 <- ugtests$Yr3
 plot(Yr3, residuals)
 ```
 
-Both plots show a pretty consistent range of values which reassures us that we have homoscedacity.
+Figure \@ref(fig:resyr3) also shows a consistent range of values for the residuals, which reassures us that we have homoscedacity.
 
-### Assumption of normally distributed errors
+### Assumption of normally distributed errors {#norm-dist-assum}
 
 In an appropriate model we expect our errors to be random, so we would therefore expect our residuals to be normally distributed over sufficient numbers of observations.  If our residuals are distributed differently, this is again an indicator of an inappropriate model and can result in inaccurate estimates of confidence intervals and the statistical significance of coefficients.
 
-The quickest way to determine if residuals in your sample are consistent with a normal distribution is to run a quantile-quantile plot (or QQplot) on the residuals.  This will plot the observed quantiles of your sample against the theoretical quantiles of a normal distribution.  The closer this plot looks like a perfect correlation, the more certain you can be that this normality assumption holds.  An example for our student examination model is in Figure \@ref(fig:qqplottests):
+The quickest way to determine if residuals in your sample are consistent with a normal distribution is to run a quantile-quantile plot (or Q-Q plot) on the residuals.  This will plot the observed quantiles of your sample against the theoretical quantiles of a normal distribution.  The closer this plot looks like a perfect correlation, the more certain you can be that this normality assumption holds.  An example for our student examination model is in Figure \@ref(fig:qqplottests).
 
 ```{r qqplottests, fig.cap = "Quantile-Quantile plot of residuals", fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
 # normal distribution qqplot of residuals
@@ -550,7 +548,7 @@ library(mctest)
 mctest::omcdiag(newmodel)
 ```
 
-`r if (knitr::is_latex_output()) '\\small'`
+`r if (knitr::is_latex_output()) '\\newpage \\small'`
 ```{r, echo = FALSE}
 library(mctest)
 
@@ -583,9 +581,16 @@ We wrap up this chapter by introducing some simple extensions of linear regressi
 
 Recall that our model of student examination scores took each year's score as an independent input variable, and therefore we are making the assumption that the score obtained in each year acts independently and additively in predicting the Final score.  However, it is very possible that several input variables act together in relation to the outcome.  One way of modelling this is to include interaction terms in your model, which are new input variables formed as products of the original input variables.
 
-In our students examination data in `ugtests`, we could consider extending our model to not only include the individual years examinations, but also to include the impact of combined changes across multiple years.  For example, we could combine the impact of `Yr2` and `Yr3` examinations by multiplying them together in our model.
+In our student examination data in `ugtests`, we could consider extending our model to not only include the individual year examinations, but also to include the impact of combined changes across multiple years.  For example, we could combine the impact of `Yr2` and `Yr3` examinations by multiplying them together in our model.
 
-```{r}
+```{r, eval = FALSE}
+interaction_model <- lm(data = ugtests, 
+                        formula = Final ~ Yr2 + Yr3 + Yr2*Yr3)
+summary(interaction_model)
+```
+
+`r if (knitr::is_latex_output()) '\\newpage'`
+```{r, echo = FALSE}
 interaction_model <- lm(data = ugtests, 
                         formula = Final ~ Yr2 + Yr3 + Yr2*Yr3)
 summary(interaction_model)
@@ -683,13 +688,13 @@ In this case we find that modeling `Yr1` as a quadratic makes no difference to t
 
 10. Describe some ways that linear regression models can be extended into non-linear models.
 
-### Data exercise
+### Data exercises
 
 Load the `sociological_data` dataset via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/sociological_data.csv].  This data represents a sample of information obtained from individuals who participated in a global research study, and contains the following fields:
 
 * `annual_income_ppp`:  The annual income of the individual in PPP adjusted US dollars
 * `average_wk_hrs`:  The average number of hours per week worked by the individual
-* `education_months`: The total number of months spend by the individual in formal primary, secondary and tertiary education
+* `education_months`: The total number of months spent by the individual in formal primary, secondary and tertiary education
 * `region`:  The region of the world where the individual lives
 * `job_type`: Whether the individual works in a skilled or unskilled profession
 * `gender`: The gender of the individual
@@ -699,7 +704,7 @@ Load the `sociological_data` dataset via the `peopleanalyticsdata` package or do
 
 Conduct some exploratory data analysis on this data set.  Including:
 
-1. Identify the extent to which missing data is an issue  
+1. Identify the extent to which missing data is an issue
 2. Determine if the data types are appropriate for analysis
 3. Using a correlation matrix, pairplot or alternative method, identify whether collinearity is present in the data
 4. Identify and discuss anything else interesting that you see in the data

@@ -1,5 +1,6 @@
 delete_merged_file: true
 output_dir: "_book_pdf"
+book_filename: "Handbook_Regression_People_Analytics.Rmd"
 graphics: yes
 
 rmd_files:

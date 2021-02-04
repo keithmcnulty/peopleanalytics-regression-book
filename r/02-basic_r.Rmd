@@ -1,24 +1,24 @@
 # The Basics of the R Programming Language 
 
-Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis.  Sample implementations in Python are also provided at various points in the book.  I have made efforts to keep the code as simple as possible, and where possible I have tried to avoid the use of too many external packages.  For the most part, readers should see (especially in the earlier chapters) that code blocks are short and simple, relying wherever possible on base R functionality.  No doubt there are neater and more effective ways to code some of the material in this book using a wide array of R packages - and some of these are illustrated in Chapter \@ref(alt-approaches) - but my priority has been to keep the code simple, consistent and easily reproducible.  
+Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis.  Sample implementations in Python are also provided at various points in the book.  I have made efforts to keep the code as simple as possible, and I have tried to avoid the use of too many external packages.  For the most part, readers should see (especially in the earlier chapters) that code blocks are short and simple, relying wherever possible on base R functionality.  No doubt there are neater and more effective ways to code some of the material in this book using a wide array of R packages - and some of these are illustrated in Chapter \@ref(alt-approaches) - but my priority has been to keep the code simple, consistent and easily reproducible.  
 
 For those who wish to follow the method and theory without the implementations in this book, there is no need to read this chapter.  However, the style of this book is to use implementation to illustrate theory and practice, and so tolerance of many code blocks will be necessary as you read onwards.
 
-For those who wish to simply replicate the models as quickly as possible, they will be able to avail of the code block copying feature, which appears whenever you scroll over an input code block.  Assuming all the required external packages have been installed, these code blocks should all be transportable.  For those who are extra-inquisitive and want to explore how I constructed graphics used for illustration (for which code is usually not displayed), the best place to go is the Github repository for this book. 
+For those who wish to simply replicate the models as quickly as possible, they will be able to avail of the code block copying feature, which appears whenever you scroll over an input code block.  Assuming all the required external packages have been installed, these code blocks should all be transportable.  For those who are extra-inquisitive and want to explore how I constructed graphics used for illustration (for which code is usually not displayed), the best place to go is the [Github repository](https://github.com/keithmcnulty/peopleanalytics-regression-book) for this book. 
 
 This chapter is for those who wish to learn the methods in this book but do not know how to use R.  However, it is not intended to be a full tutorial on R.  There are many more qualified individuals and existing resources that would better serve that purpose - in particular I recommend @wickham.  It is recommended that you consult these resources and become comfortable with the basics of R before proceeding into the later chapters of this book.  However, acknowledging that many will want to dive in sooner rather than later, this chapter covers the absolute basics of R that will allow the uninitiated reader to proceed with at least some orientation.
 
 ## What is R?
 
-R is a programming language that was originally developed by and for statisticians, but has in recent years expanded greatly in its capabilities and the environments in which it is used, with extensive use nowadays in academia and the public and private sectors.  There are many advantages to using a programming language like R.  Here are some.
+R is a programming language that was originally developed by and for statisticians, but has in recent years expanded greatly in its capabilities and the environments in which it is used, with extensive use nowadays in academia and the public and private sectors.  There are many advantages to using a programming language like R.  Here are some:
 
-1.  It is completely free and open source.
+1.  It is completely free and open source
 2.  It is faster and more efficient with memory than popular graphical user interface analytics tools
 3.  It facilitates easier replication of analysis from person to person compared with many alternatives
 4.  It has a large and growing global community of active users
-5.  It has a large and rapidly growing universe of packages which are all free and which provide the ability to do an extremely wide range of general and highly specialized tasks - both statistical and otherwise.
+5.  It has a large and rapidly growing universe of packages which are all free and which provide the ability to do an extremely wide range of general and highly specialized tasks, statistical and otherwise
 
-There is often heated debate about which languages/tools are better for doing non-trivial statistical analysis.  I personally find that R provides a wider array of resources for those interested in inferential modeling, while Python has a more well developed toolkit for predictive modeling and machine learning.  Since the primary focus of this book is inferential modeling, the in-depth walkthroughs in this book are coded in R.
+There is often heated debate about which tools are better for doing non-trivial statistical analysis.  I personally find that R provides the widest array of resources for those interested in inferential modeling, while Python has a more well developed toolkit for predictive modeling and machine learning.  Since the primary focus of this book is inferential modeling, the in-depth walkthroughs are coded in R.
 
 ## How to start using R
 
@@ -31,9 +31,9 @@ knitr::include_graphics("./www/R/rstudio-windows.png")
 
 To start using R, follow these steps:
 
-1.  Download and install the latest version of R from https://www.r-project.org/.  Ensure that the version suits your operating system.
-2.  Download the latest version of the RStudio IDE from https://rstudio.com/products/rstudio/ and view the video on that page to familiarize yourself with its features.  
-3.  Open RStudio and play around.
+1.  Download and install the latest version of R from https://www.r-project.org/.  Ensure that the version suits your operating system
+2.  Download the latest version of the RStudio IDE from https://rstudio.com/products/rstudio/ and view the video on that page to familiarize yourself with its features  
+3.  Open RStudio and play around
 
 The initial stages of using R can be challenging, mostly due to the need to become familiar with how R understands, stores and processes data. Extensive trial and error is a learning necessity.  Perseverance is important in these early stages, as well as an openness to seek help from others either in person or via online forums.
 
@@ -45,7 +45,7 @@ As you start to do tasks involving data in R, you will generally want to store t
 3 + 3
 ```
 
-However, as soon as the calculation is complete, it is forgotten by R because the result hasn't been assigned anywhere.  To store something in your R session, you will assign it a name using the `<-` command.  So I can assign my previous calculation to an object called `my_sum`, and this allows me to access the answer at any time.
+However, as soon as the calculation is complete, it is forgotten by R because the result hasn't been assigned anywhere.  To store something in your R session, you will assign it a name using the `<-` operator.  So I can assign my previous calculation to an object called `my_sum`, and this allows me to access the value at any time.
 
 ```{r}
 # store the result
@@ -63,7 +63,7 @@ Note that assignment to an object does not result in the value being displayed. 
 # show me the value of my_sum
 my_sum
 
-# assign my_sum + 3 to new_sum and show the result
+# assign my_sum + 3 to new_sum and show its value
 (new_sum <- my_sum + 3)
 ```
 
@@ -75,7 +75,7 @@ All data in R has an associated type, to reflect the wide range of data that R i
 **Numeric data** can be in integer form or double (decimal) form
 
 ```{r}
-#integers can be signified by adding an 'L' to the end
+# integers can be signified by adding an 'L' to the end
 my_integer <- 1L  
 my_double <- 6.38
 
@@ -110,7 +110,7 @@ Categorical data - which takes only a finite number of possible values, can be s
 
 ```{r}
 categories <- factor(
-  c("Category A", "Category B", "Category C", "Category A", "Category C")
+  c("A", "B", "C", "A", "C")
 )
 
 str(categories)
@@ -144,7 +144,7 @@ Simple numeric sequence vectors can be created using shorthand notation:
 (my_sequence <- 1:10)
 ```
 
-If you try to mix data types inside a vector, it will usually result in *type coercion*, where one of the types is forced into a different type. Often this means the vector will become a character vector:
+If you try to mix data types inside a vector, it will usually result in *type coercion*, where one or more of the types are forced into a different type to ensure homogeneity. Often this means the vector will become a character vector:
 
 ```{r}
 # numeric sequence vector
@@ -194,7 +194,7 @@ my_list <- list(6, TRUE, "hello")
 str(my_list)
 ```
 
-Lists can contain any data of any dimension, each element can be given a name:
+List elements can be any data type and any dimension.  Each element can be given a name:
 
 ```{r}
 new_list <- list(
@@ -235,7 +235,7 @@ The dataframe is the most common data structure used by analysts in R, due to it
 
 ### Loading and tidying data in dataframes
 
-To work with data in R, you usually need to pull it in from an outside source into a dataframe^[R also has some inbuilt data sets which are for testing and playing with, for example check out `mtcars` by typing it into the terminal, or type `data()` to see a full list of in built data sets.  The `peopleanalyticsdata` R package actually contains all the datasets in this book.].  R facilitates numerous ways of importing data from simple csv files, from Excel files, from online sources or from databases.  Let's load a data set that we will be using later - the `salespeople` data set, which contains some information on the sales, average customer ratings and performance ratings of salespeople.  The `read.csv()` function can accept a URL address of the file if it is online.
+To work with data in R, you usually need to pull it in from an outside source into a dataframe^[R also has some built-in data sets which are for testing and playing with, for example check out `mtcars` by typing it into the terminal, or type `data()` to see a full list of built-in data sets.  You can add all the data sets used in this book to R by installing and loading the `peopleanalyticsdata` R package.].  R facilitates numerous ways of importing data from simple `.csv` files, from Excel files, from online sources or from databases.  Let's load a data set that we will be using later - the `salespeople` data set, which contains some information on the sales, average customer ratings and performance ratings of salespeople.  The `read.csv()` function can accept a URL address of the file if it is online.
 
 ```{r}
 # url of data set 
@@ -250,7 +250,7 @@ We might not want to display this entire dataset before knowing how big it is.  
 ```{r}
 dim(salespeople)
 
-# view first few rows
+# hundreds of rows, so view first few
 head(salespeople)
 ```
 
@@ -313,7 +313,7 @@ str(salespeople)
 Dataframes can be subsetted to contain only rows that satisfy specific conditions:
 
 ```{r}
-sales_720 <- subset(salespeople, subset = sales == 720)
+(sales_720 <- subset(salespeople, subset = sales == 720))
 ```
 
 Note the use of `==` which is used in many programming languages to test for precise equality.  Similarly we can select columns based on inequalities (`>` for 'greater than', `<` for 'less than', `>=` for 'greater than or equal to', `<=` for 'less than or equal to', or `!=` for 'not equal to').  For example:
@@ -361,7 +361,7 @@ In the code so far we have used a variety of functions.  For example `head()`, `
 
 ### Using functions
 
-Functions usually take one or more arguments.  Often there are a large number of arguments that a function can take, but many are optional and not required to be specified by the user,  For example, the function `head()`, which displays the first rows of a dataframe^[It actually has a broader definition but is mostly used for showing the first rows of a dataframe], has only one required argument `x`: the name of the dataframe.  A second argument is optional, `n`: the number of rows to display.  If `n` is not entered, it is assumed to have the default value `n = 6`.  
+Functions usually take one or more arguments.  Often there are a large number of arguments that a function can take, but many are optional and not required to be specified by the user.  For example, the function `head()`, which displays the first rows of a dataframe^[It actually has a broader definition but is mostly used for showing the first rows of a dataframe], has only one required argument `x`: the name of the dataframe.  A second argument is optional, `n`: the number of rows to display.  If `n` is not entered, it is assumed to have the default value `n = 6`.  
 
 When running a function, you can either specify the arguments by name or you can enter them in order without their names.  If you enter then without their names, R expects the arguments to be entered in exactly the right order.
 
@@ -379,7 +379,7 @@ head(n = 3, x = salespeople)
 
 ### Help with functions
 
-Most functions in R have excellent help documentation.  To get help on the `head()` function, type `help(head)` or `?head`.  This will display the results in the Help browser window in RStudio.  Alternatively you can open the `Help` browser window directly in RStudio and do a search there. An example of the browser results for `head()` is in Figure \@ref(fig:head-help).
+Most functions in R have excellent help documentation.  To get help on the `head()` function, type `help(head)` or `?head`.  This will display the results in the Help browser window in RStudio.  Alternatively you can open the Help browser window directly in RStudio and do a search there. An example of the browser results for `head()` is in Figure \@ref(fig:head-help).
 
 ```{r head-help, fig.cap="Results of a search for the `head()` function in the RStudio Help browser", fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 knitr::include_graphics("./www/R/head-help.png")
@@ -394,9 +394,29 @@ The help page normally shows the following:
 * Expected value of the output (for example `head()` is expected to return a similar object to its first input `x`)
 * Examples to help orient you further (sometimes examples can be very abstract in nature and not so helpful to users)
 
+### Writing your own functions
+
+Functions are not limited to those that come packaged in R.  Users can write their own functions to perform tasks that are helpful to their objectives.  Experienced programmers in most languages subscribe to a principle called DRY (Don't Repeat Yourself).  Whenever a task needs to be done repeatedly, it is poor practice to write the same code numerous times. It makes more sense to write a function to do the task.  
+
+In this example, a simple function is written which generates a report on a dataframe:
+
+```{r}
+# create df_report function
+df_report <- function(df) {
+  paste("This dataframe contains", nrow(df), "rows and", 
+        ncol(df), "columns. There are", sum(is.na(df)), "NA entries.")
+}
+```
+
+We can test our function by using the built-in `mtcars` data set in R:
+
+```{r}
+df_report(mtcars)
+```
+
 ### Installing packages
 
-All the functions that we have used so far exist in the base R installation.  However, the beauty of open source languages like R is that users can write their own functions or resources and release them to others via packages.  A package is an additional module that can be installed easily and which makes resources available which are not in the base R installation.  In this book we will be using functions from both base R and from popular and useful packages.  As an example, a popular package used for statistical modelling is the `MASS` package, which is based on methods in a popular applied statistics book^[@ripley].  
+All the common functions that we have used so far exist in the base R installation.  However, the beauty of open source languages like R is that users can write their own functions or resources and release them to others via packages.  A package is an additional module that can be installed easily and which makes resources available which are not in the base R installation.  In this book we will be using functions from both base R and from popular and useful packages.  As an example, a popular package used for statistical modeling is the `MASS` package, which is based on methods in a popular applied statistics book^[@ripley].  
 
 Before an external package can be used, it must be installed into your package library using `install.packages()`.  So to install `MASS`, type `install.packages("MASS")` into the console.  This will send R to the main internet repository for R packages (known as CRAN), it will find the right version of `MASS` for your operating system and download and install it into your package library.  If `MASS` needs other packages in order to work, it will also install these packages.  
 
@@ -408,11 +428,6 @@ install.packages(my_packages)
 ```
 
 Once you have installed a package, you can see what functions are available by calling for help on it, for example using `help(package = MASS)`.  One package you may wish to install now is the `peopleanalyticsdata` package, which actually contains all the datasets used in this book.  By installing and loading this package, all the datasets used in this book will be loaded into your R session and ready to work with.  If you do this, you can ignore the `read.csv()` commands later in the book which download the data from the internet.
-
-```{r, eval = FALSE}
-install.packages("peopleanalyticsdata")
-library(peopleanalyticsdata)
-```
 
 ### Using packages
 
@@ -454,8 +469,8 @@ subset(salespeople$sales, subset = salespeople$sales < 500) %>%
 This can be extended to perform arbitrarily many operations in one piped command:
 
 ```{r}
-subset(salespeople$sales, 
-       subset = salespeople$sales < 500) %>% # get the subsetted data
+salespeople$sales %>% # start with all data
+  subset(subset = salespeople$sales < 500) %>% # get the subsetted data
   mean() %>% # take the mean value
   round() # round to the nearest integer
 
@@ -496,7 +511,7 @@ When first faced with an error that you can't understand, try not to get frustra
 
 ## Plotting and graphing
 
-As you might expect in a well developed programming language, there are numerous ways to plot and graph information in R.  If you are doing exploratory data analysis on fairly simple data and you don't need to worry about pretty appearance or formatting, the in-built plot capabilities of base R are fine.  If you need a pretty appearance, more precision, color coding or even 3D graphics or animation, there are also specialized plotting and graphing packages for these purposes.  In general when working interactively in RStudio, graphical output will be rendered in the Plots pane, where you can copy it or save it as an image.
+As you might expect in a well developed programming language, there are numerous ways to plot and graph information in R.  If you are doing exploratory data analysis on fairly simple data and you don't need to worry about pretty appearance or formatting, the built-in plot capabilities of base R are fine.  If you need a pretty appearance, more precision, color coding or even 3D graphics or animation, there are also specialized plotting and graphing packages for these purposes.  In general when working interactively in RStudio, graphical output will be rendered in the Plots pane, where you can copy it or save it as an image.
 
 ### Plotting in base R
 
@@ -533,11 +548,11 @@ These are among the most common plots used for data exploration purposes.  They 
 
 ### Specialist plotting and graphing packages
 
-By far the most commonly used specialist plotting and graphing package in R is `ggplot2`.  `ggplot2` allows the flexible construction of a very wide range of charts and graphs, but uses a very specific command grammar which can take some getting used to.  However, once learned, `ggplot2` can be an extremely powerful tool.  Many of the illustratory figures used in this book are developed using `ggplot2` and while the code for these figures is generally not included for the sake of brevity, you can always find it in the source code of this book on Github.  A great learning resource for `ggplot2` is @ggplot2.
+By far the most commonly used specialist plotting and graphing package in R is `ggplot2`.  `ggplot2` allows the flexible construction of a very wide range of charts and graphs, but uses a very specific command grammar which can take some getting used to.  However, once learned, `ggplot2` can be an extremely powerful tool.  Many of the illustratory figures used in this book are developed using `ggplot2` and while the code for these figures is generally not included for the sake of brevity, you can always find it in the source code of this book on Github^[https://github.com/keithmcnulty/peopleanalytics-regression-book].  A great learning resource for `ggplot2` is @ggplot2.
 
 The `plotly` package allows the use of the `plotly` graphing library in R.  This is an excellent package for interactive graphing and is used for 3D illustrations in this book.  Output can be rendered in HTML - allowing the user to play with and explore the graphs interactively - or can be saved as static 2D images.
 
-`GGally` is a package which extends `ggplot2` to allow easy combination of charts and graphs.  This is particularly valuable for quicker exploratory data analysis.  One of its most popular function is `ggpairs()` which produces a pairplot.  A pairplot is a visualization of all univariate and bivariate patterns in a numerical data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed in the off-diagonal.  Figure \@ref(fig:basicpair) is an example of a pairplot for the `salespeople` dataset which we will explore further in Chapter \@ref(bin-log-reg).
+`GGally` is a package which extends `ggplot2` to allow easy combination of charts and graphs.  This is particularly valuable for quicker exploratory data analysis.  One of its most popular functions is `ggpairs()` which produces a pairplot.  A pairplot is a visualization of all univariate and bivariate patterns in a data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed in the off-diagonal.  Figure \@ref(fig:basicpair) is an example of a pairplot for the `salespeople` dataset which we will explore further in Chapter \@ref(bin-log-reg).
 
 ```{r basicpair, fig.cap=if (knitr::is_latex_output()) {"Pairplot of the \\texttt{salespeople} data set"} else {"Pairplot of the `salespeople` data set"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}, warning = FALSE, message = FALSE}
 library(GGally)
