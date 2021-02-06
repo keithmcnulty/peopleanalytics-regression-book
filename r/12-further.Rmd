@@ -16,7 +16,7 @@ Government agencies and educational institutions will analyze graduate salaries 
 graduates <- read.csv("data/graduates.csv")
 ```
 
-The `graduates` data set contains information on graduates currently in the United States across `r nrow(graduates)` specific subject majors grouped into `r length(unique(graduates$Discipline))` disciplines of study.  This data set is sourced from the *FiveThirtyEight* data repository^[https://github.com/fivethirtyeight/data].
+`r if (knitr::is_latex_output()) '\\index{data sets!graduates@\\texttt{graduates}}'`The `graduates` data set contains information on graduates currently in the United States across `r nrow(graduates)` specific subject majors grouped into `r length(unique(graduates$Discipline))` disciplines of study.  This data set is sourced from the *FiveThirtyEight* data repository^[https://github.com/fivethirtyeight/data].
 
 Load the `graduates` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/graduates.csv].  The fields in the `graduate` data set are as follows:
 
@@ -37,8 +37,8 @@ Load the `graduates` data set via the `peopleanalyticsdata` package or download 
 ### Data exercises
 
 1.  Perform an exploratory data analysis on the data set.  Do you see any interesting patterns?
-2.  Transform any categorical data you intend to use as an input variable into dummy variables.
-3.  Perform any other transformations on the data to help with the interpretation of model results.  For example, are the numerical scales intuitive for interpretation?
+2.  Conduct appropriate hypothesis tests on any of the input variables that interest you to determine if they relate to  statistically significant differences in the `Median_salary` outcome.
+3.  If you wish to, perform transformations on the data to help with the interpretation of model results.  For example, are the numerical scales intuitive for interpretation?
 4.  Run an appropriate multivariate model to determine which input variables have a significant effect on median graduate salary.
 5.  Articulate the results of your model, including an estimate of the effect of the input variables and the overall fit and goodness of fit of the model.
 
@@ -47,7 +47,7 @@ Load the `graduates` data set via the `peopleanalyticsdata` package or download 
 
 Organizations are often very interested in analyzing data from recruiting processes, usually with a couple of goals in mind.  Firstly, there is an interest in whether the process is efficient and effective.  Secondly, there is an interest in whether the process is fair to different groups and a foundation for the recruiting of a sufficiently diverse set of employees.
 
-The efficiency and effectiveness of a recruiting process can depend heavily on how it is organized, what methods are used and whether those methods are helpful in determining hiring decisions.  Statistics from individual elements of the process such as interviews or assessments are often studied.  Models can be built to determine which elements influence the decision to hire or not hire.  In an ideal world, some sort of future job performance outcome would be particularly useful in studying the efficiency and effectiveness of a recruiting process, but often this is a very difficult thing to do, especially if the process is very selective.  Hiring only a small proportion of applicants usually results in a statistical phenomenon known as *range restriction*, where the statistics of those hired fall in a very narrow range that makes useful analysis extremely challenging.  For this reason, many organizations focus primarily on the final hiring decision as an outcome of interest.
+The efficiency and effectiveness of a recruiting process can depend heavily on how it is organized, what methods are used and whether those methods are helpful in determining hiring decisions.  Statistics from individual elements of the process such as interviews or assessments are often studied.  Models can be built to determine which elements influence the decision to hire or not to hire.  In an ideal world, some sort of future job performance outcome would be particularly useful in studying the efficiency and effectiveness of a recruiting process, but often this is a very difficult thing to do, especially if the process is very selective.  Hiring only a small proportion of applicants usually results in a statistical phenomenon known as *range restriction*, where the statistics of those hired fall in a very narrow range that makes useful analysis extremely challenging.  For this reason, many organizations focus primarily on the final hiring decision as an outcome of interest.
 
 Understanding fairness in a recruiting process usually involves studying how the statistics of that process differ between subgroups of interest and whether any of the differences are significant enough to infer potential bias.  Understanding whether these differences are attributable to a particular element of the process, whether it be a test or the rating behaviors of interviewers, is also important in determining whether specific action can be taken to remedy the situation.
 
@@ -57,11 +57,11 @@ Understanding fairness in a recruiting process usually involves studying how the
 recruiting <- read.csv("data/recruiting.csv")
 ```
 
-The `recruiting` data set contains information on `r nrow(recruiting)` applicants who went through the final stages of a recruiting process for graduate positions at a large international financial services company.  The recruiting process operates as follows:
+`r if (knitr::is_latex_output()) '\\index{data sets!recruiting@\\texttt{recruiting}}'`The `recruiting` data set contains information on `r nrow(recruiting)` applicants who went through the final stages of a recruiting process for graduate positions at a large international financial services company.  The recruiting process operates as follows:
 
-1. Applications are screened according to a number of criteria, including their SAT scores and their undergraduate GPA as well as an online aptitude test they are requested to take, and numerous other judgments made by the individuals screening the applications.
-2. Applicants who pass the screening stage are invited for three interviews, two of them with line managers and a third with a human resources professional.  Different line managers or HR professionals conduct the interviews on different interview days.  Each interviewer independently gives an applicant a score on a Likert scale of 1 thru 5 indicating increasing positivity.
-3. Interviewers and human resources professionals gather to discuss each case and make a final decision on whether to hire or not hire.  All the information used in screening and evaluating applicants is made available to decision makers during this discussion.
+1. Applications are screened according to a number of criteria, including their SAT scores and their undergraduate GPA as well as an online aptitude test they are requested to take and numerous other judgments made by the individuals screening the applications.
+2. Applicants who pass the screening stage are invited for three interviews, two of them with line managers and a third with a human resources professional.  Different line managers or HR professionals conduct the interviews on different interview days.  Each interviewer independently gives an applicant a score on a Likert scale of 1 to 5 indicating increasing positivity.
+3. Interviewers and human resources professionals gather to discuss each case and make a final decision on whether to hire or not to hire.  All the information used in screening and evaluating applicants is made available to decision makers during this discussion.
 
 Load the `recruiting` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/recruiting.csv].  The fields in the `recruiting` data set are as follows:
 
@@ -86,7 +86,7 @@ Load the `recruiting` data set via the `peopleanalyticsdata` package or download
 
 ### Data exercises
 
-1.  Perform an exploratory data analysis on the recruiting data set.  Be sure to convert data to the best type for your purposes.
+1.  Perform an exploratory data analysis on the `recruiting` data set.  Be sure to convert data to the best type for your purposes.
 2.  Develop a model to test how the aptitude test results are explained by an applicant's SAT and GPA.  What can you conclude from this?  Have you considered possible collinearity in this model?
 3.  Develop a model to explain how all the inputs in the hiring decision (interview ratings, aptitude test, SAT and GPA) influence the hiring decision.  Reduce this to the most parsimonious model you are comfortable with.  What can you conclude from this model about the role of the different elements of the recruiting process in the final hiring decision?
 4.  Test whether there is a statistically significant difference in the hiring outcome for males versus females.
@@ -96,7 +96,7 @@ Load the `recruiting` data set via the `peopleanalyticsdata` package or download
 
 In many organizations and for many job types, promotion and performance ratings are the primary indicators of the success of employees.  However, promotion is not always available to employees and can be very dependent on role and timing.  Since performance ratings are usually generated on a regular basis, it is usually these that garner the most attention in the analysis of success.
 
-However, performance ratings are not perfect indicators.  They are usually the result of some judgment from one or more evaluators.  Part of that judgment will be informed by data and part will be informed by contextual considerations or personal preferences outside of the data.  Therefore it is frequently of interest to analyze performance ratings as the outcome of a decision making process.  Such analysis can inform us as to what parts of the evaluation process are operating as intended and what parts are not.  Multivariate models around performance can help us understand the degree to which the evaluation process is data driven, the degree to which unfairness might exist in some evaluation decisions, and what might be the source of that unfairness.
+However, performance ratings are not perfect indicators of reality.  They are usually the result of some judgment from one or more evaluators.  Part of that judgment will be informed by data and part will be informed by contextual considerations or personal preferences outside of the data.  Therefore it is frequently of interest to analyze performance ratings as the outcome of a decision making process.  Such analysis can inform us as to what parts of the evaluation process are operating as intended and what parts are not.  Multivariate models around performance can help us understand the degree to which the evaluation process is data driven, the degree to which unfairness might exist in some evaluation decisions, and what might be the source of that unfairness.
 
 ### The `employee_performance` data set
 
@@ -104,7 +104,7 @@ However, performance ratings are not perfect indicators.  They are usually the r
 employee_performance <- read.csv("data/employee_performance.csv")
 ```
 
-The `employee_performance` data set contains data on the most recent performance evaluations of `r nrow(employee_performance)` salespeople in a technology company.  Each employee is evaluated by their manager, who considers certain performance indicators together with their own judgment and awards a performance rating from 1 to 3, where 1 means 'Needs improvement', 2 means 'Performing well' and 3 means 'Outstanding'.  
+`r if (knitr::is_latex_output()) '\\index{data sets!employee\\_performance@\\texttt{employee\\_performance}}'`The `employee_performance` data set contains data on the most recent performance evaluations of `r nrow(employee_performance)` salespeople in a technology company.  Each employee is evaluated by their manager, who considers certain performance indicators together with their own judgment and awards a performance rating from 1 to 3, where 1 means 'Needs improvement', 2 means 'Performing well' and 3 means 'Outstanding'.  
 
 Load the `employee_performance` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/employee_performance.csv].  The fields in the `employee_performance` data set are as follows:
 
@@ -143,7 +143,7 @@ It is particularly interesting to compare subgroups of employees that have commo
 promotion <- read.csv("data/promotion.csv")
 ```
 
-The `promotion` data set contains data on `r nrow(promotion)` individuals who joined a retailer in an entry level job, and tracks them for up to eight subsequent years post joining.  For each individual the data records whether or not they were promoted, and if so in which year the promotion occurred, where the date of their joining is Year 0.  Once promotion occurs, an individual is no longer tracked.  If an individual was not promoted, then the year in which the last record occurred is captured.  
+`r if (knitr::is_latex_output()) '\\index{data sets!promotion@\\texttt{promotion}}'`The `promotion` data set contains data on `r nrow(promotion)` individuals who joined a retailer in an entry level job, and tracks them for up to eight subsequent years post joining.  For each individual the data records whether or not they were promoted, and if so in which year the promotion occurred, where the date of their joining is Year 0.  Once promotion occurs, an individual is no longer tracked.  If an individual was not promoted, then the year in which the last record occurred is captured.  
 
 Load the `promotion` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/promotion.csv].  The fields in the data are as follows:
 
@@ -182,7 +182,7 @@ Because of the challenges in objectively measuring the impact of learning, analy
 learning <- read.csv("data/learning.csv")
 ```
 
-The `learning` data set contains `r nrow(learning)` instances of feedback from `r length(unique(learning$idcode))` different participants in a range of learning programs offered by an executive education provider.  Each row of data represents the feedback of a specific participant on a specific program that they participated in.  Participants where not required to respond to all feedback questions and any question where no response was given is indicated as `NA`.
+`r if (knitr::is_latex_output()) '\\index{data sets!learning@\\texttt{learning}}'`The `learning` data set contains `r nrow(learning)` instances of feedback from `r length(unique(learning$idcode))` different participants in a range of learning programs offered by an executive education provider.  Each row of data represents the feedback of a specific participant on a specific program that they participated in.  Participants were not required to respond to all feedback questions and any question where no response was given is indicated as `NA`.
 
 Load the `learning` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/learning.csv].  The fields in the `learning` data set are as follows:
 

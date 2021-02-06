@@ -8,7 +8,7 @@ To properly understand multivariate models, an analyst needs to have a decent gr
 
 If you have never really studied these topics, I would strongly recommend taking a course in them and spending good time getting to know them.  Again, just as the last chapter was not intended to be a comprehensive tutorial on R, neither is this chapter intended to be a comprehensive tutorial on introductory statistics. However, we will introduce some key concepts here that are critical to understanding later chapters, and as always we will illustrate using real data examples.
 
-In preparation for this chapter we are going to download a data set that we will work through in a later chapter, and use it for practical examples and illustration purposes.  The data are a set of information on the sales, customer ratings and performance ratings on a set of 351 salespeople as well as an indication of whether or not they were promoted.
+`r if (knitr::is_latex_output()) '\\index{data sets!salespeople@\\texttt{salespeople}}'`In preparation for this chapter we are going to download a data set that we will work through in a later chapter, and use it for practical examples and illustration purposes.  The data are a set of information on the sales, customer ratings and performance ratings on a set of 351 salespeople as well as an indication of whether or not they were promoted.
 
 ```{r}
 # if needed, use online url to download salespeople data
@@ -36,11 +36,12 @@ It looks like:
 
 ## Elementary descriptive statistics of populations and samples
 
+`r if (knitr::is_latex_output()) '\\index{descriptive statistics|(}'`
 Any collection of numerical data on one or more variables can be described using a number of common statistical concepts.  Let $x = x_1, x_2, ..., x_n$ be a sample of $n$ observations of a variable drawn from a population.
 
 ### Mean, variance and standard deviation {#mean-var-sd}
 
-The **mean** is the average value of the observations and is defined by adding up all the values and dividing by the number of observations.  The mean $\bar{x}$ of our sample $x$ is defined as:
+`r if (knitr::is_latex_output()) '\\index{mean (statistics)}'`The **mean** is the average value of the observations and is defined by adding up all the values and dividing by the number of observations.  The mean $\bar{x}$ of our sample $x$ is defined as:
 
 $$
 \bar{x} = \frac{1}{n}\sum_{i = 1}^{n}x_i
@@ -67,12 +68,12 @@ Given that this data can only have the values 1, 2, 3 or 4, we interpret this as
 
 Other common statistical summary measures include the *median*, which is the middle value when the values are ranked in order, and the *mode*, which is the most frequently occurring value.
 
-The **variance** is a measure of how much the data varies around its mean.  There are two different definitions of variance.  The **population variance** assumes that that we are working with the entire population and is defined as the average squared difference from the mean:
+`r if (knitr::is_latex_output()) '\\index{variance (statistics)}'`The **variance** is a measure of how much the data varies around its mean.  There are two different definitions of variance.  `r if (knitr::is_latex_output()) '\\index{variance (statistics)!population variance}'`The **population variance** assumes that that we are working with the entire population and is defined as the average squared difference from the mean:
 
 $$
 \mathrm{Var}_p(x) = \frac{1}{n}\sum_{i = 1}^{n}(x_i - \bar{x})^2
 $$
-The **sample variance** assumes that we are working with a sample and attempts to estimate the variance of a larger population by applying *Bessel's Correction* to account for potential sampling error.    The sample variance is:
+`r if (knitr::is_latex_output()) '\\index{variance (statistics)!sample variance}'`The **sample variance** assumes that we are working with a sample and attempts to estimate the variance of a larger population by applying *Bessel's Correction* to account for potential sampling error.    The sample variance is:
 
 $$
 \mathrm{Var}_s(x) = \frac{1}{n-1}\sum_{i = 1}^{n}(x_i - \bar{x})^2
@@ -100,7 +101,7 @@ n <- length(na.omit(salespeople$sales))
 (population_variance_sales <- ((n-1)/n) * sample_variance_sales)
 ```
 
-Variance does not have intuitive scale relative to the data being studied, because we have used a 'squared distance metric', therefore we can square-root it to get a measure of 'deviance' on the same scale as the data.  We call this the *standard deviation* $\sigma(x)$, where $\mathrm{Var}(x) = \sigma(x)^2$.  As with variance, standard deviation has both population and sample versions, and the sample version is calculated by default. Conversion between the two takes the form
+Variance does not have intuitive scale relative to the data being studied, because we have used a 'squared distance metric', therefore we can square-root it to get a measure of 'deviance' on the same scale as the data.  `r if (knitr::is_latex_output()) '\\index{standard deviation (statistics)}'`We call this the *standard deviation* $\sigma(x)$, where $\mathrm{Var}(x) = \sigma(x)^2$.  As with variance, standard deviation has both population and sample versions, and the sample version is calculated by default. Conversion between the two takes the form
 
 $$
 \sigma_p(x) = \sqrt{\frac{n-1}{n}}\sigma_s(x)
@@ -122,12 +123,12 @@ Given the range of sales is [`r range(salespeople$sales, na.rm = TRUE)`] and the
 
 ### Covariance and correlation
 
-The **covariance** between two variables is a measure of the extent to which one changes as the other changes.  If $y = y_1, y_2, ..., y_n$ is a second variable, and $\bar{x}$ and $\bar{y}$ are the means of $x$ and $y$ respectively, then the **sample covariance** of $x$ and $y$ is defined as
+`r if (knitr::is_latex_output()) '\\index{covariance (statistics)!sample covariance}'`The **covariance** between two variables is a measure of the extent to which one changes as the other changes.  If $y = y_1, y_2, ..., y_n$ is a second variable, and $\bar{x}$ and $\bar{y}$ are the means of $x$ and $y$ respectively, then the **sample covariance** of $x$ and $y$ is defined as
 
 $$
 \mathrm{cov}_s(x, y) = \frac{1}{n - 1}\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})
 $$
-and as with variance, the **population covariance** is 
+and as with variance, the `r if (knitr::is_latex_output()) '\\index{covariance (statistics)!population covariance}'`**population covariance** is 
 
 $$
 \mathrm{cov}_p(x, y) = \frac{n-1}{n}\mathrm{cov}_s(x, y) 
@@ -149,7 +150,7 @@ n <- nrow(cols[complete.cases(cols), ])
 
 As can be seen, the difference in covariance is very small between the sample and population versions, and both confirm a positive relationship between sales and customer rating.  However, we again see this issue that there is no intuitive sense of scale for this measure.  
 
-**Pearson's correlation** coefficient divides the covariance by the product of the standard deviations of the two variables: 
+`r if (knitr::is_latex_output()) '\\index{correlation (statistics)!Pearson\'s correlation}'`**Pearson's correlation** coefficient divides the covariance by the product of the standard deviations of the two variables: 
 
 $$
 r_{x, y} = \frac{\mathrm{cov}(x, y)}{\sigma(x)\sigma(y)}
@@ -165,13 +166,13 @@ cor(salespeople$sales, salespeople$customer_rate, use = "complete.obs")
 
 This tells us that there is a moderate positive correlation between sales and customer rating.
 
-You will notice that we have so far used two variables on a continuous scale to demonstrate covariance and correlation. Pearson's correlation can also be used between a continuous scale and a dichotomous (binary) scale variable, and this is known as a **point-biserial correlation**.
+`r if (knitr::is_latex_output()) '\\index{correlation (statistics)!point-biserial correlation}'`You will notice that we have so far used two variables on a continuous scale to demonstrate covariance and correlation. Pearson's correlation can also be used between a continuous scale and a dichotomous (binary) scale variable, and this is known as a **point-biserial correlation**.
 
 ```{r}
 cor(salespeople$sales, salespeople$promoted, use = "complete.obs")
 ```
 
-Correlating ranked variables involves an adjusted approach leading to **Spearman's rho** ($\rho$) or **Kendall's tau** ($\tau$), among others.  We will not dive into the mathematics of this here, but a good source is @bhattacharya.  Spearman's or Kendall's variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.
+`r if (knitr::is_latex_output()) '\\index{correlation (statistics)!Spearman\'s rho}'`Correlating ranked variables involves an adjusted approach leading to **Spearman's rho** ($\rho$) or `r if (knitr::is_latex_output()) '\\index{correlation (statistics)!Kendall\'s tau}'`**Kendall's tau** ($\tau$), among others.  We will not dive into the mathematics of this here, but a good source is @bhattacharya.  Spearman's or Kendall's variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.
 
 ```{r}
 # spearman's rho correlation
@@ -183,18 +184,20 @@ cor(salespeople$sales, salespeople$performance,
     method = "kendall", use = "complete.obs")
 ```
 
-In this case, both indicate a low to moderate correlation.  Spearman's rho or Kendall's tau can also be used to correlate a ranked and a dichotomous variable, and this is known as a **rank-biserial correlation**.
-
+`r if (knitr::is_latex_output()) '\\index{correlation (statistics)!rank-biserial correlation}'`In this case, both indicate a low to moderate correlation.  Spearman's rho or Kendall's tau can also be used to correlate a ranked and a dichotomous variable, and this is known as a **rank-biserial correlation**.
+`r if (knitr::is_latex_output()) '\\index{descriptive statistics|)}'`
 
 ## Distribution of random variables
 
+`r if (knitr::is_latex_output()) '\\index{random variables|(}'`
 As we outlined in Section \@ref(theory-modeling), when we build a model we are using a set of sample data to infer a general relationship on a larger population.  A major underlying assumption in our inference is that we believe the real life variables we are dealing with are random in nature.  For example, we might be trying to model the drivers of the voting choice of millions of people in a national election, but we may only have sample data on a few thousand people.  When we infer nationwide voting intentions from our sample, we assume that the characteristics of the voting population are random variables. 
 
 ### Sampling of random variables
 
 When we describe variables as random, we are assuming that they take a form which is *independent and identically distributed*.  Using our `salespeople` data as an example, we are assuming that the sales of one person in the data set is not influenced by the sales of another person in the data set.  In this case, this seems like a reasonable assumption, and we will be making it for many (though not all) of the statistical methods used in this book.  However, it is good to recognize that there are scenarios where this assumption cannot be made.  For example, if the salespeople worked together in serving the same customers on the same products, and each individual's sales represented some proportion of the overall sales to the customer, we cannot say that the sales data is independent and identically distributed.  In this case we will expect to see some hierarchy in our data and will need to adjust our techniques accordingly to take this into consideration.      
 
-Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let's test this with a little experiment on our `salespeople` data.  Figure \@ref(fig:sales-sample) shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the `salespeople` dataset and creating a histogram of the resulting mean sales values.  We can see how greater numbers of samples (down the rows) leads to a more normal distribution curve and larger sample sizes (across the columns) leads to a 'spikier' distribution with a smaller standard deviation.
+
+`r if (knitr::is_latex_output()) '\\index{random variables!central limit theorem}'`Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let's test this with a little experiment on our `salespeople` data.  Figure \@ref(fig:sales-sample) shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the `salespeople` dataset and creating a histogram of the resulting mean sales values.  `r if (knitr::is_latex_output()) '\\index{random variables!sampling}'`We can see how greater numbers of samples (down the rows) leads to a more normal distribution curve and larger sample sizes (across the columns) leads to a 'spikier' distribution with a smaller standard deviation.
 
 
 ```{r sales-sample, fig.cap= if (knitr::is_latex_output()) {"Histogram and density of mean \\texttt{sales} from the \\texttt{salespeople} data set based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)"} else {"Histogram and density of mean `sales` from the `salespeople` data set based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)"}, fig.align = "center", echo = FALSE, warning = FALSE, message = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
@@ -251,7 +254,8 @@ gridExtra::grid.arrange(plotdist(50, 10), plotdist(100, 10), plotdist(150, 10),
 
 ### Standard errors, the $t$-distribution and confidence intervals
 
-One consequence of the observations in Figure \@ref(fig:sales-sample) is that the summary statistics calculated from larger sample sizes fall into distributions that are 'narrower' and hence represent more precise estimations of the population statistic.  The standard deviation of a sampled statistic is called the **standard error** of that statistic.  In the special case of a sampled mean, the formula for the standard error of the mean can be derived to be
+
+`r if (knitr::is_latex_output()) '\\index{standard error (statistics)}'`One consequence of the observations in Figure \@ref(fig:sales-sample) is that the summary statistics calculated from larger sample sizes fall into distributions that are 'narrower' and hence represent more precise estimations of the population statistic.  The standard deviation of a sampled statistic is called the **standard error** of that statistic.  In the special case of a sampled mean, the formula for the standard error of the mean can be derived to be
 
 $$
 SE = \frac{\sigma}{\sqrt{n}}
@@ -279,16 +283,19 @@ We can calculate the mean of the sample and the standard error of the mean:
 (se <- sd(sample)/sqrt(n))
 ```
 
-Because the normal distribution is a frequency (or probability) distribution, we can interpret the standard error as a fundamental unit of 'sensitivity' around the sample mean.  For greater multiples of standard errors around the sample mean, we can have greater certainty that the range contains the true population mean. 
 
-To calculate how many standard errors we would need around the sample mean to have a 95% probability of including the true population mean, we need to use the $t$-distribution.  The $t$-distribution is essentially an approximation of the normal distribution acknowledging that we only have a sample estimate of the true population standard deviation in how we calculate the standard error.  In this case where we are dealing with a single sample mean, we use the $t$-distribution with $n-1$ degrees of freedom. We can use the `qt()` function in R to find the standard error multiple associated with the level of certainty we need.  This is called the *$t$-statistic*.  In this case we are looking for our true population mean to be outside the top 2.5% or bottom 2.5% of the distribution^[As sample sizes increase and sample statistics get very close to population statistics, whether we use a $t$-distribution or a $z$-distribution (normal distribution) for determining confidence intervals or p-values becomes less important as they become almost identical on large samples.  The output of some models will refer to $t$-statistics and others to $z$-statistics, but the difference is only likely to matter in small samples of less than 50 or so observations.  In this chapter we will use the $t$-distribution as it is a better choice for all sample sizes].
+`r if (knitr::is_latex_output()) '\\index{normal distribution (statistics)}'`Because the normal distribution is a frequency (or probability) distribution, we can interpret the standard error as a fundamental unit of 'sensitivity' around the sample mean.  For greater multiples of standard errors around the sample mean, we can have greater certainty that the range contains the true population mean. 
+
+
+`r if (knitr::is_latex_output()) '\\index{t-distribution (statistics)}'`To calculate how many standard errors we would need around the sample mean to have a 95% probability of including the true population mean, we need to use the $t$-distribution.  The $t$-distribution is essentially an approximation of the normal distribution acknowledging that we only have a sample estimate of the true population standard deviation in how we calculate the standard error.  In this case where we are dealing with a single sample mean, we use the $t$-distribution with $n-1$ degrees of freedom. We can use the `qt()` function in R to find the standard error multiple associated with the level of certainty we need.  This is called the *$t$-statistic*.  In this case we are looking for our true population mean to be outside the top 2.5% or bottom 2.5% of the distribution^[As sample sizes increase and sample statistics get very close to population statistics, whether we use a $t$-distribution or a $z$-distribution (normal distribution) for determining confidence intervals or p-values becomes less important as they become almost identical on large samples.  The output of some models will refer to $t$-statistics and others to $z$-statistics, but the difference is only likely to matter in small samples of less than 50 or so observations.  In this chapter we will use the $t$-distribution as it is a better choice for all sample sizes].
 
 ```{r}
 # get t-statistic for 0.975
 (t <- qt(p = 0.975, df = n - 1))
 ```
 
-We see that approx `r round(t, 2)` standard errors either side of our sample mean will give us 95% confidence that our range contains the true population mean.  This is called the *95% confidence interval*^[Often we can use a rough estimate for larger samples that the 95% confidence interval is 2 standard errors either side of the sample mean].
+
+`r if (knitr::is_latex_output()) '\\index{confidence interval (statistics)}'`We see that approx `r round(t, 2)` standard errors either side of our sample mean will give us 95% confidence that our range contains the true population mean.  This is called the *95% confidence interval*^[Often we can use a rough estimate for larger samples that the 95% confidence interval is 2 standard errors either side of the sample mean].
 
 ```{r}
 # 95% confidence interval lower and upper bounds
@@ -297,14 +304,17 @@ upper_bound <- sample_mean + t*se
 
 cat(paste0('[', lower_bound, ', ', upper_bound, ']')) 
 ```
+`r if (knitr::is_latex_output()) '\\index{random variables|)}'`
 
 ## Hypothesis testing {#hyp-tests}
 
-Observations about the distribution of statistics on samples of random variables allow us to construct tests for hypotheses of difference or similarity.  Such hypothesis testing is useful in itself for simple bivariate analysis in practice settings, but it will be particularly critical in later chapters in determining whether models are useful or not.  Before we go through some technical examples of hypothesis testing, let's overview the logic and intuition for how hypothesis testing works.
+`r if (knitr::is_latex_output()) '\\index{hypothesis testing|(}'`
 
-The purpose of hypothesis testing is to establish a high degree of statistical certainty regarding a claim of difference in a population based on the properties of a sample.  Consistent with a high burden of proof, we start from the hypothesis that there is no difference, called the *null hypothesis*.  We only reject the null hypothesis if the statistical properties of the sample data render it very unlikely, in which case we confirm the *alternative hypothesis* that a statistical difference does exist in the population.  
+`r if (knitr::is_latex_output()) '\\index{hypothesis testing!logic and intuition}'`Observations about the distribution of statistics on samples of random variables allow us to construct tests for hypotheses of difference or similarity.  Such hypothesis testing is useful in itself for simple bivariate analysis in practice settings, but it will be particularly critical in later chapters in determining whether models are useful or not.  Before we go through some technical examples of hypothesis testing, let's overview the logic and intuition for how hypothesis testing works.
 
-Most hypothesis tests can return a p-value, which is the maximum probability of finding the sample results (or results that are more extreme or unusual than the sample results) when the null hypothesis is true for the population. The analyst must decide on the level of p-value needed to reject the null hypothesis. This threshold is referred to as the significance level $\alpha$ (alpha). A common standard is to set $\alpha$ at 0.05.  That is, we reject the null hypothesis if the p-value that we find for our sample results is less than 0.05. If we reject the null hypothesis at $\alpha = 0.05$, this means that the results we observe in the sample are so extreme or unusual that they would only occur by chance at most 1 in 20 times if the null hypothesis were true. An alpha of 0.05 is not the only standard of certainty used in research and practice, and in some fields of study smaller alphas are the norm, particularly if erroneous conclusions might have very serious consequences.
+`r if (knitr::is_latex_output()) '\\index{hypothesis testing!null hypothesis}'`The purpose of hypothesis testing is to establish a high degree of statistical certainty regarding a claim of difference in a population based on the properties of a sample.  Consistent with a high burden of proof, we start from the hypothesis that there is no difference, called the *null hypothesis*.  We only reject the null hypothesis if the statistical properties of the sample data render it very unlikely, in which case we confirm the `r if (knitr::is_latex_output()) '\\index{hypothesis testing!alternative hypothesis}'`*alternative hypothesis* that a statistical difference does exist in the population.  
+
+`r if (knitr::is_latex_output()) '\\index{hypothesis testing!p-value}'`Most hypothesis tests can return a p-value, which is the maximum probability of finding the sample results (or results that are more extreme or unusual than the sample results) when the null hypothesis is true for the population. The analyst must decide on the level of p-value needed to reject the null hypothesis. `r if (knitr::is_latex_output()) '\\index{hypothesis testing!alpha}'`This threshold is referred to as the significance level $\alpha$ (alpha). A common standard is to set $\alpha$ at 0.05.  That is, we reject the null hypothesis if the p-value that we find for our sample results is less than 0.05. If we reject the null hypothesis at $\alpha = 0.05$, this means that the results we observe in the sample are so extreme or unusual that they would only occur by chance at most 1 in 20 times if the null hypothesis were true. An alpha of 0.05 is not the only standard of certainty used in research and practice, and in some fields of study smaller alphas are the norm, particularly if erroneous conclusions might have very serious consequences.
 
 Three of the most common types of hypothesis tests are^[We go through these three examples both because they are relatively common, but also to illustrate the details of the logic behind hypothesis testing.  By understanding how hypothesis tests work, this will allow the reader to grasp the meaning of other such tests like the F-test or the Wald test which we will be referring to in later chapters of this book]:
 
@@ -316,7 +326,7 @@ We will go through an example of each of these.  In each case you will see a thr
 
 ### Testing for a difference in means (Welch's $t$-test) {#means-sig}
 
-Imagine that we are asked if, in general, the sales of low performing salespeople are different from the sales of high performing salespeople.  This question refers to all salespeople, but we only have data for the sample in our `salespeople` data set.  Let's take two subsets of our data for those with a performance rating of 1 and those with a performance rating of 4, and calculate the difference in mean sales.
+`r if (knitr::is_latex_output()) '\\index{hypothesis testing!Welch\'s t-test}'`Imagine that we are asked if, in general, the sales of low performing salespeople are different from the sales of high performing salespeople.  This question refers to all salespeople, but we only have data for the sample in our `salespeople` data set.  Let's take two subsets of our data for those with a performance rating of 1 and those with a performance rating of 4, and calculate the difference in mean sales.
 
 ```{r}
 # take two performance group samples 
@@ -390,7 +400,7 @@ ggplot(data = data.frame(x = c(-5, 5)), aes(x)) +
 ```
 
 
-The red dashed lines in this diagram represent the 95% confidence interval around the mean difference of our two samples.  The 'tails' of the curve outside of these two lines each represent a maximum of 0.025 probability for the true population mean.  So we can see that the position of the blue line can correspond to a *maximum probability* that the population mean difference is zero.  This is the *p-value* of the hypothesis test^[We call this type of hypothesis test a *two tailed* test, because the tested population mean can be either higher or lower than the sample mean, thus it can appear in any of the two tails for the null hypothesis to be rejected.  *One-tailed* tests are used when you are testing for an alternative hypothesis that the difference is specifically "less than zero" or "greater than zero".  In the `t.test()` function in R, you can specify this in the arguments].
+The red dashed lines in this diagram represent the 95% confidence interval around the mean difference of our two samples.  The 'tails' of the curve outside of these two lines each represent a maximum of 0.025 probability for the true population mean.  So we can see that the position of the blue line can correspond to a *maximum probability* that the population mean difference is zero.  `r if (knitr::is_latex_output()) '\\index{hypothesis testing!p-value}'`This is the *p-value* of the hypothesis test^[We call this type of hypothesis test a *two tailed* test, because the tested population mean can be either higher or lower than the sample mean, thus it can appear in any of the two tails for the null hypothesis to be rejected.  `r if (knitr::is_latex_output()) '\\index{hypothesis testing!one and two tailed tests}'`*One-tailed* tests are used when you are testing for an alternative hypothesis that the difference is specifically "less than zero" or "greater than zero".  In the `t.test()` function in R, you can specify this in the arguments].
 
 The p-value can be derived from the $t$-statistic by applying the conversion function `pt()` to obtain the upper tail probability and multiplying by 2 to get the probability associated with both tails of the distribution:    
 
@@ -409,15 +419,15 @@ Nowadays, it is never necessary to do these manual calculations ourselves becaus
 t.test(perf4$sales, perf1$sales)
 ```
 
-Because our p-value is less than our alpha of 0.05, we reject the null hypothesis in favour of the alternative hypothesis. The standard $\alpha = 0.05$ is associated with the term *statistically significant*.  Therefore we could say here that the two performance groups have a statistically significant difference in mean sales.  
+Because our p-value is less than our alpha of 0.05, we reject the null hypothesis in favour of the alternative hypothesis. `r if (knitr::is_latex_output()) '\\index{hypothesis testing!statistically significant}'`The standard $\alpha = 0.05$ is associated with the term *statistically significant*.  Therefore we could say here that the two performance groups have a statistically significant difference in mean sales.  
 
 In practice, there are numerous alphas that are of interest to analysts, each reflecting different levels of certainty.  While 0.05 is the most common standard in many disciplines, more stringent alphas of 0.01 and 0.001 are often used in situations where a high degree of certainty is desirable (for example some medical fields).  Similarly, a less stringent alpha standard of 0.1 can be of interest particularly when sample sizes are small and the analyst is satisfied with 'indications' from the data.  In many statistical software packages, including those that we will see in this book, tests that meet an $\alpha = 0.1$ standard are usually marked with period(`.`), those that meet $\alpha = 0.05$ with an asterisk(`*`), $\alpha = 0.01$ a double asterisk(`**`) and $\alpha = 0.001$ a triple asterisk(`***`).
 
-Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data.  In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards - a process known as "p-hacking" - has been of increasing concern recently.  See Chapter \@ref(power-tests) for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.
+`r if (knitr::is_latex_output()) '\\index{hypothesis testing!p-hacking}'`Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data.  In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards - a process known as "p-hacking" - has been of increasing concern recently.  See Chapter \@ref(power-tests) for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.
 
 ### Testing for a non-zero correlation between two variables ($t$-test for correlation)
 
-Imagine that we are given a sample of data for two variables and we are asked if the variables are correlated in the overall population.  We can take a null hypothesis that the variables are not correlated, determine a t-statistic associated with a zero correlation and convert this to a p-value.  The t-statistic associated with a correlation $r$ between two samples of length $n$ is often notated $t^*$ and is defined as 
+`r if (knitr::is_latex_output()) '\\index{hypothesis testing!test of non-zero correlation}'`Imagine that we are given a sample of data for two variables and we are asked if the variables are correlated in the overall population.  We can take a null hypothesis that the variables are not correlated, determine a t-statistic associated with a zero correlation and convert this to a p-value.  The t-statistic associated with a correlation $r$ between two samples of length $n$ is often notated $t^*$ and is defined as 
 
 $$
 t^* = \frac{r\sqrt{n-2}}{\sqrt{1-r^2}}
@@ -488,7 +498,7 @@ notpromoted <- sum((expected_notpromoted - contingency[1, ])^2/
 (chi_sq_stat <- notpromoted + promoted)
 ```
 
-The $\chi^2$ statistic has an expected distribution that can be used to determine the p-value associated with this statistic.  As with the $t$-distribution, the $\chi^2$-distribution depends on the degrees of freedom.  This is calculated by subtracting one from the number of rows and from the number of columns in the contingency table and multiplying them together.  In this case we have 2 rows and 4 columns which calculates to 3 degrees of freedom.  Armed with our $\chi^2$ statistic and our degrees of freedom, we can now calculate the p-value for the hypothesis test using the `pchisq()` function.  
+`r if (knitr::is_latex_output()) '\\index{hypothesis testing!chi-square test}'`The $\chi^2$ statistic has an expected distribution that can be used to determine the p-value associated with this statistic.  As with the $t$-distribution, the $\chi^2$-distribution depends on the degrees of freedom.  This is calculated by subtracting one from the number of rows and from the number of columns in the contingency table and multiplying them together.  In this case we have 2 rows and 4 columns which calculates to 3 degrees of freedom.  Armed with our $\chi^2$ statistic and our degrees of freedom, we can now calculate the p-value for the hypothesis test using the `pchisq()` function.  
 
 ```{r}
 # calculate p-value from chi_squared stat
@@ -505,7 +515,7 @@ Again, we can reject the null hypothesis and confirm the alternative hypothesis:
 
 ## Foundational statistics in Python
 
-Elementary desciptive statistics can be performed in Python using various packages.  Descriptive statistics of `numpy` arrays are usually available as methods.
+Elementary descriptive statistics can be performed in Python using various packages.  Descriptive statistics of `numpy` arrays are usually available as methods.
 
 ```{python}
 import pandas as pd
@@ -565,7 +575,7 @@ cor = sales_rate.corr()
 print(cor)
 ```
 
-Specific types of correlation coefficients can be accessed via the `stats` module of the `scipy` package.  
+`r if (knitr::is_latex_output()) '\\index{Python!packages!scipystats@\\texttt{scipy.stats}}'`Specific types of correlation coefficients can be accessed via the `stats` module of the `scipy` package.  
 
 ```{python}
 from scipy import stats
@@ -619,6 +629,8 @@ chi2_test = stats.chi2_contingency(contingency)
 print(chi2_test)
 
 ```
+`r if (knitr::is_latex_output()) '\\index{hypothesis testing|)}'`
+
 
 ## Learning exercises
 
@@ -648,7 +660,7 @@ $$
 
 ### Data exercises
 
-For these exercises, load the `charity_donation` dataset via the `peopleanalyticsdata` package, or download it from the internet^[http://peopleanalytics-regression-book.org/data/charity_donation.csv].  This dataset contains information on a sample of individuals who made donations to a nature charity.
+`r if (knitr::is_latex_output()) '\\index{data sets!charity\\_donation@\\texttt{charity\\_donation}}'`For these exercises, load the `charity_donation` dataset via the `peopleanalyticsdata` package, or download it from the internet^[http://peopleanalytics-regression-book.org/data/charity_donation.csv].  This dataset contains information on a sample of individuals who made donations to a nature charity.
 
 1.  Calculate the mean `total_donations` from the data set.
 2.  Calculate the sample variance for `total_donation` and convert this to a population variance.

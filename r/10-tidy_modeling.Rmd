@@ -2,9 +2,9 @@
 
 As outlined earlier in this book, all technical implementations of the modeling techniques in previous chapters have relied wherever possible on base R code and specialist packages for specific methodologies - this allowed a focus on the basics of understanding, running and interpreting these models which is the key aim of this book.    For those interested in a wider range of technical options for running inferential statistical models, this chapter illustrates some alternative options and should be considered a starting point for those interested rather than an in-depth exposition.  
 
-First we look at options for generating models in more predictable formats in R.  We have seen in prior chapters that the output of many models in R can be inconsistent.  In many cases we are given more information than we need and in some cases we have less than we need.  Formats can vary and we sometimes need to look in different parts of the output to see specific statistics that we seek.  The `tidymodels` set of packages tries to bring the principles of tidy data into the realm of statistical modeling and we will illustrate this briefly.
+First we look at options for generating models in more predictable formats in R.  We have seen in prior chapters that the output of many models in R can be inconsistent.  In many cases we are given more information than we need and in some cases we have less than we need.  Formats can vary and we sometimes need to look in different parts of the output to see specific statistics that we seek.  `r if (knitr::is_latex_output()) '\\index{R!packages!tidymodels@\\texttt{tidymodels}}'`The `tidymodels` set of packages tries to bring the principles of tidy data into the realm of statistical modeling and we will illustrate this briefly.
 
-Second, for those whose preference is to use Python, we provide some examples for how inferential regression models can be run in Python.  While Python is particularly well-tooled for running predictive models, it does not have the full range of statistical inference tools that are available in R.  In particular, using predictive modeling or machine learning packages like `scikit-learn` to conduct regression modeling can often leave the analyst lacking when seeking information about certain model statistics when those statistics are not typically sought after in a predictive modeling workflow.  We briefly illustrate some Python packages which perform modeling with a greater emphasis on inference versus prediction.  
+Second, for those whose preference is to use Python, we provide some examples for how inferential regression models can be run in Python.  While Python is particularly well-tooled for running predictive models, it does not have the full range of statistical inference tools that are available in R.  In particular, using predictive modeling or machine learning packages like `r if (knitr::is_latex_output()) '\\index{Python!packages!scikit-learn@\\texttt{scikit-learn}}'``scikit-learn` to conduct regression modeling can often leave the analyst lacking when seeking information about certain model statistics when those statistics are not typically sought after in a predictive modeling workflow.  We briefly illustrate some Python packages which perform modeling with a greater emphasis on inference versus prediction.  
 
 ## 'Tidier' modeling approaches in R
 
@@ -12,7 +12,7 @@ The `tidymodels` meta-package is a collection of packages which collectively app
 
 ### The `broom` package
 
-Consistent with how it is named, `broom` aims to tidy up the output of the models into a predictable format.  It works with over 100 different types of models in R.  In order to illustrate its use, let's run a model from a previous chapter - specifically our salesperson promotion model in Chapter \@ref(bin-log-reg).
+`r if (knitr::is_latex_output()) '\\index{R!packages!broom@\\texttt{broom}}'`Consistent with how it is named, `broom` aims to tidy up the output of the models into a predictable format.  It works with over 100 different types of models in R.  `r if (knitr::is_latex_output()) '\\index{data sets!salespeople@\\texttt{salespeople}}'`In order to illustrate its use, let's run a model from a previous chapter - specifically our salesperson promotion model in Chapter \@ref(bin-log-reg).
 
 ```{r}
 # obtain salespeople data
@@ -51,7 +51,7 @@ The `glance()` function allows us to see a row of overall model statistics:
 broom::glance(promotion_model)
 ```
 
-And the `augment()` function augments the observations in the dataset with a range of observation-level model statistics such as residuals:
+The `augment()` function augments the observations in the dataset with a range of observation-level model statistics such as residuals:
 
 ```{r, eval = FALSE}
 # view augmented data
@@ -64,7 +64,7 @@ head(broom::augment(promotion_model))
 ```
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
-These functions are model-agnostic for a very wide range of common models in R.  For example, we can use them on our proportional odds model on soccer discipline from Chapter \@ref(ord-reg) and they will generate the relevant statistics in tidy tables.
+`r if (knitr::is_latex_output()) '\\index{data sets!soccer@\\texttt{soccer}}'`These functions are model-agnostic for a very wide range of common models in R.  For example, we can use them on our proportional odds model on soccer discipline from Chapter \@ref(ord-reg) and they will generate the relevant statistics in tidy tables.
 
 ```{r}
 # get soccer data
@@ -88,7 +88,7 @@ broom::glance(soccer_model)
 ```
 
 
-`broom` functions integrate well into other tidyverse methods, and allow easy running of models over nested subsets of data.  For example, if we want to run our soccer discipline model across the different countries in the dataset and see all the model statistics in a neat table, we can use typical tidyverse grammar to do so using `dplyr`.
+`r if (knitr::is_latex_output()) '\\index{R!packages!dplyr@\\texttt{dplyr}}'``broom` functions integrate well into other tidyverse methods, and allow easy running of models over nested subsets of data.  For example, if we want to run our soccer discipline model across the different countries in the dataset and see all the model statistics in a neat table, we can use typical tidyverse grammar to do so using `dplyr`.
 
 `r if (knitr::is_latex_output()) '\\newpage'`
 
@@ -120,7 +120,7 @@ formula <- c(
   "discipline ~ n_yellow_25 + n_red_25 + position"
 )
 
-#create dataframe
+# create dataframe
 models <- data.frame(formula)
 
 # run models and glance at results
@@ -149,7 +149,7 @@ models %>%
 
 ### The `parsnip` package
 
-The `parsnip` package aims create a unified interface to running models, to avoid users needing to understand different model terminology and other minutiae.   It also takes a more hierarchical approach to defining models that is similar in nature to the object-oriented approaches that Python users would be more familiar with.
+`r if (knitr::is_latex_output()) '\\index{R!packages!parsnip@\\texttt{parsnip}}'`The `parsnip` package aims create a unified interface to running models, to avoid users needing to understand different model terminology and other minutiae.   It also takes a more hierarchical approach to defining models that is similar in nature to the object-oriented approaches that Python users would be more familiar with.
 
 Again let's use our salesperson promotion model example to illustrate.  We start by defining a model family that we wish to use, in this case logistic regression, and define a specific engine and mode.
 
@@ -186,7 +186,7 @@ model %>%
 
 ## Inferential statistical modeling in Python
 
-In general, the modeling functions contained in `scikit-learn` - which tends to be the go-to modeling package for most Python users - are oriented towards predictive modeling and can be challenging to navigate for those who are primarily interested in inferential modeling.  In this section we will briefly review approaches for running some of the models contained in this book in Python.  The `statsmodels` package is highly recommended as it offers a wide range of models which report similar statistics to those reviewed in this books.  Full `statsmodels` documentation can be found `r if (knitr::is_latex_output()) {"at \\texttt{https://www.statsmodels.org/stable/index.html}"} else {"[here](https://www.statsmodels.org/stable/index.html)"}`.
+`r if (knitr::is_latex_output()) '\\index{Python!packages!scikit-learn@\\texttt{scikit-learn}}'`In general, the modeling functions contained in `scikit-learn` - which tends to be the go-to modeling package for most Python users - are oriented towards predictive modeling and can be challenging to navigate for those who are primarily interested in inferential modeling.  In this section we will briefly review approaches for running some of the models contained in this book in Python.  `r if (knitr::is_latex_output()) '\\index{Python!packages!statsmodels@\\texttt{statsmodels}}'`The `statsmodels` package is highly recommended as it offers a wide range of models which report similar statistics to those reviewed in this book.  Full `statsmodels` documentation can be found `r if (knitr::is_latex_output()) {"at \\texttt{https://www.statsmodels.org/stable/index.html}"} else {"[here](https://www.statsmodels.org/stable/index.html)"}`.
 
 ### Ordinary least squares (OLS) linear regression
 
@@ -282,7 +282,7 @@ print(promotion_model.summary())
 
 ### Multinomial logistic regression
 
-Multinomial logistic regression is similarly available using the `statsmodels` formula API.  As usual, care must be taken to ensure that the reference category is appropriately defined, dummy input variables need to be explictly constructed, and a constant input variable must be added to ensure an intercept is calculated.
+Multinomial logistic regression is similarly available using the `statsmodels` formula API.  As usual, care must be taken to ensure that the reference category is appropriately defined, dummy input variables need to be explictly constructed, and a constant term must be added to ensure an intercept is calculated.
 
 ```{python, eval = FALSE}
 import pandas as pd
@@ -302,6 +302,7 @@ X1 = pd.get_dummies(health_insurance['gender'], drop_first = True)
 X2 = health_insurance.drop(['product', 'gender'], axis = 1)
 X = pd.concat([X1, X2], axis = 1)
 
+# add a constant term to ensure intercept is calculated
 Xc = sm.add_constant(X)
 
 # define model
@@ -315,7 +316,7 @@ print(insurance_model.summary())
 
 ```
 
-`r if (knitr::is_latex_output()) '\\small'`
+`r if (knitr::is_latex_output()) '\\newpage \\small'`
 ```{python, echo = FALSE, results = FALSE}
 import pandas as pd
 import statsmodels.formula.api as smf
@@ -351,9 +352,9 @@ print(insurance_model.summary())
 
 ### Structural equation models
 
-The `semopy` package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar to the `lavaan` package in R.  However, its reporting is not as intuitive compared to `lavaan`.  A full tutorial is available `r if (knitr::is_latex_output()) {"at \\texttt{https://semopy.com/tutorial.html}"} else {"[here](https://semopy.com/tutorial.html)"}`.  Here is an example of how to run the same model as that studied in Section \@ref(struc-eq-model) using `semopy`.
+`r if (knitr::is_latex_output()) '\\index{Python!packages!semopy@\\texttt{semopy}}'`The `semopy` package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar to the `lavaan` package in R.  However, its reporting is not as intuitive compared to `lavaan`.  A full tutorial is available `r if (knitr::is_latex_output()) {"at \\texttt{https://semopy.com/tutorial.html}"} else {"[here](https://semopy.com/tutorial.html)"}`.  Here is an example of how to run the same model as that studied in Section \@ref(struc-eq-model) using `semopy`.
 
-`r if (knitr::is_latex_output()) '\\small'`
+`r if (knitr::is_latex_output()) '\\newpage \\small'`
 ```{python, results = "hide"}
 import pandas as pd
 from semopy import Model
@@ -391,13 +392,13 @@ full_model.fit(politics_survey)
 Then to inspect the results:
 
 ```{python}
-# inspect the results of SEM 
-full_model.inspect()
+# inspect the results of SEM (first few rows)
+full_model.inspect().head()
 ```
 
 ### Survival analysis
 
-The `lifelines` package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions.  A full tutorial is available `r if (knitr::is_latex_output()) {"at \\texttt{https://lifelines.readthedocs.io/en/latest/index.html}"} else {"[here](https://lifelines.readthedocs.io/en/latest/index.html)"}`.  
+`r if (knitr::is_latex_output()) '\\index{Python!packages!semopy@\\texttt{lifelines}}'`The `lifelines` package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions.  A full tutorial is available `r if (knitr::is_latex_output()) {"at \\texttt{https://lifelines.readthedocs.io/en/latest/index.html}"} else {"[here](https://lifelines.readthedocs.io/en/latest/index.html)"}`.  
 
 Here is an example of how to plot Kaplan-Meier survival curves in Python using our Chapter \@ref(survival) walkthrough example. The survival curves are displayed in Figure \@ref(fig:survival-python).
 
@@ -496,7 +497,7 @@ cph.fit(job_retention, duration_col = 'month', event_col = 'left',
 cph.print_summary()
 ```
 
-`r if (knitr::is_latex_output()) '\\tiny'`
+`r if (knitr::is_latex_output()) '\\newpage \\tiny'`
 ```{python, echo = FALSE}
 # view results
 cph.print_summary()
@@ -509,7 +510,7 @@ Proportional Hazard assumptions can be checked using the `check_assumptions()` m
 cph.check_assumptions(job_retention, p_value_threshold = 0.05)
 ```
 
-`r if (knitr::is_latex_output()) '\\scriptsize'`
+`r if (knitr::is_latex_output()) '\\newpage \\scriptsize'`
 ```{python, echo = FALSE}
 cph.check_assumptions(job_retention, p_value_threshold = 0.05)
 ```
@@ -519,9 +520,9 @@ cph.check_assumptions(job_retention, p_value_threshold = 0.05)
 
 Implementation of other model variants featured in earlier chapters becomes thinner in Python.  However, of note are the following:
 
-* Ordinal regression is a recent addition to the `statsmodels` package and is still only available in the development version.  The `mord` package offers an implementation for predictive analytics purposes, but for inferential modeling users will need to wait for the next release of `statsmodels` or for immediate use they will need to install the development version from source.
+* Ordinal regression is not currently available in the release version of the `statsmodels` package, but is available in the development version.  The `mord` package offers an implementation of ordinal regression for predictive analytics purposes, but for inferential modeling users will need to wait for a release of `statsmodels` that contains ordinal regression methods or for immediate use they will need to install the development version from source.
 
-* Mixed models only currenly have an implementation for linear mixed modeling in `statsmodels`.  Generalized linear mixed models equivalent to those found in the `lme4` R package are not yet available in Python.
+* Mixed models only currently have an implementation for linear mixed modeling in `statsmodels`.  Generalized linear mixed models equivalent to those found in the `lme4` R package are not yet available in Python.
 
 
 

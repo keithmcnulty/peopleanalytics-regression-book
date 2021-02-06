@@ -1,6 +1,6 @@
 # Introduction {-}
 
-As a fresh-faced undergraduate in mathematics in the 1990s, I took an introductory course in statistics in my first term.  I would never take another.  I struggled with the subject and scored my lowest grade in it, and swore I would never go anywhere near it again.  
+As a fresh-faced undergraduate in mathematics in the 1990s, I took an introductory course in statistics in my first term.  I would never take another.  I struggled with the subject, scored my lowest grade in it, and swore I would never go anywhere near it again.  
 
 How wrong I was.  Today I live and breathe statistics.  How did that happen?  
 

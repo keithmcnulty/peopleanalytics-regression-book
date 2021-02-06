@@ -1,10 +1,12 @@
 # Power Analysis to Estimate Required Sample Sizes for Modeling {#power-tests}
 
+`r if (knitr::is_latex_output()) '\\index{power analysis|(}'`
 In the vast majority of situations in people analytics, researchers and analysts have limited control over the size of their samples.  The most common situation is, of course, that analyses are run with whatever data can be gleaned and cleaned in the time available.  At the same time, as we have seen in all of our previous work, even if a certain difference might exist in real life in the populations being studied, it is by no means certain that a specific analysis on samples from these populations will elucidate that difference.  Whether that difference is visible depends on the statistical properties of the samples used.  Therefore, researchers and analysts are living in the reality that when they conduct inferential analysis, the usefulness of their work depends to a very large degree on the samples they have available.
 
-This suggests that a conscientious analyst would be well advised to do some up front work to determine if their samples have a chance of yielding results that are of some inferential value.  In a practical context, however, this is only partly true (and that is an important reason why this chapter has been left towards the end of this book).  Estimating required sample sizes is an imprecise science.  Although the mathematics suggest that in theory it should be precise, in reality we are guessing most of the inputs to the mathematics.  In many cases we are so clueless about those inputs that we move into the realms of pure speculation and produce ranges of required sample sizes that are so wide as to be fairly meaningless in context.
+This suggests that a conscientious analyst would be well advised to do some up front work to determine if their samples have a chance of yielding results that are of some inferential value.  In a practical context, however, this is only partly true (and that is an important reason why this chapter has been left towards the end of this book).  Estimating required sample sizes is an imprecise science.  Although the mathematics suggest that in theory it should be precise, in reality we are guessing most of the inputs to the mathematics.  In many cases we are so clueless about those inputs that we move into the realms of pure speculation and produce ranges of required sample sizes that are so wide as to be fairly meaningless in practice.
 
-That said, there are situations where running *power tests* - that is, tests of the required statistical properties of samples in order to have a certain minimum probability of observing a difference - make sense.  Power tests are an important element of experimental design.  Experiments in people analytics usually take one of two forms:
+That said, there are situations where conducting *power analysis* - that is, analysis of the required statistical properties of samples in order to have a certain minimum probability of observing a true difference - makes sense.  Power analysis is an important element of experimental design.  Experiments in people analytics usually take one of two forms:
+`r if (knitr::is_latex_output()) '\\index{experiments}'`
 
 1.  *Prospective experiments* involve running some sort of test or pilot on populations to determine if a certain measure has a hypothesized effect.  For example, introducing a certain new employee benefit for a specific subset of the company for a limited period of time, and determining if there was a difference in the impact on employee satisfaction compared to those who did not receive the benefit.
 
@@ -12,11 +14,11 @@ That said, there are situations where running *power tests* - that is, tests of 
 
 Both prospective and retrospective experiments can involve a lot of work - either in setting up experiments or in extracting data from history.  There is a natural question as to whether the chances of success justify the required resources and effort.  Before proceeding in these cases, it is sensible to get a point of view on the likely power of the experiment and what level of sample size might be needed in order to establish a meaningful inference. For this reason, power analysis is a common component of research proposals in the medical or social sciences.  
 
-Power analysis is a relatively blunt instrument whose primary value is to make sure that substantial effort is not being wasted on foolhardy research.   If the analyst already has reasonably available data and wants to test for the effect of a certain phenomenon, the most direct approach is to just go and run the appropriate model assuming that it is relatively straightforward to do so. Power tests should only be considered if there is clearly some substantial labor involved in the proposed modeling work. 
+Power analysis is a relatively blunt instrument whose primary value is to make sure that substantial effort is not being wasted on foolhardy research.   If the analyst already has reasonably available data and wants to test for the effect of a certain phenomenon, the most direct approach is to just go and run the appropriate model assuming that it is relatively straightforward to do so. Power analysis should only be considered if there is clearly some substantial labor involved in the proposed modeling work. 
 
 ## Errors, effect sizes and statistical power
 
-Before looking at practical ways to conduct power tests on proposed experiments, let's review an example of the logical and mathematical principles behind power testing, so that we understand what the results of power tests mean.  Recall from Section \@ref(hyp-tests) the logical mechanisms for testing hypotheses of statistical difference.  Given data on samples of two groups in a population, the *null hypothesis* or $H_0$, is the hypothesis that a difference does not exist between the groups in the overall population.  If the null hypothesis is rejected, we accept the alternative hypothesis, or $H_1$, that a difference does exist between the groups in the population.
+`r if (knitr::is_latex_output()) '\\index{power analysis!logic and principles}'`Before looking at practical ways to conduct power tests on proposed experiments, let's review an example of the logical and mathematical principles behind power testing, so that we understand what the results of power tests mean.  Recall from Section \@ref(hyp-tests) the logical mechanisms for testing hypotheses of statistical difference.  Given data on samples of two groups in a population, the *null hypothesis* $H_0$ is the hypothesis that a difference does not exist between the groups in the overall population.  If the null hypothesis is rejected, we accept the alternative hypothesis $H_1$ that a difference does exist between the groups in the population.
 
 Recall also that we use the statistical properties of the samples to make inferences about the null and alternative hypotheses based on statistical likelihood.  This means that four possible situations can occur when we run hypothesis tests:
 
@@ -25,7 +27,7 @@ Recall also that we use the statistical properties of the samples to make infere
 3.  We fail to reject $H_0$, but in fact $H_1$ is true.  This is known as a *Type II error*.
 4.  We reject $H_0$, and in fact $H_1$ is true.  This is a good outcome and one which is most often the motivation for the hypothesis test in the first place.
 
-*Statistical power* refers to the fourth situation, and is the *probability that $H_0$ is rejected and $H_1$ is true*.  Statistical power depends *at a minimum* on three criteria:
+`r if (knitr::is_latex_output()) '\\index{statistical power}'`*Statistical power* refers to the fourth situation, and is the *probability that $H_0$ is rejected and $H_1$ is true*.  Statistical power depends *at a minimum* on three criteria:
 
 * The significance level $\alpha$ at which the analysis wishes to reject $H_0$ (see Section \@ref(hyp-tests)).  Usually $\alpha = 0.05$.
 * The size $n$ of the sample being used
@@ -43,15 +45,15 @@ $$
 \end{aligned}
 $$
 
-where $\Phi$ is the cumulative normal probability distribution function, and $d = \frac{\mu_1 - \mu_0}{\sigma}$ is known as *Cohen's effect size*. Therefore, we can see that power depends on a measure of the observed effect size between our two samples (defined as Cohen's $d$) the significance level $\alpha$ and the sample size $n$^[We will also need to know the expected distribution of the statistics that we are analyzing in order to determine the power probability].
+where $\Phi$ is the cumulative normal probability distribution function, `r if (knitr::is_latex_output()) '\\index{power analysis!Cohen\'s effect size}'`and $d = \frac{\mu_1 - \mu_0}{\sigma}$ is known as *Cohen's effect size*. Therefore, we can see that power depends on a measure of the observed effect size between our two samples (defined as Cohen's $d$) the significance level $\alpha$ and the sample size $n$^[We will also need to know the expected distribution of the statistics that we are analyzing in order to determine the power probability].
 
 The reader may immediately observe that many of these measures are not known at the typical point at which we would wish to do a power analysis.  We can assert a minimum level of statistical power that we would wish for - usually this is somewhere between 0.8 and 0.9.  We can also assert our $\alpha$.  But at a point of experimental design, we usually do not know the sample size and we do not know what difference would be observed in that sample (the effect size).  This implies that we are dealing with a single equation with more than one unknown, and this means that there is no unique solution^[In reality there are more unknowns that this math would imply, due to the imperfection of what we are trying to measure.  For example measurement error and reliability will often be an unmeasurable unknown.  For this reason you will often need a larger sample size than that indicated by power tests].  Practically speaking, looking at ranges of values will be common in power analysis.
 
-## Power analysis for simple statistical tests {#simple-stats}
+## Power analysis for simple hypothesis tests {#simple-stats}
 
 Usually we will run power analyses to get a sense of required sample sizes.  Given the observations on unknowns in the previous section, we will have to assert certain possible statistical results in order to estimate required sample sizes.  Most often, we will need to suggest the observed effect size in order to obtain the minimum sample size for that effect size to return a statistically significant result at a desired level of statistical power.  
 
-Using our example from the previous section, let's assume that we would see a 'medium' effect size on our samples.  *Cohen's Rule of Thumb* for $d$ states that $d = 0.2$ is a small effect size, $d = 0.5$ a medium effect size and $d = 0.8$ a large effect size.  We can use the `wp.t()` function from the `WebPower` package in R to do a power analysis on a paired two-sample $t$-test and return a minimum required sample size.  We can assume $d = 0.5$ and that we require a power of 0.8 - that is, we want an 80% probability that the test will return an accurate rejection of the null hypothesis.  
+`r if (knitr::is_latex_output()) '\\index{R!packages!WebPower@\\texttt{WebPower}}'`Using our example from the previous section, let's assume that we would see a 'medium' effect size on our samples.  *Cohen's Rule of Thumb* for $d$ states that $d = 0.2$ is a small effect size, $d = 0.5$ a medium effect size and $d = 0.8$ a large effect size.  We can use the `wp.t()` function from the `WebPower` package in R to do a power analysis on a paired two-sample $t$-test and return a minimum required sample size.  We can assume $d = 0.5$ and that we require a power of 0.8 - that is, we want an 80% probability that the test will return an accurate rejection of the null hypothesis.  
 
 ```{r}
 library(WebPower)
@@ -107,7 +109,7 @@ Figure \@ref(fig:correlpower) informs us that we will likely want to be hitting 
 
 In power tests of linear regression models, the effect size is a statistic of the difference in model fit between the two models being compared.  Most commonly this will be a comparison of a 'full' fitted model involving specific input variables compared to a 'reduced' model with fewer input variables (often a random variance model with no input variables).   
 
-The $f^2$ statistic is defined as follows:
+`r if (knitr::is_latex_output()) '\\index{power analysis!f-squared}'`The $f^2$ statistic is defined as follows:
 
 $$
 f^2 = \frac{R_{\mathrm{full}}^2 - R_{\mathrm{reduced}}^2}{1 - R_{\mathrm{full}}^2}
@@ -137,19 +139,19 @@ In this method, the statistical power of a significance test on the input variab
 For example, let's assume that we wanted to determine if our new screening test had a significant effect on promotion likelihood by running an experiment on employees who were being considered for promotion.   We assume that our screening test is scored on a percentile scale and has a mean of 53 and a standard deviation of 21.  We know that approximately 50% of those being considered for promotion will be promoted, and we believe that the screening test may have a small effect whereby those who score zero would still have a 40% chance of promotion and every additional point scored would increase this chance by 0.2 percentage points.  We run the `wp.logistic()` function in `WebPower` to plot a power curve for various sample sizes as in Figure \@ref(fig:logisticpower).
 
 ```{r logisticpower, fig.cap="Plot of power against sample size for a single input variable in logistic regression", fig.align="center", out.width = if(knitr::is_latex_output()) {"90%"}}
-sample_sizes <- 50:200
+sample_sizes <- 50:2000
 logistic_power <- WebPower::wp.logistic(n = sample_sizes, 
-                                        p0 = 0.4, p1 = 0.42,
+                                        p0 = 0.4, p1 = 0.402,
                                         family = "normal", 
                                         parameter = c(53, 21))
 
 plot(logistic_power)
 ```
-This test suggests that we would need a bare minimum of around 100 individuals in our experiment in order to have a chance of establishing the statistical significance of the relationship between screening test score and promotion likelihood.
+This test suggests that we would need over 1000 individuals in our experiment in order to have at least an 80% chance of establishing the statistical significance of a true relationship between screening test score and promotion likelihood.
 
 ## Power analysis for hierarchical regression models
 
-Power tests for explicit hierarchical models usually originate from the clinical context and concern the design of clinical trials, which not only concern themselves with the entire sample size of a study but also need to determine the split of that sample between treatment and control.  It is rare that power analysis would need to be conducted for hierarchical models in people analytics but the technology is available in the `WebPower` package to explore this.
+Power tests for explicit hierarchical models usually originate from the context of the design of clinical trials, which not only concern themselves with the entire sample size of a study but also need to determine the split of that sample between treatment and control.  It is rare that power analysis would need to be conducted for hierarchical models in people analytics but the technology is available in the `WebPower` package to explore this.
 
 *Cluster randomized trials* are trials where it is not possible to allocate individuals randomly to treatment or control groups and where entire clusters have been allocated at random instead.  This creates substantial additional complexity in understanding statistical power and required sample sizes.  The `wp.crt2arm()` function in `WebPower` supports power analysis on 2-arm trials (treatment and control), and the `wp.crt3arm()` function supports power analysis on 3-arm trials (Two different treatments and a control).
 
@@ -189,3 +191,4 @@ fig = TTestPower().plot_power(dep_var = 'nobs',
 plt.show()
 
 ```
+`r if (knitr::is_latex_output()) '\\index{power analysis|)}'`

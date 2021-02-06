@@ -1,5 +1,6 @@
 # Multinomial Logistic Regression for Nominal Category Outcomes
 
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression|(}'`
 In the previous chapter we looked at how to model a binary or dichotomous outcome using a logistic function.  In this chapter we look at how to extend this to the case when the outcome has a number of categories that do not have any order to them.  When an outcome has this nominal categorical form, it does not have a sense of direction.  There is no 'better' or 'worse', no 'higher' or 'lower', there is only 'different'.
 
 ## When to use it
@@ -8,15 +9,15 @@ In the previous chapter we looked at how to model a binary or dichotomous outcom
 
 A binary or dichotomous outcome like we studied in the previous chapter is already in fact a nominal outcome with two categories, so in principle we already have the basic technology with which to study this problem.  That said, the way we approach the problem can differ according to the types of inferences we wish to make.  
 
-If we only wish to make inferences about the choice of each specific category - what drives whether an observation is in Category A versus the others, or Category B versus the others - then we have the option of running separate binomial logistic regression models on a 'one versus the rest' basis.  In this case we can refine our model differently for each category, eliminating variables that are not significant in determining membership of that category.  This could potentially lead to models being defined differently for different target outcome categories.  Notably, there will be no common comparison category between these models.  This is sometimes called a *stratified* approach.
+If we only wish to make inferences about the choice of each specific category - what drives whether an observation is in Category A versus the others, or Category B versus the others - then we have the option of running separate binomial logistic regression models on a 'one versus the rest' basis.  In this case we can refine our model differently for each category, eliminating variables that are not significant in determining membership of that category.  This could potentially lead to models being defined differently for different target outcome categories.  Notably, there will be no common comparison category between these models.  `r if (knitr::is_latex_output()) '\\index{stratified models}'`This is sometimes called a *stratified* approach.
 
-However, in many studies there is a need for a 'reference' category to better understand the relative odds of category membership.  For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the 'most healthy' or 'most recovered' patients)^[In @hosmer-logistic, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient  Care as the reference]. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different, we would need to make decisions on refining the model differently and we interpret the coefficients in a different way.
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!reference category}'`However, in many studies there is a need for a 'reference' category to better understand the relative odds of category membership.  For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the 'most healthy' or 'most recovered' patients)^[In @hosmer-logistic, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient  Care as the reference]. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different, we would need to make decisions on refining the model differently and we interpret the coefficients in a different way.
 
 In this chapter we will briefly look at the stratified approach (which is effectively a repetition of work done in the previous chapter) before focusing more intently on how we construct models and make inferences using a multinomial approach. 
 
 ### Use cases for multinomial logistic regression
 
-Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order.  An underlying assumption is the independence of irrelevant alternatives (IIA).  Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, would disproportionately influence the membership of one of the other categories^[Put differently, it assumes that adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption].  In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives which are beyond the scope of this book.
+`r if (knitr::is_latex_output()) '\\index{outcome variable!nominal categories}'`Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order.  `r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!Independence of Irrelevant Alternatives (IIA) assumption}'`An underlying assumption is the independence of irrelevant alternatives (IIA).  Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, would disproportionately influence the membership of one of the other categories^[Put differently, it assumes that adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption].  In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives which are beyond the scope of this book.
 
 Examples of typical situations that might be modeled by multinomial logistic regression include:
 
@@ -28,7 +29,7 @@ Examples of typical situations that might be modeled by multinomial logistic reg
 
 You are an analyst at a large technology company.  The company recently introduced a new healthcare provider for its employees.  At the beginning of the year the employees had to choose one of three different healthcare plan products from this provider to best suit their needs.  You have been asked to determine which factors influenced the choice in product.
 
-The `health_insurance` data set consists of the following fields:
+`r if (knitr::is_latex_output()) '\\index{data sets!health\\_insurance@\\texttt{health\\_insurance}}'`The `health_insurance` data set consists of the following fields:
 
 * `product`: The choice of product of the individual - A, B or C
 * `age`: The age of the individual when they made the choice
@@ -78,7 +79,7 @@ The data appears somewhat chaotic here.  However, there are a few things to note
 
 ## Running stratified binomial models {#stratified}
 
-One approach to this problem is to look at each product choice and treat it as an independent binomial logistic regression model, modeling that choice against an alternative of all other choices.  Each such model may help us describe the dynamics of the choice of a specific product, but we have to be careful in making conclusions about the overall choice between the three products.  Running stratified models would not be very efficient if we had a wider range of choices for our outcome, but since we only have three possible choices here, it is reasonable to take this route.
+`r if (knitr::is_latex_output()) '\\index{stratified models}'`One approach to this problem is to look at each product choice and treat it as an independent binomial logistic regression model, modeling that choice against an alternative of all other choices.  Each such model may help us describe the dynamics of the choice of a specific product, but we have to be careful in making conclusions about the overall choice between the three products.  Running stratified models would not be very efficient if we had a wider range of choices for our outcome, but since we only have three possible choices here, it is reasonable to take this route.
 
 ### Modeling the choice of Product A versus other products
 
@@ -132,7 +133,7 @@ In a similar way we can produce two other models, representing the choice of Pro
 
 ## Running a multinomial regression model
 
-An alternative to running separate binary stratified models is to run a multinomial logistic regression model.  A multinomial logistic model will base itself from a defined reference category, and run a linear model on the log-odds of membership of each of the other categories versus the reference category.  Due to its extensive use in epidemiology and medicine, this is often known as the *relative risk* of one category compared to the reference category.  Mathematically speaking, if $X$ is the vector of input variables, and $y$ takes the value $A$, $B$ or $C$, with $A$ as the reference, a multinomial logistic regression model will calculate:
+An alternative to running separate binary stratified models is to run a multinomial logistic regression model.  A multinomial logistic model will base itself from a defined reference category, and run a linear model on the log-odds of membership of each of the other categories versus the reference category.  `r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!relative risk}'`Due to its extensive use in epidemiology and medicine, this is often known as the *relative risk* of one category compared to the reference category.  Mathematically speaking, if $X$ is the vector of input variables, and $y$ takes the value $A$, $B$ or $C$, with $A$ as the reference, a multinomial logistic regression model will calculate:
 
 $$
 \mathrm{ln}\left(\frac{P(y = B)}{P(y=A)}\right) = \alpha{X}
@@ -146,7 +147,7 @@ for different vectors of coefficients $\alpha$ and $\beta$.
 
 ### Defining a reference level and running the model
 
-The `nnet` package in R contains a `multinom()` function for running a multinomial logistic regression model using neural network technology^[Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onwards in the network.  Most commonly they are used in deep learning, but a simple neural network here can model these two different categories using a logistic function].  Before we can run the model we need to make sure our reference level is defined.
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!reference category}'``r if (knitr::is_latex_output()) '\\index{R!packages!nnet@\\texttt{nnet}}'`The `nnet` package in R contains a `multinom()` function for running a multinomial logistic regression model using neural network technology^[Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onwards in the network.  Most commonly they are used in deep learning, but a simple neural network here can model these two different categories using a logistic function].  Before we can run the model we need to make sure our reference level is defined.
 
 ```{r}
 # define reference by ensuring it is the first level of the factor
@@ -184,7 +185,7 @@ summary(multi_model)
 ```
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
-Notice that the output of `summary(multi_model)` is much less detailed than for our standard binomial models, and it effectively just delivers the coefficients and standard errors of the two models against the reference.  To determine whether specific input variables are significant we will need to calculate the p-values of the coefficients manually by calculating the t-statistics and converting (we covered this hypothesis testing methodology in Section \@ref(means-sig)).
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!coefficients}'`Notice that the output of `summary(multi_model)` is much less detailed than for our standard binomial models, and it effectively just delivers the coefficients and standard errors of the two models against the reference.  To determine whether specific input variables are significant we will need to calculate the p-values of the coefficients manually by calculating the t-statistics and converting (we covered this hypothesis testing methodology in Section \@ref(means-sig)).
 
 ```{r}
 # calculate t-statistics of coefficients
@@ -218,7 +219,7 @@ Here are some examples of how these odds ratios can be interpreted in the multin
 
 ### Changing the reference {#changing-ref}
 
-It may be the case that someone would like to hear the odds ratios stated against the reference of an individual choosing Product B.  For example, what are the odds ratios of Product C relative to a reference of Product B?  One way to do this would be to change the reference and run the model again.  Another option is to note that:
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!changing reference}'`It may be the case that someone would like to hear the odds ratios stated against the reference of an individual choosing Product B.  For example, what are the odds ratios of Product C relative to a reference of Product B?  One way to do this would be to change the reference and run the model again.  Another option is to note that:
 
 $$
 \frac{P(y = C)}{P(y=B)} = \frac{\frac{P(y = C)}{P(y = A)}}{\frac{P(y=B)}{P(y = A)}} 
@@ -248,7 +249,7 @@ Simplifying a multinomial regression model needs to be done with care.  In a bin
 
 ### Gradual safe elimination of variables {#elim}
 
-In @hosmer-logistic, a gradual process of elimination of variables is recommended to ensure that significant variables that confound each other in the different logistic models are not accidentally dropped from the final model. The recommended approach is as follows:
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!model simplification}'`In @hosmer-logistic, a gradual process of elimination of variables is recommended to ensure that significant variables that confound each other in the different logistic models are not accidentally dropped from the final model. The recommended approach is as follows:
 
 * Start with the variable with the least significant p-values in all sets of coefficients - in our case `tenure` would be the obvious first candidate
 * Run the multinomial model without this variable
@@ -282,14 +283,15 @@ We can see that only `genderNon-binary` changed substantially, but we note that 
 
 ### Model fit and goodness-of-fit
 
-As with the binomial case, a variety of Pseudo-$R^2$ methods are available to assess the fit of a multinomial logistic regression model, although some of our previous variants (particularly Tjur) are not defined on models with more than two outcome categories.
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!fit}'`As with the binomial case, a variety of Pseudo-$R^2$ methods are available to assess the fit of a multinomial logistic regression model, although some of our previous variants (particularly Tjur) are not defined on models with more than two outcome categories.
 
 ```{r}
 DescTools::PseudoR2(simpler_multi_model, 
                     which = c("McFadden", "CoxSnell", "Nagelkerke"))
 ```
 
-Due to the fact that multinomial models have more than one set of coefficients, assessing goodness of fit is more challenging, and is still an area of intense research.  The most approachable method to assess model confidence is the Hosmer-Lemeshow test mentioned in the previous chapter, which was extended in @fagerland for multinomial models.  An implementation is available in the `generalhoslem` package in R.  However, the Hosmer-Lemeshow test is not valid for models with a small number of input variables (fewer than ten), and therefore we will not experiment with it here.  For further exploration of this topic, Chapter 8 of @hosmer-logistic is recommended, and for a more thorough treatment of the entire topic of categorical analytics, @agresti is an excellent companion.
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!goodness-of-fit}'`Due to the fact that multinomial models have more than one set of coefficients, assessing goodness of fit is more challenging, and is still an area of intense research.  The most approachable method to assess model confidence is the Hosmer-Lemeshow test mentioned in the previous chapter, which was extended in @fagerland for multinomial models.  An implementation is available in the `generalhoslem` package in R.  However, the Hosmer-Lemeshow test is not valid for models with a small number of input variables (fewer than ten), and therefore we will not experiment with it here.  For further exploration of this topic, Chapter 8 of @hosmer-logistic is recommended, and for a more thorough treatment of the entire topic of categorical analytics, @agresti is an excellent companion.
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression|)}'`
 
 ## Learning exercises
 
@@ -304,7 +306,7 @@ Due to the fact that multinomial models have more than one set of coefficients, 
 
 ### Data exercises
 
-Use the same `health_insurance` data set from this chapter to answer these questions.
+`r if (knitr::is_latex_output()) '\\index{data sets!health\\_insurance@\\texttt{health\\_insurance}}'`Use the same `health_insurance` data set from this chapter to answer these questions.
 
 1.  Complete the full stratified approach to modeling the three product choices that was started in \@ref(stratified).  Calculate the coefficients, odds ratios and p-values in each case.
 2.  Carefully write down your interpretation of the odds ratios from the previous question.
@@ -312,3 +314,5 @@ Use the same `health_insurance` data set from this chapter to answer these quest
 4.  Verify that the coefficients for Product C against reference Product B matches those calculated in \@ref(changing-ref).
 5.  Carefully write down your interpretation of the odds ratios calculated in the previous question.
 6.  Use the process described in \@ref(elim) to simplify the multinomial model in Question 4.
+
+`r if (knitr::is_latex_output()) '\\index{regression!multinomial|see {multinomial logistic regression}}'`
