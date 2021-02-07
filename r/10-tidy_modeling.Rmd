@@ -1,6 +1,6 @@
 # Alternative Technical Approaches in R and Python {#alt-approaches}
 
-As outlined earlier in this book, all technical implementations of the modeling techniques in previous chapters have relied wherever possible on base R code and specialist packages for specific methodologies - this allowed a focus on the basics of understanding, running and interpreting these models which is the key aim of this book.    For those interested in a wider range of technical options for running inferential statistical models, this chapter illustrates some alternative options and should be considered a starting point for those interested rather than an in-depth exposition.  
+As outlined earlier in this book, all technical implementations of the modeling techniques in previous chapters have relied wherever possible on base R code and specialist packages for specific methodologies---this allowed a focus on the basics of understanding, running and interpreting these models which is the key aim of this book.    For those interested in a wider range of technical options for running inferential statistical models, this chapter illustrates some alternative options and should be considered a starting point for those interested rather than an in-depth exposition.  
 
 First we look at options for generating models in more predictable formats in R.  We have seen in prior chapters that the output of many models in R can be inconsistent.  In many cases we are given more information than we need and in some cases we have less than we need.  Formats can vary and we sometimes need to look in different parts of the output to see specific statistics that we seek.  `r if (knitr::is_latex_output()) '\\index{R!packages!tidymodels@\\texttt{tidymodels}}'`The `tidymodels` set of packages tries to bring the principles of tidy data into the realm of statistical modeling and we will illustrate this briefly.
 
@@ -12,7 +12,7 @@ The `tidymodels` meta-package is a collection of packages which collectively app
 
 ### The `broom` package
 
-`r if (knitr::is_latex_output()) '\\index{R!packages!broom@\\texttt{broom}}'`Consistent with how it is named, `broom` aims to tidy up the output of the models into a predictable format.  It works with over 100 different types of models in R.  `r if (knitr::is_latex_output()) '\\index{data sets!salespeople@\\texttt{salespeople}}'`In order to illustrate its use, let's run a model from a previous chapter - specifically our salesperson promotion model in Chapter \@ref(bin-log-reg).
+`r if (knitr::is_latex_output()) '\\index{R!packages!broom@\\texttt{broom}}'`Consistent with how it is named, `broom` aims to tidy up the output of the models into a predictable format.  It works with over 100 different types of models in R.  `r if (knitr::is_latex_output()) '\\index{data sets!salespeople@\\texttt{salespeople}}'`In order to illustrate its use, let's run a model from a previous chapter---specifically our salesperson promotion model in Chapter \@ref(bin-log-reg).
 
 ```{r}
 # obtain salespeople data
@@ -186,7 +186,7 @@ model %>%
 
 ## Inferential statistical modeling in Python
 
-`r if (knitr::is_latex_output()) '\\index{Python!packages!scikit-learn@\\texttt{scikit-learn}}'`In general, the modeling functions contained in `scikit-learn` - which tends to be the go-to modeling package for most Python users - are oriented towards predictive modeling and can be challenging to navigate for those who are primarily interested in inferential modeling.  In this section we will briefly review approaches for running some of the models contained in this book in Python.  `r if (knitr::is_latex_output()) '\\index{Python!packages!statsmodels@\\texttt{statsmodels}}'`The `statsmodels` package is highly recommended as it offers a wide range of models which report similar statistics to those reviewed in this book.  Full `statsmodels` documentation can be found `r if (knitr::is_latex_output()) {"at \\texttt{https://www.statsmodels.org/stable/index.html}"} else {"[here](https://www.statsmodels.org/stable/index.html)"}`.
+`r if (knitr::is_latex_output()) '\\index{Python!packages!scikit-learn@\\texttt{scikit-learn}}'`In general, the modeling functions contained in `scikit-learn`---which tends to be the go-to modeling package for most Python users---are oriented towards predictive modeling and can be challenging to navigate for those who are primarily interested in inferential modeling.  In this section we will briefly review approaches for running some of the models contained in this book in Python.  `r if (knitr::is_latex_output()) '\\index{Python!packages!statsmodels@\\texttt{statsmodels}}'`The `statsmodels` package is highly recommended as it offers a wide range of models which report similar statistics to those reviewed in this book.  Full `statsmodels` documentation can be found `r if (knitr::is_latex_output()) {"at \\texttt{https://www.statsmodels.org/stable/index.html}"} else {"[here](https://www.statsmodels.org/stable/index.html)"}`.
 
 ### Ordinary least squares (OLS) linear regression
 

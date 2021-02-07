@@ -2,7 +2,7 @@
 
 So far in this book we have learned all of the most widely used and foundational regression techniques for inferential modeling. Starting with this chapter, we will look at situations where we need to adapt or combine techniques to address certain inference goals or data characteristics. In this chapter we look at some situations where data has a hierarchy and where we wish to consider this hierarchy in our modeling efforts.
 
-It is very often the case that data has an explicit hierarchy. For example, each observation in our data may refer to a different individual and each such individual may be a member of a few different groups. Similarly, each observation might refer to an event involving an individual, and we may have data on multiple events for the same individual. For a particular problem that we are modeling, we may wish to take into consideration the effect of the hierarchical grouping on the observations. This requires a model which has a mixture of random effects and fixed effects - called a *mixed model*.
+It is very often the case that data has an explicit hierarchy. For example, each observation in our data may refer to a different individual and each such individual may be a member of a few different groups. Similarly, each observation might refer to an event involving an individual, and we may have data on multiple events for the same individual. For a particular problem that we are modeling, we may wish to take into consideration the effect of the hierarchical grouping on the observations. This requires a model which has a mixture of random effects and fixed effects---called a *mixed model*.
 
 `r if (knitr::is_latex_output()) '\\index{hierarchical data}'`Separately, it can be the case that data we are given could have a latent hierarchy. The input variables in the data might be measures of a smaller set of higher level latent constructs, and we may have a more interpretable model if we hypothesize, confirm and model those latent constructs against our outcome of interest rather than using a larger number of explicit input variables. Latent variable modeling is a common technique to address this situation, and in this chapter we will review a form of latent variable modeling called *structural equation modeling* which is very effective especially in making inferences from survey instruments with large numbers of items.
 
@@ -11,20 +11,20 @@ These topics are quite broad and there are many different approaches, techniques
 ## Mixed models for explicit hierarchy in data {#mixed}
 
 `r if (knitr::is_latex_output()) '\\index{mixed models|(}'`
-The most common explicit hierarchies that we see in data are group-based and time-based. A group-based hierarchy occurs when we are taking observations that belong to different groups. For example, in our first walkthrough example in Chapter \@ref(linear-reg-ols), we modeled final examination performance against examination performance for the previous three years. In this case we considered each student observation to be independent and identically distributed and we ran a linear regression model on all the students. If we were to receive additional information that these students were actually a mix of students on different degree programs, then we may wish to take this into account in how we model the problem - that is, we would want to assume that each student observation is only independent and identically distributed within each degree program.
+The most common explicit hierarchies that we see in data are group-based and time-based. A group-based hierarchy occurs when we are taking observations that belong to different groups. For example, in our first walkthrough example in Chapter \@ref(linear-reg-ols), we modeled final examination performance against examination performance for the previous three years. In this case we considered each student observation to be independent and identically distributed and we ran a linear regression model on all the students. If we were to receive additional information that these students were actually a mix of students on different degree programs, then we may wish to take this into account in how we model the problem---that is, we would want to assume that each student observation is only independent and identically distributed within each degree program.
 
 Similarly, a time-based hierarchy occurs when we have multiple observations of the same subject taken at different times. For example, if we are conducting a weekly survey on the same people over the course of a year, and we are modeling how answers to some questions might depend on answers to others, we may wish to consider the effect of the person on this model.
 
-Both of these situations introduce a new grouping variable into the problem we are modeling, thus creating a hierarchy. It is not hard to imagine that analyzing each group may produce different statistical properties compared to analyzing the entire population - for example there could be correlations between the data inside groups which are less evident when looking at the overall population. Therefore in some cases a model may provide more accurate and reliable estimates if this grouping is taken into account.
+Both of these situations introduce a new grouping variable into the problem we are modeling, thus creating a hierarchy. It is not hard to imagine that analyzing each group may produce different statistical properties compared to analyzing the entire population---for example, there could be correlations between the data inside groups which are less evident when looking at the overall population. Therefore in some cases a model may provide more accurate and reliable estimates if this grouping is taken into account.
 
 ### Fixed and random effects
 
-Let's imagine that we have a set of observations consisting of a continuous output variable $y$ and input variables $x_1, x_2, ..., x_p$. Let's also assume that we have an additional data point for each observation where we assign it to a group $G$. We are asked to determine the relationship between the outcome and the input variables. One option is to develop a linear model $y = \beta_0 + \beta_1x_1 + ... + \beta_px_p + \epsilon$, ignoring the group data. `r if (knitr::is_latex_output()) '\\index{mixed models!fixed effects}'`In this model, we assume that the coefficients all have a *fixed effect* on the input variables - that is, they act on every observation in the same way. This may be fine if there is trust that group membership is unlikely to have any impact on the relationship being modeled, or if we are comfortable making inferences about variables at the observation level only.
+Let's imagine that we have a set of observations consisting of a continuous output variable $y$ and input variables $x_1, x_2, \dots, x_p$. Let's also assume that we have an additional data point for each observation where we assign it to a group $G$. We are asked to determine the relationship between the outcome and the input variables. One option is to develop a linear model $y = \beta_0 + \beta_1x_1 + \dots + \beta_px_p + \epsilon$, ignoring the group data. `r if (knitr::is_latex_output()) '\\index{mixed models!fixed effects}'`In this model, we assume that the coefficients all have a *fixed effect* on the input variables---that is, they act on every observation in the same way. This may be fine if there is trust that group membership is unlikely to have any impact on the relationship being modeled, or if we are comfortable making inferences about variables at the observation level only.
 
-`r if (knitr::is_latex_output()) '\\index{mixed models!random effects}'`If, however, there is a belief that group membership may have an effect on the relationship being modeled, and if we are interested in interpreting our model at the group and observation level, then we need to adjust our model to a mixed model for more accurate and reliable inference. The most common adjustment is a *random intercept*. In this situation, we imagine that group membership has an effect on the 'starting point' of the relationship: the intercept. Therefore, for a given observation $y = \alpha_G + \beta_0 + \beta_1x_1 + ... + \beta_px_p + \epsilon$, where $\alpha_G$ is a random effect with a mean of zero associated with the group that the observation is a member of. This can be restated as:
+`r if (knitr::is_latex_output()) '\\index{mixed models!random effects}'`If, however, there is a belief that group membership may have an effect on the relationship being modeled, and if we are interested in interpreting our model at the group and observation level, then we need to adjust our model to a mixed model for more accurate and reliable inference. The most common adjustment is a *random intercept*. In this situation, we imagine that group membership has an effect on the 'starting point' of the relationship: the intercept. Therefore, for a given observation $y = \alpha_G + \beta_0 + \beta_1x_1 + \dots + \beta_px_p + \epsilon$, where $\alpha_G$ is a random effect with a mean of zero associated with the group that the observation is a member of. This can be restated as:
 
 $$
-y = \beta_G + \beta_1x_1 + ... + \beta_px_p + \epsilon
+y = \beta_G + \beta_1x_1 + \dots + \beta_px_p + \epsilon
 $$
 
 where $\beta_G = \alpha_G + \beta_0$, which is a random intercept with a mean of $\beta_0$.
@@ -34,14 +34,14 @@ This model is very similar to a standard linear regression model, except instead
 It is not too difficult to see how this approach can be extended. For example, suppose that we believe the groups also have an effect on the coefficient of the input variable $x_1$ as well as the intercept. Then
 
 $$
-y = \beta_{G0} + \beta_{G1}x_1 + \beta_2x_2 + ... + \beta_px_p 
+y = \beta_{G0} + \beta_{G1}x_1 + \beta_2x_2 + \dots + \beta_px_p 
 $$ 
 where $\beta_{G0}$ is a random intercept with a mean of $\beta_0$ and $\beta_{G1}$ is a *random slope* with a mean of $\beta_1$. In this case, a mixed model would return the estimated coefficients at the observation level and the statistics for the random effects $\beta_{G0}$ and $\beta_{G1}$ at the group level.
 
 Finally, our model does not need to be linear for this to apply. This approach also extends to logistic models and other generalized linear models. For example, if $y$ was a binary outcome variable and our model was a binomial logistic regression model, our last equation would translate to
 
 $$
-\mathrm{ln}\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_{G0} + \beta_{G1}x_1 + \beta_2x_2 + ... + \beta_px_p
+\mathrm{ln}\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_{G0} + \beta_{G1}x_1 + \beta_2x_2 + \dots + \beta_px_p
 $$
 
 ### Running a mixed model
@@ -187,7 +187,7 @@ if (knitr::is_html_output()) {
 }
 ```
 
-If we believe that different individuals are influenced differently by one or more of the various decision factors they consider during a speed date, we can extend our random effects to the slope coefficients of our model. For example we could use `(1 + agediff | iid)` to model a random effect of `iid` on the intercept and the `agediff` coefficient. Similarly, if we wanted to consider two grouping variables - like `iid` and `goal` - on the intercept, we could add both `(1 | iid)` and `(1 | goal)` to our model formula.
+If we believe that different individuals are influenced differently by one or more of the various decision factors they consider during a speed date, we can extend our random effects to the slope coefficients of our model. For example we could use `(1 + agediff | iid)` to model a random effect of `iid` on the intercept and the `agediff` coefficient. Similarly, if we wanted to consider two grouping variables---like `iid` and `goal`---on the intercept, we could add both `(1 | iid)` and `(1 | goal)` to our model formula.
 `r if (knitr::is_latex_output()) '\\index{mixed models|)}'`
 `r if (knitr::is_latex_output()) '\\index{multilevel models|see {mixed models}}'`
 
@@ -200,7 +200,7 @@ It is a frequent occurrence with surveys conducted on large samples of people, s
 
 Usually, such a large number of survey items are not each independently measuring a different construct. Many of the items can be considered to be addressing similar thematic constructs. For example, the items 'I believe I am compensated well' and 'I am happy with the benefits offered by my employer', could both be considered to be related to employee rewards. In some cases, survey instruments can be explicitly constructed around these themes, and in other cases surveys have grown organically over time to include a disorganized set of items that could be grouped into themes after the fact.
 
-It is a common request for an analyst to model a certain outcome using the many items in a complex survey as input variables. In some cases the outcome being modeled is an item in the survey itself - usually some overall measure of sentiment - or in other cases the outcome could be independent of the survey instrument, for example future attrition from the organization. In this situation, a model using the themes as input variables is likely to be a lot more useful and interpretable than a model using the items as input variables.
+It is a common request for an analyst to model a certain outcome using the many items in a complex survey as input variables. In some cases the outcome being modeled is an item in the survey itself---usually some overall measure of sentiment---or in other cases the outcome could be independent of the survey instrument, for example future attrition from the organization. In this situation, a model using the themes as input variables is likely to be a lot more useful and interpretable than a model using the items as input variables.
 
 *Structural Equation Modeling* is a technique that allows an analyst to hypothesize a smaller set of latent variables or factors that explain the responses to the survey items themselves (the 'measured variables'), and then regresses the outcome of interest against these latent factors. It is a two part approach, each part being a separate model in and of itself, as follows:
 
@@ -309,7 +309,7 @@ Second, we examine the fit statistics. Numerous statistics are reported[^hierarc
 
 -   SRMR should ideally be less than 0.08, which is met by our measurement model.
 
-Finally, the parameter estimates for the latent variables should be examined. In particular the `Std.all` column which is similar to standardized regression coefficients. These parameters are commonly knows as factor loadings - they can be interpreted as the extent to which the item response is explained by the proposed latent variable. In general, factor loadings of 0.7 or above are considered reasonable. Factor loadings less than this may be introducing unacceptable measurement error. One option if this occurs is to drop the item completely from the measurement model, or to explore an alternative measurement model with the item assigned to another latent variable. In any case, the analyst will need to balance these considerations against the need to have factors measured against multiple items wherever possible in order to minimize other aspects of measurement error.
+Finally, the parameter estimates for the latent variables should be examined. In particular the `Std.all` column which is similar to standardized regression coefficients. These parameters are commonly knows as factor loadings---they can be interpreted as the extent to which the item response is explained by the proposed latent variable. In general, factor loadings of 0.7 or above are considered reasonable. Factor loadings less than this may be introducing unacceptable measurement error. One option if this occurs is to drop the item completely from the measurement model, or to explore an alternative measurement model with the item assigned to another latent variable. In any case, the analyst will need to balance these considerations against the need to have factors measured against multiple items wherever possible in order to minimize other aspects of measurement error.
 
 In our case we could consider dropping `Pol3`, `Loc1`, `Pers1` and `Nat3` from the measurement model as they have factor loadings of less than 0.7 and are in factors that contain three items.
 
@@ -418,14 +418,14 @@ The full structural equation model can be seen in Figure \@ref(fig:fullsemplot).
 
 ### Data exercises
 
-`r if (knitr::is_latex_output()) '\\index{data sets!speed\\_dating@\\texttt{speed\\_dating}}'`For Exercises 1-4, use the `speed_dating` set used earlier in this chapter^[http://peopleanalytics-regression-book.org/data/speed_dating.csv].
+`r if (knitr::is_latex_output()) '\\index{data sets!speed\\_dating@\\texttt{speed\\_dating}}'`For Exercises 1--4, use the `speed_dating` set used earlier in this chapter^[http://peopleanalytics-regression-book.org/data/speed_dating.csv].
 
 1.  Split the data into two sets according to the gender of the participant. Run standard binomial logistic regression models on each set to determine the relationship between the `dec` decision outcome and the input variables `samerace`, `agediff`, `attr`, `intel` and `prob`.
 2.  Run similar mixed models on these sets with a random intercept for `iid`.
 3.  What different conclusions can you make in comparing the mixed models with the standard models?
 4.  Experiment with some random slope effects to see if they reveal anything new about the input variables.
 
-`r if (knitr::is_latex_output()) '\\index{data sets!employee\\_survey@\\texttt{employee\\_survey}}'`For exercises 5-10, load the `employee_survey` data set via the `peopleanalyticsdata` package or download it from the internet[^hierarchical_data-3]. This data set contains the results of an engagement survey of employees of a technology company. Each row represents the responses of an individual to the survey and each column represents a specific survey question, with responses on a Likert scale of 1 to 4, with 1 indicating strongly negative sentiment and 4 indicating strongly positive sentiment. Subject matter experts have grouped the items into hypothesized latent factors as follows:
+`r if (knitr::is_latex_output()) '\\index{data sets!employee\\_survey@\\texttt{employee\\_survey}}'`For exercises 5--10, load the `employee_survey` data set via the `peopleanalyticsdata` package or download it from the internet[^hierarchical_data-3]. This data set contains the results of an engagement survey of employees of a technology company. Each row represents the responses of an individual to the survey and each column represents a specific survey question, with responses on a Likert scale of 1 to 4, with 1 indicating strongly negative sentiment and 4 indicating strongly positive sentiment. Subject matter experts have grouped the items into hypothesized latent factors as follows:
 
 [^hierarchical_data-3]: <http://peopleanalytics-regression-book.org/data/employee_survey.csv>
 

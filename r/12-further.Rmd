@@ -133,7 +133,7 @@ Load the `employee_performance` data set via the `peopleanalyticsdata` package o
 
 ## Analyzing promotion differences between groups
 
-As mentioned in the previous section, promotion is a more challenging outcome to analyze because it can happen at different times for different people or groups.  Nevertheless, over certain time periods - usually several years - organizations will be interested in understanding what affects the likelihood of promotion among their employees.  
+As mentioned in the previous section, promotion is a more challenging outcome to analyze because it can happen at different times for different people or groups.  Nevertheless, over certain time periods---usually several years---organizations will be interested in understanding what affects the likelihood of promotion among their employees.  
 
 It is particularly interesting to compare subgroups of employees that have common characteristics to see if there is a difference in their likelihood of promotion over a specified time period.  This is highly analogous to the study of retention or attrition in that promotion can be considered a singular event that can happen to different individuals at different points in  time.  Like retention or attrition, we are not only interested in whether this event occurred as at the end of a period of time, we are also interested in when it occurred throughout the period.
 

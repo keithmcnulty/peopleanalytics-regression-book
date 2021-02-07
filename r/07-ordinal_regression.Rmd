@@ -48,7 +48,7 @@ This approach leads to a highly interpretable model that provides a single set o
 
 ### Use cases for proportional odds logistic regression
 
-`r if (knitr::is_latex_output()) '\\index{proportional odds logistic regression!proportional odds assumption}'`Proportional odds logistic regression can be used when there are more than two outcome categories that have an order.  An important underlying assumption is that no input variable has a disproportionate effect on a specific level of the outcome variable.  This is known as the proportional odds assumption.  Referring to Figure \@ref(fig:prop-odds-int), this assumption means that the 'slope' of the logistic function is the same for all category cutoffs^[This also leads to another term for the assumption - the *parallel regression* assumption].  If this assumption is violated, we cannot reduce the coefficients of the model to a single set across all outcome categories, and this modeling approach fails.  Therefore, testing the proportional odds assumption is an important validation step for anyone running this type of model.  
+`r if (knitr::is_latex_output()) '\\index{proportional odds logistic regression!proportional odds assumption}'`Proportional odds logistic regression can be used when there are more than two outcome categories that have an order.  An important underlying assumption is that no input variable has a disproportionate effect on a specific level of the outcome variable.  This is known as the proportional odds assumption.  Referring to Figure \@ref(fig:prop-odds-int), this assumption means that the 'slope' of the logistic function is the same for all category cutoffs^[This also leads to another term for the assumption---the *parallel regression* assumption].  If this assumption is violated, we cannot reduce the coefficients of the model to a single set across all outcome categories, and this modeling approach fails.  Therefore, testing the proportional odds assumption is an important validation step for anyone running this type of model.  
 
 Examples of problems that can utilize a proportional odds logistic regression approach include:
 
@@ -65,8 +65,8 @@ You are an analyst for a sports broadcaster who is doing a feature on player dis
 * `n_red_25` is the total number of red cards issued to the player in the previous 25 games they played prior to this game
 * `position` is the playing position of the player in the game:  "D" is defence (including goalkeeper), "M" is midfield and "S" is striker/attacker.
 * `level` is the skill level of the competition in which the game took place, with 1 being higher and 2 being lower
-* `country` is the country in which the game took place - England or Germany
-* `result` is the result of the game for the team of the player - "W" is win, "L" is lose, "D" is a draw/tie.
+* `country` is the country in which the game took place---England or Germany
+* `result` is the result of the game for the team of the player---"W" is win, "L" is lose, "D" is a draw/tie.
 
 `r if (knitr::is_latex_output()) '\\index{data sets!soccer@\\texttt{soccer}}'`Let's download the `soccer` data set and take a quick look at it:
 
@@ -286,7 +286,7 @@ if (knitr::is_html_output()) {
 
 ### Model diagnostics
 
-Similar to binomial and multinomial models, pseudo-$R^2$ methods are available for assessing model fit and AIC can be used to assess model parsimony.  Note that `DescTools::PseudoR2()` also offers AIC.
+`r if (knitr::is_latex_output()) '\\index{Pseudo-R-squared!in ordinal logistic regression}'`Similar to binomial and multinomial models, pseudo-$R^2$ methods are available for assessing model fit and AIC can be used to assess model parsimony.  Note that `DescTools::PseudoR2()` also offers AIC.
 
 ```{r}
 # diagnostics of simpler model
@@ -380,7 +380,7 @@ Ignoring the intercept which is not of concern here, the differences appear rela
 
 ### The Brant-Wald test {#wald}
 
-`r if (knitr::is_latex_output()) '\\index{proportional odds logistic regression!Brant-Wald test}'`In the previous method, some judgment is required to decide whether the coefficients of the stratified binomial models are 'different enough' to decide on violation of the proportional odds assumption.  For those requiring more formal support, an option is the Brant-Wald test.  Under this test, a generalized ordinal logistic regression model is approximated and compared to the calculated proportional odds model.  A generalized ordinal logistic regression model is simply a relaxing of the proportional odds model to allow for different coefficients at each level of the ordinal outcome variable.
+`r if (knitr::is_latex_output()) '\\index{Brant-Wald test}'`In the previous method, some judgment is required to decide whether the coefficients of the stratified binomial models are 'different enough' to decide on violation of the proportional odds assumption.  For those requiring more formal support, an option is the Brant-Wald test.  Under this test, a generalized ordinal logistic regression model is approximated and compared to the calculated proportional odds model.  A generalized ordinal logistic regression model is simply a relaxing of the proportional odds model to allow for different coefficients at each level of the ordinal outcome variable.
 
 The Wald test is conducted on the comparison of the proportional odds and generalized models. A Wald test is a hypothesis test of the significance of the difference in model coefficients, producing a chi-square statistic.  A low p-value in a Brant-Wald test is an indicator that the coefficient does not satisfy the proportional odds assumption.  `r if (knitr::is_latex_output()) '\\index{R!packages!brant@\\texttt{brant}}'`The `brant` package in R provides an implementation of the Brant-Wald test, and in this case supports our judgment that the proportional odds assumption holds.
 
@@ -395,7 +395,7 @@ library(brant)
 brant::brant(model)
 ```
 
-A p-value of less than 0.05 on this test - particularly on the Omnibus plus at least one of the variables - should be interpreted as a failure of the proportional odds assumption.
+A p-value of less than 0.05 on this test---particularly on the Omnibus plus at least one of the variables---should be interpreted as a failure of the proportional odds assumption.
 
 ### Alternatives to proportional odds models
 

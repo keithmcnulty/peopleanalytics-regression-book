@@ -1,7 +1,7 @@
 # Linear Regression for Continuous Outcomes {#linear-reg-ols}
 
 `r if (knitr::is_latex_output()) '\\index{linear regression|(}'`
-In this chapter we will introduce and explore linear regression, one of the first learning methods to be developed by statisticians and one of the easiest to interpret.  Despite its simplicity - indeed *because* of its simplicity - it can be a very powerful tool in many situations.  Linear regression will often be the first methodology to be trialled on a given problem, and will give an immediate benchmark with which to judge the efficacy of other, more complex, modeling techniques.  Given the ease of interpretation, many analysts will select a linear regression model over more complex approaches even if those approaches produce a slightly better fit.  This chapter will also introduce many critical concepts that will apply to other modeling approaches as we proceed through this book, therefore for inexperienced modelers this should be considered a foundational chapter which should not be skipped.
+In this chapter we will introduce and explore linear regression, one of the first learning methods to be developed by statisticians and one of the easiest to interpret.  Despite its simplicity---indeed *because* of its simplicity---it can be a very powerful tool in many situations.  Linear regression will often be the first methodology to be trialled on a given problem, and will give an immediate benchmark with which to judge the efficacy of other, more complex, modeling techniques.  Given the ease of interpretation, many analysts will select a linear regression model over more complex approaches even if those approaches produce a slightly better fit.  This chapter will also introduce many critical concepts that will apply to other modeling approaches as we proceed through this book, therefore for inexperienced modelers this should be considered a foundational chapter which should not be skipped.
 
 ## When to use it {#when-ols}
 
@@ -13,7 +13,7 @@ library(latex2exp)
 
 ```
 
-`r if (knitr::is_latex_output()) '\\index{linear regression!origins}'`Linear Regression, also known as `r if (knitr::is_latex_output()) '\\index{linear regression!ordinary least squares}'`*Ordinary Least Squares Linear Regression* or *OLS Regression* for short, was developed independently by the mathematicians Gauss and Legendre at or around the first decade of the 19th century, and there remains today some controversy about who should take credit for its discovery.  However,  at the time of its discovery it was not actually known as "regression".  This term became more popular following the work of Francis Galton - a British intellectual jack-of-all-trades and a cousin of Charles Darwin.  In the late 1800s, Galton had researched the relationship between the heights of a population of almost 1,000 children and the average height of their parents (mid-parent height).  He was surprised to discover that there was not a perfect relationship between the height of a child and the average height of its parents, and that in general children's heights were more likely to be in a range that was closer to the mean for the total population.  He described this statistical phenomenon as a "regression towards mediocrity" ("regression" comes from a Latin term approximately meaning "go back").  
+`r if (knitr::is_latex_output()) '\\index{linear regression!origins}'`Linear Regression, also known as `r if (knitr::is_latex_output()) '\\index{linear regression!ordinary least squares}'`*Ordinary Least Squares Linear Regression* or *OLS Regression* for short, was developed independently by the mathematicians Gauss and Legendre at or around the first decade of the 19th century, and there remains today some controversy about who should take credit for its discovery.  However,  at the time of its discovery it was not actually known as "regression".  This term became more popular following the work of Francis Galton---a British intellectual jack-of-all-trades and a cousin of Charles Darwin.  In the late 1800s, Galton had researched the relationship between the heights of a population of almost 1,000 children and the average height of their parents (mid-parent height).  He was surprised to discover that there was not a perfect relationship between the height of a child and the average height of its parents, and that in general children's heights were more likely to be in a range that was closer to the mean for the total population.  He described this statistical phenomenon as a "regression towards mediocrity" ("regression" comes from a Latin term approximately meaning "go back").  
 
 Figure \@ref(fig:galton-fig) is an illustration of Galton's data with the black solid line showing what a perfect relationship would look like, and the red dashed line showing the actual relationship he determined.  You can regard the red dashed line as 'going back' from the perfect relationship (symbolized by the black line) in the direction of a horizontal line representing the mean of the child heights.  This might give you an intuition that will help you understand later sections of this chapter. In an arbitrary data set, the red dashed line can lie anywhere between a horizontal line at the mean of $y$ (no relationship) and the solid black line (a perfect relationship). Linear Regression is about finding the red dashed line in your data and using it to explain the degree to which your input data (the $x$ axis) explains your outcome data (the $y$ axis). 
 
@@ -37,7 +37,7 @@ Here are some illustratory examples of questions that could be tackled with a Li
 
 You are working as an analyst for the Biology Department of a large academic institution which offers a four year Undergraduate degree program.  The academic leaders of the department are interested in understanding how student performance in the final year examination of the degree program relates to performance in the prior three years. 
 
-To help with this, you have been provided with data for 975 individuals graduating in the past three years, and you have been asked to create a model to explain each individual's final examination score based on their examination scores for the first three years of their program.  The Year 1 examination scores are awarded on a scale of 0-100, Years 2 and 3 on a scale of 0-200, and the Final year is awarded on a scale of 0-300.
+To help with this, you have been provided with data for 975 individuals graduating in the past three years, and you have been asked to create a model to explain each individual's final examination score based on their examination scores for the first three years of their program.  The Year 1 examination scores are awarded on a scale of 0--100, Years 2 and 3 on a scale of 0--200, and the Final year is awarded on a scale of 0--300.
 
 `r if (knitr::is_latex_output()) '\\index{data sets!ugtests@\\texttt{ugtests}}'`We will load the `ugtests` data set into our session and take a brief look at it.
 
@@ -142,7 +142,7 @@ ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_segment(aes(x = Yr3[10], y = 1.2*Yr3[10] + 5, xend = Yr3[10], yend = Final[10]), color = "red")
 ```
 
-The total error of our model - which we want to minimize - could be defined in a number of ways:
+The total error of our model---which we want to minimize---could be defined in a number of ways:
 
 1.  The sum of the residuals
 2.  The sum of the *absolute values* of our residuals (so that negative values are converted to positive values)
@@ -177,7 +177,7 @@ So we can already see some terms we are familiar with.  For example, we can look
 ```{r}
 model$coefficients
 ```
-`r if (knitr::is_latex_output()) '\\index{linear regression!fitting}'`This tells us that that our best fit model - the one that minimises the sum of the squares of the residuals -  is $y = 1.14x + 16.63$.  In other words, our `Final` test score can be expected to take a value of 16.63 even with zero score in the `Yr3` input, and that every additional point scored in `Yr3`  will increase the `Final` score by 1.14.
+`r if (knitr::is_latex_output()) '\\index{linear regression!fitting}'`This tells us that that our best fit model---the one that minimises the sum of the squares of the residuals---is $y = 1.14x + 16.63$.  In other words, our `Final` test score can be expected to take a value of 16.63 even with zero score in the `Yr3` input, and that every additional point scored in `Yr3`  will increase the `Final` score by 1.14.
 
 ### Measuring the fit of the model
 
@@ -247,9 +247,9 @@ Therefore before we fit our model, we have an average error of `r round((9/10)*v
 
 `r if (knitr::is_latex_output()) '\\index{linear regression!multiple linear regression}'`In reality, regression problems rarely involve one single input variable, but rather multiple variables. The methodology for multiple linear regression is similar in nature to a simple linear regression, but obviously more difficult to visualize because of its increased dimensionality.
 
-In this case, our input is a set of $p$ variables $x_1, x_2, ..., x_p$.  Extending the linear equation in Section \@ref(linear-single), we seek to develop an equation of the form:
+In this case, our input is a set of $p$ variables $x_1, x_2, \dots, x_p$.  Extending the linear equation in Section \@ref(linear-single), we seek to develop an equation of the form:
 
-$$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p$$
+$$y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p$$
 so that our sum of squares residual error is minimized.  
 
 ### Running a multiple linear regression model and interpreting its coefficients
@@ -263,7 +263,7 @@ model$coefficients
 ```
 
 
-`r if (knitr::is_latex_output()) '\\index{linear regression!coefficients}'`Referring to our formula in Section \@ref(multiple-linear-regression), let's understand what each coefficient $\beta_0, \beta_1, ..., \beta_p$ means.  $\beta_0$, the *intercept* of the model, represents the value of $y$ assuming that all the inputs were zero.  You can imagine that your output can be expected to have a base value even without any inputs - a student who completely flunked the first three years can still redeem themselves to some extent in the Final year.
+`r if (knitr::is_latex_output()) '\\index{linear regression!coefficients}'`Referring to our formula in Section \@ref(multiple-linear-regression), let's understand what each coefficient $\beta_0, \beta_1, \dots, \beta_p$ means.  $\beta_0$, the *intercept* of the model, represents the value of $y$ assuming that all the inputs were zero.  You can imagine that your output can be expected to have a base value even without any inputs---a student who completely flunked the first three years can still redeem themselves to some extent in the Final year.
 
 Now looking at the other coefficients, let's consider what happens if our first input $x_1$ increased by a single unit, assuming nothing else changed.  We would then expect our value of y to increase by $\beta_1$.  Similarly for any input $x_k$, a unit increase would result in an increase in $y$ of $\beta_k$, assuming no other changes in the inputs. 
 
@@ -355,7 +355,7 @@ We can see that our model explains more than half of the variance in the Final e
 newmodel_summary
 ```
 
-`r if (knitr::is_latex_output()) '\\index{linear regression!goodness-of-fit}'`This provides us with some of the most important metrics from our model.  In particular, the last line gives us a report on our overall model confidence or 'goodness-of-fit' - that is, how confident can we be that our model fits the outcome better than the alternative of a random model.  `r if (knitr::is_latex_output()) '\\index{linear regression!F-statistic}'`The F-statistic is an evaluation of the confidence of the entire model, with a higher F-statistic indicating a strong likelihood that the model fits the data better than a random model.  More intuitively, perhaps, we also have the p-value for the F-statistic.  In this case it is extremely small, so we can conclude that our model has some explanatory power over and above a random model.
+`r if (knitr::is_latex_output()) '\\index{linear regression!goodness-of-fit}'`This provides us with some of the most important metrics from our model.  In particular, the last line gives us a report on our overall model confidence or 'goodness-of-fit'---that is, how confident can we be that our model fits the outcome better than the alternative of a random model.  `r if (knitr::is_latex_output()) '\\index{linear regression!F-statistic}'`The F-statistic is an evaluation of the confidence of the entire model, with a higher F-statistic indicating a strong likelihood that the model fits the data better than a random model.  More intuitively, perhaps, we also have the p-value for the F-statistic.  In this case it is extremely small, so we can conclude that our model has some explanatory power over and above a random model.
 
 Be careful not to confuse model goodness of fit with $R^2$.  Depending on your sample, it is entirely possible for a model with a low $R^2$ to have high goodness of fit and vice versa.  
 
@@ -421,11 +421,11 @@ There are three main options for how missing data is handled:
 
 ### Transforming categorical inputs to dummy variables
 
-`r if (knitr::is_latex_output()) '\\index{dummy variables!in linear regression}'`Many models will have categorical inputs rather than numerical inputs.  Categorical inputs usually take forms such as:
+`r if (knitr::is_latex_output()) '\\index{dummy variables!in linear regression}'``r if (knitr::is_latex_output()) '\\index{input variables!categorical}'`Many models will have categorical inputs rather than numerical inputs.  Categorical inputs usually take forms such as:
 
-* Binary values - for example, Yes/No, True/False
-* Unordered categories - for example Car, Train, Bicycle
-* Ordered categories - for example Low, Medium, High
+* Binary values---for example, Yes/No, True/False
+* Unordered categories---for example Car, Train, Bicycle
+* Ordered categories---for example Low, Medium, High
 
 Categorical variables do not behave like numerical variables.  There is no sense of quantity in a categorical variable.  We do not know how a Car relates to a Train quantitatively, we only know that they are different. Even for an ordered category, although we know that 'Medium' is higher than 'Low', we do not know how much higher or indeed whether the difference is the same as that between 'High' and 'Medium'.  
 
@@ -498,7 +498,7 @@ You can also plot the residuals against each input variable as an extra check of
 
 ### Assumption of constant error variance {#lin-reg-const-var}
 
-`r if (knitr::is_latex_output()) '\\index{linear regression!homoscedacity of residuals}'`It is assumed in a linear model that the errors or residuals are *homoscedastic* - this means that their variance is constant across the values of the input variables.  If the errors of your model *heteroscedastic* - that is, if they increase or decrease according to the value of the model inputs, this can lead to poor estimations of confidence intervals and fits.
+`r if (knitr::is_latex_output()) '\\index{linear regression!homoscedacity of residuals}'`It is assumed in a linear model that the errors or residuals are *homoscedastic*---this means that their variance is constant across the values of the input variables.  If the errors of your model *heteroscedastic*---that is, if they increase or decrease according to the value of the model inputs, this can lead to poor estimations of confidence intervals and fits.
 
 While a simple plot of residuals against predicted values (such as in Figure \@ref(fig:resplot)) can give a quick indication on homoscedacity, to be thorough the residuals should be plotted against each input variable, and it should be verified that the range of the residuals remains broadly stable.  In our student examination model, we can first plot the residuals against the values of `Yr2` in Figure \@ref(fig:resyr2).
 
@@ -540,7 +540,7 @@ While some intercorrelation between input variables can be expected and tolerate
 
 *Collinearity* means that two input variables are highly correlated.  The definition of 'high correlation' is a matter of judgment, but as a rule of thumb correlations greater than 0.5 might be considered high and greater than 0.7 might be considered extreme.  Creating a simple correlation matrix or a pairplot (such as Figure \@ref(fig:pairplot-ugtests)) can immediately surface high or extreme collinearity.
 
-`r if (knitr::is_latex_output()) '\\index{multicollinearity}'`*Multicollinearity* means that there is a linear relationship between more than two of the input variables.  `r if (knitr::is_latex_output()) '\\index{VIF}'`This may not always present itself in the form of high correlations between pairs of input variables, but may be seen by identifying 'clusters' of moderately correlated variables, or by calculating a Variance Inflation Factor (VIF) for each input variable - where VIFs greater than 5 indicate high multicollinearity.  Easy-to-use tests also exist in statistical software for identifying multicollinearity (for example the `mctest` package in R).  `r if (knitr::is_latex_output()) '\\index{R!packages!mctest@\\texttt{mctest}}'`Here is how we would test for multicollinearity in our student examination model. `r if (knitr::is_latex_output()) '\\index{variance inflation factor|see {VIF}}'`
+`r if (knitr::is_latex_output()) '\\index{multicollinearity}'`*Multicollinearity* means that there is a linear relationship between more than two of the input variables.  `r if (knitr::is_latex_output()) '\\index{VIF (variance inflation factor)}'`This may not always present itself in the form of high correlations between pairs of input variables, but may be seen by identifying 'clusters' of moderately correlated variables, or by calculating a Variance Inflation Factor (VIF) for each input variable---where VIFs greater than 5 indicate high multicollinearity.  Easy-to-use tests also exist in statistical software for identifying multicollinearity (for example the `mctest` package in R).  `r if (knitr::is_latex_output()) '\\index{R!packages!mctest@\\texttt{mctest}}'`Here is how we would test for multicollinearity in our student examination model. `r if (knitr::is_latex_output()) '\\index{variance inflation factor|see {VIF}}'`
 
 ```{r, eval = FALSE}
 library(mctest)
@@ -723,7 +723,7 @@ Run and interpret the model.  For convenience, and to avoid long formula strings
 10. Do some simple analysis on the residuals of the model to determine if the model is safe to interpret.
 11. Experiment with improving the model fit through possible interaction terms or non-linear extensions.
 12. Comment on your results.  Did anything in the results surprise you?  If so, what might be possible explanations for this.
-13. Explain why you would or would not be comfortable using a model like this in a predictive setting - for example to help employers determine the right pay for employees.
+13. Explain why you would or would not be comfortable using a model like this in a predictive setting---for example to help employers determine the right pay for employees.
 
 `r if (knitr::is_latex_output()) '\\index{regression!linear|see {linear regression}}'`
 `r if (knitr::is_latex_output()) '\\index{regression!ordinary least squares|see {linear regression}}'`

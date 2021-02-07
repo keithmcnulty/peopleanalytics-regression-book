@@ -7,8 +7,8 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 `r if (knitr::is_latex_output()) '\\index{binomial logistic regression|(}'`
 In the previous chapter we looked at how to explain outcomes that have continuous scale, such as quantity, money, height or weight.  While there are a number of typical outcomes of this type in the people analytics domain, they are not the most common form of outcomes that are typically modeled.  Much more common are situations where the outcome of interest takes the form of a limited set of classes.  Binary (two class) problems are very common.  Hiring, promotion and attrition are often modeled as binary outcomes:  for example 'Promoted' or 'Not promoted'.  Multi-class outcomes like performance ratings on an ordinal scale, or survey responses on a Likert scale are often converted to binary outcomes by dividing the ratings into two groups, for example 'High' and 'Not High'. 
 
-In any situation where our outcome is binary, we are effectively working with likelihoods.  These are not generally linear in nature, and so we no longer have the comfort of our inputs being *directly* linearly related to our outcome.    Therefore, direct linear regression methods such as Ordinary Least Squares regression are not well suited to outcomes of this type.  Instead, linear relationships can be inferred on *transformations* of the outcome variable, which gives us a path to building interpretable models.  Hence, binomial logistic regression is said to be in a class of `r if (knitr::is_latex_output()) '\\index{generalized linear models}'`*generalized linear models* or *GLMs*.  Understanding logistic regression and using it reliably in practice is not straightforward, but it is an invaluable skill to have in the people analytics domain.  The mathematics of this chapter is a little more involved, but worth the time investment in order to build a competent understanding of how to interpret these types of models. 
-
+In any situation where our outcome is binary, we are effectively working with likelihoods.  These are not generally linear in nature, and so we no longer have the comfort of our inputs being *directly* linearly related to our outcome.    Therefore, direct linear regression methods such as Ordinary Least Squares regression are not well suited to outcomes of this type.  Instead, linear relationships can be inferred on *transformations* of the outcome variable, which gives us a path to building interpretable models.  Hence, binomial logistic regression is said to be in a class of `r if (knitr::is_latex_output()) '\\index{GLM (generalized linear model)}'`*generalized linear models* or *GLMs*.  Understanding logistic regression and using it reliably in practice is not straightforward, but it is an invaluable skill to have in the people analytics domain.  The mathematics of this chapter is a little more involved, but worth the time investment in order to build a competent understanding of how to interpret these types of models. 
+`r if (knitr::is_latex_output()) '\\index{generalized linear model|see {GLM}}'`
 ## When to use it
 
 ### Origins and intuition of binomial logistic regression {#logistic-origins}
@@ -184,7 +184,7 @@ The right hand side should look familiar from the previous chapter on linear reg
 
 `r if (knitr::is_latex_output()) '\\index{odds}'`$P(y = 1)$ is the probability that the event will occur, while $P(y = 0)$ is the probability that the event will not occur.  You may be familiar from sports like horse racing or other gambling situations that the ratio of these two represents the *odds* of an event.  For example, if a given horse has odds of 1:4, this means that there is a 20% probability they will win and an 80% probability they will not^[Often in sports the odds are expressed in the reverse order but the concept is the same].
 
-`r if (knitr::is_latex_output()) '\\index{log odds}'`Therefore we can conclude that the natural logarithm of the odds of $y$ - usually termed the *log odds* of $y$ - is linear in $x$ and therefore we can model the log odds of $y$ using similar linear regression methods to those studied in Chapter \@ref(linear-reg-ols)^[In this case a more general form of the Ordinary Least Squares procedure is used to fit the model, known as *maximum likelihood estimation*].
+`r if (knitr::is_latex_output()) '\\index{log odds}'`Therefore we can conclude that the natural logarithm of the odds of $y$---usually termed the *log odds* of $y$---is linear in $x$ and therefore we can model the log odds of $y$ using similar linear regression methods to those studied in Chapter \@ref(linear-reg-ols)^[In this case a more general form of the Ordinary Least Squares procedure is used to fit the model, known as *maximum likelihood estimation*].
 
 ### Modeling the log odds and interpreting the coefficients
 
@@ -201,7 +201,7 @@ sales_model$coefficients
 
 `r if (knitr::is_latex_output()) '\\index{binomial logistic regression!coefficients}'`We can interpret the coefficients as follows:
 
-1. The `(Intercept)` coefficient is the value of the log odds with zero input value of $x$ - it is effectively the log odds of promotion if you made no sales.  
+1. The `(Intercept)` coefficient is the value of the log odds with zero input value of $x$---it is effectively the log odds of promotion if you made no sales.  
 
 2.  The `sales` coefficient represents the increase in the log odds of promotion associated with each unit increase in sales.
 
@@ -218,7 +218,7 @@ $$
 exp(sales_model$coefficients)
 ```
 
-So we can see that the base odds of promotion with zero sales is very close to zero, which makes sense. Note that odds can only be precisely zero in a situation where it is impossible to be in the positive class (that is, nobody gets promoted).  We can also see that each unit (that is, every \$1000) of sales multiplies the base odds by approximately `r round(exp(sales_model$coefficients[2]), 2)` - in other words it increases the odds of promotion by `r round(exp(sales_model$coefficients[2])*100 - 100)`%.
+So we can see that the base odds of promotion with zero sales is very close to zero, which makes sense. Note that odds can only be precisely zero in a situation where it is impossible to be in the positive class (that is, nobody gets promoted).  We can also see that each unit (that is, every \$1000) of sales multiplies the base odds by approximately `r round(exp(sales_model$coefficients[2]), 2)`---in other words it increases the odds of promotion by `r round(exp(sales_model$coefficients[2])*100 - 100)`%.
 
 ### Odds versus probability
 
@@ -266,12 +266,12 @@ $$
 
 ## Running a multivariate binomial logistic regression model
 
-The derivations in the previous section easily extend to multivariate data.  Let $y$ be a dichotomous outcome and let $x_1, x_2, ..., x_p$ be our input variables.  Then
+The derivations in the previous section easily extend to multivariate data.  Let $y$ be a dichotomous outcome and let $x_1, x_2, \dots, x_p$ be our input variables.  Then
 
 $$
-\ln\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p
+\ln\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_0 + \beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p
 $$
-for coefficients $\beta_0, \beta_1,..., \beta_p$.  As before:
+for coefficients $\beta_0, \beta_1,\dots, \beta_p$.  As before:
 
 * $\beta_0$ represents the log odds of our outcome when all inputs are zero
 * Each $\beta_i$ represents the increase in the log odds of our outcome associated with a unit change in $x_i$, assuming no change in other inputs.
@@ -280,8 +280,8 @@ Applying an exponent as before, we have
 
 $$
 \begin{aligned}
-\frac{P(y = 1)}{P(y = 0)} &= e^{\beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p} \\
-&= e^{\beta_0}(e^{\beta_1})^{x_1}(e^{\beta_2})^{x_2}...(e^{\beta_p})^{x_p} 
+\frac{P(y = 1)}{P(y = 0)} &= e^{\beta_0 + \beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p} \\
+&= e^{\beta_0}(e^{\beta_1})^{x_1}(e^{\beta_2})^{x_2}\dots(e^{\beta_p})^{x_p} 
 \end{aligned}
 $$
 
@@ -348,7 +348,7 @@ full_model <- glm(formula = "promoted ~ .",
 
 Note how only three of the `performance` dummies have displayed.  This is because everyone is in one of the four performance categories, so the model is using `performance4` as the base case, so we can interpret each performance coefficient as the effect of a move to that performance category from `performance4`.
 
-We can already see from the last column of our coefficient summary - the coefficient p-values - that only `sales` and `customer_rate` meet the significance threshold of less than 0.05.  Interestingly, it appears from the `Estimate` column that `customer_rate` has a negative effect on the log odds of promotion.    For convenience, we can add an extra column to our coefficient summary to create the exponents of our estimated coefficients so that we can see the odds ratios.  We can also remove columns that are less useful to us if we wish.
+We can already see from the last column of our coefficient summary---the coefficient p-values---that only `sales` and `customer_rate` meet the significance threshold of less than 0.05.  Interestingly, it appears from the `Estimate` column that `customer_rate` has a negative effect on the log odds of promotion.    For convenience, we can add an extra column to our coefficient summary to create the exponents of our estimated coefficients so that we can see the odds ratios.  We can also remove columns that are less useful to us if we wish.
 
 ```{r}
 # create coefficient table with estimates, p-values and odds ratios
@@ -370,7 +370,7 @@ Many analysts will feel uncomfortable with stating these conclusions with too mu
 exp(confint(full_model))
 ```
 
-Therefore we can say that - all else being equal - every additional unit of sales increases the odds of promotion by between 3.0% and 5.7%, and every additional point in customer rating decreases the odds of promotion by between 22% and 89%.
+Therefore we can say that---all else being equal---every additional unit of sales increases the odds of promotion by between 3.0% and 5.7%, and every additional point in customer rating decreases the odds of promotion by between 22% and 89%.
 
 Similar to other regression models, the unit scale needs to be taken into consideration during interpretation.  On first sight, a decrease of up to 89% in odds seems a lot more important than an increase of up to 5.7% in odds.  However, the increase of up to 5.7% is for one unit (\$1000) in many thousands of sales units, and over 10 or 100 additional units can have a substantial compound effect on odds of promotion.  The decrease of up to 89% is on a full customer rating point on a scale of only 4 full points.  
 
@@ -415,7 +415,7 @@ summary(simpler_model)
 
 Note that, unlike what we saw for linear regression in Section \@ref(lin-good-fit), our summary does not provide a statistic on overall model fit or goodness-of-fit.  The main reason for this is that there is no clear unified point of view in the statistics community on a single appropriate measure for model fit in the case of logistic regression.  Nevertheless, a number of options are available to analysts for estimating fit and goodness-of-fit for these models.
 
-`r if (knitr::is_latex_output()) '\\index{Pseudo-R-squared}'`*Pseudo-$R^2$* measures are attempts to estimate the amount of variance in the outcome that is explained by the fitted model, analogous to the $R^2$ in linear regression.  There are numerous variants of pseudo-$R^2$ with some of the most common listed here:
+`r if (knitr::is_latex_output()) '\\index{Pseudo-R-squared!in binomial logistic regression}'`*Pseudo-$R^2$* measures are attempts to estimate the amount of variance in the outcome that is explained by the fitted model, analogous to the $R^2$ in linear regression.  There are numerous variants of pseudo-$R^2$ with some of the most common listed here:
 
 * McFadden's $R^2$ works by comparing the likelihood function of the fitted model with that of a random model and using this to estimate the explained variance in the outcome
 * Cox and Snell's $R^2$ works by applying a 'sum of squares' analogy to the likelihood functions to align more closely with the precise methodology for calculating $R^2$ in linear regression.  However, this usually means that the maximum value is less than 1, and in certain circumstances substantially less than 1, which can be problematic and unintuitive for an $R^2$
@@ -467,9 +467,9 @@ Various measures of predictive accuracy can also be used to assess a binomial lo
 
 ### Model parsimony
 
-`r if (knitr::is_latex_output()) '\\index{parsimony}'`We saw that in both our linear regression and our logistic regression approach, we decided to drop variables from our model when we determined that they had no significant effect on the outcome.  The principle of *Occam's Razor* states that - all else being equal - the simplest explanation is the best.  In this sense, a model that contains information that does not contribute to its primary inference objective is more complex than it needs to be.  Such a model increases the communication burden in explaining its results to others, with no notable analytic benefit in return.
+`r if (knitr::is_latex_output()) '\\index{parsimony}'`We saw that in both our linear regression and our logistic regression approach, we decided to drop variables from our model when we determined that they had no significant effect on the outcome.  The principle of *Occam's Razor* states that---all else being equal---the simplest explanation is the best.  In this sense, a model that contains information that does not contribute to its primary inference objective is more complex than it needs to be.  Such a model increases the communication burden in explaining its results to others, with no notable analytic benefit in return.
 
-*Parsimony* describes the concept of being careful with resources or with information.  A model could be described as more parsimonious if it can achieve the same (or very close to the same) fit with a smaller number of inputs.  `r if (knitr::is_latex_output()) '\\index{AIC}'`The *Akaike Information Criterion* or *AIC* is a measure of model parsimony that is computed for log-likelihood models like logistic regression models, with a lower AIC indicating a more parsimonious model.  AIC is often calculated as standard in summary reports of logistic regression models, but can also be calculated independently.  Let's compare the different iterations of our model in this chapter using AIC.`r if (knitr::is_latex_output()) '\\index{Akaike Information Criterion|see {AIC}}'`
+*Parsimony* describes the concept of being careful with resources or with information.  A model could be described as more parsimonious if it can achieve the same (or very close to the same) fit with a smaller number of inputs.  `r if (knitr::is_latex_output()) '\\index{AIC (Akaike Information Criterion)}'`The *Akaike Information Criterion* or *AIC* is a measure of model parsimony that is computed for log-likelihood models like logistic regression models, with a lower AIC indicating a more parsimonious model.  AIC is often calculated as standard in summary reports of logistic regression models, but can also be calculated independently.  Let's compare the different iterations of our model in this chapter using AIC.`r if (knitr::is_latex_output()) '\\index{Akaike Information Criterion|see {AIC}}'`
 
 ```{r}
 # sales only model
@@ -481,13 +481,13 @@ AIC(simpler_model)
 # model with all inputs
 AIC(full_model)
 ```
-We can see that the model which is limited to our two significant inputs - sales and customer rating - is determined to be the most parsimonious model according to the AIC. Note that the AIC should not be used to interpret model quality or confidence - it is possible that the lowest AIC might still be a very poor fit.
+We can see that the model which is limited to our two significant inputs---sales and customer rating---is determined to be the most parsimonious model according to the AIC. Note that the AIC should not be used to interpret model quality or confidence---it is possible that the lowest AIC might still be a very poor fit.
 
 Model parsimony becomes a substantial concern when there is a large number of input variables.  As a general rule, the more input variables there are in a model the greater the chance that the model will be difficult to interpet clearly, and the greater the risk of measurement problems such as multicollinearity.  Analysts who are eager to please their customers, clients, professors or bosses can easily be tempted to think up new potential inputs to their model, often derived mathematically from measures that are already inputs in the model.  Before long the model is too complex and in extreme cases there are more inputs than there are observations.  The primary way to to manage model complexity is to exercise caution in selecting model inputs.  When large numbers of inputs are unavoidable, coefficient regularization methods such as LASSO regression can help with model parsimony.  
 
 ## Other considerations in binomial logistic regression
 
-`r if (knitr::is_latex_output()) '\\index{binomial logistic regression!predictions}'`To predict from new data, just use the `predict()` function as in the previous chapter.  This function recognizes the type of model being used - in this case a generalized linear model - and adjusts its prediction approach accordingly. In particular, if you want to return the probability of the new observations being promoted, you need to use `type = "response"` as an argument.
+`r if (knitr::is_latex_output()) '\\index{binomial logistic regression!predictions}'`To predict from new data, just use the `predict()` function as in the previous chapter.  This function recognizes the type of model being used---in this case a generalized linear model---and adjusts its prediction approach accordingly. In particular, if you want to return the probability of the new observations being promoted, you need to use `type = "response"` as an argument.
 
 ```{r}
 # define new observations
@@ -500,7 +500,7 @@ predict(simpler_model, new_data, type = "response")
 
 Many of the principles covered in the previous chapter on linear regression are equally important in logistic regression.  For example, input variables should be managed in a similar way.  `r if (knitr::is_latex_output()) '\\index{collinearity}'`Collinearity and `r if (knitr::is_latex_output()) '\\index{multicollinearity}'`multicollinearity should be of concern.  Interaction of input variables can be modeled.  For the most part, analysts should be aware of the fundamental mathematical transformations which take place in a logistic regression model when they consider some of these issues (another reason to ensure that the mathematics covered earlier in this chapter is well understood).  For example, while coefficients in linear regression have a direct additive impact on $y$, in logistic regression they have a direct additive impact on the log odds of $y$, or alternatively their exponents have a direct multiplicative impact on the odds of $y$.  Therefore coefficient overestimation such as that which can occur when collinearity is not managed can result in inferences that could substantially overstate the importance or effect of input variables.
 
-`r if (knitr::is_latex_output()) '\\index{binomial logistic regression!Pearson residuals}'`Because of the binary nature of our outcome variable, the residuals of a logistic regression model have limited direct application to the problem being studied.  In practical contexts the residuals of logistic regression models are rarely examined, but they can be useful in identifying outliers or particularly influential observations and in assessing goodness of fit, as in \@ref(logistic-gof).  When residuals are examined, they need to be transformed in order to be analyzed appropriately.  For example, the *Pearson residual* is a standardized form of residual from logistic regression which can be expected to have a normal distribution over large enough samples.  We can see in Figure \@ref(fig:pearson-resids) that this is the case for our `simpler_model`, but that there are a small number of substantial underestimates in our model.  A good source of further learning on diagnostics of logistic regression models is @menard.
+`r if (knitr::is_latex_output()) '\\index{Pearson residuals}'`Because of the binary nature of our outcome variable, the residuals of a logistic regression model have limited direct application to the problem being studied.  In practical contexts the residuals of logistic regression models are rarely examined, but they can be useful in identifying outliers or particularly influential observations and in assessing goodness of fit, as in \@ref(logistic-gof).  When residuals are examined, they need to be transformed in order to be analyzed appropriately.  For example, the *Pearson residual* is a standardized form of residual from logistic regression which can be expected to have a normal distribution over large enough samples.  We can see in Figure \@ref(fig:pearson-resids) that this is the case for our `simpler_model`, but that there are a small number of substantial underestimates in our model.  A good source of further learning on diagnostics of logistic regression models is @menard.
 
 ```{r pearson-resids, fig.cap= if (knitr::is_latex_output()) {"Distribution of Pearson residuals in \\texttt{simpler\\_model}"} else {"Distribution of Pearson residuals in `simpler_model`"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
 d <- density(residuals(simpler_model, "pearson"))

@@ -32,12 +32,12 @@ It looks like:
 
 * `promoted` is a binary value, either 1 or 0.  Presumably 1 means 'was promoted' and 0 means 'was not promoted'.
 * `sales` and `customer_rate` look like normal numerical values.
-* `performance` looks like a set of performance categories - there appear to be four based on what we can see.
+* `performance` looks like a set of performance categories---there appear to be four based on what we can see.
 
 ## Elementary descriptive statistics of populations and samples
 
 `r if (knitr::is_latex_output()) '\\index{descriptive statistics|(}'`
-Any collection of numerical data on one or more variables can be described using a number of common statistical concepts.  Let $x = x_1, x_2, ..., x_n$ be a sample of $n$ observations of a variable drawn from a population.
+Any collection of numerical data on one or more variables can be described using a number of common statistical concepts.  Let $x = x_1, x_2, \dots, x_n$ be a sample of $n$ observations of a variable drawn from a population.
 
 ### Mean, variance and standard deviation {#mean-var-sd}
 
@@ -123,7 +123,7 @@ Given the range of sales is [`r range(salespeople$sales, na.rm = TRUE)`] and the
 
 ### Covariance and correlation
 
-`r if (knitr::is_latex_output()) '\\index{covariance (statistics)!sample covariance}'`The **covariance** between two variables is a measure of the extent to which one changes as the other changes.  If $y = y_1, y_2, ..., y_n$ is a second variable, and $\bar{x}$ and $\bar{y}$ are the means of $x$ and $y$ respectively, then the **sample covariance** of $x$ and $y$ is defined as
+`r if (knitr::is_latex_output()) '\\index{covariance (statistics)!sample covariance}'`The **covariance** between two variables is a measure of the extent to which one changes as the other changes.  If $y = y_1, y_2, \dots, y_n$ is a second variable, and $\bar{x}$ and $\bar{y}$ are the means of $x$ and $y$ respectively, then the **sample covariance** of $x$ and $y$ is defined as
 
 $$
 \mathrm{cov}_s(x, y) = \frac{1}{n - 1}\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})
@@ -150,7 +150,7 @@ n <- nrow(cols[complete.cases(cols), ])
 
 As can be seen, the difference in covariance is very small between the sample and population versions, and both confirm a positive relationship between sales and customer rating.  However, we again see this issue that there is no intuitive sense of scale for this measure.  
 
-`r if (knitr::is_latex_output()) '\\index{correlation (statistics)!Pearson\'s correlation}'`**Pearson's correlation** coefficient divides the covariance by the product of the standard deviations of the two variables: 
+`r if (knitr::is_latex_output()) '\\index{correlation (statistics)}'``r if (knitr::is_latex_output()) '\\index{Pearson\'s correlation}'`**Pearson's correlation** coefficient divides the covariance by the product of the standard deviations of the two variables: 
 
 $$
 r_{x, y} = \frac{\mathrm{cov}(x, y)}{\sigma(x)\sigma(y)}
@@ -172,7 +172,7 @@ This tells us that there is a moderate positive correlation between sales and cu
 cor(salespeople$sales, salespeople$promoted, use = "complete.obs")
 ```
 
-`r if (knitr::is_latex_output()) '\\index{correlation (statistics)!Spearman\'s rho}'`Correlating ranked variables involves an adjusted approach leading to **Spearman's rho** ($\rho$) or `r if (knitr::is_latex_output()) '\\index{correlation (statistics)!Kendall\'s tau}'`**Kendall's tau** ($\tau$), among others.  We will not dive into the mathematics of this here, but a good source is @bhattacharya.  Spearman's or Kendall's variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.
+`r if (knitr::is_latex_output()) '\\index{Spearman\'s rho}'`Correlating ranked variables involves an adjusted approach leading to **Spearman's rho** ($\rho$) or `r if (knitr::is_latex_output()) '\\index{Kendall\'s tau}'`**Kendall's tau** ($\tau$), among others.  We will not dive into the mathematics of this here, but a good source is @bhattacharya.  Spearman's or Kendall's variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.
 
 ```{r}
 # spearman's rho correlation
@@ -326,7 +326,7 @@ We will go through an example of each of these.  In each case you will see a thr
 
 ### Testing for a difference in means (Welch's $t$-test) {#means-sig}
 
-`r if (knitr::is_latex_output()) '\\index{hypothesis testing!Welch\'s t-test}'`Imagine that we are asked if, in general, the sales of low performing salespeople are different from the sales of high performing salespeople.  This question refers to all salespeople, but we only have data for the sample in our `salespeople` data set.  Let's take two subsets of our data for those with a performance rating of 1 and those with a performance rating of 4, and calculate the difference in mean sales.
+`r if (knitr::is_latex_output()) '\\index{Welch\'s t-test}'`Imagine that we are asked if, in general, the sales of low performing salespeople are different from the sales of high performing salespeople.  This question refers to all salespeople, but we only have data for the sample in our `salespeople` data set.  Let's take two subsets of our data for those with a performance rating of 1 and those with a performance rating of 4, and calculate the difference in mean sales.
 
 ```{r}
 # take two performance group samples 
@@ -423,7 +423,7 @@ Because our p-value is less than our alpha of 0.05, we reject the null hypothesi
 
 In practice, there are numerous alphas that are of interest to analysts, each reflecting different levels of certainty.  While 0.05 is the most common standard in many disciplines, more stringent alphas of 0.01 and 0.001 are often used in situations where a high degree of certainty is desirable (for example some medical fields).  Similarly, a less stringent alpha standard of 0.1 can be of interest particularly when sample sizes are small and the analyst is satisfied with 'indications' from the data.  In many statistical software packages, including those that we will see in this book, tests that meet an $\alpha = 0.1$ standard are usually marked with period(`.`), those that meet $\alpha = 0.05$ with an asterisk(`*`), $\alpha = 0.01$ a double asterisk(`**`) and $\alpha = 0.001$ a triple asterisk(`***`).
 
-`r if (knitr::is_latex_output()) '\\index{hypothesis testing!p-hacking}'`Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data.  In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards - a process known as "p-hacking" - has been of increasing concern recently.  See Chapter \@ref(power-tests) for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.
+`r if (knitr::is_latex_output()) '\\index{hypothesis testing!p-hacking}'`Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data.  In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards---a process known as "p-hacking"---has been of increasing concern recently.  See Chapter \@ref(power-tests) for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.
 
 ### Testing for a non-zero correlation between two variables ($t$-test for correlation)
 
@@ -636,7 +636,7 @@ print(chi2_test)
 
 ### Discussion questions
 
-Where relevant in these discussion exercises, let $x = x_1, x_2, ..., x_n$ and $y = y_1, y_2, ..., y_m$ be samples of two random variables of length $n$ and $m$ respectively.
+Where relevant in these discussion exercises, let $x = x_1, x_2, \dots, x_n$ and $y = y_1, y_2, \dots, y_m$ be samples of two random variables of length $n$ and $m$ respectively.
 
 1.  If the values of $x$ can only take the form 0 or 1, and if their mean is 0.25, how many of the values equal 0?
 2.  If $m = n$ and $x + y$ is formed from the element-wise sum of $x$ and $y$, show that the mean of $x + y$ is equal to the sum of the mean of $x$ and the mean of $y$.
@@ -646,7 +646,7 @@ Where relevant in these discussion exercises, let $x = x_1, x_2, ..., x_n$ and $
 6.  Describe the role of sample size and sampling frequency in the distribution of sampling means for a random variable.
 7.  Describe what a standard error of a statistic is and how it can be used to determine a confidence interval for the true population statistic. 
 8.  If we conduct a t-test on the null hypothesis that $x$ and $y$ are drawn from populations with the same mean, describe what a p-value of 0.01 means. 
-9.  **Extension:**  The sum of variance law states that, for independent random variables $x$ and $y$, $\mathrm{Var}(x \pm y) = \mathrm{Var}(x) + \mathrm{Var}(y)$.  Use this together with the identity from Exercise 3 to derive the formula for the standard error of the mean of $x = x_1, x_2, ..., x_n$:
+9.  **Extension:**  The sum of variance law states that, for independent random variables $x$ and $y$, $\mathrm{Var}(x \pm y) = \mathrm{Var}(x) + \mathrm{Var}(y)$.  Use this together with the identity from Exercise 3 to derive the formula for the standard error of the mean of $x = x_1, x_2, \dots, x_n$:
 
 $$
 SE = \frac{\sigma(x)}{\sqrt{n}}

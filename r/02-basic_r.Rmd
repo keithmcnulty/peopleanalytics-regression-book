@@ -1,12 +1,12 @@
 # The Basics of the R Programming Language 
 
-Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis.  Sample implementations in Python are also provided at various points in the book.  I have made efforts to keep the code as simple as possible, and I have tried to avoid the use of too many external packages.  For the most part, readers should see (especially in the earlier chapters) that code blocks are short and simple, relying wherever possible on base R functionality.  No doubt there are neater and more effective ways to code some of the material in this book using a wide array of R packages - and some of these are illustrated in Chapter \@ref(alt-approaches) - but my priority has been to keep the code simple, consistent and easily reproducible.  
+Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis.  Sample implementations in Python are also provided at various points in the book.  I have made efforts to keep the code as simple as possible, and I have tried to avoid the use of too many external packages.  For the most part, readers should see (especially in the earlier chapters) that code blocks are short and simple, relying wherever possible on base R functionality.  No doubt there are neater and more effective ways to code some of the material in this book using a wide array of R packages---and some of these are illustrated in Chapter \@ref(alt-approaches)---but my priority has been to keep the code simple, consistent and easily reproducible.  
 
 For those who wish to follow the method and theory without the implementations in this book, there is no need to read this chapter.  However, the style of this book is to use implementation to illustrate theory and practice, and so tolerance of many code blocks will be necessary as you read onwards.
 
 For those who wish to simply replicate the models as quickly as possible, they will be able to avail of the code block copying feature, which appears whenever you scroll over an input code block.  Assuming all the required external packages have been installed, these code blocks should all be transportable.  For those who are extra-inquisitive and want to explore how I constructed graphics used for illustration (for which code is usually not displayed), the best place to go is the [Github repository](https://github.com/keithmcnulty/peopleanalytics-regression-book) for this book. 
 
-This chapter is for those who wish to learn the methods in this book but do not know how to use R.  However, it is not intended to be a full tutorial on R.  There are many more qualified individuals and existing resources that would better serve that purpose - in particular I recommend @wickham.  It is recommended that you consult these resources and become comfortable with the basics of R before proceeding into the later chapters of this book.  However, acknowledging that many will want to dive in sooner rather than later, this chapter covers the absolute basics of R that will allow the uninitiated reader to proceed with at least some orientation.
+This chapter is for those who wish to learn the methods in this book but do not know how to use R.  However, it is not intended to be a full tutorial on R.  There are many more qualified individuals and existing resources that would better serve that purpose---in particular I recommend @wickham.  It is recommended that you consult these resources and become comfortable with the basics of R before proceeding into the later chapters of this book.  However, acknowledging that many will want to dive in sooner rather than later, this chapter covers the absolute basics of R that will allow the uninitiated reader to proceed with at least some orientation.
 
 ## What is R?
 
@@ -106,7 +106,7 @@ my_double_vector <- c(2.3, 6.8, 4.5, 65, 6)
 str(my_double_vector)
 ```
 
-`r if (knitr::is_latex_output()) '\\index{R!categorical factors}'`Categorical data - which takes only a finite number of possible values, can be stored as a factor vector to make it easier to perform grouping and manipulation:
+`r if (knitr::is_latex_output()) '\\index{R!categorical factors}'`Categorical data---which takes only a finite number of possible values---can be stored as a factor vector to make it easier to perform grouping and manipulation:
 
 ```{r}
 categories <- factor(
@@ -235,7 +235,7 @@ The dataframe is the most common data structure used by analysts in R, due to it
 
 ### Loading and tidying data in dataframes
 
-`r if (knitr::is_latex_output()) '\\index{R!loading data}'`To work with data in R, you usually need to pull it in from an outside source into a dataframe^[R also has some built-in data sets which are for testing and playing with, for example check out `mtcars` by typing it into the terminal, or type `data()` to see a full list of built-in data sets.].  R facilitates numerous ways of importing data from simple `.csv` files, from Excel files, from online sources or from databases.  Let's load a data set that we will be using later - the `salespeople` data set, which contains some information on the sales, average customer ratings and performance ratings of salespeople.  The `read.csv()` function can accept a URL address of the file if it is online.
+`r if (knitr::is_latex_output()) '\\index{R!loading data}'`To work with data in R, you usually need to pull it in from an outside source into a dataframe^[R also has some built-in data sets which are for testing and playing with, for example check out `mtcars` by typing it into the terminal, or type `data()` to see a full list of built-in data sets.].  R facilitates numerous ways of importing data from simple `.csv` files, from Excel files, from online sources or from databases.  Let's load a data set that we will be using later---the `salespeople` data set, which contains some information on the sales, average customer ratings and performance ratings of salespeople.  The `read.csv()` function can accept a URL address of the file if it is online.
 
 ```{r}
 # url of data set 
@@ -361,7 +361,7 @@ In the code so far we have used a variety of functions.  For example `head()`, `
 
 ### Using functions
 
-`r if (knitr::is_latex_output()) '\\index{R!functions!use}'`Functions usually take one or more arguments.  Often there are a large number of arguments that a function can take, but many are optional and not required to be specified by the user.  For example, the function `head()`, which displays the first rows of a dataframe^[It actually has a broader definition but is mostly used for showing the first rows of a dataframe], has only one required argument `x`: the name of the dataframe.  A second argument is optional, `n`: the number of rows to display.  If `n` is not entered, it is assumed to have the default value `n = 6`.  
+`r if (knitr::is_latex_output()) '\\index{R!functions}'`Functions usually take one or more arguments.  Often there are a large number of arguments that a function can take, but many are optional and not required to be specified by the user.  For example, the function `head()`, which displays the first rows of a dataframe^[It actually has a broader definition but is mostly used for showing the first rows of a dataframe], has only one required argument `x`: the name of the dataframe.  A second argument is optional, `n`: the number of rows to display.  If `n` is not entered, it is assumed to have the default value `n = 6`.  
 
 When running a function, you can either specify the arguments by name or you can enter them in order without their names.  If you enter then without their names, R expects the arguments to be entered in exactly the right order.
 
@@ -379,9 +379,9 @@ head(n = 3, x = salespeople)
 
 ### Help with functions
 
-`r if (knitr::is_latex_output()) '\\index{R!functions!help}'`Most functions in R have excellent help documentation.  To get help on the `head()` function, type `help(head)` or `?head`.  This will display the results in the Help browser window in RStudio.  Alternatively you can open the Help browser window directly in RStudio and do a search there. An example of the browser results for `head()` is in Figure \@ref(fig:head-help).
+Most functions in R have excellent help documentation.  To get help on the `head()` function, type `help(head)` or `?head`.  This will display the results in the Help browser window in RStudio.  Alternatively you can open the Help browser window directly in RStudio and do a search there. An example of the browser results for `head()` is in Figure \@ref(fig:head-help).
 
-```{r head-help, fig.cap="Results of a search for the `head()` function in the RStudio Help browser", fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+```{r head-help, fig.cap=if (knitr::is_latex_output()) {"Results of a search for the \\texttt{head()} function in the RStudio Help browser"} else {"Results of a search for the `head()` function in the RStudio Help browser"}, fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 knitr::include_graphics("./www/R/head-help.png")
 ```
 
@@ -396,7 +396,7 @@ The help page normally shows the following:
 
 ### Writing your own functions
 
-`r if (knitr::is_latex_output()) '\\index{R!functions!writing}'`Functions are not limited to those that come packaged in R.  Users can write their own functions to perform tasks that are helpful to their objectives.  Experienced programmers in most languages subscribe to a principle called DRY (Don't Repeat Yourself).  Whenever a task needs to be done repeatedly, it is poor practice to write the same code numerous times. It makes more sense to write a function to do the task.  
+Functions are not limited to those that come packaged in R.  Users can write their own functions to perform tasks that are helpful to their objectives.  Experienced programmers in most languages subscribe to a principle called DRY (Don't Repeat Yourself).  Whenever a task needs to be done repeatedly, it is poor practice to write the same code numerous times. It makes more sense to write a function to do the task.  
 
 In this example, a simple function is written which generates a report on a dataframe:
 
@@ -420,7 +420,7 @@ df_report(mtcars)
 
 Before an external package can be used, it must be installed into your package library using `install.packages()`.  So to install `MASS`, type `install.packages("MASS")` into the console.  This will send R to the main internet repository for R packages (known as CRAN), it will find the right version of `MASS` for your operating system and download and install it into your package library.  If `MASS` needs other packages in order to work, it will also install these packages.  
 
-If you want to install more than one package, put the names of the packages inside a character vector - for example:
+If you want to install more than one package, put the names of the packages inside a character vector---for example:
 
 ```{r, eval = FALSE}
 my_packages <- c("MASS", "DescTools", "dplyr")
@@ -551,7 +551,7 @@ These are among the most common plots used for data exploration purposes.  They 
 
 `r if (knitr::is_latex_output()) '\\index{R!packages!ggplot2@\\texttt{ggplot2}}'`By far the most commonly used specialist plotting and graphing package in R is `ggplot2`.  `ggplot2` allows the flexible construction of a very wide range of charts and graphs, but uses a very specific command grammar which can take some getting used to.  However, once learned, `ggplot2` can be an extremely powerful tool.  Many of the illustratory figures used in this book are developed using `ggplot2` and while the code for these figures is generally not included for the sake of brevity, you can always find it in the source code of this book on Github^[https://github.com/keithmcnulty/peopleanalytics-regression-book].  A great learning resource for `ggplot2` is @ggplot2.
 
-`r if (knitr::is_latex_output()) '\\index{R!packages!ggplot2@\\texttt{plotly}}'`The `plotly` package allows the use of the `plotly` graphing library in R.  This is an excellent package for interactive graphing and is used for 3D illustrations in this book.  Output can be rendered in HTML - allowing the user to play with and explore the graphs interactively - or can be saved as static 2D images.
+`r if (knitr::is_latex_output()) '\\index{R!packages!ggplot2@\\texttt{plotly}}'`The `plotly` package allows the use of the `plotly` graphing library in R.  This is an excellent package for interactive graphing and is used for 3D illustrations in this book.  Output can be rendered in HTML---allowing the user to play with and explore the graphs interactively---or can be saved as static 2D images.
 
 `r if (knitr::is_latex_output()) '\\index{R!packages!ggplot2@\\texttt{GGally}}'``GGally` is a package which extends `ggplot2` to allow easy combination of charts and graphs.  This is particularly valuable for quicker exploratory data analysis.  One of its most popular functions is `ggpairs()` which produces a pairplot.  `r if (knitr::is_latex_output()) '\\index{R!pairplot}'`A pairplot is a visualization of all univariate and bivariate patterns in a data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed in the off-diagonal.  Figure \@ref(fig:basicpair) is an example of a pairplot for the `salespeople` dataset which we will explore further in Chapter \@ref(bin-log-reg).
 

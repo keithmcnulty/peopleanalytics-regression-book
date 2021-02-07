@@ -54,10 +54,274 @@
 \usepackage[nonumberlist]{glossaries}
 \makenoidxglossaries
 
-\newglossaryentry{infmodel}
+\newglossaryentry{peopleanalytics}
+{
+    name={people analytics},
+    description={The study of the behaviors and characteristics of people or groups in relation to important business, organizational or institutional outcomes}
+}
+
+\newglossaryentry{inferentialmodel}
 {
     name={inferential model},
     description={A model whose primary objective is to explain the relationships between input variables and an outcome variable}
+}
+
+\newglossaryentry{predictivemodel}
+{
+    name={predictive model},
+    description={A model whose primary objective is to accurately predict the outcome variable from new observations of the input variables}
+}
+
+\newglossaryentry{regression}
+{
+    name={regression},
+    description={A set of statistical techniques used to estimate the relationship between a set of input variables and an outcome variable}
+}
+
+\newglossaryentry{linearregression}
+{
+    name={linear regression},
+    description={A regression technique that models a linear relationship between a set of input variables and a \textit{continuous} outcome variable}
+}
+
+\newglossaryentry{logisticregression}
+{
+    name={logistic regression},
+    description={A set of regression techniques that model the probabilities of at least two distinct outcomes using a logistic function to approximate a normal probability distribution}
+}
+
+\newglossaryentry{binomiallogisticregression}
+{
+    name={binomial logistic regression},
+    description={A regression technique that models the probability of a binary or dichotomous event using a logistic function}
+}
+
+\newglossaryentry{multinomiallogisticregression}
+{
+    name={multinomial logistic regression},
+    description={A regression technique that models the probability of a number of distinct nominal outcome events relative to a reference outcome event}
+}
+
+\newglossaryentry{ordinallogisticregression}
+{
+    name={ordinal logistic regression},
+    description={A set of regression techniques that model an ordered category outcome such as a Likert scale.  The most commonly used technique is proportional odds logistic regression}
+}
+
+\newglossaryentry{mixedmodel}
+{
+    name={mixed model},
+    description={A regression technique that accounts for hierarchical groupings in data by modeling fixed effects within groups and random effects between groups.  Also known as a hierarchical or multilevel model}
+}
+
+\newglossaryentry{structuralequationmodel}
+{
+    name={structural equation model},
+    description={A regression technique that proposes a smaller number of latent variables to explain the measured input variables and models the relationship between the latent variables and the outcome variable.  Particularly useful in the analysis of large survey instruments}
+}
+
+\newglossaryentry{factoranalysis}
+{
+    name={factor analysis},
+    description={A technique used to confirm or refine a set of latent variables that are proposed to explain a larger number of measured variables}
+}
+
+\newglossaryentry{survivalanalysis}
+{
+    name={survival analysis},
+    description={A technique used to model the likelihood of singular events that occur at different times, so named because of its use in epidemiology to study death and disease events}
+}
+
+\newglossaryentry{coxproportionalhazard}
+{
+    name={Cox proportional hazard},
+    description={A regression technique used to model singular events that occur at different times, used frequently in survival analysis}
+}
+
+\newglossaryentry{statisticalpower}
+{
+    name={statistical power},
+    description={The probability that a null hypothesis is accurately rejected, used in considering the minimal sample sizes needed in experiments}
+}
+
+\newglossaryentry{hypothesistest}
+{
+    name={hypothesis test},
+    description={A statistical technique that determines the likelihood of truth of a statement about a population based on the statistical properties of a sample of that population}
+}
+
+\newglossaryentry{nullhypothesis}
+{
+    name={null hypothesis},
+    description={In hypothesis testing, the assumption that a statement about a population is not true.  The null hypothesis needs to be rejected to prove statistical significance}
+}
+
+\newglossaryentry{alternativehypothesis}
+{
+    name={alternative hypothesis},
+    description={In hypothesis testing, the negation of the null hypothesis.  Usually this is the hypothesis that a given statement about a population is true}
+}
+
+\newglossaryentry{pvalue}
+{
+    name={p-value},
+    description={In hypothesis testing, the maximum probability of the null hypothesis based on the statistical properties of a sample. p-values need to be lower than a certain standard (usually 0.05) to reject the null hypothesis}
+}
+
+\newglossaryentry{confidenceinterval}
+{
+    name={confidence interval},
+    description={In statistical estimation, the range of values that is likely to contain the true value of a parameter to a specified level of certainty---most commonly 95\%}
+}
+
+\newglossaryentry{parametricmodel}
+{
+    name={parametric model},
+    description={A model for which the outcome variable can be explained or predicted by the input variables without any need for additional information}
+}
+
+\newglossaryentry{fit}
+{
+    name={fit},
+    description={The extent to which the variance of the outcome variable is explained by a model.  Also used as a verb to describe the process of calculating the optimal parameters of a model which reduce the error to a minimum}
+}
+
+\newglossaryentry{goodnessoffit}
+{
+    name={goodness-of-fit},
+    description={In linear regression, a test of the null hypothesis that a fitted model has no better explanatory power than a null or random model.  In logistic regression, a test of the null hypothesis that a fitted model has a better explanatory power than a null or random model}
+}
+
+\newglossaryentry{residual}
+{
+    name={residual},
+    description={The error or difference between the true value of the outcome variable and that estimated by a model for a given observation}
+}
+
+\newglossaryentry{Rsquared}
+{
+    name={R-squared},
+    description={A metric used to measure the fit of a linear regression model, with a value ranging from 0 to 1}
+}
+
+\newglossaryentry{PseudoRsquared}
+{
+    name={Pseudo-R-squared},
+    description={A variety of metrics used to measure the fit of a logistic regression model, intended to be analogous to the R-squared in linear regression}
+}
+
+\newglossaryentry{standarderror}
+{
+    name={standard error},
+    description={A standard deviation of a sampled statistic of a random variable.  For example, the standard error of the mean is the standard deviation of the sampled means of the variable}
+}
+
+\newglossaryentry{coefficient}
+{
+    name={coefficient},
+    description={An estimated parameter of a model which can be used to explain the influence of an input variable on the outcome variable}
+}
+
+\newglossaryentry{collinearity}
+{
+    name={collinearity},
+    description={A situation where two input variables are highly correlated with each other.  This can affect the accuracy of inferences from models}
+}
+
+\newglossaryentry{multicollinearity}
+{
+    name={multicollinearity},
+    description={A situation where more than two input variables have a strong linear relationship with each other.  This can affect the accuracy of inferences from models}
+}
+
+\newglossaryentry{dummyvariable}
+{
+    name={dummy variable},
+    description={A way of expressing the value of a categorical variable in binary form to allow that variable to be used as an input to a model.  A variable that takes a set of $k$ categorical values is converted to $k$ dummy binary variables}
+}
+
+\newglossaryentry{odds}
+{
+    name={odds},
+    description={The ratio of the probability of an event occurring and the probability of it not occurring.  A key metric in interpreting logistic regression models}
+}
+
+\newglossaryentry{oddsratio}
+{
+    name={odds ratio},
+    description={In logistic regression, the multiple of the odds of the outcome brought about by a unit change in an input variable, assuming no change in the other input variables.  It is the exponent of the coefficient of that input variable}
+}
+
+\newglossaryentry{stratifiedmodels}
+{
+    name={stratified models},
+    description={Where the outcome variable is categorical with more than two categories, "stratified models" refers to a set of binomial models that model membership of each category}
+}
+
+\newglossaryentry{effectsize}
+{
+    name={effect size},
+    description={A measure of the strength of the relationship between two variables in a sample, used in calculations of statistical power.  Numerous measures of effect size exist for different types of analysis.  Cohen's $d$ is the most well known, and is a normalized measure of the size of the difference between two sample means}
+}
+
+\newglossaryentry{mean}
+{
+    name={mean},
+    description={The average value of a sample of data}
+}
+
+\newglossaryentry{variance}
+{
+    name={variance},
+    description={A measure of the extent to which a sample of data varies around its mean}
+}
+
+\newglossaryentry{standarddeviation}
+{
+    name={standard deviation},
+    description={The square root of the variance for a sample of data.  It gives a more intuitive measure of how the data varies around its mean relative to its inherent scale}
+}
+
+\newglossaryentry{covariance}
+{
+    name={covariance},
+    description={A measure of the extent to which one variable changes as another changes}
+}
+
+\newglossaryentry{correlation}
+{
+    name={correlation},
+    description={A normalized version of covariance that ranges from -1 to 1.  It is a more intuitive measure of how one variable changes as another changes}
+}
+
+\newglossaryentry{normaldistribution}
+{
+    name={normal distribution},
+    description={The theoretical distribution of a random variable in an unbounded bell-shaped curve}
+}
+
+\newglossaryentry{randomvariable}
+{
+    name={random variable},
+    description={A variable which is independent and identically distributed.  The value of an observation of a random variable is completely independent of the value of other observations}
+}
+
+\newglossaryentry{inputvariable}
+{
+    name={input variable},
+    description={A variable which is to be used in a model to try to explain the outcome variable.  Also known as a covariate or an independent variable}
+}
+
+\newglossaryentry{outcomevariable}
+{
+    name={outcome variable},
+    description={The variable to be explained in a model.  Also known as a dependent variable, target variable or response variable}
+}
+
+\newglossaryentry{glm}
+{
+    name={generalized linear model (GLM)},
+    description={A generalization of linear regression to allow for modeling of outcome variables that are not normally distributed.  Logistic regression models which model binary or categorical outcome variables are among the most common GLMs}
 }
 
 \glsaddall

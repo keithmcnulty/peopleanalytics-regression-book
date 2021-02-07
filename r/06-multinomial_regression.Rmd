@@ -9,7 +9,7 @@ In the previous chapter we looked at how to model a binary or dichotomous outcom
 
 A binary or dichotomous outcome like we studied in the previous chapter is already in fact a nominal outcome with two categories, so in principle we already have the basic technology with which to study this problem.  That said, the way we approach the problem can differ according to the types of inferences we wish to make.  
 
-If we only wish to make inferences about the choice of each specific category - what drives whether an observation is in Category A versus the others, or Category B versus the others - then we have the option of running separate binomial logistic regression models on a 'one versus the rest' basis.  In this case we can refine our model differently for each category, eliminating variables that are not significant in determining membership of that category.  This could potentially lead to models being defined differently for different target outcome categories.  Notably, there will be no common comparison category between these models.  `r if (knitr::is_latex_output()) '\\index{stratified models}'`This is sometimes called a *stratified* approach.
+If we only wish to make inferences about the choice of each specific category---what drives whether an observation is in Category A versus the others, or Category B versus the others---then we have the option of running separate binomial logistic regression models on a 'one versus the rest' basis.  In this case we can refine our model differently for each category, eliminating variables that are not significant in determining membership of that category.  This could potentially lead to models being defined differently for different target outcome categories.  Notably, there will be no common comparison category between these models.  `r if (knitr::is_latex_output()) '\\index{stratified models}'`This is sometimes called a *stratified* approach.
 
 `r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!reference category}'`However, in many studies there is a need for a 'reference' category to better understand the relative odds of category membership.  For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the 'most healthy' or 'most recovered' patients)^[In @hosmer-logistic, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient  Care as the reference]. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different, we would need to make decisions on refining the model differently and we interpret the coefficients in a different way.
 
@@ -31,7 +31,7 @@ You are an analyst at a large technology company.  The company recently introduc
 
 `r if (knitr::is_latex_output()) '\\index{data sets!health\\_insurance@\\texttt{health\\_insurance}}'`The `health_insurance` data set consists of the following fields:
 
-* `product`: The choice of product of the individual - A, B or C
+* `product`: The choice of product of the individual---A, B or C
 * `age`: The age of the individual when they made the choice
 * `gender`:  The gender of the individual as stated when they made the choice
 * `children`:  The number of child dependents the individual had at the time of the choice
@@ -63,7 +63,7 @@ str(health_insurance)
 str(health_insurance)
 ```
 
-It looks like two of these columns should be converted to factor - `product` and `gender`, so let's do that and then run a pairplot for a quick overview of any patterns, which can be seen in Figure \@ref(fig:insurance-pairplot).
+It looks like two of these columns should be converted to factor---`product` and `gender`---so let's do that and then run a pairplot for a quick overview of any patterns, which can be seen in Figure \@ref(fig:insurance-pairplot).
 
 ```{r insurance-pairplot, fig.cap = if (knitr::is_latex_output()) {"Pairplot of the \\texttt{health\\_insurance} data set"} else {"Pairplot of the `health_insurance` data set"}, fig.align = "center", message = FALSE, warning = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 library(GGally)
@@ -75,7 +75,7 @@ health_insurance$gender <- as.factor(health_insurance$gender)
 GGally::ggpairs(health_insurance)
 ```
 
-The data appears somewhat chaotic here.  However, there are a few things to note.  Firstly, we notice that there is a relatively even spread in choice between the products.  We also notice that age seems to be playing a role in product choice.  There are also some mild-to-moderate correlations in the data - in particular between `age` and `position_level`, and between `tenure` and `position_level`.  However, this problem is clearly more complex than we can determine from a bivariate perspective.
+The data appears somewhat chaotic here.  However, there are a few things to note.  Firstly, we notice that there is a relatively even spread in choice between the products.  We also notice that age seems to be playing a role in product choice.  There are also some mild-to-moderate correlations in the data---in particular between `age` and `position_level`, and between `tenure` and `position_level`.  However, this problem is clearly more complex than we can determine from a bivariate perspective.
 
 ## Running stratified binomial models {#stratified}
 
@@ -251,7 +251,7 @@ Simplifying a multinomial regression model needs to be done with care.  In a bin
 
 `r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!model simplification}'`In @hosmer-logistic, a gradual process of elimination of variables is recommended to ensure that significant variables that confound each other in the different logistic models are not accidentally dropped from the final model. The recommended approach is as follows:
 
-* Start with the variable with the least significant p-values in all sets of coefficients - in our case `tenure` would be the obvious first candidate
+* Start with the variable with the least significant p-values in all sets of coefficients---in our case `tenure` would be the obvious first candidate
 * Run the multinomial model without this variable
 * Test that none of the previous coefficients change by more than 20-25%
 * If there was no such change, safely remove the variable and proceed to the next non-significant variable
@@ -283,7 +283,7 @@ We can see that only `genderNon-binary` changed substantially, but we note that 
 
 ### Model fit and goodness-of-fit
 
-`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!fit}'`As with the binomial case, a variety of Pseudo-$R^2$ methods are available to assess the fit of a multinomial logistic regression model, although some of our previous variants (particularly Tjur) are not defined on models with more than two outcome categories.
+`r if (knitr::is_latex_output()) '\\index{Pseudo-R-squared!in multinomial logistic regression}'`As with the binomial case, a variety of Pseudo-$R^2$ methods are available to assess the fit of a multinomial logistic regression model, although some of our previous variants (particularly Tjur) are not defined on models with more than two outcome categories.
 
 ```{r}
 DescTools::PseudoR2(simpler_multi_model, 
