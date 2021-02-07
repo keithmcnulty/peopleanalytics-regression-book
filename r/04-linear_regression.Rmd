@@ -1,7 +1,7 @@
 # Linear Regression for Continuous Outcomes {#linear-reg-ols}
 
 `r if (knitr::is_latex_output()) '\\index{linear regression|(}'`
-In this chapter we will introduce and explore linear regression, one of the first learning methods to be developed by statisticians and one of the easiest to interpret.  Despite its simplicity---indeed *because* of its simplicity---it can be a very powerful tool in many situations.  Linear regression will often be the first methodology to be trialled on a given problem, and will give an immediate benchmark with which to judge the efficacy of other, more complex, modeling techniques.  Given the ease of interpretation, many analysts will select a linear regression model over more complex approaches even if those approaches produce a slightly better fit.  This chapter will also introduce many critical concepts that will apply to other modeling approaches as we proceed through this book, therefore for inexperienced modelers this should be considered a foundational chapter which should not be skipped.
+In this chapter we will introduce and explore linear regression, one of the first learning methods to be developed by statisticians and one of the easiest to interpret.  Despite its simplicity---indeed *because* of its simplicity---it can be a very powerful tool in many situations.  Linear regression will often be the first methodology to be trialed on a given problem, and will give an immediate benchmark with which to judge the efficacy of other, more complex, modeling techniques.  Given the ease of interpretation, many analysts will select a linear regression model over more complex approaches even if those approaches produce a slightly better fit.  This chapter will also introduce many critical concepts that will apply to other modeling approaches as we proceed through this book, therefore for inexperienced modelers this should be considered a foundational chapter which should not be skipped.
 
 ## When to use it {#when-ols}
 
@@ -15,7 +15,7 @@ library(latex2exp)
 
 `r if (knitr::is_latex_output()) '\\index{linear regression!origins}'`Linear Regression, also known as `r if (knitr::is_latex_output()) '\\index{linear regression!ordinary least squares}'`*Ordinary Least Squares Linear Regression* or *OLS Regression* for short, was developed independently by the mathematicians Gauss and Legendre at or around the first decade of the 19th century, and there remains today some controversy about who should take credit for its discovery.  However,  at the time of its discovery it was not actually known as "regression".  This term became more popular following the work of Francis Galton---a British intellectual jack-of-all-trades and a cousin of Charles Darwin.  In the late 1800s, Galton had researched the relationship between the heights of a population of almost 1,000 children and the average height of their parents (mid-parent height).  He was surprised to discover that there was not a perfect relationship between the height of a child and the average height of its parents, and that in general children's heights were more likely to be in a range that was closer to the mean for the total population.  He described this statistical phenomenon as a "regression towards mediocrity" ("regression" comes from a Latin term approximately meaning "go back").  
 
-Figure \@ref(fig:galton-fig) is an illustration of Galton's data with the black solid line showing what a perfect relationship would look like, and the red dashed line showing the actual relationship he determined.  You can regard the red dashed line as 'going back' from the perfect relationship (symbolized by the black line) in the direction of a horizontal line representing the mean of the child heights.  This might give you an intuition that will help you understand later sections of this chapter. In an arbitrary data set, the red dashed line can lie anywhere between a horizontal line at the mean of $y$ (no relationship) and the solid black line (a perfect relationship). Linear Regression is about finding the red dashed line in your data and using it to explain the degree to which your input data (the $x$ axis) explains your outcome data (the $y$ axis). 
+Figure \@ref(fig:galton-fig) is an illustration of Galton's data with the black solid line showing what a perfect relationship would look like, and the red dashed line showing the actual relationship he determined^[This representation of Galton's study originates from @senn].  You can regard the red dashed line as 'going back' from the perfect relationship (symbolized by the black line) in the direction of a horizontal line representing the mean of the child heights.  This might give you an intuition that will help you understand later sections of this chapter. In an arbitrary data set, the red dashed line can lie anywhere between a horizontal line at the mean of $y$ (no relationship) and the solid black line (a perfect relationship). Linear Regression is about finding the red dashed line in your data and using it to explain the degree to which your input data (the $x$ axis) explains your outcome data (the $y$ axis). 
 
 ```{r galton-fig, fig.cap="Galton's study of the height of children introduced the term 'regression'", out.width='80%', fig.asp=.75, fig.align='center', echo = FALSE}
 knitr::include_graphics("./www/01/Regression-to-the-mean.png")
@@ -96,7 +96,7 @@ Let our input variable be $x$ and our outcome variable be $y$.  Recalling the eq
 $$y = mx + c$$
 where $m$ represents the slope or gradient of the line, and $c$ represents the point at which the line intercepts the $y$ axis.  `r if (knitr::is_latex_output()) '\\index{linear regression!coefficients}'`When using a straight line to model a relationship in the data, we call $c$ and $m$ the *coefficients* of the model.
 
-Now let's assume that we have a sample of ten datapoints with which to estimate our linear relationship.  Let's take the first ten values of `Yr3` and `Final` in our `ugtests` dataset:
+Now let's assume that we have a sample of ten observations with which to estimate our linear relationship.  Let's take the first ten values of `Yr3` and `Final` in our `ugtests` data set:
 
 ```{r}
 (d <- head(ugtests[ , c("Yr3", "Final")], 10))
@@ -122,7 +122,7 @@ This looks like an approximation of the relationship, but how do we know that it
 
 ### Minimising the error {#minimising-error-ols}
 
-For each of our data points, we can determine an error in the fitted model by calculating the difference between the real value of $y$ and the one predicted by our model.  For example, at $x = 52$, our modeled value of y is `r 1.2*52 + 5`, but the real value is 93, producing an error of `r 93 - 1.2*52 - 5`.  `r if (knitr::is_latex_output()) '\\index{linear regression!residuals}'`These errors are known as the *residuals* of our model. The residuals for the ten points in our dataset are illustrated by the solid red line segments in Figure \@ref(fig:sample-plot-residuals).  It looks like at least one of our residuals is pretty large.
+For each of our data points, we can determine an error in the fitted model by calculating the difference between the real value of $y$ and the one predicted by our model.  For example, at $x = 52$, our modeled value of y is `r 1.2*52 + 5`, but the real value is 93, producing an error of `r 93 - 1.2*52 - 5`.  `r if (knitr::is_latex_output()) '\\index{linear regression!residuals}'`These errors are known as the *residuals* of our model. The residuals for the ten points in our data set are illustrated by the solid red line segments in Figure \@ref(fig:sample-plot-residuals).  It looks like at least one of our residuals is pretty large.
 
 
 ``` {r sample-plot-residuals, fig.cap = "Residuals of $y=1.2x + 5$ for our ten datapoints", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
@@ -154,7 +154,7 @@ For a number of reasons (not least that fact that at the time this method was de
 
 We can run a fairly simple function in R to calculate the best fit linear model for our data.  Once we have run that function, the model, and all the details, will be saved in our session for further investigation or use.
 
-First we need to express the model we are looking to calculate as a formula.  In this simple case we want to regress the outcome $y =$ `Final` against the input $x =$ `Yr3`, and therefore we would use the simple formula notation `Final ~ Yr3`.  Now we can use the `lm()` function to calculate the linear model based on our dataset and our formula.
+First we need to express the model we are looking to calculate as a formula.  In this simple case we want to regress the outcome $y =$ `Final` against the input $x =$ `Yr3`, and therefore we would use the simple formula notation `Final ~ Yr3`.  Now we can use the `lm()` function to calculate the linear model based on our data set and our formula.
 
 ```{r}
 # calculate model
@@ -177,13 +177,13 @@ So we can already see some terms we are familiar with.  For example, we can look
 ```{r}
 model$coefficients
 ```
-`r if (knitr::is_latex_output()) '\\index{linear regression!fitting}'`This tells us that that our best fit model---the one that minimises the sum of the squares of the residuals---is $y = 1.14x + 16.63$.  In other words, our `Final` test score can be expected to take a value of 16.63 even with zero score in the `Yr3` input, and that every additional point scored in `Yr3`  will increase the `Final` score by 1.14.
+`r if (knitr::is_latex_output()) '\\index{linear regression!fitting}'`This tells us that that our best fit model---the one that minimizes the sum of the squares of the residuals---is $y = 1.14x + 16.63$.  In other words, our `Final` test score can be expected to take a value of 16.63 even with zero score in the `Yr3` input, and that every additional point scored in `Yr3`  will increase the `Final` score by 1.14.
 
 ### Measuring the fit of the model
 
 We have calculated a model which minimizes the sum of squares residual error for the sample of data that we have, but we don't really have a sense of how 'good' the model is.  How do we tell how well our model uses the input data to explain the outcome?   This is an important question to answer because you would not want to propose a model that does not do a good job of explaining your outcome, and you also may need to compare your model to other alternatives, which will require some sort of benchmark metric.
 
-One natural way to benchmark how good a job your model does of explaining the outcome is to compare it to a situation where you have no input and no model at all.  In this situation, all you have is your outcome values which can be considered a random variable with a mean and a variance.  In the case of our ten datapoints, we have ten values of `Final` with a mean of `r round(mean(d$Final), 2)`.  We can consider the horizontal line representing the mean of $y$ as our 'random model', and we can calculate the residuals around the mean.  This can be seen in Figure \@ref(fig:model-mean).
+One natural way to benchmark how good a job your model does of explaining the outcome is to compare it to a situation where you have no input and no model at all.  In this situation, all you have is your outcome values which can be considered a random variable with a mean and a variance.  In the case of our ten observations, we have ten values of `Final` with a mean of `r round(mean(d$Final), 2)`.  We can consider the horizontal line representing the mean of $y$ as our 'random model', and we can calculate the residuals around the mean.  This can be seen in Figure \@ref(fig:model-mean).
 
 ```{r model-mean, fig.cap = "Residuals of our ten datapoints around their mean value", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
@@ -240,7 +240,7 @@ So for most of our observations (though not all) we seem to have reduced the 'di
 
 Therefore before we fit our model, we have an average error of `r round((9/10)*var(d$Final), 2)`, and after we fit it, we have an average error of `r round(sum(model$residuals^2)/10, 2)`.  So we have reduced the average error of our model by `r round((9/10)*var(d$Final), 2) - round(sum(model$residuals^2)/10, 2)` or, expressed as a proportion, by `r round((round((9/10)*var(d$Final), 2) - round(sum(model$residuals^2)/10, 2))/((9/10)*var(d$Final)), 2)`.  In other words, we can say that our model explains `r  round(((9/10)*var(d$Final) - sum(model$residuals^2)/10)/((9/10)*var(d$Final)), 2)` (or `r  round(((9/10)*var(d$Final) - sum(model$residuals^2)/10)/((9/10)*var(d$Final)), 2) * 100`%) of the variance of our outcome.  
 
-`r if (knitr::is_latex_output()) '\\index{linear regression!R-squared}'`This metric is known as the $R^2$ of our model and is the primary metric used in measuring the fit of a linear regression model^[As a side note, in a simple regression model like this, where there is only one input variable, we have the simple identity $R^2 = r^2$, where $r$ is the correlation between the input and outcome (for our small set of ten datapoints here, the correlation is `r round(cor(d$Yr3, d$Final), 3)`)]. 
+`r if (knitr::is_latex_output()) '\\index{linear regression!R-squared}'`This metric is known as the $R^2$ of our model and is the primary metric used in measuring the fit of a linear regression model^[As a side note, in a simple regression model like this, where there is only one input variable, we have the simple identity $R^2 = r^2$, where $r$ is the correlation between the input and outcome (for our small set of ten observations here, the correlation is `r round(cor(d$Yr3, d$Final), 3)`)]. 
 
 
 ## Multiple linear regression {#multiple-linear-regression}
@@ -254,7 +254,7 @@ so that our sum of squares residual error is minimized.
 
 ### Running a multiple linear regression model and interpreting its coefficients
 
-A multiple linear regression model is run is a similar way to a simple regression model, with your formula notation determining what outcome and input variables you wish to have in your model.  Let's now perform a multiple linear regression on our entire `ugtests` dataset and regress our `Final` test score against all prior test scores using the formula `Final ~ Yr3 + Yr2 + Yr1` and determine our coefficients as before.
+A multiple linear regression model is run is a similar way to a simple regression model, with your formula notation determining what outcome and input variables you wish to have in your model.  Let's now perform a multiple linear regression on our entire `ugtests` data set and regress our `Final` test score against all prior test scores using the formula `Final ~ Yr3 + Yr2 + Yr1` and determine our coefficients as before.
 
 ```{r}
 model <- lm(data = ugtests, formula = Final ~ Yr3 + Yr2 + Yr1)
@@ -267,7 +267,7 @@ model$coefficients
 
 Now looking at the other coefficients, let's consider what happens if our first input $x_1$ increased by a single unit, assuming nothing else changed.  We would then expect our value of y to increase by $\beta_1$.  Similarly for any input $x_k$, a unit increase would result in an increase in $y$ of $\beta_k$, assuming no other changes in the inputs. 
 
-In the case of our `ugtests` dataset, we can say the following:
+In the case of our `ugtests` data set, we can say the following:
 
 * The intercept of the model is `r round(model$coefficients[1], 3)`.  This is the value that a student could be expected to score in their final exam even if they had scored zero in all previous exams.
 
@@ -321,7 +321,7 @@ if (knitr::is_html_output()) {
 ```
 
 
-### Model 'goodness of fit' {#lin-good-fit}
+### Model 'goodness-of-fit' {#lin-good-fit}
 
 At this point we can further explore the overall summary of our model.  As you saw in the previous section, our model summary contains numerous objects of interest, including statistics on the coefficients of our model.  We can see what is inside our summary by looking at the names of its contents, and we can then dive in and explore specific objects of interest.  For example:
 
@@ -357,7 +357,7 @@ newmodel_summary
 
 `r if (knitr::is_latex_output()) '\\index{linear regression!goodness-of-fit}'`This provides us with some of the most important metrics from our model.  In particular, the last line gives us a report on our overall model confidence or 'goodness-of-fit'---that is, how confident can we be that our model fits the outcome better than the alternative of a random model.  `r if (knitr::is_latex_output()) '\\index{linear regression!F-statistic}'`The F-statistic is an evaluation of the confidence of the entire model, with a higher F-statistic indicating a strong likelihood that the model fits the data better than a random model.  More intuitively, perhaps, we also have the p-value for the F-statistic.  In this case it is extremely small, so we can conclude that our model has some explanatory power over and above a random model.
 
-Be careful not to confuse model goodness of fit with $R^2$.  Depending on your sample, it is entirely possible for a model with a low $R^2$ to have high goodness of fit and vice versa.  
+Be careful not to confuse model goodness-of-fit with $R^2$.  Depending on your sample, it is entirely possible for a model with a low $R^2$ to have high goodness-of-fit and vice versa.  
 
 ### Making predictions from your model
 
@@ -386,7 +386,7 @@ We know from our earlier work in this chapter that there is a confidence interva
 predict(newmodel, new_students, interval = "confidence")
 ```
 
-You may also recall from Chapter \@ref(inf-model) that any datapoint in our outcome is subject to uncontrollable error, so that there is a further margin of 'prediction error', even after we take into consideration the confidence interval of our fitted model.  Therefore to generate a more reliable prediction range to use in real life, which takes this random, uncontrollable error into consideration, you should calculate a 'prediction interval':
+You may also recall from Chapter \@ref(inf-model) that any observation in our outcome is subject to uncontrollable error, so that there is a further margin of 'prediction error', even after we take into consideration the confidence interval of our fitted model.  Therefore to generate a more reliable prediction range to use in real life, which takes this random, uncontrollable error into consideration, you should calculate a 'prediction interval':
 
 ```{r}
 # get a prediction interval 
@@ -397,7 +397,7 @@ As discussed in Chapter \@ref(inf-model), the process of developing a model to *
 
 ## Managing inputs in linear regression
 
-Our walkthrough example for this chapter, while useful for illustrating the key concepts, is a very straightfoward data set to run a model on.  There is no missing data, and all the data inputs have the same numeric data type (in the exercises at the end of this chapter we will present a more varied data set for analysis).  Commonly, an analyst will have a list of possible input variables that they can consider in their model, and rarely will they run a model using all of these variables.  In this section we will cover some common elements of decision making and design of input variables in regression models.
+Our walkthrough example for this chapter, while useful for illustrating the key concepts, is a very straightforward data set to run a model on.  There is no missing data, and all the data inputs have the same numeric data type (in the exercises at the end of this chapter we will present a more varied data set for analysis).  Commonly, an analyst will have a list of possible input variables that they can consider in their model, and rarely will they run a model using all of these variables.  In this section we will cover some common elements of decision making and design of input variables in regression models.
 
 ### Relevance of input variables
 
@@ -405,17 +405,17 @@ Our walkthrough example for this chapter, while useful for illustrating the key 
 
 1.  There is no reasonable possibility of a direct or indirect causal relationship between the input and the outcome.  For example, if you were provided with the height of each individual taking the Final examination in our walkthrough example, it would be difficult to see how that could reasonably relate to the outcome that you are modeling.
 
-2.  If there is a possibility that the model will be used to predict based on new data in the future, there may be variables that you explicity do not wish to be used in any prediction.  For example, if our walkthrough model contained student gender data, we would not want to include that in a model that predicted future student scores because we would not want gender to be taken into consideration when determining student performance.
+2.  If there is a possibility that the model will be used to predict based on new data in the future, there may be variables that you explicitly do not wish to be used in any prediction.  For example, if our walkthrough model contained student gender data, we would not want to include that in a model that predicted future student scores because we would not want gender to be taken into consideration when determining student performance.
 
 ### Sparseness ('missingness') of data
 
-`r if (knitr::is_latex_output()) '\\index{linear regression!data sparseness}'`Missing data is a very common problem in modeling.  If an observation has missing data in a variable that is being included in the model, that observation will be ignored, or an error will be thrown.  This forces a model trained on a smaller set of data, which can compromise its powers of inference.  Running summary functions on your data (eg `summary()` in R) will reveal variables that contain missing data if it exists.
+`r if (knitr::is_latex_output()) '\\index{linear regression!data sparseness}'`Missing data is a very common problem in modeling.  If an observation has missing data in a variable that is being included in the model, that observation will be ignored, or an error will be thrown.  This forces a model trained on a smaller set of data, which can compromise its powers of inference.  Running summary functions on your data (such as `summary()` in R) will reveal variables that contain missing data if it exists.
 
 There are three main options for how missing data is handled:
 
-1.  If the data for a given variable is relatively complete and only a small number of observations are missing, it's usually best and simplest to remove the observations that are missing from the dataset.  Note that many modeling functions (though not all) will take care of this automatically.
+1.  If the data for a given variable is relatively complete and only a small number of observations are missing, it's usually best and simplest to remove the observations that are missing from the data set.  Note that many modeling functions (though not all) will take care of this automatically.
 
-2.  As data becomes more sparse, removing observations becomes less of an option.  If the sparseness is massive (eg more than half of the data is missing), then there is no choice but to remove that variable from the model.  While this may be unsatisfactory for a given variable (because it is thought to have an important explanatory role), the fact remains that data that is mostly missing is not a good measure of a construct in the first place.
+2.  As data becomes more sparse, removing observations becomes less of an option.  If the sparseness is massive (for example, more than half of the data is missing), then there is no choice but to remove that variable from the model.  While this may be unsatisfactory for a given variable (because it is thought to have an important explanatory role), the fact remains that data that is mostly missing is not a good measure of a construct in the first place.
 
 3.  Moderate sparse data could be considered for imputation.  Imputation methods involve using the overall statistical properties of the entire data set or of specific other variables to 'suggest' what the missing value might be, ranging from simple mean and median values to more complex imputation methods.  Imputation methods are more commonly used in predictive settings, and we will not cover imputation methods in depth here. 
 
@@ -440,7 +440,7 @@ In general, all model input variables should take a numeric form.  The most reli
 
 ```
 
-The `make` data is categorical, so it will be converted to several columns for each possible value of `make` and binary labelling will be used to identify whether that value is present in that specific observation.  Many packages and functions are available to conveniently do this, for example:
+The `make` data is categorical, so it will be converted to several columns for each possible value of `make` and binary labeling will be used to identify whether that value is present in that specific observation.  Many packages and functions are available to conveniently do this, for example:
 
 ```{r}
 library(dummies)
@@ -457,7 +457,7 @@ Dummy variables can then replace the original `make` column to get your data set
 
 ```
 
-It is worth a moment to consider how to interpret coefficients of dummy variables in a linear regression model.  If $x_k$ is one of our dummy variables, then it can only take a value of 0 or 1.  Therefore its coefficient $\beta_k$ is either 'switched off' or 'switched on' in the model.  If we were to try to use the data in our `vehicle_data_dummies` dataset to explain the retail price of a vehicle, we would interpret coefficients like this:
+It is worth a moment to consider how to interpret coefficients of dummy variables in a linear regression model.  If $x_k$ is one of our dummy variables, then it can only take a value of 0 or 1.  Therefore its coefficient $\beta_k$ is either 'switched off' or 'switched on' in the model.  If we were to try to use the data in our `vehicle_data_dummies` data set to explain the retail price of a vehicle, we would interpret coefficients like this:
 
 * For cars of the same make, each *extra dollar* spent on manufacturing changes the retail price by ...
 * For cars of the same manufacturing cost, if the vehicle is an Audi, the retail price changes by ...
@@ -485,7 +485,7 @@ plot(predicted_values, true_values)
 
 ```
 
-Alternatively, you can plot the residuals of your model against the predicted values, and look for the pattern of a random distribution (ie no major discernible pattern), such as in Figure \@ref(fig:resplot).
+Alternatively, you can plot the residuals of your model against the predicted values, and look for the pattern of a random distribution (that is, no major discernible pattern) such as in Figure \@ref(fig:resplot).
 
 ```{r resplot, fig.cap = "Plot of residuals against fitted/predicted scores", fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
 residuals <- newmodel$residuals
@@ -536,7 +536,7 @@ qqnorm(newmodel$residuals)
 
 `r if (knitr::is_latex_output()) '\\index{collinearity}'`In multiple linear regression, the various input variables used can be considered 'dimensions' of the problem or model.  In theory, we ideally expect dimensions to be independent and uncorrelated.  Practically speaking, however, it's very challenging in large data sets to ensure that every input variable is completely uncorrelated from another.  For example, even in our limited `ugtests` data set we saw in Figure \@ref(fig:pairplot-ugtests) that `Yr2` and `Yr3` examination scores are correlated to some degree.
 
-While some intercorrelation between input variables can be expected and tolerated in linear regression models, high levels of correlation can result in significant inflation of coefficients and inaccurate estimates of p-values of coefficients.  
+While some correlation between input variables can be expected and tolerated in linear regression models, high levels of correlation can result in significant inflation of coefficients and inaccurate estimates of p-values of coefficients.  
 
 *Collinearity* means that two input variables are highly correlated.  The definition of 'high correlation' is a matter of judgment, but as a rule of thumb correlations greater than 0.5 might be considered high and greater than 0.7 might be considered extreme.  Creating a simple correlation matrix or a pairplot (such as Figure \@ref(fig:pairplot-ugtests)) can immediately surface high or extreme collinearity.
 
@@ -580,7 +580,7 @@ We wrap up this chapter by introducing some simple extensions of linear regressi
 
 ### Interactions between input variables
 
-`r if (knitr::is_latex_output()) '\\index{linear regression!interaction terms}'`Recall that our model of student examination scores took each year's score as an independent input variable, and therefore we are making the assumption that the score obtained in each year acts independently and additively in predicting the Final score.  However, it is very possible that several input variables act together in relation to the outcome.  One way of modelling this is to include interaction terms in your model, which are new input variables formed as products of the original input variables.
+`r if (knitr::is_latex_output()) '\\index{linear regression!interaction terms}'`Recall that our model of student examination scores took each year's score as an independent input variable, and therefore we are making the assumption that the score obtained in each year acts independently and additively in predicting the Final score.  However, it is very possible that several input variables act together in relation to the outcome.  One way of modeling this is to include interaction terms in your model, which are new input variables formed as products of the original input variables.
 
 In our student examination data in `ugtests`, we could consider extending our model to not only include the individual year examinations, but also to include the impact of combined changes across multiple years.  For example, we could combine the impact of `Yr2` and `Yr3` examinations by multiplying them together in our model.
 
@@ -651,7 +651,7 @@ When running models with interaction terms, you can expect to see a hierarchy in
 
 `r if (knitr::is_latex_output()) '\\index{linear regression!quadratic and polynomial extensions}'`In many situations the real underlying relationship between the outcome and the inputs may be non-linear.  For example, if the underlying relationship was thought to be quadratic on a given input variable $x$, then the formula would take the form $y = \beta_0 + \beta_1x + \beta_2x^2$.  We can easily trial polynomial terms using our linear model technology.
 
-For example, recall that we removed `Yr1` data from our model because it was not significant when modeled linearly.   We could test if a quadratic model on `Yr1` helps improve our fit^[Note the use of `I()` in the fomula notation here.  This is because the symbol `^` has a different meaning inside a formula and we use `I()` to *isolate* what is inside the parentheses to ensure that it is interpreted iterally as 'the square of `Yr1`']:
+For example, recall that we removed `Yr1` data from our model because it was not significant when modeled linearly.   We could test if a quadratic model on `Yr1` helps improve our fit^[Note the use of `I()` in the formula notation here.  This is because the symbol `^` has a different meaning inside a formula and we use `I()` to *isolate* what is inside the parentheses to ensure that it is interpreted literally as 'the square of `Yr1`']:
 
 ```{r}
 # add a quadratic term in Yr1
@@ -691,7 +691,7 @@ In this case we find that modeling `Yr1` as a quadratic makes no difference to t
 
 ### Data exercises
 
-`r if (knitr::is_latex_output()) '\\index{data sets!sociological\\_data@\\texttt{sociological\\_data}}'`Load the `sociological_data` dataset via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/sociological_data.csv].  This data represents a sample of information obtained from individuals who participated in a global research study, and contains the following fields:
+`r if (knitr::is_latex_output()) '\\index{data sets!sociological\\_data@\\texttt{sociological\\_data}}'`Load the `sociological_data` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/sociological_data.csv].  This data represents a sample of information obtained from individuals who participated in a global research study, and contains the following fields:
 
 * `annual_income_ppp`:  The annual income of the individual in PPP adjusted US dollars
 * `average_wk_hrs`:  The average number of hours per week worked by the individual
@@ -700,7 +700,7 @@ In this case we find that modeling `Yr1` as a quadratic makes no difference to t
 * `job_type`: Whether the individual works in a skilled or unskilled profession
 * `gender`: The gender of the individual
 * `family_size`:  The size of the individual's family of dependents
-* `work_distance`:  The distance between the indivdual's residence and workplace in kilometers
+* `work_distance`:  The distance between the individual's residence and workplace in kilometers
 * `languages`:  The number of languages spoken fluently by the individual
 
 Conduct some exploratory data analysis on this data set.  Including:

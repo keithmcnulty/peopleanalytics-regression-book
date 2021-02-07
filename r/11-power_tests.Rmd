@@ -133,7 +133,7 @@ In this method, the statistical power of a significance test on the input variab
 
 1.  The likelihood of a positive outcome when $x = 0$ is used to determine the intercept (`p0` in the code below)
 2.  The likelihood of a positive outcome when $x = 1$ is then used to determine the regression coefficient for $x$ (`p1` in the code below).
-3.  A distribution for $x$ is inputted (`family` below) and the parameters of that distibution are also entered (`parameter` below).  For example, if the distribution is assumed to be normal then the mean and standard deviation would be entered as parameters.
+3.  A distribution for $x$ is inputted (`family` below) and the parameters of that distribution are also entered (`parameter` below).  For example, if the distribution is assumed to be normal then the mean and standard deviation would be entered as parameters.
 4.  This information is fed into the Wald test and the power for specific sample sizes is calculated.
 
 For example, let's assume that we wanted to determine if our new screening test had a significant effect on promotion likelihood by running an experiment on employees who were being considered for promotion.   We assume that our screening test is scored on a percentile scale and has a mean of 53 and a standard deviation of 21.  We know that approximately 50% of those being considered for promotion will be promoted, and we believe that the screening test may have a small effect whereby those who score zero would still have a 40% chance of promotion and every additional point scored would increase this chance by 0.2 percentage points.  We run the `wp.logistic()` function in `WebPower` to plot a power curve for various sample sizes as in Figure \@ref(fig:logisticpower).

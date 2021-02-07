@@ -63,7 +63,7 @@ You are an analyst for a sports broadcaster who is doing a feature on player dis
 * `discipline`: A record of the maximum discipline taken by the referee against the player in the game.  "None" means no discipline was taken, "Yellow" means the player was issued a yellow card (warned), "Red" means the player was issued a red card and ordered off the field of play.
 * `n_yellow_25` is the total number of yellow cards issued to the player in the previous 25 games they played prior to this game
 * `n_red_25` is the total number of red cards issued to the player in the previous 25 games they played prior to this game
-* `position` is the playing position of the player in the game:  "D" is defence (including goalkeeper), "M" is midfield and "S" is striker/attacker.
+* `position` is the playing position of the player in the game:  "D" is defense (including goalkeeper), "M" is midfield and "S" is striker/attacker.
 * `level` is the skill level of the competition in which the game took place, with 1 being higher and 2 being lower
 * `country` is the country in which the game took place---England or Germany
 * `result` is the result of the game for the team of the player---"W" is win, "L" is lose, "D" is a draw/tie.
@@ -113,7 +113,7 @@ soccer[ ,cats] <- lapply(soccer[ ,cats], as.factor)
 str(soccer)
 ```
 
-Now our data is in a position to run a model.  You may wish to conduct some exploratory data analysis at this stage similar to previous chapters, but from this chapter onwards we will skip this and focus on the modeling methodology.
+Now our data is in a position to run a model.  You may wish to conduct some exploratory data analysis at this stage similar to previous chapters, but from this chapter onward we will skip this and focus on the modeling methodology.
 
 ## Modeling ordinal outcomes under the assumption of proportional odds
 
@@ -405,7 +405,7 @@ In the event where the option to remove variables is unattractive, alternative m
 
 * *Baseline* logistic model.  This model is the same as the multinomial regression model covered in the previous chapter, using the lowest ordinal value as the reference.
 * *Adjacent-category* logistic model.  This model compares each level of the ordinal variable to the next highest level, and it is a constrained version of the baseline logistic model. `r if (knitr::is_latex_output()) '\\index{R!packages!brglm2@\\texttt{brglm2}}'`The `brglm2` package in R offers a function `bracl()` for calculating an adjacent category logistic model.
-* *Continuation-ratio* logistic model.  This model compares each level of the ordinal variable to all lower levels.  This can be modeled using binary logistic regression techniques, but new variables need to be constructed from the dataset to allow this.  `r if (knitr::is_latex_output()) '\\index{R!packages!rms@\\texttt{rms}}'`The R package `rms` has a function `cr.setup()` which is a utility for preparing an outcome variable for a continuation ratio model.
+* *Continuation-ratio* logistic model.  This model compares each level of the ordinal variable to all lower levels.  This can be modeled using binary logistic regression techniques, but new variables need to be constructed from the data set to allow this.  `r if (knitr::is_latex_output()) '\\index{R!packages!rms@\\texttt{rms}}'`The R package `rms` has a function `cr.setup()` which is a utility for preparing an outcome variable for a continuation ratio model.
 `r if (knitr::is_latex_output()) '\\index{proportional odds logistic regression|)}'`
 
 ## Learning exercises

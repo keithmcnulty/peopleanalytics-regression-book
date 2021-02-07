@@ -2,7 +2,7 @@
 
 Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis.  Sample implementations in Python are also provided at various points in the book.  I have made efforts to keep the code as simple as possible, and I have tried to avoid the use of too many external packages.  For the most part, readers should see (especially in the earlier chapters) that code blocks are short and simple, relying wherever possible on base R functionality.  No doubt there are neater and more effective ways to code some of the material in this book using a wide array of R packages---and some of these are illustrated in Chapter \@ref(alt-approaches)---but my priority has been to keep the code simple, consistent and easily reproducible.  
 
-For those who wish to follow the method and theory without the implementations in this book, there is no need to read this chapter.  However, the style of this book is to use implementation to illustrate theory and practice, and so tolerance of many code blocks will be necessary as you read onwards.
+For those who wish to follow the method and theory without the implementations in this book, there is no need to read this chapter.  However, the style of this book is to use implementation to illustrate theory and practice, and so tolerance of many code blocks will be necessary as you read onward.
 
 For those who wish to simply replicate the models as quickly as possible, they will be able to avail of the code block copying feature, which appears whenever you scroll over an input code block.  Assuming all the required external packages have been installed, these code blocks should all be transportable.  For those who are extra-inquisitive and want to explore how I constructed graphics used for illustration (for which code is usually not displayed), the best place to go is the [Github repository](https://github.com/keithmcnulty/peopleanalytics-regression-book) for this book. 
 
@@ -231,7 +231,7 @@ dim(df)
 
 ## Working with dataframes
 
-The dataframe is the most common data structure used by analysts in R, due to its similarity to data tables found in databases and spreadsheets.  We will work almost entirely with datafames in this book, so let's get to know them.
+The dataframe is the most common data structure used by analysts in R, due to its similarity to data tables found in databases and spreadsheets.  We will work almost entirely with dataframes in this book, so let's get to know them.
 
 ### Loading and tidying data in dataframes
 
@@ -241,11 +241,11 @@ The dataframe is the most common data structure used by analysts in R, due to it
 # url of data set 
 url <- "http://peopleanalytics-regression-book.org/data/salespeople.csv"
 
-# load the dataset and store it as a dataframe called salespeople
+# load the data set and store it as a dataframe called salespeople
 salespeople <- read.csv(url)
 ```
 
-We might not want to display this entire dataset before knowing how big it is.  We can view the dimensions and if it is too big to display, we can use the `head()` function to display just the first few rows.
+We might not want to display this entire data set before knowing how big it is.  We can view the dimensions and if it is too big to display, we can use the `head()` function to display just the first few rows.
 
 ```{r}
 dim(salespeople)
@@ -518,7 +518,7 @@ As you might expect in a well developed programming language, there are numerous
 `r if (knitr::is_latex_output()) '\\index{R!scatter plots}'`The simplest plot function in base R is `plot()`.  This performs basic X-Y plotting.  As an example, this code will generate a scatter plot of `customer_rate` against `sales` in the `salespeople` data set, with the results displayed in Figure \@ref(fig:basicscatter).  Note the use of the arguments `main`, `xlab` and `ylab` for customizing the axis labels and title for the plot.
 
 ```{r basicscatter, fig.cap=if (knitr::is_latex_output()) {"Simple scatterplot of \\texttt{customer\\_rate} against \\texttt{sales} in the \\texttt{salespeople} data set"} else {"Simple scatterplot of `customer_rate` against `sales` in the `salespeople` data set"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
-# scatterplot of customer_rate against sales
+# scatter plot of customer_rate against sales
 plot(x = salespeople$sales, y = salespeople$customer_rate,
      xlab = "Sales ($m)", ylab = "Average customer rating",
      main = "Scatterplot of Sales vs Customer Rating")
@@ -553,7 +553,7 @@ These are among the most common plots used for data exploration purposes.  They 
 
 `r if (knitr::is_latex_output()) '\\index{R!packages!ggplot2@\\texttt{plotly}}'`The `plotly` package allows the use of the `plotly` graphing library in R.  This is an excellent package for interactive graphing and is used for 3D illustrations in this book.  Output can be rendered in HTML---allowing the user to play with and explore the graphs interactively---or can be saved as static 2D images.
 
-`r if (knitr::is_latex_output()) '\\index{R!packages!ggplot2@\\texttt{GGally}}'``GGally` is a package which extends `ggplot2` to allow easy combination of charts and graphs.  This is particularly valuable for quicker exploratory data analysis.  One of its most popular functions is `ggpairs()` which produces a pairplot.  `r if (knitr::is_latex_output()) '\\index{R!pairplot}'`A pairplot is a visualization of all univariate and bivariate patterns in a data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed in the off-diagonal.  Figure \@ref(fig:basicpair) is an example of a pairplot for the `salespeople` dataset which we will explore further in Chapter \@ref(bin-log-reg).
+`r if (knitr::is_latex_output()) '\\index{R!packages!ggplot2@\\texttt{GGally}}'``GGally` is a package which extends `ggplot2` to allow easy combination of charts and graphs.  This is particularly valuable for quicker exploratory data analysis.  One of its most popular functions is `ggpairs()` which produces a pairplot.  `r if (knitr::is_latex_output()) '\\index{R!pairplot}'`A pairplot is a visualization of all univariate and bivariate patterns in a data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed in the off-diagonal.  Figure \@ref(fig:basicpair) is an example of a pairplot for the `salespeople` data set which we will explore further in Chapter \@ref(bin-log-reg).
 
 ```{r basicpair, fig.cap=if (knitr::is_latex_output()) {"Pairplot of the \\texttt{salespeople} data set"} else {"Pairplot of the `salespeople` data set"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}, warning = FALSE, message = FALSE}
 library(GGally)
@@ -662,14 +662,14 @@ If you are not familiar with R Markdown, I strongly encourage you to learn it al
 2.  Create a second numeric vector called `which` which corresponds to `my_names`. The entries should be the position of each name in the order of your full name.  Verify that it has the same length as `my_names`.
 3.  Create a dataframe called `names` which consists of the two vectors `my_names` and `which` as columns.  Calculate the dimensions of `names`.
 4.  Create a new dataframe `new_names` with the `which` column converted to character type.  Verify that your command worked using `str()`.
-5.  `r if (knitr::is_latex_output()) '\\index{data sets!ugtests@\\texttt{ugtests}}'`Load the `ugtests` dataset via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/ugtests.csv].  Calculate the dimensions of `ugtests` and view the first three rows only. 
+5.  `r if (knitr::is_latex_output()) '\\index{data sets!ugtests@\\texttt{ugtests}}'`Load the `ugtests` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/ugtests.csv].  Calculate the dimensions of `ugtests` and view the first three rows only. 
 6.  View a statistical summary of all of the columns of `ugtests`.  Determine if there are any missing values.
 7.  View the subset of `ugtests` for values of `Yr1` greater than 50.
 8.  Install and load the package `dplyr`.  Look up the help for the `filter()` function in this package and try to use it to repeat the task in the previous question.
 9.  Write code to find the mean of the `Yr1` test scores for all those who achieved `Yr3` test scores greater than 100.  Round this mean to the nearest integer.
 10. Familiarize yourself with the two functions `filter()` and `pull()` from `dplyr`.  Use these functions to try to do the same calculation in the previous question using a single unbroken piped command.  Be sure to namespace where necessary.
 11.  Create a scatter plot using the `ugtests` data with `Final` scores on the y axis and `Yr3` scores on the x axis.
-12.  Create your own 5 level grading logic and use it to create a new `finalgrade` column in the `ugtests` dataset with grades 1 thru 5 of increasing attainment based on the `Final` score in `ugtests`.  Generate a histogram of this `finalgrade` column.
+12.  Create your own 5 level grading logic and use it to create a new `finalgrade` column in the `ugtests` dataset with grades 1--5 of increasing attainment based on the `Final` score in `ugtests`.  Generate a histogram of this `finalgrade` column.
 13.  Using your new `ugtests` data with the extra column from the previous exercise, create a box plot of `Yr3` scores grouped by `finalgrade`.
 14.  Knit all of your answers to these exercises into an R Markdown document.  Create one version that displays your code and answers, and another that just displays the answers.
 

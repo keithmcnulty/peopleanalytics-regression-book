@@ -27,7 +27,7 @@ Examples of typical situations that might be modeled by multinomial logistic reg
 
 ### Walkthrough example
 
-You are an analyst at a large technology company.  The company recently introduced a new healthcare provider for its employees.  At the beginning of the year the employees had to choose one of three different healthcare plan products from this provider to best suit their needs.  You have been asked to determine which factors influenced the choice in product.
+You are an analyst at a large technology company.  The company recently introduced a new health insurance provider for its employees.  At the beginning of the year the employees had to choose one of three different health plan products from this provider to best suit their needs.  You have been asked to determine which factors influenced the choice in product.
 
 `r if (knitr::is_latex_output()) '\\index{data sets!health\\_insurance@\\texttt{health\\_insurance}}'`The `health_insurance` data set consists of the following fields:
 
@@ -147,7 +147,7 @@ for different vectors of coefficients $\alpha$ and $\beta$.
 
 ### Defining a reference level and running the model
 
-`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!reference category}'``r if (knitr::is_latex_output()) '\\index{R!packages!nnet@\\texttt{nnet}}'`The `nnet` package in R contains a `multinom()` function for running a multinomial logistic regression model using neural network technology^[Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onwards in the network.  Most commonly they are used in deep learning, but a simple neural network here can model these two different categories using a logistic function].  Before we can run the model we need to make sure our reference level is defined.
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!reference category}'``r if (knitr::is_latex_output()) '\\index{R!packages!nnet@\\texttt{nnet}}'`The `nnet` package in R contains a `multinom()` function for running a multinomial logistic regression model using neural network technology^[Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onward in the network.  Most commonly they are used in deep learning, but a simple neural network here can model these two different categories using a logistic function].  Before we can run the model we need to make sure our reference level is defined.
 
 ```{r}
 # define reference by ensuring it is the first level of the factor
@@ -279,7 +279,7 @@ data.frame(t(summary(multi_model)$coefficients))
 data.frame(t(summary(simpler_multi_model)$coefficients))
 ```
 
-We can see that only `genderNon-binary` changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model^[Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done.  In the case of these observations of `genderNon-binary`, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a miniscule effect].  It therefore appears safe to remove `tenure`.  Furthermore, the Aikake Information Criterion is equally valid in multinomial models for evaluating model parsimony.   Here we can calculate that the AIC of our model with and without `tenure` is `r round(AIC(multi_model), 2)` and `r round(AIC(simpler_multi_model), 2)` respectively, confirming that the model without `tenure` is marginally more parsimonious.
+We can see that only `genderNon-binary` changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model^[Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done.  In the case of these observations of `genderNon-binary`, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a minuscule effect].  It therefore appears safe to remove `tenure`.  Furthermore, the Aikake Information Criterion is equally valid in multinomial models for evaluating model parsimony.   Here we can calculate that the AIC of our model with and without `tenure` is `r round(AIC(multi_model), 2)` and `r round(AIC(simpler_multi_model), 2)` respectively, confirming that the model without `tenure` is marginally more parsimonious.
 
 ### Model fit and goodness-of-fit
 
@@ -290,7 +290,7 @@ DescTools::PseudoR2(simpler_multi_model,
                     which = c("McFadden", "CoxSnell", "Nagelkerke"))
 ```
 
-`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!goodness-of-fit}'`Due to the fact that multinomial models have more than one set of coefficients, assessing goodness of fit is more challenging, and is still an area of intense research.  The most approachable method to assess model confidence is the Hosmer-Lemeshow test mentioned in the previous chapter, which was extended in @fagerland for multinomial models.  An implementation is available in the `generalhoslem` package in R.  However, the Hosmer-Lemeshow test is not valid for models with a small number of input variables (fewer than ten), and therefore we will not experiment with it here.  For further exploration of this topic, Chapter 8 of @hosmer-logistic is recommended, and for a more thorough treatment of the entire topic of categorical analytics, @agresti is an excellent companion.
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!goodness-of-fit}'`Due to the fact that multinomial models have more than one set of coefficients, assessing goodness-of-fit is more challenging, and is still an area of intense research.  The most approachable method to assess model confidence is the Hosmer-Lemeshow test mentioned in the previous chapter, which was extended in @fagerland for multinomial models.  An implementation is available in the `generalhoslem` package in R.  However, the Hosmer-Lemeshow test is not valid for models with a small number of input variables (fewer than ten), and therefore we will not experiment with it here.  For further exploration of this topic, Chapter 8 of @hosmer-logistic is recommended, and for a more thorough treatment of the entire topic of categorical analytics, @agresti is an excellent companion.
 `r if (knitr::is_latex_output()) '\\index{multinomial logistic regression|)}'`
 
 ## Learning exercises

@@ -40,7 +40,7 @@ Load the `graduates` data set via the `peopleanalyticsdata` package or download 
 2.  Conduct appropriate hypothesis tests on any of the input variables that interest you to determine if they relate to  statistically significant differences in the `Median_salary` outcome.
 3.  If you wish to, perform transformations on the data to help with the interpretation of model results.  For example, are the numerical scales intuitive for interpretation?
 4.  Run an appropriate multivariate model to determine which input variables have a significant effect on median graduate salary.
-5.  Articulate the results of your model, including an estimate of the effect of the input variables and the overall fit and goodness of fit of the model.
+5.  Articulate the results of your model, including an estimate of the effect of the input variables and the overall fit and goodness-of-fit of the model.
 
 
 ## Analyzing a recruiting process
@@ -60,7 +60,7 @@ recruiting <- read.csv("data/recruiting.csv")
 `r if (knitr::is_latex_output()) '\\index{data sets!recruiting@\\texttt{recruiting}}'`The `recruiting` data set contains information on `r nrow(recruiting)` applicants who went through the final stages of a recruiting process for graduate positions at a large international financial services company.  The recruiting process operates as follows:
 
 1. Applications are screened according to a number of criteria, including their SAT scores and their undergraduate GPA as well as an online aptitude test they are requested to take and numerous other judgments made by the individuals screening the applications.
-2. Applicants who pass the screening stage are invited for three interviews, two of them with line managers and a third with a human resources professional.  Different line managers or HR professionals conduct the interviews on different interview days.  Each interviewer independently gives an applicant a score on a Likert scale of 1 to 5 indicating increasing positivity.
+2. Applicants who pass the screening stage are invited for three interviews, two of them with line managers and a third with a human resources professional.  Different line managers or HR professionals conduct the interviews on different interview days.  Each interviewer independently gives an applicant a score on a Likert scale of 1--5 indicating increasing positive sentiment.
 3. Interviewers and human resources professionals gather to discuss each case and make a final decision on whether to hire or not to hire.  All the information used in screening and evaluating applicants is made available to decision makers during this discussion.
 
 Load the `recruiting` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/recruiting.csv].  The fields in the `recruiting` data set are as follows:
@@ -127,7 +127,7 @@ Load the `employee_performance` data set via the `peopleanalyticsdata` package o
 1.  Run separate and appropriate hypothesis tests on each of the input variables to determine if they have a significant effect on the performance outcome.
 2.  Prepare your data for running an appropriate multivariate model to explain the performance outcome.  Be sure to convert to appropriate data types.
 3.  Run an appropriate multivariate model to explain the performance outcome.  Report on which variables are significant and estimate the effects of the significant variables.
-4.  Determine and comment on the overall fit and goodness of fit of your model.  Use this to make a comment on how 'data driven' you believe the evaluation process to be.
+4.  Determine and comment on the overall fit and goodness-of-fit of your model.  Use this to make a comment on how 'data driven' you believe the evaluation process to be.
 5.  Perform appropriate checks on the assumptions of your model.  What approach might you take if any of these tests fail?
 
 
@@ -158,7 +158,7 @@ Load the `promotion` data set via the `peopleanalyticsdata` package or download 
 1.  What type of analysis is most appropriate to understand if there is a difference in promotion likelihood for employees who are on flexible hours, in diversity programs or who work in-store?
 2.  What type of illustration would you use to show whether each of these three factors individually have an effect on promotion likelihood?
 3.  What type of model would be most appropriate to determine the combined effects of all of these factors on promotion likelihood?
-4.  How would you go about determining whether any differences in promotion likelihood in a given group (eg the flexible working group) is mediated by membership of another group?
+4.  How would you go about determining whether any differences in promotion likelihood in a given group (such as the flexible working group) is mediated by membership of another group?
 5.  What assumptions would you need to check to validate that your analysis is trustworthy?
 
 ### Data exercises

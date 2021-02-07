@@ -255,7 +255,7 @@ ggplot2::ggplot() +
 ```
 
 
-We can see that the closer the base probability is to zero, the similar the effect of the increase on both odds and on probability.  However, the higher the probability of the event, the less impact the increase in odds has.  In any case, it's useful to remember the formulas for convertings odds to probability and vice-versa.  If $O$ represents odds and $P$ represents probability then we have:
+We can see that the closer the base probability is to zero, the similar the effect of the increase on both odds and on probability.  However, the higher the probability of the event, the less impact the increase in odds has.  In any case, it's useful to remember the formulas for converting odds to probability and vice versa.  If $O$ represents odds and $P$ represents probability then we have:
 
 $$
 \begin{aligned}
@@ -296,7 +296,7 @@ Let's put this into practice.
 
 `r if (knitr::is_latex_output()) '\\index{binomial logistic regression!multiple}'`Let's use a binomial logistic regression model to understand how each of the three inputs in our `salespeople` data set influence the likelihood of promotion.
 
-`r if (knitr::is_latex_output()) '\\index{dummy variables!in logistic regression}'``r if (knitr::is_latex_output()) '\\index{input variables!categorical}'`First, as we learned previously, it is good practice to convert the categorical `performance` variable to a dummy variable^[Note that most standard modeling functions have a built in capability to deal with categorical variables, meaning that it's often not necessary to explicitly construct dummies.  However, it is shown here for completion sake.  You may wish to try running the subsequent code without explicitly constructing dummies, but note that constructing your own dummies gives you greater control over how they are labelled in any modeling output]. 
+`r if (knitr::is_latex_output()) '\\index{dummy variables!in logistic regression}'``r if (knitr::is_latex_output()) '\\index{input variables!categorical}'`First, as we learned previously, it is good practice to convert the categorical `performance` variable to a dummy variable^[Note that most standard modeling functions have a built in capability to deal with categorical variables, meaning that it's often not necessary to explicitly construct dummies.  However, it is shown here for completion sake.  You may wish to try running the subsequent code without explicitly constructing dummies, but note that constructing your own dummies gives you greater control over how they are labeled in any modeling output]. 
 
 ```{r, eval = FALSE}
 library(dummies)
@@ -315,6 +315,7 @@ salespeople_dummies <- cbind(
 head(salespeople_dummies)
 ```
 
+`r if (knitr::is_latex_output()) '\\newpage'`
 `r if (knitr::is_latex_output()) '\\small'`
 ```{r, echo = FALSE}
 library(dummies)
@@ -362,7 +363,7 @@ Now we can interpret our model as follows:
 * All else being equal, customer ratings have a significant negative effect on the likelihood of promotion.  One full rating higher is associated with 67% lower odds of promotion.
 * All else being equal, performance ratings have no significant effect on the likelihood of promotion.
 
-The second conclusion may appear counterintuitive, but remember from our pairplot in \@ref(walkthrough-logit) that there is already moderate correlation between sales and customer ratings, and this model will be controlling for that relationship. Recall that our odds ratios act *assuming all other variables are the same*.  Therefore, if two individuals have the same sales and performance ratings, the one with the lower customer rating is more likely to have been promoted.  Similarly, if two individuals have the same level of sales and the same customer rating, their performance rating will have no significant bearing on the likelihood of promotion.
+The second conclusion may appear counter-intuitive, but remember from our pairplot in \@ref(walkthrough-logit) that there is already moderate correlation between sales and customer ratings, and this model will be controlling for that relationship. Recall that our odds ratios act *assuming all other variables are the same*.  Therefore, if two individuals have the same sales and performance ratings, the one with the lower customer rating is more likely to have been promoted.  Similarly, if two individuals have the same level of sales and the same customer rating, their performance rating will have no significant bearing on the likelihood of promotion.
 
 Many analysts will feel uncomfortable with stating these conclusions with too much precision, and therefore exponent confidence intervals can be calculated to provide a range for the odds ratios.
 
@@ -435,14 +436,14 @@ DescTools::PseudoR2(
 
 We see that the Cox and Snell variant is notably lower than the other estimates, which is consistent with the known issues with its upper bound.  However, the other estimates are reasonably aligned and suggest a strong fit.
 
-`r if (knitr::is_latex_output()) '\\index{binomial logistic regression!goodness-of-fit tests}'`Goodness-of-fit tests for logistic regression models compare the predictions to the observed outcome and test the hypothesis that they are similar.  This means that, unlike in linear regression, a low p-value indicates a poor fit.  One commonly used method is the Hosmer-Lemeshow test, which divides the observations into a number of groups (usually ten) according to their fitted probabilities, calculates the proportion of each group that is positive and then compares this to the expected proportions based on the model prediction using a Chi-squared test.  However, this method has limitations.  It is particularly problematic for situations where there a low sample size and can return highly varied results based on the number of groups used.  It is therefore recommended to use a range of goodness of fit tests, and not rely entirely on any one specific approach.
+`r if (knitr::is_latex_output()) '\\index{binomial logistic regression!goodness-of-fit tests}'`Goodness-of-fit tests for logistic regression models compare the predictions to the observed outcome and test the hypothesis that they are similar.  This means that, unlike in linear regression, a low p-value indicates a poor fit.  One commonly used method is the Hosmer-Lemeshow test, which divides the observations into a number of groups (usually ten) according to their fitted probabilities, calculates the proportion of each group that is positive and then compares this to the expected proportions based on the model prediction using a Chi-squared test.  However, this method has limitations.  It is particularly problematic for situations where there a low sample size and can return highly varied results based on the number of groups used.  It is therefore recommended to use a range of goodness-of-fit tests, and not rely entirely on any one specific approach.
 
-`r if (knitr::is_latex_output()) '\\index{R!packages!LogisticDx@\\texttt{LogisticDx}}'`In R, the `LogisticDx` package offers a range of diagnostic tools for logistic regression models, and is recommended for exploration.  Here is an example using the `gof()` function for assessing goodness of fit. 
+`r if (knitr::is_latex_output()) '\\index{R!packages!LogisticDx@\\texttt{LogisticDx}}'`In R, the `LogisticDx` package offers a range of diagnostic tools for logistic regression models, and is recommended for exploration.  Here is an example using the `gof()` function for assessing goodness-of-fit. 
 
 ```{r}
 library(LogisticDx)
 
-# get range of goodness of fit diagnostics
+# get range of goodness-of-fit diagnostics
 simpler_model_diagnostics <- LogisticDx::gof(simpler_model, 
                                              plotROC = FALSE)
 
@@ -450,12 +451,12 @@ simpler_model_diagnostics <- LogisticDx::gof(simpler_model,
 names(simpler_model_diagnostics)
 ```
 
-The `gof` object in this list provides a range of variants of goodness of fit statistics.
+The `gof` object in this list provides a range of variants of goodness-of-fit statistics.
 
 `r if (knitr::is_latex_output()) '\\newpage'`
 
 ```{r}
-# in our case we are interested in goodness of fit statistics
+# in our case we are interested in goodness-of-fit statistics
 simpler_model_diagnostics$gof
 
 
@@ -463,7 +464,7 @@ simpler_model_diagnostics$gof
 
 This confirms that almost all tests, including the Hosmer-Lemeshow test which is the first in the list, suggest a fit for our model.  
 
-Various measures of predictive accuracy can also be used to assess a binomial logistic regression model in a predictive context, such as precision, recall and ROC-curve analysis.  These are particularly suited for implementations of logistic regression models as predictive classifiers in a Machine Learning context, a topic which is outside the scope of this book.  However, a recommended source for a deeper treatment of goodness of fit tests for logistic regression models is @hosmer-logistic. 
+Various measures of predictive accuracy can also be used to assess a binomial logistic regression model in a predictive context, such as precision, recall and ROC-curve analysis.  These are particularly suited for implementations of logistic regression models as predictive classifiers in a Machine Learning context, a topic which is outside the scope of this book.  However, a recommended source for a deeper treatment of goodness-of-fit tests for logistic regression models is @hosmer-logistic. 
 
 ### Model parsimony
 
@@ -483,7 +484,7 @@ AIC(full_model)
 ```
 We can see that the model which is limited to our two significant inputs---sales and customer rating---is determined to be the most parsimonious model according to the AIC. Note that the AIC should not be used to interpret model quality or confidence---it is possible that the lowest AIC might still be a very poor fit.
 
-Model parsimony becomes a substantial concern when there is a large number of input variables.  As a general rule, the more input variables there are in a model the greater the chance that the model will be difficult to interpet clearly, and the greater the risk of measurement problems such as multicollinearity.  Analysts who are eager to please their customers, clients, professors or bosses can easily be tempted to think up new potential inputs to their model, often derived mathematically from measures that are already inputs in the model.  Before long the model is too complex and in extreme cases there are more inputs than there are observations.  The primary way to to manage model complexity is to exercise caution in selecting model inputs.  When large numbers of inputs are unavoidable, coefficient regularization methods such as LASSO regression can help with model parsimony.  
+Model parsimony becomes a substantial concern when there is a large number of input variables.  As a general rule, the more input variables there are in a model the greater the chance that the model will be difficult to interpret clearly, and the greater the risk of measurement problems such as multicollinearity.  Analysts who are eager to please their customers, clients, professors or bosses can easily be tempted to think up new potential inputs to their model, often derived mathematically from measures that are already inputs in the model.  Before long the model is too complex and in extreme cases there are more inputs than there are observations.  The primary way to to manage model complexity is to exercise caution in selecting model inputs.  When large numbers of inputs are unavoidable, coefficient regularization methods such as LASSO regression can help with model parsimony.  
 
 ## Other considerations in binomial logistic regression
 
@@ -500,7 +501,7 @@ predict(simpler_model, new_data, type = "response")
 
 Many of the principles covered in the previous chapter on linear regression are equally important in logistic regression.  For example, input variables should be managed in a similar way.  `r if (knitr::is_latex_output()) '\\index{collinearity}'`Collinearity and `r if (knitr::is_latex_output()) '\\index{multicollinearity}'`multicollinearity should be of concern.  Interaction of input variables can be modeled.  For the most part, analysts should be aware of the fundamental mathematical transformations which take place in a logistic regression model when they consider some of these issues (another reason to ensure that the mathematics covered earlier in this chapter is well understood).  For example, while coefficients in linear regression have a direct additive impact on $y$, in logistic regression they have a direct additive impact on the log odds of $y$, or alternatively their exponents have a direct multiplicative impact on the odds of $y$.  Therefore coefficient overestimation such as that which can occur when collinearity is not managed can result in inferences that could substantially overstate the importance or effect of input variables.
 
-`r if (knitr::is_latex_output()) '\\index{Pearson residuals}'`Because of the binary nature of our outcome variable, the residuals of a logistic regression model have limited direct application to the problem being studied.  In practical contexts the residuals of logistic regression models are rarely examined, but they can be useful in identifying outliers or particularly influential observations and in assessing goodness of fit, as in \@ref(logistic-gof).  When residuals are examined, they need to be transformed in order to be analyzed appropriately.  For example, the *Pearson residual* is a standardized form of residual from logistic regression which can be expected to have a normal distribution over large enough samples.  We can see in Figure \@ref(fig:pearson-resids) that this is the case for our `simpler_model`, but that there are a small number of substantial underestimates in our model.  A good source of further learning on diagnostics of logistic regression models is @menard.
+`r if (knitr::is_latex_output()) '\\index{Pearson residuals}'`Because of the binary nature of our outcome variable, the residuals of a logistic regression model have limited direct application to the problem being studied.  In practical contexts the residuals of logistic regression models are rarely examined, but they can be useful in identifying outliers or particularly influential observations and in assessing goodness-of-fit, as in \@ref(logistic-gof).  When residuals are examined, they need to be transformed in order to be analyzed appropriately.  For example, the *Pearson residual* is a standardized form of residual from logistic regression which can be expected to have a normal distribution over large enough samples.  We can see in Figure \@ref(fig:pearson-resids) that this is the case for our `simpler_model`, but that there are a small number of substantial underestimates in our model.  A good source of further learning on diagnostics of logistic regression models is @menard.
 
 ```{r pearson-resids, fig.cap= if (knitr::is_latex_output()) {"Distribution of Pearson residuals in \\texttt{simpler\\_model}"} else {"Distribution of Pearson residuals in `simpler_model`"}, fig.align = "center", out.width = if (knitr::is_latex_output()) {"90%"}}
 d <- density(residuals(simpler_model, "pearson"))
@@ -543,7 +544,7 @@ plot(d, main= "")
 * `total_donations`: The total amount of money donated by the individual previous to the month being studied
 * `time_donating`: The number of months between the first donation and the month being studied
 * `recent_donation`: Whether or not the individual donated in the month being studied
-* `last_donation`: The number of months between the most recent previous donation and the month beng studied
+* `last_donation`: The number of months between the most recent previous donation and the month being studied
 * `gender`: The gender of the individual
 * `reside`:  Whether the person resides in an Urban or Rural Domestic location or Overseas
 * `age`:  The age of the individual

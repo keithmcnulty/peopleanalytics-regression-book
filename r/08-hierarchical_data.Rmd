@@ -299,7 +299,7 @@ lavaan::summary(cfa_meas_mod, fit.measures = TRUE, standardized = TRUE)
 
 `r if (knitr::is_latex_output()) '\\index{structural equation models!refining}'`This is a large set of results, but we can focus in on some important parameters to examine. First, we note that the results did not come attached to a warning. One particular warning to look out for relates to the covariance matrix being non-positive definite. This renders some of the attempted measurement invalid and is usually caused by too small a sample size for the complexity of the measurement model. Since we did not receive this warning, we can proceed safely.
 
-Second, we examine the fit statistics. Numerous statistics are reported[^hierarchical_data-2], but for larger samples such as this dataset, the following measures should be examined:
+Second, we examine the fit statistics. Numerous statistics are reported[^hierarchical_data-2], but for larger samples such as this data set, the following measures should be examined:
 
 [^hierarchical_data-2]: Other reported measures include chi-square statistical tests of perfect fit for the measurement model and for the baseline model, and AIC and BIC. While these generally are not very helpful in determining the quality of a specific measurement model, they are valuable for comparing different measurement model options
 
@@ -405,7 +405,7 @@ The full structural equation model can be seen in Figure \@ref(fig:fullsemplot).
 
 ### Discussion questions
 
-1.  Describe some common forms of explicit hierarchies in data. Can you think of some datasets that you have worked with recently that contain an explicit hierarchy?
+1.  Describe some common forms of explicit hierarchies in data. Can you think of some data sets that you have worked with recently that contain an explicit hierarchy?
 2.  Describe the meaning of 'fixed effect' and 'random effect' in a mixed regression model.
 3.  Which parameter in a mixed regression model is most commonly used when applying a random effect?
 4.  Describe why mixed models are sometimes referred to as multilevel models.

@@ -51,7 +51,7 @@ The `glance()` function allows us to see a row of overall model statistics:
 broom::glance(promotion_model)
 ```
 
-The `augment()` function augments the observations in the dataset with a range of observation-level model statistics such as residuals:
+The `augment()` function augments the observations in the data set with a range of observation-level model statistics such as residuals:
 
 ```{r, eval = FALSE}
 # view augmented data
@@ -88,7 +88,7 @@ broom::glance(soccer_model)
 ```
 
 
-`r if (knitr::is_latex_output()) '\\index{R!packages!dplyr@\\texttt{dplyr}}'``broom` functions integrate well into other tidyverse methods, and allow easy running of models over nested subsets of data.  For example, if we want to run our soccer discipline model across the different countries in the dataset and see all the model statistics in a neat table, we can use typical tidyverse grammar to do so using `dplyr`.
+`r if (knitr::is_latex_output()) '\\index{R!packages!dplyr@\\texttt{dplyr}}'``broom` functions integrate well into other tidyverse methods, and allow easy running of models over nested subsets of data.  For example, if we want to run our soccer discipline model across the different countries in the data set and see all the model statistics in a neat table, we can use typical tidyverse grammar to do so using `dplyr`.
 
 `r if (knitr::is_latex_output()) '\\newpage'`
 
@@ -282,7 +282,7 @@ print(promotion_model.summary())
 
 ### Multinomial logistic regression
 
-Multinomial logistic regression is similarly available using the `statsmodels` formula API.  As usual, care must be taken to ensure that the reference category is appropriately defined, dummy input variables need to be explictly constructed, and a constant term must be added to ensure an intercept is calculated.
+Multinomial logistic regression is similarly available using the `statsmodels` formula API.  As usual, care must be taken to ensure that the reference category is appropriately defined, dummy input variables need to be explicitly constructed, and a constant term must be added to ensure an intercept is calculated.
 
 ```{python, eval = FALSE}
 import pandas as pd
@@ -365,7 +365,7 @@ url = "http://peopleanalytics-regression-book.org/data/politics_survey.csv"
 politics_survey = pd.read_csv(url)
 
 
-# define full measurement and strucural model
+# define full measurement and structural model
 measurement_model = """
 # measurement model
 Pol =~ Pol1 + Pol2

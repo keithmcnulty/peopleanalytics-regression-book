@@ -58,13 +58,13 @@ This looks very intuitive and appears to be the average amount of sales made by 
 mean(salespeople$promoted, na.rm = TRUE)
 ```
 
-Given that this data can only have the value of 0 or 1, we interpret this mean as *likelihood* or *expectation* that an individual will be labelled as 1.  That is, the average probability of promotion in the data set.  If this data showed a perfectly random likelihood of promotion, we would expect this to take the value of 0.5.  But it is lower than 0.5, which tells us that the majority of individuals are not promoted.
+Given that this data can only have the value of 0 or 1, we interpret this mean as *likelihood* or *expectation* that an individual will be labeled as 1.  That is, the average probability of promotion in the data set.  If this data showed a perfectly random likelihood of promotion, we would expect this to take the value of 0.5.  But it is lower than 0.5, which tells us that the majority of individuals are not promoted.
 
 ```{r}
 mean(salespeople$performance, na.rm = TRUE)
 ```
 
-Given that this data can only have the values 1, 2, 3 or 4, we interpret this as the *expected value* of the performance rating in the dataset.  Higher or lower means inform us about the distribution of the performance ratings.  A low mean will indicate a skew towards a low rating, and a high mean will indicate a skew towards a high rating.
+Given that this data can only have the values 1, 2, 3 or 4, we interpret this as the *expected value* of the performance rating in the data set.  Higher or lower means inform us about the distribution of the performance ratings.  A low mean will indicate a skew towards a low rating, and a high mean will indicate a skew towards a high rating.
 
 Other common statistical summary measures include the *median*, which is the middle value when the values are ranked in order, and the *mode*, which is the most frequently occurring value.
 
@@ -197,7 +197,7 @@ As we outlined in Section \@ref(theory-modeling), when we build a model we are u
 When we describe variables as random, we are assuming that they take a form which is *independent and identically distributed*.  Using our `salespeople` data as an example, we are assuming that the sales of one person in the data set is not influenced by the sales of another person in the data set.  In this case, this seems like a reasonable assumption, and we will be making it for many (though not all) of the statistical methods used in this book.  However, it is good to recognize that there are scenarios where this assumption cannot be made.  For example, if the salespeople worked together in serving the same customers on the same products, and each individual's sales represented some proportion of the overall sales to the customer, we cannot say that the sales data is independent and identically distributed.  In this case we will expect to see some hierarchy in our data and will need to adjust our techniques accordingly to take this into consideration.      
 
 
-`r if (knitr::is_latex_output()) '\\index{random variables!central limit theorem}'`Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let's test this with a little experiment on our `salespeople` data.  Figure \@ref(fig:sales-sample) shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the `salespeople` dataset and creating a histogram of the resulting mean sales values.  `r if (knitr::is_latex_output()) '\\index{random variables!sampling}'`We can see how greater numbers of samples (down the rows) leads to a more normal distribution curve and larger sample sizes (across the columns) leads to a 'spikier' distribution with a smaller standard deviation.
+`r if (knitr::is_latex_output()) '\\index{random variables!central limit theorem}'`Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let's test this with a little experiment on our `salespeople` data.  Figure \@ref(fig:sales-sample) shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the `salespeople` data set and creating a histogram of the resulting mean sales values.  `r if (knitr::is_latex_output()) '\\index{random variables!sampling}'`We can see how greater numbers of samples (down the rows) leads to a more normal distribution curve and larger sample sizes (across the columns) leads to a 'spikier' distribution with a smaller standard deviation.
 
 
 ```{r sales-sample, fig.cap= if (knitr::is_latex_output()) {"Histogram and density of mean \\texttt{sales} from the \\texttt{salespeople} data set based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)"} else {"Histogram and density of mean `sales` from the `salespeople` data set based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)"}, fig.align = "center", echo = FALSE, warning = FALSE, message = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
@@ -342,7 +342,7 @@ We can see that those with a higher performance rating in our sample did generat
 Let's take a null hypothesis that there is no difference in true mean sales between the two performance groups that these samples are drawn from.  We combine the two samples and calculate the distribution around the difference in means.  To *reject* the null hypothesis at $\alpha = 0.05$, we would need to determine that the 95% confidence interval of this distribution does not contain zero.  
 
 
-We calculate the standard error of the combined sample using the fomula^[If you are inquisitive about this formula, see the exercises at the end of this chapter]:
+We calculate the standard error of the combined sample using the formula^[If you are inquisitive about this formula, see the exercises at the end of this chapter]:
 
 $$
 \sqrt{\frac{\sigma_{\mathrm{perf1}}^2}{n_{\mathrm{perf1}}} + \frac{\sigma_{\mathrm{perf4}}^2}{n_{\mathrm{perf4}}}}
@@ -419,7 +419,7 @@ Nowadays, it is never necessary to do these manual calculations ourselves becaus
 t.test(perf4$sales, perf1$sales)
 ```
 
-Because our p-value is less than our alpha of 0.05, we reject the null hypothesis in favour of the alternative hypothesis. `r if (knitr::is_latex_output()) '\\index{hypothesis testing!statistically significant}'`The standard $\alpha = 0.05$ is associated with the term *statistically significant*.  Therefore we could say here that the two performance groups have a statistically significant difference in mean sales.  
+Because our p-value is less than our alpha of 0.05, we reject the null hypothesis in favor of the alternative hypothesis. `r if (knitr::is_latex_output()) '\\index{hypothesis testing!statistically significant}'`The standard $\alpha = 0.05$ is associated with the term *statistically significant*.  Therefore we could say here that the two performance groups have a statistically significant difference in mean sales.  
 
 In practice, there are numerous alphas that are of interest to analysts, each reflecting different levels of certainty.  While 0.05 is the most common standard in many disciplines, more stringent alphas of 0.01 and 0.001 are often used in situations where a high degree of certainty is desirable (for example some medical fields).  Similarly, a less stringent alpha standard of 0.1 can be of interest particularly when sample sizes are small and the analyst is satisfied with 'indications' from the data.  In many statistical software packages, including those that we will see in this book, tests that meet an $\alpha = 0.1$ standard are usually marked with period(`.`), those that meet $\alpha = 0.05$ with an asterisk(`*`), $\alpha = 0.01$ a double asterisk(`**`) and $\alpha = 0.001$ a triple asterisk(`***`).
 
@@ -660,7 +660,7 @@ $$
 
 ### Data exercises
 
-`r if (knitr::is_latex_output()) '\\index{data sets!charity\\_donation@\\texttt{charity\\_donation}}'`For these exercises, load the `charity_donation` dataset via the `peopleanalyticsdata` package, or download it from the internet^[http://peopleanalytics-regression-book.org/data/charity_donation.csv].  This dataset contains information on a sample of individuals who made donations to a nature charity.
+`r if (knitr::is_latex_output()) '\\index{data sets!charity\\_donation@\\texttt{charity\\_donation}}'`For these exercises, load the `charity_donation` data set via the `peopleanalyticsdata` package, or download it from the internet^[http://peopleanalytics-regression-book.org/data/charity_donation.csv].  This data set contains information on a sample of individuals who made donations to a nature charity.
 
 1.  Calculate the mean `total_donations` from the data set.
 2.  Calculate the sample variance for `total_donation` and convert this to a population variance.

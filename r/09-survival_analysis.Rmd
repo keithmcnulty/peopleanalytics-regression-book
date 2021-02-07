@@ -16,7 +16,7 @@ Secondly, our sample size is constrained by the state of our data at the end of 
 
 Those seeking a more in depth treatment of survival analysis should consult texts on its use in medical/clinical contexts, and a recommended source is @collett. In this chapter we will use a walkthrough example to illustrate a typical use of survival analysis in a people analytics context.  
 
-`r if (knitr::is_latex_output()) '\\index{data sets!job\\_retention@\\texttt{job\\_retention}}'`The `job_retention` dataset shows the results of a study of around 3,800 individuals employed in various fields of employment over a 1 year period.  At the beginning of the study, the individuals were asked to rate their sentiment towards their job.  These individuals were then followed up monthly for a year to determine if they were still working in the same job or had left their job for a substantially different job.  If an individual was not successfully followed up in a given month, they were no longer followed up for the remainder of the study period.   
+`r if (knitr::is_latex_output()) '\\index{data sets!job\\_retention@\\texttt{job\\_retention}}'`The `job_retention` data set shows the results of a study of around 3,800 individuals employed in various fields of employment over a 1 year period.  At the beginning of the study, the individuals were asked to rate their sentiment towards their job.  These individuals were then followed up monthly for a year to determine if they were still working in the same job or had left their job for a substantially different job.  If an individual was not successfully followed up in a given month, they were no longer followed up for the remainder of the study period.   
 
 `r if (knitr::is_latex_output()) '\\small'`
 ```{r}
@@ -45,7 +45,7 @@ S_i = S_{i - 1}(1 - \frac{l_i}{n_i})
 $$
 where $l_i$ is the number reported as left in month $i$ and $n_i$ is the number still in substantially the same job after month $i - 1$, with $S_0 = 1$.
 
-`r if (knitr::is_latex_output()) '\\index{R!packages!suvival@\\texttt{survival}}'`The `survival` package in R allows easy construction of survival rates on data in a similar format to that in our `job_retention` dataset.  A survival object is created using the `Surv()` function to track the survival rate at each time period.
+`r if (knitr::is_latex_output()) '\\index{R!packages!suvival@\\texttt{survival}}'`The `survival` package in R allows easy construction of survival rates on data in a similar format to that in our `job_retention` data set.  A survival object is created using the `Surv()` function to track the survival rate at each time period.
 
 ```{r, eval = FALSE}
 library(survival)
@@ -71,7 +71,7 @@ unique(retention)
 ```
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
-We can see that our survival object records the month at which the individual had left their job if they are recorded as having done so in the dataset.  If not, the object records the last month at which there was a record of the individual, appended with a '+' to indicate that this was the last record available.
+We can see that our survival object records the month at which the individual had left their job if they are recorded as having done so in the data set.  If not, the object records the last month at which there was a record of the individual, appended with a '+' to indicate that this was the last record available.
 
 `r if (knitr::is_latex_output()) '\\index{Kaplan-Meier estimates}'`The `survfit()` function allows us to calculate *Kaplan-Meier estimates* of survival for different groups in the data so that we can compare them.  We can do this using our usual formula notation but using a survival object as the outcome.  Let's take a look at survival by gender.
 
@@ -187,7 +187,7 @@ Importantly, as well as statistically validating that sentiment has a significan
 
 ### Checking the proportional hazard assumption
 
-`r if (knitr::is_latex_output()) '\\index{survival analysis!proportional hazard assumption}'`Note that we mentioned in the previous section a critical assumption for our Cox proportional hazard model to be valid, called the proportional hazard assumption.  As always, it is important to check this assumption before finalizing any inferences or conclusions from your model.  
+`r if (knitr::is_latex_output()) '\\index{Cox proportional hazard!proportional hazard assumption}'`Note that we mentioned in the previous section a critical assumption for our Cox proportional hazard model to be valid, called the proportional hazard assumption.  As always, it is important to check this assumption before finalizing any inferences or conclusions from your model.  
 
 `r if (knitr::is_latex_output()) '\\index{Schoenfeld residual}'`The most popular test of this assumption uses a residual known as a *Schoenfeld residual* which would be expected to be independent of time if the proportional hazard assumption holds.  The `cox.zph()` function in the `survival` package runs a statistical test on the null hypothesis that the Schoenfeld residuals are independent of time.  The test is conducted on every input variable and on the model as a whole, and a significant result would reject the proportional hazard assumption.
 
@@ -208,7 +208,7 @@ survminer::ggcoxzph(ph_check,
 
 ## Frailty models
 
-`r if (knitr::is_latex_output()) '\\index{survival analysis!frailty models}'`We noticed in our example in the previous section that certain fields of employment appeared to have a significant effect on the attrition hazard.  It is therefore possible that different fields of employment have different base hazard functions, and we may wish to take this into account in determining if input variables have a significant relationship with attrition.  This is analogous to a mixed model which we looked at in Section \@ref(mixed).
+`r if (knitr::is_latex_output()) '\\index{frailty models}'`We noticed in our example in the previous section that certain fields of employment appeared to have a significant effect on the attrition hazard.  It is therefore possible that different fields of employment have different base hazard functions, and we may wish to take this into account in determining if input variables have a significant relationship with attrition.  This is analogous to a mixed model which we looked at in Section \@ref(mixed).
 
 In this case we would apply a random intercept effect to the base hazard function $h_0(t)$ according to the field of employment of an individual, in order to take this into account in our modeling.  This kind of model is called a *frailty model*, taken from the clinical context, where different groups of patients may have different frailties (background risks of death).
 
@@ -280,7 +280,7 @@ plot(stratified_base, type.plot = "Survival",
 
 ### Data exercises
 
-`r if (knitr::is_latex_output()) '\\index{data sets!job\\_retention@\\texttt{job\\_retention}}'`For these exercises, use the same `job_retention` dataset as in the walkthrough example for this chapter, which can be loaded via the `peopleanalyticsdata` package or downloaded from the internet^[http://peopleanalytics-regression-book.org/data/job_retention.csv].  The `intention` field represents a score of 1 to 10 on the individual's intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention.  This response was recorded at the beginning of the study period.
+`r if (knitr::is_latex_output()) '\\index{data sets!job\\_retention@\\texttt{job\\_retention}}'`For these exercises, use the same `job_retention` data set as in the walkthrough example for this chapter, which can be loaded via the `peopleanalyticsdata` package or downloaded from the internet^[http://peopleanalytics-regression-book.org/data/job_retention.csv].  The `intention` field represents a score of 1 to 10 on the individual's intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention.  This response was recorded at the beginning of the study period.
 
 1.  Create three categories of `intention` as follows:  High (score of 7 or higher), Moderate (score of 4--6), Low (score of 3 or less)
 2.  Calculate Kaplan-Meier survival estimates for the three categories and visualize these using survival curves.
