@@ -276,7 +276,8 @@ if (knitr::is_html_output()) {
               colorscale = list(c(0, "red"), c(1, "red")),
               showscale = FALSE) %>%
     layout(scene = list(xaxis = list(title = 'n_yellow_25'), yaxis = list(title = 'n_red_25', dtick = 1),
-                       zaxis = list(title = 'Probability'), aspectmode='cube'),
+                        camera = list(eye = list(x = 1, y = -1.2, z = 0)),
+                        zaxis = list(title = 'Probability'), aspectmode='cube'),
            showlegend = TRUE) 
 } else {
   knitr::include_graphics("www/07/ordinalsoccer.png")
@@ -384,13 +385,7 @@ Ignoring the intercept which is not of concern here, the differences appear rela
 
 The Wald test is conducted on the comparison of the proportional odds and generalized models. A Wald test is a hypothesis test of the significance of the difference in model coefficients, producing a chi-square statistic.  A low p-value in a Brant-Wald test is an indicator that the coefficient does not satisfy the proportional odds assumption.  `r if (knitr::is_latex_output()) '\\index{R!packages!brant@\\texttt{brant}}'`The `brant` package in R provides an implementation of the Brant-Wald test, and in this case supports our judgment that the proportional odds assumption holds.
 
-```{r, eval = FALSE}
-library(brant)
-brant::brant(model)
-```
-
-`r if (knitr::is_latex_output()) '\\newpage'`
-```{r, echo = FALSE}
+```{r}
 library(brant)
 brant::brant(model)
 ```

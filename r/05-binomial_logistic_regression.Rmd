@@ -24,7 +24,7 @@ The logistic function, as shown in Figure \@ref(fig:logistic-function-verhulst),
 
 ```{r logistic-function-verhulst, fig.align = "center", fig.cap = "Verhulst's Logistic Function modeled both the exponential nature and the natural limit of population growth", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 # creative commons license https://socratic.org/questions/why-is-logistic-growth-more-realistic-than-exponential-growth
-knitr::include_graphics("./www/02/logistic-curve.png")
+knitr::include_graphics("./www/05/logistic-curve.png")
 
 
 ```
@@ -399,8 +399,9 @@ if (knitr::is_html_output()) {
               marker = list(size = 5, color = "blue", symbol = 104), name = "Observations") %>% 
     add_trace(z = simpler_model$fitted.values, x = ~sales, y = ~customer_rate, type = "mesh3d", 
               name = "Fitted values") %>%
-    layout(scene = list(xaxis = list(title = 'sales'), yaxis = list(title = 'customer_rate'),
-                       zaxis = list(title = 'promoted'), aspectmode='cube')) 
+    layout(scene = list(xaxis = list(title = 'sales'), yaxis = list(title = 'customer_rate', nticks = 5),
+                        camera = list(eye = list(x = -0.5, y = 2, z = 0)),
+                        zaxis = list(title = 'promoted'), aspectmode='cube')) 
 } else {
   knitr::include_graphics("./www/05/binomial.png")
 }

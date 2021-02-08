@@ -442,10 +442,14 @@ plt.show()
 ```
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
-```{python survival-python, fig.align = "center", fig.cap = "Survival curves by sentiment category in the job retention data", out.width = if (knitr::is_latex_output()) {"90%"}, echo = FALSE, results = FALSE}
+```{python survival-python, fig.align = "center", fig.cap = "Survival curves by sentiment category in the job retention data", out.width = if (knitr::is_latex_output()) {"90%"}, echo = FALSE, results = FALSE, dev = "png", dev.args = list(type = "cairo-png")}
 import pandas as pd
+import matplotlib
 from lifelines import KaplanMeierFitter
 from matplotlib import pyplot as plt
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
+matplotlib.rcParams['text.usetex'] = True
 
 # get data
 url = "http://peopleanalytics-regression-book.org/data/job_retention.csv"

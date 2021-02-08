@@ -154,7 +154,8 @@ if (knitr::is_html_output()) {
               colorscale = list(c(0, "orange"), c(1, "orange")),
               showscale = FALSE) %>%  
     layout(scene = list(xaxis = list(title = 'attr'), yaxis = list(title = 'prob'),
-                       zaxis = list(title = 'dec'), aspectmode='cube'),
+                        camera = list(eye = list(x = -1, y = 1.5, z = 0)),
+                        zaxis = list(title = 'dec'), aspectmode='cube'),
            legend=list(title=list(text='IID'))) 
 } else {
   knitr::include_graphics("www/08/fullbin.png")
@@ -180,7 +181,8 @@ if (knitr::is_html_output()) {
                y = fit$prob[fit$iid == 256], type = "mesh3d", 
                name = "Fitted values IID 256", color = fit$color[fit$iid == 256]) %>% 
      layout(scene = list(xaxis = list(title = 'attr'), yaxis = list(title = 'prob'),
-                        zaxis = list(title = 'dec'), aspectmode='cube'),
+                         camera = list(eye = list(x = -1, y = 1.5, z = 0)),
+                         zaxis = list(title = 'dec'), aspectmode='cube'),
             legend=list(title=list(text='IID'))) 
 } else {
   knitr::include_graphics("www/08/mixedbin.png")

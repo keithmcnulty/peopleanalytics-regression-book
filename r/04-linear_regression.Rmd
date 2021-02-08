@@ -15,10 +15,25 @@ library(latex2exp)
 
 `r if (knitr::is_latex_output()) '\\index{linear regression!origins}'`Linear Regression, also known as `r if (knitr::is_latex_output()) '\\index{linear regression!ordinary least squares}'`*Ordinary Least Squares Linear Regression* or *OLS Regression* for short, was developed independently by the mathematicians Gauss and Legendre at or around the first decade of the 19th century, and there remains today some controversy about who should take credit for its discovery.  However,  at the time of its discovery it was not actually known as "regression".  This term became more popular following the work of Francis Galton---a British intellectual jack-of-all-trades and a cousin of Charles Darwin.  In the late 1800s, Galton had researched the relationship between the heights of a population of almost 1,000 children and the average height of their parents (mid-parent height).  He was surprised to discover that there was not a perfect relationship between the height of a child and the average height of its parents, and that in general children's heights were more likely to be in a range that was closer to the mean for the total population.  He described this statistical phenomenon as a "regression towards mediocrity" ("regression" comes from a Latin term approximately meaning "go back").  
 
-Figure \@ref(fig:galton-fig) is an illustration of Galton's data with the black solid line showing what a perfect relationship would look like, and the red dashed line showing the actual relationship he determined^[This representation of Galton's study originates from @senn].  You can regard the red dashed line as 'going back' from the perfect relationship (symbolized by the black line) in the direction of a horizontal line representing the mean of the child heights.  This might give you an intuition that will help you understand later sections of this chapter. In an arbitrary data set, the red dashed line can lie anywhere between a horizontal line at the mean of $y$ (no relationship) and the solid black line (a perfect relationship). Linear Regression is about finding the red dashed line in your data and using it to explain the degree to which your input data (the $x$ axis) explains your outcome data (the $y$ axis). 
+Figure \@ref(fig:galton-fig) is a scatter plot of Galton's data with the black solid line showing what a perfect relationship would look like, the black dot-dashed line indicating the mean child height and the red dashed line showing the actual relationship determined by Galton^[This chart includes a random 'jitter' to better illustrate observations that are identical, and was first used to illustrate Galton's data in @senn].  You can regard the red dashed line as 'going back' from the perfect relationship (symbolized by the black line).  This might give you an intuition that will help you understand later sections of this chapter. In an arbitrary data set, the red dashed line can lie anywhere between the black dot-dashed line (no relationship) and the black solid line (a perfect relationship). Linear Regression is about finding the red dashed line in your data and using it to explain the degree to which your input data (the $x$ axis) explains your outcome data (the $y$ axis). 
 
-```{r galton-fig, fig.cap="Galton's study of the height of children introduced the term 'regression'", out.width='80%', fig.asp=.75, fig.align='center', echo = FALSE}
-knitr::include_graphics("./www/01/Regression-to-the-mean.png")
+```{r galton-fig, fig.cap="Galton's study of the height of children introduced the term 'regression'", out.width='80%', fig.align='center', echo = FALSE}
+library(dplyr)
+library(ggplot2)
+data <- read.delim("data/Galton.txt")
+
+data <- data %>% 
+  dplyr::mutate(midHeight = (Father + Mother)/2)
+
+ggplot(data, aes(x = midHeight, y = Height)) +
+  geom_point(color = "blue") +
+  geom_jitter(color = "blue") +
+  geom_function(fun = function(x) {y = x}) +
+  geom_function(fun = function(x) {y = mean(data$Height)}, linetype = "dotdash") +
+  geom_smooth(method='lm', formula = y~x, se = FALSE, color = "red", linetype = "dashed") +
+  xlab("Mid-Parent Height (inches)") +
+  ylab("Child Height (inches)") +
+  theme_minimal()
 ```
 
 ### Use cases for linear regression {#use-cases-ols}
@@ -102,15 +117,15 @@ Now let's assume that we have a sample of ten observations with which to estimat
 (d <- head(ugtests[ , c("Yr3", "Final")], 10))
 ```
 
-We can do a simple plot of these data points as in Figure \@ref(fig:sample-plot). Intuitively, we can imagine a line passing through these points that 'fits' the general pattern.  For example, taking $m = 1.2$ and $c = 5$, the resulting line $y = 1.2x + 5$ could fit between the points we are given, as displayed in Figure \@ref(fig:sample-plot-fit).
+We can do a simple plot of these observations as in Figure \@ref(fig:sample-plot). Intuitively, we can imagine a line passing through these points that 'fits' the general pattern.  For example, taking $m = 1.2$ and $c = 5$, the resulting line $y = 1.2x + 5$ could fit between the points we are given, as displayed in Figure \@ref(fig:sample-plot-fit).
 
-```{r sample-plot, fig.cap = "Basic scatter plot of ten datapoints", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+```{r sample-plot, fig.cap = "Basic scatter plot of ten observations", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_point()
 ```
 
 
-``` {r sample-plot-fit, fig.cap = "Fitting $y=1.2x + 5$ to our ten datapoints", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+``` {r sample-plot-fit, fig.cap = "Fitting $y=1.2x + 5$ to our ten observations", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) + 
   ggplot2::geom_point() +
   ggplot2::geom_function(fun = function(x) {1.2*x + 5}, colour = "red", linetype = "dashed") +
@@ -122,10 +137,10 @@ This looks like an approximation of the relationship, but how do we know that it
 
 ### Minimising the error {#minimising-error-ols}
 
-For each of our data points, we can determine an error in the fitted model by calculating the difference between the real value of $y$ and the one predicted by our model.  For example, at $x = 52$, our modeled value of y is `r 1.2*52 + 5`, but the real value is 93, producing an error of `r 93 - 1.2*52 - 5`.  `r if (knitr::is_latex_output()) '\\index{linear regression!residuals}'`These errors are known as the *residuals* of our model. The residuals for the ten points in our data set are illustrated by the solid red line segments in Figure \@ref(fig:sample-plot-residuals).  It looks like at least one of our residuals is pretty large.
+For each of our observations, we can determine an error in the fitted model by calculating the difference between the real value of $y$ and the one predicted by our model.  For example, at $x = 52$, our modeled value of y is `r 1.2*52 + 5`, but the real value is 93, producing an error of `r 93 - 1.2*52 - 5`.  `r if (knitr::is_latex_output()) '\\index{linear regression!residuals}'`These errors are known as the *residuals* of our model. The residuals for the ten points in our data set are illustrated by the solid red line segments in Figure \@ref(fig:sample-plot-residuals).  It looks like at least one of our residuals is pretty large.
 
 
-``` {r sample-plot-residuals, fig.cap = "Residuals of $y=1.2x + 5$ for our ten datapoints", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+``` {r sample-plot-residuals, fig.cap = "Residuals of $y=1.2x + 5$ for our ten observations", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) + 
   ggplot2::geom_point() +
   ggplot2::geom_function(fun = function(x) {1.2*x + 5}, colour = "red", linetype = "dashed") +
@@ -185,7 +200,7 @@ We have calculated a model which minimizes the sum of squares residual error for
 
 One natural way to benchmark how good a job your model does of explaining the outcome is to compare it to a situation where you have no input and no model at all.  In this situation, all you have is your outcome values which can be considered a random variable with a mean and a variance.  In the case of our ten observations, we have ten values of `Final` with a mean of `r round(mean(d$Final), 2)`.  We can consider the horizontal line representing the mean of $y$ as our 'random model', and we can calculate the residuals around the mean.  This can be seen in Figure \@ref(fig:model-mean).
 
-```{r model-mean, fig.cap = "Residuals of our ten datapoints around their mean value", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+```{r model-mean, fig.cap = "Residuals of our ten observations around their mean value", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 ggplot2::ggplot(data = d, aes(x = Yr3, y = Final)) +
   ggplot2::geom_point() +
   ggplot2::geom_function(fun = function(x) mean(d$Final), color = "blue", linetype = "dashed") +
@@ -314,7 +329,8 @@ if (knitr::is_html_output()) {
     add_trace(z = newmodel$fitted.values, x = ~Yr3, y = ~Yr2, type = "mesh3d", 
               name = "Fitted values") %>%
     layout(scene = list(xaxis = list(title = 'Yr3'), yaxis = list(title = 'Yr2'),
-                       zaxis = list(title = 'Final'), aspectmode='cube')) 
+                        camera = list(eye = list(x = -1.5, y = 1.75, z = 0)),
+                        zaxis = list(title = 'Final'), aspectmode='cube')) 
 } else {
   knitr::include_graphics("./www/04/newmodel.png")
 }
@@ -610,7 +626,7 @@ $$
 $$
 where $\gamma = \beta_1 + \beta_3\mathrm{Yr2}$.  Therefore our model has coefficients which are not constant, but change with the values of the input variables.  We can conclude that the effect of an extra point in the examination in Year 3 will be different depending on how the student performed in Year 2.  Visualizing this, we can see in `r if (knitr::is_latex_output()) '<!--'` Interactive `r if (knitr::is_latex_output()) '-->'`Figure \@ref(fig:non-lin-reg-3d) that this non-constant term introduces a curvature to our fitted surface that aligns it a little more closely with the observations in our data set. 
 
-```{r non-lin-reg-3d, fig.cap = if (knitr::is_latex_output()) {"3D Visualization of the fitted \\texttt{interaction\\_model} against the \\texttt{ugtests} data"} else {"3D Visualization of the fitted `interaction_model` against the `ugtests` data"}, fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+```{r non-lin-reg-3d, fig.cap = if (knitr::is_latex_output()) {"3D Visualization of the fitted \\texttt{interaction\\_model} against the \\texttt{ugtests} data"} else {"3D Visualization of the fitted `interaction_model` against the `ugtests` data"}, fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"100%"}}
 
 if (knitr::is_html_output()) {
   library(plotly)
@@ -622,7 +638,8 @@ if (knitr::is_html_output()) {
     add_trace(z = interaction_model$fitted.values, x = ~Yr3, y = ~Yr2, type = "mesh3d", 
               name = "Fitted values") %>%
     layout(scene = list(xaxis = list(title = 'Yr3'), yaxis = list(title = 'Yr2'),
-                       zaxis = list(title = 'Final'), aspectmode='cube')) 
+                        camera = list(eye = list(x = -0.5, y = 2, z = 0)),
+                        zaxis = list(title = 'Final'), aspectmode='cube')) 
    
 } else {
   knitr::include_graphics("./www/04/interactionmodel.png")
