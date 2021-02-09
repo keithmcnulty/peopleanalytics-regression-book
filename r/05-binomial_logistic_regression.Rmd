@@ -139,7 +139,7 @@ ggplot2::ggplot(data = salespeople, aes(x = sales, y = as.numeric(as.character(p
 
 ```
 
-### Deriving the concept of log-odds
+### Deriving the concept of log odds
 
 Let's look more carefully at the index of the exponential constant $e$ in the denominator of our logistic function.  Note that, because $x_{0}$ is a constant, we have:
 

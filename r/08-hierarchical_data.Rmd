@@ -1,4 +1,4 @@
-# Modeling Explicit and Latent Hierarchical Structure in Data
+# Modeling Explicit and Latent Hierarchy in Data
 
 So far in this book we have learned all of the most widely used and foundational regression techniques for inferential modeling. Starting with this chapter, we will look at situations where we need to adapt or combine techniques to address certain inference goals or data characteristics. In this chapter we look at some situations where data has a hierarchy and where we wish to consider this hierarchy in our modeling efforts.
 
@@ -193,7 +193,7 @@ If we believe that different individuals are influenced differently by one or mo
 `r if (knitr::is_latex_output()) '\\index{mixed models|)}'`
 `r if (knitr::is_latex_output()) '\\index{multilevel models|see {mixed models}}'`
 
-## Structural Equation Models for latent hierarchies in data {#struc-eq-model}
+## Structural Equation Models for latent hierarchy in data {#struc-eq-model}
 
 `r if (knitr::is_latex_output()) '\\index{structural equation models|(}'`
 In this section we will focus entirely on survey data use cases, as this is the most common application of Structural Equation Modeling in People Analytics. However it should be noted that survey data is not the only situation where latent variables may be modeled, and this technology has substantially broader applications. Indeed, advanced practitioners may see opportunities to experiment with this technology in other use cases.
