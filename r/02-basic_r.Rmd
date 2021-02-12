@@ -4,7 +4,7 @@ Most of the work in this book is implemented in the R statistical programming la
 
 For those who wish to follow the method and theory without the implementations in this book, there is no need to read this chapter.  However, the style of this book is to use implementation to illustrate theory and practice, and so tolerance of many code blocks will be necessary as you read onward.
 
-For those who wish to simply replicate the models as quickly as possible, they will be able to avail of the code block copying feature, which appears whenever you scroll over an input code block.  Assuming all the required external packages have been installed, these code blocks should all be transportable.  For those who are extra-inquisitive and want to explore how I constructed graphics used for illustration (for which code is usually not displayed), the best place to go is the [Github repository](https://github.com/keithmcnulty/peopleanalytics-regression-book) for this book. 
+For those who wish to simply replicate the models as quickly as possible, `r if (knitr::is_html_output()) {"they will be able to avail of the code block copying feature, which appears whenever you scroll over an input code block"} else {"full code is provided throughout this book by means of interspersed code blocks"}`.  Assuming all the required external packages have been installed, these code blocks should all be transportable and immediately usable.  For those who are extra-inquisitive and want to explore how I constructed graphics used for illustration (for which code is usually not displayed), the best place to go is the [Github repository](https://github.com/keithmcnulty/peopleanalytics-regression-book) for this book. 
 
 This chapter is for those who wish to learn the methods in this book but do not know how to use R.  However, it is not intended to be a full tutorial on R.  There are many more qualified individuals and existing resources that would better serve that purpose---in particular I recommend @wickham.  It is recommended that you consult these resources and become comfortable with the basics of R before proceeding into the later chapters of this book.  However, acknowledging that many will want to dive in sooner rather than later, this chapter covers the absolute basics of R that will allow the uninitiated reader to proceed with at least some orientation.
 
@@ -25,13 +25,19 @@ This chapter is for those who wish to learn the methods in this book but do not 
 `r if (knitr::is_latex_output()) '\\index{R!installation and use}'`Just like most programming languages, R itself is an interpreter which receives input and returns output.  It is not very easy to use without an IDE.  An IDE is an *Integrated Development Environment*, which is a convenient user interface allowing an R programmer to do all their main tasks including writing and running R code, saving files, viewing data and plots, integrating code into documents and many other things.  By far the most popular IDE for R is RStudio.  An example of what the RStudio IDE looks like can be seen in Figure \@ref(fig:rstudio-ide). 
 
 ```{r rstudio-ide, fig.cap="The RStudio IDE", fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
-knitr::include_graphics("./www/R/rstudio-windows.png")
+
+if (knitr::is_html_output()) {
+  knitr::include_graphics("./www/R/rstudio-windows.png")
+} else {
+  knitr::include_graphics("./www/R/rstudio.png")
+}
+
  
 ```
 
 To start using R, follow these steps:
 
-1.  Download and install the latest version of R from https://www.r-project.org/.  Ensure that the version suits your operating system
+1.  Download and install the latest version of R from https://www.r-project.org/.  Ensure that the version suits your operating system.
 2.  Download the latest version of the RStudio IDE from https://rstudio.com/products/rstudio/ and view the video on that page to familiarize yourself with its features  
 3.  Open RStudio and play around
 
@@ -40,6 +46,7 @@ The initial stages of using R can be challenging, mostly due to the need to beco
 ## Data in R
 
 `r if (knitr::is_latex_output()) '\\index{R!data}'`As you start to do tasks involving data in R, you will generally want to store the things you create so that you can refer to them later.  Simply calculating something does not store it in R.  For example, a simple calculation like this can be performed easily:
+`r if (knitr::is_latex_output()) '\\newpage'`
 
 ```{r}
 3 + 3
@@ -72,7 +79,7 @@ my_sum
 
 `r if (knitr::is_latex_output()) '\\index{R!data types}'`All data in R has an associated type, to reflect the wide range of data that R is able to work with.  The `typeof()` function can be used to see the type of a single scalar value. Let's look at the most common scalar data types.
 
-**Numeric data** can be in integer form or double (decimal) form
+**Numeric data** can be in integer form or double (decimal) form.
 
 ```{r}
 # integers can be signified by adding an 'L' to the end
@@ -83,14 +90,14 @@ typeof(my_integer)
 typeof(my_double)
 ```
 
-**Character data** is text data surrounded by single or double quotes
+**Character data** is text data surrounded by single or double quotes.
 
 ```{r}
 my_character <- "THIS IS TEXT"
 typeof(my_character)
 ```
 
-**Logical data** takes the form `TRUE` or `FALSE`:
+**Logical data** takes the form `TRUE` or `FALSE`.
 
 ```{r}
 my_logical <- TRUE
@@ -99,14 +106,14 @@ typeof(my_logical)
 
 ### Homogeneous data structures
 
-`r if (knitr::is_latex_output()) '\\index{R!vectors}'`**Vectors** are one dimensional structures containing data of the same type and are notated by using `c()`. The type of the vector can also be viewed using the `typeof()` function, but the `str()` function can also be used to display both the contents of the vector and its type:
+`r if (knitr::is_latex_output()) '\\index{R!vectors}'`**Vectors** are one-dimensional structures containing data of the same type and are notated by using `c()`. The type of the vector can also be viewed using the `typeof()` function, but the `str()` function can be used to display both the contents of the vector and its type.
 
 ```{r}
 my_double_vector <- c(2.3, 6.8, 4.5, 65, 6)
 str(my_double_vector)
 ```
 
-`r if (knitr::is_latex_output()) '\\index{R!categorical factors}'`Categorical data---which takes only a finite number of possible values---can be stored as a factor vector to make it easier to perform grouping and manipulation:
+`r if (knitr::is_latex_output()) '\\index{R!categorical factors}'`Categorical data---which takes only a finite number of possible values---can be stored as a factor vector to make it easier to perform grouping and manipulation.
 
 ```{r}
 categories <- factor(
@@ -116,7 +123,7 @@ categories <- factor(
 str(categories)
 ```
 
-`r if (knitr::is_latex_output()) '\\index{R!ordered factors}'`If needed, the factors can be given order:
+`r if (knitr::is_latex_output()) '\\index{R!ordered factors}'`If needed, the factors can be given order.
 
 ```{r}
 # character vector 
@@ -132,19 +139,19 @@ str(ranking_factors)
 
 ```
 
-The number of elements in a vector can be seen using the `length()` function:
+The number of elements in a vector can be seen using the `length()` function.
 
 ```{r}
 length(categories)
 ```
 
-Simple numeric sequence vectors can be created using shorthand notation:
+Simple numeric sequence vectors can be created using shorthand notation.
 
 ```{r}
 (my_sequence <- 1:10)
 ```
 
-`r if (knitr::is_latex_output()) '\\index{R!type coercion}'`If you try to mix data types inside a vector, it will usually result in *type coercion*, where one or more of the types are forced into a different type to ensure homogeneity. Often this means the vector will become a character vector:
+`r if (knitr::is_latex_output()) '\\index{R!type coercion}'`If you try to mix data types inside a vector, it will usually result in *type coercion*, where one or more of the types are forced into a different type to ensure homogeneity. Often this means the vector will become a character vector.
 
 ```{r}
 # numeric sequence vector
@@ -158,7 +165,7 @@ new_vec <- c(vec, "hello")
 str(new_vec)
 ```
 
-But sometimes logical or factor will be coerced to numeric:
+But sometimes logical or factor will be coerced to numeric.
 
 ```{r}
 # attempt a mixed logical and numeric
@@ -187,14 +194,14 @@ str(new_categories)
 
 ### Heterogeneous data structures
 
-`r if (knitr::is_latex_output()) '\\index{R!lists}'`**Lists** are one dimensional data structures that can take data of any type:
+`r if (knitr::is_latex_output()) '\\index{R!lists}'`**Lists** are one-dimensional data structures that can take data of any type.
 
 ```{r}
 my_list <- list(6, TRUE, "hello")
 str(my_list)
 ```
 
-List elements can be any data type and any dimension.  Each element can be given a name:
+List elements can be any data type and any dimension.  Each element can be given a name.
 
 ```{r}
 new_list <- list(
@@ -206,7 +213,7 @@ new_list <- list(
 str(new_list)
 ```
 
-Named list elements can be accessed by using `$`:
+Named list elements can be accessed by using `$`.
 
 ```{r}
 new_list$matrix
@@ -261,14 +268,14 @@ We can view a specific column by using `$`, and we can use square brackets to vi
 salespeople$sales[6]
 ```
 
-Alternatively we can use a `[row, column]` index to get a specific entry in the dataframe.
+Alternatively, we can use a `[row, column]` index to get a specific entry in the dataframe.
 
 ```{r}
 salespeople[34, 4]
 ```
 
 
-We can take a look at the data types using `str()`
+We can take a look at the data types using `str()`.
 
 ```{r}
 str(salespeople)
@@ -310,7 +317,7 @@ str(salespeople)
 
 ### Manipulating dataframes
 
-`r if (knitr::is_latex_output()) '\\index{R!subsetting dataframes}'`Dataframes can be subsetted to contain only rows that satisfy specific conditions:
+`r if (knitr::is_latex_output()) '\\index{R!subsetting dataframes}'`Dataframes can be subsetted to contain only rows that satisfy specific conditions.
 
 ```{r}
 (sales_720 <- subset(salespeople, subset = sales == 720))
@@ -323,7 +330,7 @@ high_sales <- subset(salespeople, subset = sales >= 700)
 head(high_sales)
 ```
 
-To select specific columns use the `select` argument:
+To select specific columns use the `select` argument.
 
 ```{r}
 salespeople_sales_perf <- subset(salespeople, 
@@ -331,7 +338,7 @@ salespeople_sales_perf <- subset(salespeople,
 head(salespeople_sales_perf)
 ```
 
-`r if (knitr::is_latex_output()) '\\index{R!combining dataframes}'`Two dataframes with the same column names can be combined by their rows:
+`r if (knitr::is_latex_output()) '\\index{R!combining dataframes}'`Two dataframes with the same column names can be combined by their rows.
 
 ```{r}
 low_sales <- subset(salespeople, subset = sales < 400)
@@ -341,7 +348,7 @@ low_and_high_sales = rbind(low_sales, high_sales)
 head(low_and_high_sales)
 ```
 
-Two dataframes with different column names can be combined by their columns:
+Two dataframes with different column names can be combined by their columns.
 
 ```{r}
 # two dataframes with two columns each
@@ -363,15 +370,25 @@ In the code so far we have used a variety of functions.  For example `head()`, `
 
 `r if (knitr::is_latex_output()) '\\index{R!functions}'`Functions usually take one or more arguments.  Often there are a large number of arguments that a function can take, but many are optional and not required to be specified by the user.  For example, the function `head()`, which displays the first rows of a dataframe^[It actually has a broader definition but is mostly used for showing the first rows of a dataframe], has only one required argument `x`: the name of the dataframe.  A second argument is optional, `n`: the number of rows to display.  If `n` is not entered, it is assumed to have the default value `n = 6`.  
 
-When running a function, you can either specify the arguments by name or you can enter them in order without their names.  If you enter then without their names, R expects the arguments to be entered in exactly the right order.
+When running a function, you can either specify the arguments by name or you can enter them in order without their names.  If you enter arguments without naming them, R expects the arguments to be entered in exactly the right order.
 
 ```{r}
 # see the head of salespeople, with the default of six rows
 head(salespeople)
+```
 
+```{r, eval = FALSE}
 # see fewer rows - arguments need to be in the right order if not named
 head(salespeople, 3)
+```
 
+`r if(knitr::is_latex_output()) '\\newpage'`
+```{r, echo = FALSE}
+# see fewer rows - arguments need to be in the right order if not named
+head(salespeople, 3)
+```
+
+```{r}
 # or if you don't know the right order, 
 # name your arguments and you can put them in any order
 head(n = 3, x = salespeople)
@@ -382,7 +399,9 @@ head(n = 3, x = salespeople)
 Most functions in R have excellent help documentation.  To get help on the `head()` function, type `help(head)` or `?head`.  This will display the results in the Help browser window in RStudio.  Alternatively you can open the Help browser window directly in RStudio and do a search there. An example of the browser results for `head()` is in Figure \@ref(fig:head-help).
 
 ```{r head-help, fig.cap=if (knitr::is_latex_output()) {"Results of a search for the \\texttt{head()} function in the RStudio Help browser"} else {"Results of a search for the `head()` function in the RStudio Help browser"}, fig.align="center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
-knitr::include_graphics("./www/R/head-help.png")
+
+knitr::include_graphics("./www/R/head-help-small.png")
+
 ```
 
 The help page normally shows the following:
@@ -408,7 +427,7 @@ df_report <- function(df) {
 }
 ```
 
-We can test our function by using the built-in `mtcars` data set in R:
+We can test our function by using the built-in `mtcars` data set in R.
 
 ```{r}
 df_report(mtcars)
@@ -454,7 +473,7 @@ In base R, one way to do this is:
 mean(subset(salespeople$sales, subset = salespeople$sales < 500))
 ```
 
-This is nested, and needs to be read from the inside out in order to align with the instructions.  The pipe operator `%>%` takes the command that comes before it and places it inside the function that follows it (by default as the first argument). This reduces complexity and allows you to follow the logic more clearly:
+This is nested, and needs to be read from the inside out in order to align with the instructions.  The pipe operator `%>%` takes the command that comes before it and places it inside the function that follows it (by default as the first argument). This reduces complexity and allows you to follow the logic more clearly.
 
 ```{r}
 # load magrittr library to get the pipe operator
@@ -466,7 +485,7 @@ subset(salespeople$sales, subset = salespeople$sales < 500) %>%
 
 ```
 
-This can be extended to perform arbitrarily many operations in one piped command:
+This can be extended to perform arbitrarily many operations in one piped command.
 
 ```{r}
 salespeople$sales %>% # start with all data
@@ -476,7 +495,7 @@ salespeople$sales %>% # start with all data
 
 ```
 
-The pipe operator is unique to R and is very widely used because it helps to make code more readable, it reduces complexity, and it helps orient around a common "grammar" for the manipulation of data.  The pipe operator helps you to structure your code more clearly around nouns (objects), verbs (functions) and adverbs (arguments of functions).  `r if (knitr::is_latex_output()) '\\index{R!packages!tidyverse@\\texttt{tidyverse}}'`One of the most developed sets of packages in R that follows these principles is the `tidyverse` family of packages, which I encourage you to explore.
+The pipe operator is unique to R and is very widely used because it helps to make code more readable, it reduces complexity, and it helps orient around a common 'grammar' for the manipulation of data.  The pipe operator helps you to structure your code more clearly around nouns (objects), verbs (functions) and adverbs (arguments of functions).  `r if (knitr::is_latex_output()) '\\index{R!packages!tidyverse@\\texttt{tidyverse}}'`One of the most developed sets of packages in R that follows these principles is the `tidyverse` family of packages, which I encourage you to explore.
 
 ## Errors, warnings and messages
 
@@ -574,8 +593,6 @@ R Markdown is a package which allows you to create integrated documents containi
 
 R Markdown documents always start with a particular heading type called a YAML header, which contains overall information on the document you are creating.  Care must be taken with the precise formatting of the YAML header, as it is sensitive to spacing and indentation.  Usually a basic YAML header is created for you in RStudio when you start a new `.Rmd` file.  Here is an example.
 
-`r if (knitr::is_latex_output()) '\\newpage'`
-
 ```
 ---
 title: "My new document"
@@ -668,7 +685,7 @@ If you are not familiar with R Markdown, I strongly encourage you to learn it al
 8.  Install and load the package `dplyr`.  Look up the help for the `filter()` function in this package and try to use it to repeat the task in the previous question.
 9.  Write code to find the mean of the `Yr1` test scores for all those who achieved `Yr3` test scores greater than 100.  Round this mean to the nearest integer.
 10. Familiarize yourself with the two functions `filter()` and `pull()` from `dplyr`.  Use these functions to try to do the same calculation in the previous question using a single unbroken piped command.  Be sure to namespace where necessary.
-11.  Create a scatter plot using the `ugtests` data with `Final` scores on the y axis and `Yr3` scores on the x axis.
+11.  Create a scatter plot using the `ugtests` data with `Final` scores on the $y$ axis and `Yr3` scores on the $x$ axis.
 12.  Create your own 5 level grading logic and use it to create a new `finalgrade` column in the `ugtests` dataset with grades 1--5 of increasing attainment based on the `Final` score in `ugtests`.  Generate a histogram of this `finalgrade` column.
 13.  Using your new `ugtests` data with the extra column from the previous exercise, create a box plot of `Yr3` scores grouped by `finalgrade`.
 14.  Knit all of your answers to these exercises into an R Markdown document.  Create one version that displays your code and answers, and another that just displays the answers.

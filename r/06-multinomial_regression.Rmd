@@ -38,7 +38,7 @@ You are an analyst at a large technology company.  The company recently introduc
 * `position_level`:  Position level in the company at the time they made the choice, where 1 is is the lowest and 5 is the highest
 * `tenure`: Full years employed by the company at the time they made the choice
 
-First we load the data and take a look at it briefly:
+First we load the data and take a look at it briefly.
 
 `r if (knitr::is_latex_output()) '\\small'`
 ```{r}
@@ -129,7 +129,7 @@ As an example, and as a reminder from our previous chapter, we interpret the odd
 
 ### Modeling other choices
 
-In a similar way we can produce two other models, representing the choice of Products B and C.  These models produce similar significant variables, except that `position_level` does not appear to be significant in the choice of Product C.  If we simplify all our three models we will have a slightly differently defined models for the choice of Product C versus our models for the other two product choices.  However, we can conclude in general that the only input variable that seems to be non-significant across all choices of product is `tenure`.
+In a similar way we can produce two other models, representing the choice of Products B and C.  These models produce similar significant variables, except that `position_level` does not appear to be significant in the choice of Product C.  If we simplify all our three models we will have a slightly differently defined model for the choice of Product C versus our models for the other two product choices.  However, we can conclude in general that the only input variable that seems to be non-significant across all choices of product is `tenure`.
 
 ## Running a multinomial regression model
 
@@ -147,7 +147,7 @@ for different vectors of coefficients $\alpha$ and $\beta$.
 
 ### Defining a reference level and running the model
 
-`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!reference category}'``r if (knitr::is_latex_output()) '\\index{R!packages!nnet@\\texttt{nnet}}'`The `nnet` package in R contains a `multinom()` function for running a multinomial logistic regression model using neural network technology^[Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onward in the network.  Most commonly they are used in deep learning, but a simple neural network here can model these two different categories using a logistic function].  Before we can run the model we need to make sure our reference level is defined.
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!reference category}'``r if (knitr::is_latex_output()) '\\index{R!packages!nnet@\\texttt{nnet}}'`The `nnet` package in R contains a `multinom()` function for running a multinomial logistic regression model using neural network technology^[Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onward in the network.  Most commonly they are used in deep learning, but a simple neural network here can model these different categories using a logistic function].  Before we can run the model we need to make sure our reference level is defined.
 
 ```{r}
 # define reference by ensuring it is the first level of the factor
@@ -203,7 +203,7 @@ data.frame(t(p_values))
 
 ### Interpreting the model
 
-This confirms that all variables except `tenure` play a role in the choice between all products relative to a reference of Product A.  We can also calculate odds ratios as before:
+This confirms that all variables except `tenure` play a role in the choice between all products relative to a reference of Product A.  We can also calculate odds ratios as before.
 
 ```{r}
 # display odds ratios in transposed data frame
@@ -290,7 +290,7 @@ DescTools::PseudoR2(simpler_multi_model,
                     which = c("McFadden", "CoxSnell", "Nagelkerke"))
 ```
 
-`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!goodness-of-fit}'`Due to the fact that multinomial models have more than one set of coefficients, assessing goodness-of-fit is more challenging, and is still an area of intense research.  The most approachable method to assess model confidence is the Hosmer-Lemeshow test mentioned in the previous chapter, which was extended in @fagerland for multinomial models.  An implementation is available in the `generalhoslem` package in R.  However, the Hosmer-Lemeshow test is not valid for models with a small number of input variables (fewer than ten), and therefore we will not experiment with it here.  For further exploration of this topic, Chapter 8 of @hosmer-logistic is recommended, and for a more thorough treatment of the entire topic of categorical analytics, @agresti is an excellent companion.
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!goodness-of-fit}'`Due to the fact that multinomial models have more than one set of coefficients, assessing goodness-of-fit is more challenging, and is still an area of intense research.  The most approachable method to assess model confidence is the Hosmer-Lemeshow test mentioned in the previous chapter, which was extended in @fagerland for multinomial models.  An implementation is available in the `generalhoslem` package in R.  However, this version of the Hosmer-Lemeshow test is problematic for models with a small number of input variables (fewer than ten), and therefore we will not experiment with it here.  For further exploration of this topic, Chapter 8 of @hosmer-logistic is recommended, and for a more thorough treatment of the entire topic of categorical analytics, @agresti is an excellent companion.
 `r if (knitr::is_latex_output()) '\\index{multinomial logistic regression|)}'`
 
 ## Learning exercises
@@ -308,11 +308,11 @@ DescTools::PseudoR2(simpler_multi_model,
 
 `r if (knitr::is_latex_output()) '\\index{data sets!health\\_insurance@\\texttt{health\\_insurance}}'`Use the same `health_insurance` data set from this chapter to answer these questions.
 
-1.  Complete the full stratified approach to modeling the three product choices that was started in \@ref(stratified).  Calculate the coefficients, odds ratios and p-values in each case.
+1.  Complete the full stratified approach to modeling the three product choices that was started in Section \@ref(stratified).  Calculate the coefficients, odds ratios and p-values in each case.
 2.  Carefully write down your interpretation of the odds ratios from the previous question.
 3.  Run a multinomial logistic regression model on the `product` outcome using Product B as reference.  Calculate the coefficients, ratios and p-values in each case.
-4.  Verify that the coefficients for Product C against reference Product B matches those calculated in \@ref(changing-ref).
+4.  Verify that the coefficients for Product C against reference Product B matches those calculated in Section  \@ref(changing-ref).
 5.  Carefully write down your interpretation of the odds ratios calculated in the previous question.
-6.  Use the process described in \@ref(elim) to simplify the multinomial model in Question 4.
+6.  Use the process described in Section \@ref(elim) to simplify the multinomial model in Question 3.
 
 `r if (knitr::is_latex_output()) '\\index{regression!multinomial|see {multinomial logistic regression}}'`

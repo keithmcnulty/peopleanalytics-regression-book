@@ -3,9 +3,7 @@
 Over the past decade or so, increases in compute power, emergence of friendly analytic tools and an
 explosion of data have created a wonderful opportunity to bring more analytical rigor to nearly every
 imaginable question. Not coincidentally, organizations are increasingly looking to apply all that data and
-capability to what is typically their greatest area of expense and their greatest strategic differentiator –
-their people. For too long, many of the most critical decisions in an organization – people decisions –
-had been guided by gut instinct or borrowed “best practices” and the democratization of people
+capability to what is typically their greatest area of expense and their greatest strategic differentiator---their people. For too long, many of the most critical decisions in an organization---people decisions---had been guided by gut instinct or borrowed 'best practices' and the democratization of people
 analytics opened up enticing pathways to fix that. Suddenly, analysts who were originally interested in
 data problems began to be interested in people problems, and HR professionals who had dedicated their
 careers to solving people problems needed more sophisticated analysis and data storytelling to make
@@ -21,7 +19,7 @@ combination, or difficult to tease apart. While in many disciplines, prediction 
 for most people analytics projects and practitioners, understanding *why* something is happening is
 critical.
 
-While the universe of analytical approaches is wonderful and vast, the best “swiss army knife” we have
+While the universe of analytical approaches is wonderful and vast, the best 'swiss army knife' we have
 in people analytics is regression. This volume is an accessible, targeted work aimed directly at
 supporting professionals doing people analytics work. I’ve had the privilege of knowing and respecting
 Keith McNulty for many years – he is the rare and marvelous individual who is deeply expert in the

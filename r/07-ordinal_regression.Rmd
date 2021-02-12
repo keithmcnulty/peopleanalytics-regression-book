@@ -60,15 +60,15 @@ Examples of problems that can utilize a proportional odds logistic regression ap
 
 You are an analyst for a sports broadcaster who is doing a feature on player discipline in professional soccer games.  To prepare for the feature, you have been asked to verify whether certain metrics are significant in influencing the extent to which a player will be disciplined by the referee for unfair or dangerous play in a game.  You have been provided with data on over 2000 different players in different games and the data contains these fields:
 
-* `discipline`: A record of the maximum discipline taken by the referee against the player in the game.  "None" means no discipline was taken, "Yellow" means the player was issued a yellow card (warned), "Red" means the player was issued a red card and ordered off the field of play.
+* `discipline`: A record of the maximum discipline taken by the referee against the player in the game.  'None' means no discipline was taken, 'Yellow' means the player was issued a yellow card (warned), 'Red' means the player was issued a red card and ordered off the field of play.
 * `n_yellow_25` is the total number of yellow cards issued to the player in the previous 25 games they played prior to this game
 * `n_red_25` is the total number of red cards issued to the player in the previous 25 games they played prior to this game
-* `position` is the playing position of the player in the game:  "D" is defense (including goalkeeper), "M" is midfield and "S" is striker/attacker.
+* `position` is the playing position of the player in the game:  'D' is defense (including goalkeeper), 'M' is midfield and 'S' is striker/attacker.
 * `level` is the skill level of the competition in which the game took place, with 1 being higher and 2 being lower
 * `country` is the country in which the game took place---England or Germany
-* `result` is the result of the game for the team of the player---"W" is win, "L" is lose, "D" is a draw/tie.
+* `result` is the result of the game for the team of the player---'W' is win, 'L' is lose, 'D' is a draw/tie.
 
-`r if (knitr::is_latex_output()) '\\index{data sets!soccer@\\texttt{soccer}}'`Let's download the `soccer` data set and take a quick look at it:
+`r if (knitr::is_latex_output()) '\\index{data sets!soccer@\\texttt{soccer}}'`Let's download the `soccer` data set and take a quick look at it.
 
 ```{r}
 # if needed, download data
@@ -102,7 +102,7 @@ soccer$discipline <- ordered(soccer$discipline,
 str(soccer)
 ```
 
-We also know that `position`, `country`, `result` and `level` are categorical, so we convert them to factors.  We could in fact choose to convert `result` and `level` into ordered factors if we so wish, but it is not necessary and the results are usually a little bit easier to read as nominal factors:
+We also know that `position`, `country`, `result` and `level` are categorical, so we convert them to factors.  We could in fact choose to convert `result` and `level` into ordered factors if we so wish, but this is not necessary for input variables and the results are usually a little bit easier to read as nominal factors.
 
 ```{r}
 # apply as.factor to four columns
@@ -334,7 +334,7 @@ generalhoslem::pulkrob.chisq(model, catvars = cats)
 
 As we learned above, proportional odds regression models effectively act as a series of stratified binomial models under the assumption that the 'slope' of the logistic function of each stratified model is the same.  We can verify this by actually running stratified binomial models on our data and checking for similar coefficients on our input variables.  Let's use our walkthrough example to illustrate.
 
-Let's create two columns with binary values to correspond to the two higher levels of our ordinal variable:
+Let's create two columns with binary values to correspond to the two higher levels of our ordinal variable.
 
 ```{r}
 # create binary variable for "Yellow" or "Red" versus "None"
@@ -364,7 +364,7 @@ red_model <- glm(
 )
 ```
 
-We can now display the coefficients of both models and examine the difference between them:
+We can now display the coefficients of both models and examine the difference between them.
 
 
 ```{r}

@@ -2,7 +2,7 @@
 
 So far in this book we have learned all of the most widely used and foundational regression techniques for inferential modeling. Starting with this chapter, we will look at situations where we need to adapt or combine techniques to address certain inference goals or data characteristics. In this chapter we look at some situations where data has a hierarchy and where we wish to consider this hierarchy in our modeling efforts.
 
-It is very often the case that data has an explicit hierarchy. For example, each observation in our data may refer to a different individual and each such individual may be a member of a few different groups. Similarly, each observation might refer to an event involving an individual, and we may have data on multiple events for the same individual. For a particular problem that we are modeling, we may wish to take into consideration the effect of the hierarchical grouping on the observations. This requires a model which has a mixture of random effects and fixed effects---called a *mixed model*.
+It is very often the case that data has an explicit hierarchy. For example, each observation in our data may refer to a different individual and each such individual may be a member of a few different groups. Similarly, each observation might refer to an event involving an individual, and we may have data on multiple events for the same individual. For a particular problem that we are modeling, we may wish to take into consideration the effect of the hierarchical grouping. This requires a model which has a mixture of random effects and fixed effects---called a *mixed model*.
 
 `r if (knitr::is_latex_output()) '\\index{hierarchical data}'`Separately, it can be the case that data we are given could have a latent hierarchy. The input variables in the data might be measures of a smaller set of higher level latent constructs, and we may have a more interpretable model if we hypothesize, confirm and model those latent constructs against our outcome of interest rather than using a larger number of explicit input variables. Latent variable modeling is a common technique to address this situation, and in this chapter we will review a form of latent variable modeling called *structural equation modeling* which is very effective especially in making inferences from survey instruments with large numbers of items.
 
@@ -15,11 +15,11 @@ The most common explicit hierarchies that we see in data are group-based and tim
 
 Similarly, a time-based hierarchy occurs when we have multiple observations of the same subject taken at different times. For example, if we are conducting a weekly survey on the same people over the course of a year, and we are modeling how answers to some questions might depend on answers to others, we may wish to consider the effect of the person on this model.
 
-Both of these situations introduce a new grouping variable into the problem we are modeling, thus creating a hierarchy. It is not hard to imagine that analyzing each group may produce different statistical properties compared to analyzing the entire population---for example, there could be correlations between the data inside groups which are less evident when looking at the overall population. Therefore in some cases a model may provide more accurate and reliable estimates if this grouping is taken into account.
+Both of these situations introduce a new grouping variable into the problem we are modeling, thus creating a hierarchy. It is not hard to imagine that analyzing each group may produce different statistical properties compared to analyzing the entire population---for example, there could be correlations between the data inside groups which are less evident when looking at the overall population. Therefore in some cases a model may provide more useful inferences if this grouping is taken into account.
 
 ### Fixed and random effects
 
-Let's imagine that we have a set of observations consisting of a continuous output variable $y$ and input variables $x_1, x_2, \dots, x_p$. Let's also assume that we have an additional data point for each observation where we assign it to a group $G$. We are asked to determine the relationship between the outcome and the input variables. One option is to develop a linear model $y = \beta_0 + \beta_1x_1 + \dots + \beta_px_p + \epsilon$, ignoring the group data. `r if (knitr::is_latex_output()) '\\index{mixed models!fixed effects}'`In this model, we assume that the coefficients all have a *fixed effect* on the input variables---that is, they act on every observation in the same way. This may be fine if there is trust that group membership is unlikely to have any impact on the relationship being modeled, or if we are comfortable making inferences about variables at the observation level only.
+Let's imagine that we have a set of observations consisting of a continuous outcome variable $y$ and input variables $x_1, x_2, \dots, x_p$. Let's also assume that we have an additional data point for each observation where we assign it to a group $G$. We are asked to determine the relationship between the outcome and the input variables. One option is to develop a linear model $y = \beta_0 + \beta_1x_1 + \dots + \beta_px_p + \epsilon$, ignoring the group data. `r if (knitr::is_latex_output()) '\\index{mixed models!fixed effects}'`In this model, we assume that the coefficients all have a *fixed effect* on the input variables---that is, they act on every observation in the same way. This may be fine if there is trust that group membership is unlikely to have any impact on the relationship being modeled, or if we are comfortable making inferences about variables at the observation level only.
 
 `r if (knitr::is_latex_output()) '\\index{mixed models!random effects}'`If, however, there is a belief that group membership may have an effect on the relationship being modeled, and if we are interested in interpreting our model at the group and observation level, then we need to adjust our model to a mixed model for more accurate and reliable inference. The most common adjustment is a *random intercept*. In this situation, we imagine that group membership has an effect on the 'starting point' of the relationship: the intercept. Therefore, for a given observation $y = \alpha_G + \beta_0 + \beta_1x_1 + \dots + \beta_px_p + \epsilon$, where $\alpha_G$ is a random effect with a mean of zero associated with the group that the observation is a member of. This can be restated as:
 
@@ -89,6 +89,7 @@ In the simple case, let's assume that each individual has a different ingoing ba
 ```{r, message = FALSE, warning = FALSE}
 # run binomial mixed effects model
 library(lme4)
+
 iid_intercept_model <- lme4:::glmer(
   dec ~ agediff + samerace + attr + intel + prob + (1 | iid),
   data = speed_dating,
@@ -98,13 +99,22 @@ iid_intercept_model <- lme4:::glmer(
 
 ```{r, eval = FALSE}
 # view summary without correlation table of fixed effects
-summary(iid_intercept_model, correlation = FALSE)
+summary(iid_intercept_model, 
+        correlation = FALSE)
 ```
 
-`r if (knitr::is_latex_output()) '\\small'`
 ```{r, echo = FALSE}
 # view summary without correlation table of fixed effects
-summary(iid_intercept_model, correlation = FALSE)
+
+if (knitr::is_latex_output()) {
+  modsum <- summary(iid_intercept_model, correlation = FALSE)
+  modsum$methTitle <- gsub("\\(Laplace Approximation\\)", "", modsum$methTitle)
+  modsum$objClass <- ""
+  modsum
+} else {
+  summary(iid_intercept_model, correlation = FALSE)
+}
+
 ```
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
@@ -196,7 +206,7 @@ If we believe that different individuals are influenced differently by one or mo
 ## Structural Equation Models for latent hierarchy in data {#struc-eq-model}
 
 `r if (knitr::is_latex_output()) '\\index{structural equation models|(}'`
-In this section we will focus entirely on survey data use cases, as this is the most common application of Structural Equation Modeling in People Analytics. However it should be noted that survey data is not the only situation where latent variables may be modeled, and this technology has substantially broader applications. Indeed, advanced practitioners may see opportunities to experiment with this technology in other use cases.
+In this section we will focus entirely on survey data use cases, as this is the most common application of structural equation modeling in people analytics. However it should be noted that survey data is not the only situation where latent variables may be modeled, and this technology has substantially broader applications. Indeed, advanced practitioners may see opportunities to experiment with this technology in other use cases.
 
 It is a frequent occurrence with surveys conducted on large samples of people, such as a public survey or a large company survey, that attempts to run regression models can be problematic due to the large number of survey questions or items. Often many of the items are highly correlated, and even if they were not, high dimensionality makes interpretability very challenging. Decision-makers are not usually interested in explanations that involve 50 or 100 variables.
 
@@ -204,11 +214,11 @@ Usually, such a large number of survey items are not each independently measurin
 
 It is a common request for an analyst to model a certain outcome using the many items in a complex survey as input variables. In some cases the outcome being modeled is an item in the survey itself---usually some overall measure of sentiment---or in other cases the outcome could be independent of the survey instrument, for example future attrition from the organization. In this situation, a model using the themes as input variables is likely to be a lot more useful and interpretable than a model using the items as input variables.
 
-*Structural Equation Modeling* is a technique that allows an analyst to hypothesize a smaller set of latent variables or factors that explain the responses to the survey items themselves (the 'measured variables'), and then regresses the outcome of interest against these latent factors. It is a two part approach, each part being a separate model in and of itself, as follows:
+*Structural equation modeling* is a technique that allows an analyst to hypothesize a smaller set of latent variables or factors that explain the responses to the survey items themselves (the 'measured variables'), and then regresses the outcome of interest against these latent factors. It is a two part approach, each part being a separate model in and of itself, as follows:
 
-1.  *Measurement Model*: `r if (knitr::is_latex_output()) '\\index{structural equation models!measurement model}'`This is focused on how well the hypothesized factors explain the responses to the survey items using a technique called `r if (knitr::is_latex_output()) '\\index{structural equation models!factor analysis}'`factor analysis. In the most common case, where a subject matter expert has pre-organized the items into several groups corresponding to hypothesized latent variables, the process is called *confirmatory factor analysis*, and the objective is to confirm that the groupings represent a high-quality measurement model, adjusting as necessary to refine the model. In the simplest case, items are fitted into separate independent themes with no overlap.
+1.  *Measurement model*: `r if (knitr::is_latex_output()) '\\index{structural equation models!measurement model}'`This is focused on how well the hypothesized factors explain the responses to the survey items using a technique called `r if (knitr::is_latex_output()) '\\index{structural equation models!factor analysis}'`factor analysis. In the most common case, where a subject matter expert has pre-organized the items into several groups corresponding to hypothesized latent variables, the process is called *confirmatory factor analysis*, and the objective is to confirm that the groupings represent a high-quality measurement model, adjusting as necessary to refine the model. In the simplest case, items are fitted into separate independent themes with no overlap.
 
-2.  *Structural Model*: `r if (knitr::is_latex_output()) '\\index{structural equation models!structural model}'`Assuming a satisfactory measurement model, the structural model is effectively a regression model which explains how each of the proposed factors relate to the outcome of interest.
+2.  *Structural model*: `r if (knitr::is_latex_output()) '\\index{structural equation models!structural model}'`Assuming a satisfactory measurement model, the structural model is effectively a regression model which explains how each of the proposed factors relate to the outcome of interest.
 
 `r if (knitr::is_latex_output()) '\\index{data sets!politics\\_survey@\\texttt{politics\\_survey}}'`As a walkthrough example, we will work with the `politics_survey` data set.
 
@@ -272,7 +282,6 @@ semPlot::semPaths(cfa_model, style = "lisrel", residuals = FALSE, nCharNodes = 0
 
 `r if (knitr::is_latex_output()) '\\index{R!packages!lavaan@\\texttt{lavaan}}'`The `lavaan` package in R is a specialized package for running analysis on latent variables. The function `cfa()` can be used to perform a confirmatory factor analysis on a specified measurement model. The measurement model can be specified using an appropriately commented and formatted text string as follows. Note the `=~` notation and note also that each factor is defined on a new line.
 
-`r if (knitr::is_latex_output()) '\\newpage'`
 
 ```{r}
 # define measurement model
@@ -313,9 +322,9 @@ Second, we examine the fit statistics. Numerous statistics are reported[^hierarc
 
 Finally, the parameter estimates for the latent variables should be examined. In particular the `Std.all` column which is similar to standardized regression coefficients. These parameters are commonly knows as factor loadings---they can be interpreted as the extent to which the item response is explained by the proposed latent variable. In general, factor loadings of 0.7 or above are considered reasonable. Factor loadings less than this may be introducing unacceptable measurement error. One option if this occurs is to drop the item completely from the measurement model, or to explore an alternative measurement model with the item assigned to another latent variable. In any case, the analyst will need to balance these considerations against the need to have factors measured against multiple items wherever possible in order to minimize other aspects of measurement error.
 
-In our case we could consider dropping `Pol3`, `Loc1`, `Pers1` and `Nat3` from the measurement model as they have factor loadings of less than 0.7 and are in factors that contain three items.
+In our case we could consider dropping `Pol3`, `Loc1`, `Pers1` and `Nat3` from the measurement model as they have factor loadings of less than 0.7 and are in factors that contain three items.  We will fit this revised measurement model, and rather than printing the entire output again, we will focus here on our CFI, TLI, RMSEA and SRMR statistics to see if they have improved.  It is advisable, however, that factor loadings are also checked, especially where primary items that scale the variance of latent factors have been removed. 
 
-```{r, eval = FALSE}
+```{r}
 meas_mod_revised <- "
 # measurement model
 Pol =~ Pol1 + Pol2
@@ -331,32 +340,9 @@ Eco =~ Eco1 + Eco2
 cfa_meas_mod_rev <- lavaan::cfa(model = meas_mod_revised, 
                                 data = politics_survey)
 
-lavaan::summary(cfa_meas_mod_rev, 
-                fit.measures = TRUE, 
-                standardized = TRUE)
+fits <- lavaan::fitmeasures(cfa_meas_mod_rev)
 
-```
-
-`r if (knitr::is_latex_output()) '\\newpage'`
-```{r, echo = FALSE}
-meas_mod_revised <- "
-# measurement model
-Pol =~ Pol1 + Pol2
-Hab =~ Hab1 + Hab2 + Hab3
-Loc =~ Loc2 + Loc3
-Env =~ Env1 + Env2
-Int =~ Int1 + Int2
-Pers =~ Pers2 + Pers3
-Nat =~ Nat1 + Nat2
-Eco =~ Eco1 + Eco2
-"
-
-cfa_meas_mod_rev <- lavaan::cfa(model = meas_mod_revised, 
-                                data = politics_survey)
-
-lavaan::summary(cfa_meas_mod_rev, 
-                fit.measures = TRUE, 
-                standardized = TRUE)
+fits[c("cfi", "tli", "rmsea", "srmr")]
 
 ```
 
@@ -364,7 +350,7 @@ We now see that our measurement model comfortably meets all fit requirements. In
 
 ### Running and interpreting the structural model
 
-`r if (knitr::is_latex_output()) '\\index{structural equation models!structural model}'`With a satisfactory measurement model, the structural model is a simple regression formula. The `sem()` function in `lavaan` can be used to perform a full structural equation model including the measurement model and structural model, as follows:
+`r if (knitr::is_latex_output()) '\\index{structural equation models!structural model}'`With a satisfactory measurement model, the structural model is a simple regression formula. The `sem()` function in `lavaan` can be used to perform a full structural equation model including the measurement model and structural model.  Like for `cfa()`, an extensive output can be expected from this function, but assuming that our measurement model is satisfactory, our key interest is now in the structural model elements of this output.
 
 ```{r}
 # define full SEM using revised measurement model
@@ -388,7 +374,7 @@ full_model <- lavaan::sem(model = full_sem, data = politics_survey)
 lavaan::summary(full_model, standardized = TRUE)
 ```
 
-The `Std.all` column of the `Regressions` section of the output provides standardized estimates which can be approximately interpreted as the proportion of the variance of the outcome that is explained by each factor. Here we can make the following interpretations:
+The `Std.all` column of the `Regressions` section of the output provides the fundamentals of the structural model---these are standardized estimates which can be approximately interpreted as the proportion of the variance of the outcome that is explained by each factor. Here we can make the following interpretations:
 
 1.  Policies, habit and interest in local issues represent the three strongest drivers of likelihood of voting for the party at the next election, and explain approximately 70% of the overall variance in the outcome.
 

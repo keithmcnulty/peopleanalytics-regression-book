@@ -30,9 +30,9 @@ str(salespeople)
 
 It looks like:
 
-* `promoted` is a binary value, either 1 or 0.  Presumably 1 means 'was promoted' and 0 means 'was not promoted'.
-* `sales` and `customer_rate` look like normal numerical values.
-* `performance` looks like a set of performance categories---there appear to be four based on what we can see.
+* `promoted` is a binary value, either 1 or 0, indicating 'promoted' or 'not promoted' respectively
+* `sales` and `customer_rate` look like normal numerical values
+* `performance` looks like a set of performance categories---there appear to be four based on what we can see
 
 ## Elementary descriptive statistics of populations and samples
 
@@ -84,16 +84,16 @@ You can see that
 $$
 \mathrm{Var}_p(x) = \frac{n - 1}{n}\mathrm{Var}_s(x)
 $$
-so as the data set gets larger, the sample variance and the population variance become less and less distinguishable, which intuitively makes sense.
+So as the data set gets larger, the sample variance and the population variance become less and less distinguishable, which intuitively makes sense.
 
-Because we rarely work with full populations, the sample variance is calculated by default in R and in many other statistical software packages:
+Because we rarely work with full populations, the sample variance is calculated by default in R and in many other statistical software packages.
 
 ```{r}
 # sample variance 
 (sample_variance_sales <- var(salespeople$sales, na.rm = TRUE))
 ```
 
-So where necessary, we need to apply a transformation to get the population variance:
+So where necessary, we need to apply a transformation to get the population variance.
 
 ```{r}
 # population variance (need length of non-NA data)
@@ -112,7 +112,7 @@ $$
 (sample_sd_sales <- sd(salespeople$sales, na.rm = TRUE))
 
 # verify that sample sd is sqrt(sample var)
-sd(salespeople$sales, na.rm = TRUE) == sqrt(sample_variance_sales)
+sample_sd_sales == sqrt(sample_variance_sales)
 
 # calculate population standard deviation
 (population_sd_sales <- sqrt((n-1)/n) * sample_sd_sales)
@@ -134,7 +134,7 @@ $$
 \mathrm{cov}_p(x, y) = \frac{n-1}{n}\mathrm{cov}_s(x, y) 
 $$
 
-Again, the sample covariance is the default in R and we need to transform to obtain the population covariance:
+Again, the sample covariance is the default in R and we need to transform to obtain the population covariance.
 
 ```{r}
 # get sample covariance for sales and customer_rate, 
@@ -155,9 +155,9 @@ As can be seen, the difference in covariance is very small between the sample an
 $$
 r_{x, y} = \frac{\mathrm{cov}(x, y)}{\sigma(x)\sigma(y)}
 $$
-This creates a maximum scale of -1 to 1 for $r_{x, y}$ which is an intuitive way of understanding both the direction and scale of the relationship between $x$ and $y$, with -1 indicating that $x$ increases perfectly as $y$ decreases, 1 indicating that $x$ increases perfectly as $y$ increases, and 0 indicating that there is no relationship between the two.
+This creates a scale of -1 to 1 for $r_{x, y}$ which is an intuitive way of understanding both the direction and strength of the relationship between $x$ and $y$, with -1 indicating that $x$ increases perfectly as $y$ decreases, 1 indicating that $x$ increases perfectly as $y$ increases, and 0 indicating that there is no relationship between the two.
 
-As before, there is a sample and population version of the correlation coefficient and R calculates the sample version by default.  Similar transformations can be used to determine a population correlation coefficient and over large populations the two measures converge.
+As before, there is a sample and population version of the correlation coefficient and R calculates the sample version by default.  Similar transformations can be used to determine a population correlation coefficient and over large samples the two measures converge.
 
 ```{r}
 # calculate sample correlation between sales and customer_rate
@@ -269,33 +269,34 @@ To apply this logic to our `salespeople` data set, let's take a random sample of
 set.seed(123)
 
 # generate a sample of 100 observations
-n <- length(na.omit(salespeople$customer_rate))
-sample <- salespeople$customer_rate[sample(1:n, 100)]
+custrate <- na.omit(salespeople$customer_rate)
+n <- 100
+sample_custrate <- sample(custrate, n)
 ```
 
-We can calculate the mean of the sample and the standard error of the mean:
+We can calculate the mean of the sample and the standard error of the mean.
 
 ```{r}
 # mean
-(sample_mean <- mean(sample))
+(sample_mean <- mean(sample_custrate))
 
 # standard error
-(se <- sd(sample)/sqrt(n))
+(se <- sd(sample_custrate)/sqrt(n))
 ```
 
 
 `r if (knitr::is_latex_output()) '\\index{normal distribution (statistics)}'`Because the normal distribution is a frequency (or probability) distribution, we can interpret the standard error as a fundamental unit of 'sensitivity' around the sample mean.  For greater multiples of standard errors around the sample mean, we can have greater certainty that the range contains the true population mean. 
 
 
-`r if (knitr::is_latex_output()) '\\index{t-distribution (statistics)}'`To calculate how many standard errors we would need around the sample mean to have a 95% probability of including the true population mean, we need to use the $t$-distribution.  The $t$-distribution is essentially an approximation of the normal distribution acknowledging that we only have a sample estimate of the true population standard deviation in how we calculate the standard error.  In this case where we are dealing with a single sample mean, we use the $t$-distribution with $n-1$ degrees of freedom. We can use the `qt()` function in R to find the standard error multiple associated with the level of certainty we need.  This is called the *$t$-statistic*.  In this case we are looking for our true population mean to be outside the top 2.5% or bottom 2.5% of the distribution^[As sample sizes increase and sample statistics get very close to population statistics, whether we use a $t$-distribution or a $z$-distribution (normal distribution) for determining confidence intervals or p-values becomes less important as they become almost identical on large samples.  The output of some models will refer to $t$-statistics and others to $z$-statistics, but the difference is only likely to matter in small samples of less than 50 or so observations.  In this chapter we will use the $t$-distribution as it is a better choice for all sample sizes].
+`r if (knitr::is_latex_output()) '\\index{t-distribution (statistics)}'`To calculate how many standard errors we would need around the sample mean to have a 95% probability of including the true population mean, we need to use the $t$-distribution.  The $t$-distribution is essentially an approximation of the normal distribution acknowledging that we only have a sample estimate of the true population standard deviation in how we calculate the standard error.  In this case where we are dealing with a single sample mean, we use the $t$-distribution with $n-1$ degrees of freedom. We can use the `qt()` function in R to find the standard error multiple associated with the level of certainty we need.  In this case we are looking for our true population mean to be outside the top 2.5% or bottom 2.5% of the distribution^[As sample sizes increase and sample statistics get very close to population statistics, whether we use a $t$-distribution or a $z$-distribution (normal distribution) for determining confidence intervals or p-values becomes less important as they become almost identical on large samples.  The output of some later models will refer to $t$-statistics and others to $z$-statistics, but the difference is only likely to matter in small samples of less than 50 or so observations.  In this chapter we will use the $t$-distribution as it is a better choice for all sample sizes].
 
 ```{r}
-# get t-statistic for 0.975
+# get se multiple for 0.975
 (t <- qt(p = 0.975, df = n - 1))
 ```
 
 
-`r if (knitr::is_latex_output()) '\\index{confidence interval (statistics)}'`We see that approx `r round(t, 2)` standard errors either side of our sample mean will give us 95% confidence that our range contains the true population mean.  This is called the *95% confidence interval*^[Often we can use a rough estimate for larger samples that the 95% confidence interval is 2 standard errors either side of the sample mean].
+`r if (knitr::is_latex_output()) '\\index{confidence interval (statistics)}'`We see that approximately `r round(t, 2)` standard errors either side of our sample mean will give us 95% confidence that our range contains the true population mean.  This is called the *95% confidence interval*^[Often we can use a rough estimate for larger samples that the 95% confidence interval is 2 standard errors either side of the sample mean].
 
 ```{r}
 # 95% confidence interval lower and upper bounds
@@ -400,9 +401,9 @@ ggplot(data = data.frame(x = c(-5, 5)), aes(x)) +
 ```
 
 
-The red dashed lines in this diagram represent the 95% confidence interval around the mean difference of our two samples.  The 'tails' of the curve outside of these two lines each represent a maximum of 0.025 probability for the true population mean.  So we can see that the position of the blue line can correspond to a *maximum probability* that the population mean difference is zero.  `r if (knitr::is_latex_output()) '\\index{hypothesis testing!p-value}'`This is the *p-value* of the hypothesis test^[We call this type of hypothesis test a *two tailed* test, because the tested population mean can be either higher or lower than the sample mean, thus it can appear in any of the two tails for the null hypothesis to be rejected.  `r if (knitr::is_latex_output()) '\\index{hypothesis testing!one and two tailed tests}'`*One-tailed* tests are used when you are testing for an alternative hypothesis that the difference is specifically "less than zero" or "greater than zero".  In the `t.test()` function in R, you can specify this in the arguments].
+The red dashed lines in this diagram represent the 95% confidence interval around the mean difference of our two samples.  The 'tails' of the curve outside of these two lines each represent a maximum of 0.025 probability for the true population mean.  So we can see that the position of the blue line can correspond to a *maximum probability* that the population mean difference is zero.  `r if (knitr::is_latex_output()) '\\index{hypothesis testing!p-value}'`This is the *p-value* of the hypothesis test^[We call this type of hypothesis test a *two tailed* test, because the tested population mean can be either higher or lower than the sample mean, thus it can appear in any of the two tails for the null hypothesis to be rejected.  `r if (knitr::is_latex_output()) '\\index{hypothesis testing!one and two tailed tests}'`*One-tailed* tests are used when you are testing for an alternative hypothesis that the difference is specifically 'less than zero' or 'greater than zero'.  In the `t.test()` function in R, you can specify this in the arguments].
 
-The p-value can be derived from the $t$-statistic by applying the conversion function `pt()` to obtain the upper tail probability and multiplying by 2 to get the probability associated with both tails of the distribution:    
+The p-value can be derived by calculating the standard error multiple associated with zero in the $t$-distribution (called the *$t$-statistic* or *$t$-value*), by applying the conversion function `pt()` to obtain the upper tail probability and then multiplying by 2 to get the probability associated with both tails of the distribution.    
 
 ```{r}
 # get t-statistic
@@ -413,7 +414,7 @@ t_actual <- diff/se
 
 ```
 
-Nowadays, it is never necessary to do these manual calculations ourselves because hypothesis tests are a standard part of statistical software.  In R, the `t.test()` function performs a hypothesis test of no difference in means on two samples and confirms our manually calculated p-value and 95% confidence interval.
+Nowadays, it is never necessary to do these manual calculations ourselves because hypothesis tests are a standard part of statistical software.  In R, the `t.test()` function performs a hypothesis test of difference in means of two samples and confirms our manually calculated p-value and 95% confidence interval.
 
 ```{r}
 t.test(perf4$sales, perf1$sales)
@@ -423,7 +424,7 @@ Because our p-value is less than our alpha of 0.05, we reject the null hypothesi
 
 In practice, there are numerous alphas that are of interest to analysts, each reflecting different levels of certainty.  While 0.05 is the most common standard in many disciplines, more stringent alphas of 0.01 and 0.001 are often used in situations where a high degree of certainty is desirable (for example some medical fields).  Similarly, a less stringent alpha standard of 0.1 can be of interest particularly when sample sizes are small and the analyst is satisfied with 'indications' from the data.  In many statistical software packages, including those that we will see in this book, tests that meet an $\alpha = 0.1$ standard are usually marked with period(`.`), those that meet $\alpha = 0.05$ with an asterisk(`*`), $\alpha = 0.01$ a double asterisk(`**`) and $\alpha = 0.001$ a triple asterisk(`***`).
 
-`r if (knitr::is_latex_output()) '\\index{hypothesis testing!p-hacking}'`Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data.  In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards---a process known as "p-hacking"---has been of increasing concern recently.  See Chapter \@ref(power-tests) for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.
+`r if (knitr::is_latex_output()) '\\index{hypothesis testing!p-hacking}'`Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data.  In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards---a process known as 'p-hacking'---has been of increasing concern recently.  See Chapter \@ref(power-tests) for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.
 
 ### Testing for a non-zero correlation between two variables ($t$-test for correlation)
 
@@ -432,7 +433,7 @@ In practice, there are numerous alphas that are of interest to analysts, each re
 $$
 t^* = \frac{r\sqrt{n-2}}{\sqrt{1-r^2}}
 $$
-$t^*$ can be converted to an associated p-value using a $t$-distribution in a similar way to how we compared population mean difference in the previous section, this time with $n - 2$ degrees of freedom in our $t$-distribution.  As an example, let's calculate $t^*$ for the correlation between sales and customer rating in our sample and convert it to a p-value.
+$t^*$ can be converted to an associated p-value using a $t$-distribution in a similar way to the previous section, this time with $n - 2$ degrees of freedom in our $t$-distribution.  As an example, let's calculate $t^*$ for the correlation between sales and customer rating in our sample and convert it to a p-value.
 
 ```{r}
 
@@ -511,7 +512,7 @@ The `chisq.test()` function in R performs all the steps involved in a chi-square
 chisq.test(contingency)
 ```
 
-Again, we can reject the null hypothesis and confirm the alternative hypothesis:  that there is a difference in the distribution of promoted/not promoted individuals between the four performance categories.
+Again, we can reject the null hypothesis and confirm the alternative hypothesis that there is a difference in the distribution of promoted/not promoted individuals between the four performance categories.
 
 ## Foundational statistics in Python
 
