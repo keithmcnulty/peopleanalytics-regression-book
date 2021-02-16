@@ -20,6 +20,7 @@ if (knitr::is_latex_output()) {
   options(width = 100)
 }
 # knitr::opts_chunk$set(dpi=300)
+
 ```
 
 
@@ -31,27 +32,6 @@ Welcome to the website for the book *Handbook of Regression Modeling in People A
 This book is available in [bootstrap format](http://peopleanalytics-regression-book.org) and, for those who prefer, in a more plain [gitbook format](http://peopleanalytics-regression-book.org/gitbook).
 `r if (knitr::is_latex_output()) '--> \\newpage\\thispagestyle{empty}\\null'`
 
-`r if (knitr::is_latex_output()) '<!--'`
-### Notes on data used in this book {-}
-
-For R and Python users, each of the data sets used in this book can be downloaded individually by following the code in each chapter.  Alternatively for R users who intend to work through all of the chapters, all data sets can be loaded into an R session in advance by installing and loading the `peopleanalyticsdata` R package.  
-
-```{r, eval = FALSE}
-# install development version of peopleanalyticsdata package
-# requires devtools package installed
-devtools::install_github("keithmcnulty/peopleanalyticsdata", 
-                         ref = "main")
-library(peopleanalyticsdata)
-
-# see a list of data sets
-data(package = "peopleanalyticsdata")
-
-# find out more about a specific data set ('managers' example)
-help(managers)
-```
-`r if (knitr::is_latex_output()) '-->'`
-
-`r if (knitr::is_html_output()) '<!--'`
 ### Notes on data used in this book {-}
 
 For R and Python users, each of the data sets used in this book can be downloaded individually by following the code in each chapter.  Alternatively for R users who intend to work through all of the chapters, all data sets can be loaded into an R session in advance by installing and loading the `peopleanalyticsdata` R package.  
@@ -67,7 +47,7 @@ data(package = "peopleanalyticsdata")
 # find out more about a specific data set ('managers' example)
 help(managers)
 ```
-`r if (knitr::is_html_output()) '-->'`
+
 
 `r if (knitr::is_latex_output()) '<!--'`
 ### Comments on this book {-}
