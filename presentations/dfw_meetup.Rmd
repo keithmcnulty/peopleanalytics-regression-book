@@ -452,10 +452,10 @@ galton = pd.read_csv(url, delimiter = "\t")
 model = smf.ols(formula = "Height ~ Father + Mother + Gender", data = galton)
 
 # fit model
-ugtests_model = model.fit()
+galton_model = model.fit()
 
 # see results summary
-print(ugtests_model.summary())
+print(galton_model.summary())
 
 ```
 
