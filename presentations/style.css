@@ -23,7 +23,8 @@ code {
   position: absolute;
   bottom: 1em;
   padding-right: 4em;
-  font-size: 95%;
+  font-size: 50%;
+  color: grey;
 }
 
 /* important code slightly blue */
@@ -134,7 +135,7 @@ thead, tfoot, tr:nth-child(even) { background: none; }
   font-weight: bold;
   font-family: 'Oswald', sans-serif;
   font-size: 45px;
-  line-height: 40px;
+  line-height: 50px;
   text-align: left;
   text-shadow: none;
   padding-bottom: 18px;
