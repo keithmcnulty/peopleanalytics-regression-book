@@ -11,6 +11,7 @@ link-citations: yes
 github-repo: keithmcnulty/peopleanalytics-regression-book
 ---
 
+
 ```{r, echo = FALSE}
 library(reticulate)
 matplotlib <- import("matplotlib")
@@ -23,11 +24,16 @@ if (knitr::is_latex_output()) {
 
 ```
 
-
 `r if (knitr::is_latex_output()) '<!--'`
 # Welcome {-}
 
-Welcome to the website for the book *Handbook of Regression Modeling in People Analytics* by [Keith McNulty](https://twitter.com/dr_keithmcnulty).  Content can be used freely with appropriate referencing.
+Welcome to the website for the book *Handbook of Regression Modeling in People Analytics* by [Keith McNulty](https://twitter.com/dr_keithmcnulty).  
+
+```{asis}
+::: {.infobox .caution}
+**Note**: This book is to be published by Chapman & Hall/CRC later in 2021. The online version of this book is free to read here (thanks to Chapman & Hall/CRC), and licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/). If you have any feedback, please feel free to [file an issue on GitHub](https://github.com/keithmcnulty/peopleanalytics-regression-book/issues). Thank you!
+:::
+```
 
 This book is available in [bootstrap format](http://peopleanalytics-regression-book.org) and, for those who prefer, in a more plain [gitbook format](http://peopleanalytics-regression-book.org/gitbook).
 `r if (knitr::is_latex_output()) '--> \\newpage\\thispagestyle{empty}\\null'`
@@ -50,10 +56,6 @@ help(managers)
 
 
 `r if (knitr::is_latex_output()) '<!--'`
-### Comments on this book {-}
-
-This book is in permanent open review.  Feedback and requests for new content should be made via the [issues](https://github.com/keithmcnulty/peopleanalytics-regression-book/issues) section of the book's Github repo.
-
 ### Solutions to exercises {-}
 
 It is not my intention to publish a comprehensive set of solutions to the exercises in this book.  Many of the exercises can be approached in different ways and I think it is important that readers apply their learning without being constrained to an example solution.  However, some specific questions have generated considerable interest from readers and I have started to post example solutions to those questions [here](https://keithmcnulty.github.io/peopleanalytics-regression-book/solutions/).  Illustrative solutions submitted by readers will progressively be posted there also.  

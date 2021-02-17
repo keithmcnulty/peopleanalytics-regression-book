@@ -1,23 +1,11 @@
-p.caption {
-  color: #777;
-  margin-top: 10px;
+.infobox {
+  padding: 1em 1em 1em 4em;
+  margin-bottom: 10px;
+  background: lightgray 5px center/3em no-repeat;
+  border: 2px solid orange;
+  border-radius: 10px;
 }
-p code {
-  white-space: inherit;
-}
-pre {
-  word-break: normal;
-  word-wrap: normal;
-}
-pre code {
-  white-space: inherit;
-}
-p.flushright {
-  text-align: right;
-}
-blockquote > p:last-child {
-  text-align: right;
-}
-blockquote > p:first-child {
-  text-align: inherit;
+
+.caution {
+  background-image: url("../www/caution.png");
 }

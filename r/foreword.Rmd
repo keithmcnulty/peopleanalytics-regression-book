@@ -36,5 +36,7 @@ you will find this *Handbook of Regression Modeling in People Analytics* helps y
 truths and create positive impacts in your own work.
 
 `r if (knitr::is_html_output()) {"[Alexis A. Fink](https://www.linkedin.com/in/alexisfink/)"} else {"Alexis A. Fink"}` \
-December 5, 2020
+December 2020
+
+***Alexis A. Fink, PhD** is a leading figure in people analytics and has led major people analytics teams at Microsoft and Intel before her current role as Vice President of People Analytics and Workforce Strategy at Facebook.  She is a Fellow of the Society for Industrial and Organizational Psychology and is a frequent author, journal editor and research leader in her field.*
 
