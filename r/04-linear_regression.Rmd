@@ -17,7 +17,7 @@ library(latex2exp)
 
 Figure \@ref(fig:galton-fig) is a scatter plot of Galton's data with the black solid line showing what a perfect relationship would look like, the black dot-dashed line indicating the mean child height and the red dashed line showing the actual relationship determined by Galton^[This chart includes a random 'jitter' to better illustrate observations that are identical, and was first used to illustrate Galton's data in @senn].  You can regard the red dashed line as 'going back' from the perfect relationship (symbolized by the black line).  This might give you an intuition that will help you understand later sections of this chapter. In an arbitrary data set, the red dashed line can lie anywhere between the black dot-dashed line (no relationship) and the black solid line (a perfect relationship). Linear Regression is about finding the red dashed line in your data and using it to explain the degree to which your input data (the $x$ axis) explains your outcome data (the $y$ axis). 
 
-```{r galton-fig, fig.cap="Galton's study of the height of children introduced the term 'regression'", out.width='80%', fig.align='center', echo = FALSE}
+```{r galton-fig, fig.cap="Galton's study of the height of children introduced the term 'regression'", out.width=if (knitr::is_latex_output()) '80%', fig.align='center', echo = FALSE}
 library(dplyr)
 library(ggplot2)
 data <- read.delim("data/Galton.txt")
@@ -473,12 +473,11 @@ Dummy variables can then replace the original `make` column to get your data set
 
 ```
 
-It is worth a moment to consider how to interpret coefficients of dummy variables in a linear regression model.  If $x_k$ is one of our dummy variables, then it can only take a value of 0 or 1.  Therefore its coefficient $\beta_k$ is either 'switched off' or 'switched on' in the model.  If we were to try to use the data in our `vehicle_data_dummies` data set to explain the retail price of a vehicle, we would interpret coefficients like this:
+It is worth a moment to consider how to interpret coefficients of dummy variables in a linear regression model.  Note that all observations will have one of the dummy variable values (all cars must have a make).  Therefore the model will assume a 'reference value' for the categorical variable---often this is the first value in alphabetical or numerical order.  In this case, `Audi` would be the reference dummy variable.  The model then calculates the effect on the outcome variable of a 'switch' from `Audi` to one of the other dummies^[For more on how to control which categorical value is used as a reference, see Section \@ref(def-ref)].  If we were to try to use the data in our `vehicle_data_dummies` data set to explain the retail price of a vehicle, we would interpret coefficients like this:
 
-* For cars of the same make, each *extra dollar* spent on manufacturing changes the retail price by ...
-* For cars of the same manufacturing cost, if the vehicle is an Audi, the retail price changes by ...
-* For cars of the same manufacturing cost, if the vehicle is a Ford, the retail price changes by ...
-* For cars of the same manufacturing cost, if the vehicle is a Toyota, the retail price changes by ...
+* Comparing two cars of the same make, we would expect each *extra dollar* spent on manufacturing to change the retail price by ...
+* Comparing a Ford with an Audi *of the same manufacturing cost*, we would expect a difference in retail price of ...
+* Comparing a Toyota with an Audi *of the same manufacturing cost*, we would expect a difference in retail price of ...
 
 `r if (knitr::is_latex_output()) '\\index{linear regression!coefficients}'`This highlights the importance of appropriate interpretation of coefficients, and in particular the proper understanding of units.  It will be common to see much larger coefficients for dummy variables in regression models, because they represent a binary 'all' or 'nothing' variable in the model.  The coefficient for manufacturing cost would be much smaller because a unit in this case is a dollar of manufacturing spend, on a scale of many thousands of potential dollars in spend.  Care should be taken not to 'rank' coefficients by their value.  Higher coefficients in and of themselves do not imply greater importance^[Rescaling numerical input variables onto common scales can help with understanding the ranked importance of these variables.  In some techniques, for example structural modeling which we will review in Section \@ref(struc-eq-model), scaled regression coefficients help determine the ranked importance of constructs to the outcome].
 

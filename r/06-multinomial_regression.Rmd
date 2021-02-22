@@ -145,7 +145,7 @@ $$
 $$
 for different vectors of coefficients $\alpha$ and $\beta$.  
 
-### Defining a reference level and running the model
+### Defining a reference level and running the model {#def-ref}
 
 `r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!reference category}'``r if (knitr::is_latex_output()) '\\index{R!packages!nnet@\\texttt{nnet}}'`The `nnet` package in R contains a `multinom()` function for running a multinomial logistic regression model using neural network technology^[Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onward in the network.  Most commonly they are used in deep learning, but a simple neural network here can model these different categories using a logistic function].  Before we can run the model we need to make sure our reference level is defined.
 
