@@ -1,0 +1,582 @@
+---
+title: "Statistical Inference and Regression Analysis using R"
+author: "Keith McNulty"
+output:
+  xaringan::moon_reader:
+    css: style.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+library(kableExtra)
+```
+
+class: left, middle, r-logo
+
+## Note on source
+
+This document is a summary learning developed for the R Ladies Tunis Meetup on 26 February 2021.  It is based on material in the open source book *[Handbook of Regression Modeling in People Analytics](http://peopleanalytics-regression-book.org)* and other named sources. Please consult this book for a deeper understanding/treatment. 
+
+This document is coded in R Markdown using the `xaringan` package. The code for this document is [here](https://github.com/keithmcnulty/peopleanalytics-regression-book/tree/master/presentations/r_ladies_tunis.Rmd).
+
+---
+class: left, middle, r-logo
+
+## Inference versus Prediction
+
+```{r, echo = FALSE}
+optionsdf <- data.frame(
+  Approach = c("Inferential Modeling (Why?)", "Predictive Modeling (What if?)"),
+  Objective = c("Accurately describe a relationship between inputs and an outcome", "Accurately predict the outcome for new observations"),
+  Examples = c("Regression models", "Machine learning models (decision trees, neural networks, some regression models)"),
+  Considerations = c("No need for train/test split.  Priority is to understand and interpret coefficient and fit parameters.", 
+                     "Train/test split required.  Priority is accurate prediction of test observations")
+)
+
+kbl(optionsdf) %>%
+  kable_paper(full_width = F) %>%
+  column_spec(1, bold = T, border_right = T) %>%
+  column_spec(2, width = "30em") %>% 
+  column_spec(3, width = "30em") %>% 
+  row_spec(1, background = "yellow")
+
+```
+
+
+---
+class: left, middle, r-logo
+
+## Examples of inferential methods we will look at today
+
+* **Hypothesis testing**: a common approach to deciding if a statement is true for a population based on a sample of data (Chapter 3 of the book)
+* **Linear regression**:  a way of describing a linear relationship between a set of input variables and a *continuous* outcome variable (for example, height, weight, money)  (Chapter 4 of the book)
+* **Binomial logistic regression**:  a way of describing the relationship between a set of input variables and the *likelihood of a binary event occurring* (Chapter 5 of the book)
+
+---
+class: left, middle, r-logo
+
+## We will use datasets in the `peopleanalyticsdata` package
+
+```{r}
+# install package if needed
+# install.packages("peopleanalyticsdata")
+
+library(peopleanalyticsdata)
+data(package = "peopleanalyticsdata")
+
+```
+
+```
+Data sets in package ‘peopleanalyticsdata’:
+
+charity_donation                  Charity donation data
+employee_performance              Employee performance data
+employee_survey                   Employee survey data
+graduates                         Graduate salary data
+health_insurance                  Health insurance data
+job_retention                     Job retention data
+learning                          Learning program feedback data
+managers                          Manager performance data
+politics_survey                   Politics survey data
+promotion                         Promotion data
+recruiting                        Recruiting data
+salespeople                       Salespeople promotion data
+soccer                            Soccer discipline data
+sociological_data                 Sociological survey data
+speed_dating                      Speed dating data
+ugtests                           Undergraduate examination data
+```
+
+---
+class: left, middle, r-logo
+
+
+## Populations and samples
+
+In statistics and analytics, we are usually asked questions about a population, but we only have a sample of data.
+
+**Example:**  Imagine a research study to determine if vaccination with two doses of different COVID vaccines produces a different outcome to vaccination with two doses of the same vaccine?
+
+The question refers to *everyone* - past, present and future.  We want to make a general conclusion that can guide future vaccination strategy.
+
+But our data will not be data for everyone - it will only be a sample.  Generally, bigger samples give us more certainty about the true answer to the question, but we can never be 100% certain of the truth.
+
+---
+class: left, middle, r-logo
+
+# Example 1: Hypothesis testing
+
+---
+class: left, middle, r-logo
+
+## The `salespeople` data set
+
+```{r}
+# view first few rows of salespeople data 
+head(salespeople)
+```
+```{r}
+# view summary
+summary(salespeople)
+```
+
+---
+class: left, middle, r-logo
+
+## Do high performing salespeople generate more sales than low performing salespeople?
+
+
+```{r}
+library(dplyr)
+
+# reduce to complete cases to remove NAs
+salespeople <- salespeople %>% 
+  dplyr::filter(complete.cases(.))
+```
+
+
+
+```{r}
+# high performer sales
+high <- salespeople %>% 
+  dplyr::filter(performance == 4) %>% 
+  dplyr::pull(sales)
+  
+# low performer sales
+low <- salespeople %>% 
+  dplyr::filter(performance == 1) %>% 
+  dplyr::pull(sales)
+
+# mean difference
+(mean_diff <- mean(high) - mean(low))
+
+```
+
+---
+class: left, middle, r-logo
+
+## Yes for our sample, but what about for the entire population?
+
+Let's assume that high performers generate the same or less sales than low performers.  We call this the *null hypothesis*.
+
+We now need to examine the likelihood that our sample would look the way it does under the null hypothesis.
+
+If we find that this is very unlikely, we reject the null hypothesis and confirm the *alternative hypothesis*: that high performers generate higher sales.
+
+---
+class: left, middle, r-logo
+
+## Any sampled statistic of a random variable is a random variable
+
+The mean sales difference is an estimated statistic of a random variable.  This is itself a random variable with a $t$-distribution - an approximation of the normal distribution for sample data.   The standard deviation of this distribution is known as the *standard error* of the statistic.  In this case the standard error of the mean difference can be calculated as follows:
+
+$$\sqrt{\frac{s_{\mathrm{high}}^2}{n_{\mathrm{high}}} + \frac{s_{\mathrm{low}}^2}{n_{\mathrm{low}}}}$$
+
+where $s_{\mathrm{high}}$ and $s_{\mathrm{low}}$ are the standard deviations of the high and low sales samples, and $n_{\mathrm{high}}$ and $n_{\mathrm{low}}$ are the two sample sizes.
+
+```{r}
+# standard error
+(se <- sqrt(sd(high)^2/length(high) + sd(low)^2/length(low)))
+```
+
+---
+class: left, middle, r-logo
+
+## Graph of the $t$-distribution 
+
+```{r, echo = FALSE}
+# calculate welch-satterthwaite estimate of degrees of freedom
+# sample sizes
+n_low <- length(low)
+n_high <- length(high)
+# standard errors of samples
+se_low <- sqrt(var(low)/n_low)
+se_high <- sqrt(var(high)/n_high)
+# combined standard error
+se <- sqrt(se_low^2 + se_high^2)
+# calculate degrees of freedom
+df <- se^4/(se_low^4/(n_low-1) + se_high^4/(n_high-1))
+```
+
+
+```{r, fig.height=3, fig.align="center"}
+library(ggplot2)
+
+(g <- ggplot(data.frame(x = c(-5, 5)), aes(x = x)) +
+  stat_function(fun = dt, args = list(df = 100.98), color = "blue") +
+  geom_vline(xintercept = -mean_diff/se, linetype = "dashed", color = "red") +
+  labs(x = "Standard errors around sample mean difference", y = "Density") +
+  theme_minimal())
+  
+```
+
+We will use a $t$-distribution with `r round(df, 2)` degrees of freedom<sup>1</sup>. Zero is our sample mean difference of `r round(mean_diff, 2)` and each unit of $x$ is a standard error of `r round(se, 2)`.  A mean difference of zero or less would equate to the area to the left of the red dashed line. *Very unlikely*.
+
+.footnote[[1] I have calculated this manually via the <a href = "https://en.wikipedia.org/wiki/Welch%E2%80%93Satterthwaite_equation">Welch–Satterthwaite equation</a>, but it is automatically calculated as part of the `t.test()` function in R.  You can see my manual calculation in the source code of this document.]
+---
+class: left, middle, r-logo
+
+## Confidence intervals
+
+We calculated in our sample that the mean sales difference was `r round(mean_diff, 2)`.  We know from our $t$-distribution that there is a range of likelihood around this for the actual mean sales difference for the population.  
+We can convert our standard errors into probability estimates.  For example, if we wanted to know how many standard errors to the left of our sample estimate corresponds to a 95% chance of containing the real population statistic:
+
+```{r}
+# get se multiple for 95% confidence
+(conf_mult <- qt(p = 0.05, df = 100.98))
+
+# now we can create a lower bound for 95% confidence interval
+(lower_bound <- mean_diff + conf_mult*se)
+
+```
+
+---
+class: left, middle, r-logo
+
+## We can be 95% confident that high performers generate higher sales
+
+```{r, fig.height=4, fig.align = "center"}
+g +
+  geom_vline(xintercept = conf_mult, color = "purple")
+
+```
+
+The red dashed line, which represents the boundary for our null hypothesis is far outside the 95% confidence interval.  We can be more than 95% confident in the alternative hypothesis, that high performers generate higher sales.
+
+---
+class: left, middle, r-logo
+
+## Another route is to find the *p-value* of a zero population difference
+
+We can find where the red-dashed line falls in the probability density of our $t$-distribution and ask 'what is the maximum probability of such a difference occurring?'.
+
+```{r}
+# get lower-tail probability
+(pval <- pt(-mean_diff/se, df = 100.98, lower.tail = TRUE))
+
+```
+
+We look for the p-value to be less than a certain standard called $\alpha$ in order to reject the null hypothesis.  Usually $\alpha = 0.05$.  Again we reject the null hypothesis in favour of the alternative hypothesis.
+
+---
+class: left, middle, r-logo
+
+## The `t.test()` function in R does all this for you
+
+```{r}
+t.test(high, low, alternative = "greater")
+```
+
+---
+class: left, middle, r-logo
+
+## Other common hypothesis tests: `cor.test()`
+
+`cor.test()` tests the alternative hypothesis that there is a non-zero correlation between two variables in a sample.
+
+```{r}
+cor.test(salespeople$sales, salespeople$customer_rate)
+```
+
+---
+class: left, middle, r-logo
+
+## Other common hypothesis tests: `chisq.test()`
+
+`chisq.test()` tests the alternative hypothesis that there is a difference in the distribution of a variable between categories in the data set.
+
+```{r}
+# contingency table of promoted versus performance
+(contingency <- table(salespeople$promoted, salespeople$performance))
+
+# chisq test on contingency table
+chisq.test(contingency)
+```
+
+---
+class: left, middle, r-logo
+
+# Example 2:  Linear Regression
+
+---
+class: left, middle, r-logo
+
+## Fun exercise - the first ever model to be called a 'regression model'
+
+In 1885, Francis Galton did a study on some British children to see how their heights related to that of their parents.  Let's grab Galton's data.
+
+```{r}
+# get data from URL
+url <- "https://raw.githubusercontent.com/keithmcnulty/peopleanalytics-regression-book/master/data/Galton.txt"
+galton <- read.delim(url)
+
+# view first few rows
+head(galton)
+```
+
+---
+class: left, middle, r-logo
+
+## What is the relationship between mid-parent height and child height
+
+Galton simplistically expected the child's height to be perfectly explained by the average height of their parents.  We can test that using a simple linear regression model.
+
+```{r}
+library(dplyr)
+
+# create midParentHeight column
+galton <- galton %>% 
+  dplyr::mutate(midParentHeight = (Father + Mother)/2)
+
+# simple linear regression of child vs mid-parent height
+simplemodel <- lm(formula = Height ~ midParentHeight, data = galton)
+
+# how much does it explain (R-squared)
+summary(simplemodel)$r.squared
+```
+
+---
+class: left, middle, r-logo
+
+## Galton realized that children 'regress' away from their parents height towards a mean population height
+
+
+```{r, echo = FALSE, fig.align="center"}
+library(ggplot2)
+
+ggplot(galton, aes(x = midParentHeight, y = Height)) +
+  geom_point(color = "blue") +
+  geom_jitter(color = "blue") +
+  geom_function(fun = function(x) {y = x}) +
+  geom_function(fun = function(x) {y = mean(galton$Height)}, linetype = "dotdash") +
+  geom_smooth(method='lm', formula = y~x, se = FALSE, color = "red", linetype = "dashed") +
+  xlab("Mid-Parent Height (inches)") +
+  ylab("Child Height (inches)") +
+  theme_minimal()
+```
+
+---
+class: left, middle, r-logo
+
+## Today, we would do a multiple regression
+
+
+```{r}
+multimodel <- lm(formula = Height ~ Father + Mother + Gender, 
+                 data = galton)
+summary(multimodel)
+```
+
+---
+class: left, middle, r-logo
+
+## This model explains a lot about the *why* of a child's height
+
+
+* We can see which variables are significant explainers of a child's height - all of them are!
+* We can see the relative influence of each variable on a child's height - each *coefficient* tells us how many inches of height you gain for every extra unit of input, assuming all other inputs are the same.  For example:  a male child will gain over 5 inches over a female child of the same parents. For two children of the same gender and mother height, the height difference will be about 40% of the height difference of their fathers. 
+* We can see how much of the overall variation in child height is explained by these three variables:  $R^2 = 0.64$.
+
+---
+class: left, middle, r-logo
+
+## We now have many different regression methods available
+
+```{r, echo = FALSE}
+optionsdf <- data.frame(
+  Outcome = c("Continuous", "Binary", "Nominal Category", "Ordered Category", 
+              "Explicit grouping in data", "Latent grouping in data",
+              "Time-associated events"),
+  Example = c("Compensation in $", "Promoted or Not", "Choice of Health Cover Product", 
+              "Performance Rating", "Individuals in sales teams",
+              "Large survey instruments", "Attrition"),
+  Approach = c("Linear Regression", "Binomial Logistic Regression",
+               "Multinomial Logistic Regression", "Proportional Odds Regression",
+               "Mixed/Multilevel Models", "Sturctural Equation Models",
+               "Survival Analysis/Cox Proportional Hazard Regression")
+)
+
+kbl(optionsdf) %>%
+  kable_paper(full_width = F) %>%
+  column_spec(1, bold = T, border_right = T) %>%
+  column_spec(2, width = "30em") %>% 
+  column_spec(3, width = "30em") %>% 
+  row_spec(2, background = "yellow")
+
+```
+
+---
+class: left, middle, r-logo
+
+# Example 3: Binomial Logistic Regression
+
+---
+class: left, middle, r-logo
+
+## The logistic function is a pretty good approximation of the normal probability distribution
+
+$$
+P(y = 1) = \frac{1}{1 + e^{-kx}}
+$$
+
+```{r, fig.align = "center", fig.height = 3}
+ggplot() +
+  xlim(-5, 5) +
+  xlab("x") +
+  ylab("P (cumulative)") +
+  geom_function(fun = pnorm, color = "red") +
+  geom_function(fun = plogis, color = "blue", linetype = "dashed")
+
+```
+
+---
+class: left, middle, r-logo
+
+## The logistic function helps us interpret how input variables affect the odds of an event
+
+$$
+\mathrm{ln}\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_0 + \beta_1x
+$$
+The *log odds* of the event are linear in our input variables.  If we exponentiate this, we get:
+
+$$
+\begin{aligned}
+\frac{P(y = 1)}{P(y = 0)} &= e^{\beta_0 + \beta_1x} \\
+&=e^{\beta_0}(e^{\beta_1})^x
+\end{aligned}
+$$
+
+If $x = 0$, the base odds of the event are $e^{\beta_0}$.  For every unit increase in $x$, the odds are multiplied by $e^{\beta_1}$ - this is called an *odds ratio*.
+
+---
+class: left, middle, r-logo
+
+## Let's go back to our `salespeople` data set
+
+We want to answer the question: *how do the variables of sales, customer rating and performance rating influence the likelihood of a salesperson getting promoted*?
+
+```{r}
+head(salespeople)
+```
+
+What structure does our data have?
+```{r}
+str(salespeople)
+```
+
+---
+class: left, middle, r-logo
+
+## Transform the data
+
+Our `promoted` and `performance` columns are currently integers, but they should be categorical factors.  Let's convert them.
+
+```{r}
+# lets use some of the new dplyr functions
+salespeople <- salespeople %>% 
+  mutate(across(starts_with("p"), ~as.factor(.x)))
+
+str(salespeople)
+```
+
+---
+class: left, middle, r-logo
+
+## Visualize relationships in the data using a pairplot
+
+```{r, fig.height = 4, fig.align = "center"}
+library(GGally)
+
+ggpairs(salespeople)
+```
+
+---
+class: left, middle, r-logo
+
+## Run a binomial logistic regression model to try to answer our question
+
+```{r}
+model <- glm(formula = promoted ~ ., data = salespeople, family = "binomial")
+
+summary(model)
+```
+
+---
+class: left, middle, r-logo
+
+## Exponentiate the coefficients to get odds ratios
+
+```{r}
+exp(model$coefficients) %>% 
+  round(2)
+```
+
+Interpretation:
+
+1. For two salespeople with the same customer rating and the same performance, each additional thousand dollars in sales increases the odds of promotion by 4%.
+2.  For two salespeople with the same sales and performance, each additional point in customer rating *decreases* the odds of promotion by 67%
+3.  For two salespeople of the same sales and customer rating, performance rating has no significant effect on the odds of promotion.
+
+---
+class: left, middle, r-logo
+
+## How much of the likelihood of promotion does my model explain?
+
+```{r}
+library(DescTools)
+
+PseudoR2(model, which = c("CoxSnell", "Nagelkerke", "Tjur"))
+
+```
+
+Interpretation: our model explains more than two thirds of the variation in the promotion outcome.
+
+---
+class: left, middle, r-logo
+
+## Visualize the model using `plotly`
+
+```{r, eval = FALSE, fig.align = "center"}
+library(plotly)
+
+plot_ly(data = salespeople[complete.cases(salespeople), ]) %>%
+  add_trace(x = ~sales, y = ~customer_rate, z = ~promoted, mode = "markers", type = "scatter3d",
+            marker = list(size = 5, color = "blue", symbol = 104), name = "Observations") %>% 
+  add_trace(z = model$fitted.values, x = ~sales, y = ~customer_rate, type = "mesh3d", 
+            name = "Fitted values") %>%
+  layout(scene = list(xaxis = list(title = 'sales'), yaxis = list(title = 'customer_rate', nticks = 5),
+                      camera = list(eye = list(x = -0.5, y = 2, z = 0)),
+                      zaxis = list(title = 'promoted'), aspectmode='cube')) 
+
+```
+
+---
+class: left, middle, r-logo
+
+## Output of previous command
+
+```{r, echo = FALSE, fig.align = "center"}
+library(plotly)
+
+plot_ly(data = salespeople) %>%
+  add_trace(x = ~sales, y = ~customer_rate, z = ~promoted, mode = "markers", type = "scatter3d",
+            marker = list(size = 5, color = "blue", symbol = 104), name = "Observations") %>% 
+  add_trace(z = model$fitted.values, x = ~sales, y = ~customer_rate, type = "mesh3d", 
+            name = "Fitted values") %>%
+  layout(scene = list(xaxis = list(title = 'sales'), yaxis = list(title = 'customer_rate', nticks = 5),
+                      camera = list(eye = list(x = -0.5, y = 2, z = 0)),
+                      zaxis = list(title = 'promoted'), aspectmode='cube')) 
+
+```
+
+---
+class: left, middle, r-logo
+
+# Thank you! Questions?
+
