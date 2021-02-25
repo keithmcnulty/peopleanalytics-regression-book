@@ -347,9 +347,7 @@ class: left, middle, r-logo
 ## Galton realized that children 'regress' away from their parents height towards a mean population height
 
 
-```{r, echo = FALSE, fig.align="center"}
-library(ggplot2)
-
+```{r, fig.align="center", fig.height = 4}
 ggplot(galton, aes(x = midParentHeight, y = Height)) +
   geom_point(color = "blue") +
   geom_jitter(color = "blue") +
@@ -546,11 +544,14 @@ class: left, middle, r-logo
 library(plotly)
 
 plot_ly(data = salespeople[complete.cases(salespeople), ]) %>%
-  add_trace(x = ~sales, y = ~customer_rate, z = ~promoted, mode = "markers", type = "scatter3d",
-            marker = list(size = 5, color = "blue", symbol = 104), name = "Observations") %>% 
-  add_trace(z = model$fitted.values, x = ~sales, y = ~customer_rate, type = "mesh3d", 
-            name = "Fitted values") %>%
-  layout(scene = list(xaxis = list(title = 'sales'), yaxis = list(title = 'customer_rate', nticks = 5),
+  add_trace(x = ~sales, y = ~customer_rate, z = ~promoted, 
+            mode = "markers", type = "scatter3d",
+            marker = list(size = 5, color = "blue", symbol = 104), 
+            name = "Observations") %>% 
+  add_trace(z = model$fitted.values, x = ~sales, y = ~customer_rate, 
+            type = "mesh3d", name = "Fitted values") %>%
+  layout(scene = list(xaxis = list(title = 'sales'), 
+                      yaxis = list(title = 'customer_rate', nticks = 5),
                       camera = list(eye = list(x = -0.5, y = 2, z = 0)),
                       zaxis = list(title = 'promoted'), aspectmode='cube')) 
 
