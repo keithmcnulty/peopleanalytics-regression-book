@@ -1,0 +1,12 @@
+---
+title: "Adjustments made to content since last copy"
+author: "Keith McNulty"
+date: "01/03/2021"
+output: word_document
+---
+
+## Adjustments since last copy submission
+
+* *xiv*:  Added brief biography for Alexis Fink as recommended by David Grubbs
+* *85 (last paragraph) - 86 (first three bullets)*:  some adjustment for clarity
+* *129-139*:  Two variables in the Chapter 6 example have been renamed:  `children` renamed to `household` and `tenure` renamed to `absent`.  This results in small changes to text and model output accordingly.

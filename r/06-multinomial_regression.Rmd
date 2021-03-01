@@ -34,9 +34,9 @@ You are an analyst at a large technology company.  The company recently introduc
 * `product`: The choice of product of the individual---A, B or C
 * `age`: The age of the individual when they made the choice
 * `gender`:  The gender of the individual as stated when they made the choice
-* `children`:  The number of child dependents the individual had at the time of the choice
+* `household`:  The number of people living with the individual in the same household at the time of the choice
 * `position_level`:  Position level in the company at the time they made the choice, where 1 is is the lowest and 5 is the highest
-* `tenure`: Full years employed by the company at the time they made the choice
+* `absent`: The number of days the individual was absent from work in the year prior to the choice
 
 First we load the data and take a look at it briefly.
 
@@ -75,7 +75,7 @@ health_insurance$gender <- as.factor(health_insurance$gender)
 GGally::ggpairs(health_insurance)
 ```
 
-The data appears somewhat chaotic here.  However, there are a few things to note.  Firstly, we notice that there is a relatively even spread in choice between the products.  We also notice that age seems to be playing a role in product choice.  There are also some mild-to-moderate correlations in the data---in particular between `age` and `position_level`, and between `tenure` and `position_level`.  However, this problem is clearly more complex than we can determine from a bivariate perspective.
+The data appears somewhat chaotic here.  However, there are a few things to note.  Firstly, we notice that there is a relatively even spread in choice between the products.  We also notice that `age` seems to be playing a role in product choice.  There are also some mild-to-moderate correlations in the data---in particular between `age` and `position_level`, and between `absent` and `position_level`.  However, this problem is clearly more complex than we can determine from a bivariate perspective.
 
 ## Running stratified binomial models {#stratified}
 
@@ -97,8 +97,8 @@ health_insurance <- cbind(health_insurance, dummy_product)
 # run a binomial model for the Product A dummy against 
 # all input variables (let glm() handle dummy input variables)
 A_model <- glm(
-  formula = productA ~ age + gender + children + 
-    position_level + tenure, 
+  formula = productA ~ age + gender + household + 
+    position_level + absent, 
   data = health_insurance, 
   family = "binomial"
 )
@@ -108,7 +108,7 @@ A_model <- glm(
 summary(A_model)
 ```
 
-We see that all variables except tenure seem to play a significant role in the choice of Product A.  All else being equal, being older makes the choice of Product A less likely. Males are more likely to choose Product A, and more children and higher levels of seniority also make the choice of Product A more likely.  Based on this, we can consider simplifying our model to remove `tenure`.  We can also calculate odds ratios and perform some model diagnostics if we wish, similar to how we approached the problem in the previous chapter.
+We see that all variables except `absent` seem to play a significant role in the choice of Product A.  All else being equal, being older makes the choice of Product A less likely. Males are more likely to choose Product A, and larger households and higher position levels also make the choice of Product A more likely.  Based on this, we can consider simplifying our model to remove `absent`.  We can also calculate odds ratios and perform some model diagnostics if we wish, similar to how we approached the problem in the previous chapter.
 
 These results need to be interpreted carefully.  For example, the odds ratios for the Product A choice based on a simplified model are as follows:
 
@@ -117,7 +117,7 @@ These results need to be interpreted carefully.  For example, the odds ratios fo
 ```{r}
 # simpler model
 A_simple <- glm(
-  formula = productA ~ age + children + gender + position_level, 
+  formula = productA ~ age + household + gender + position_level, 
   data = health_insurance
 )
 
@@ -129,11 +129,11 @@ As an example, and as a reminder from our previous chapter, we interpret the odd
 
 ### Modeling other choices
 
-In a similar way we can produce two other models, representing the choice of Products B and C.  These models produce similar significant variables, except that `position_level` does not appear to be significant in the choice of Product C.  If we simplify all our three models we will have a slightly differently defined model for the choice of Product C versus our models for the other two product choices.  However, we can conclude in general that the only input variable that seems to be non-significant across all choices of product is `tenure`.
+In a similar way we can produce two other models, representing the choice of Products B and C.  These models produce similar significant variables, except that `position_level` does not appear to be significant in the choice of Product C.  If we simplify all our three models we will have a slightly differently defined model for the choice of Product C versus our models for the other two product choices.  However, we can conclude in general that the only input variable that seems to be non-significant across all choices of product is `absent`.
 
 ## Running a multinomial regression model
 
-An alternative to running separate binary stratified models is to run a multinomial logistic regression model.  A multinomial logistic model will base itself from a defined reference category, and run a linear model on the log-odds of membership of each of the other categories versus the reference category.  `r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!relative risk}'`Due to its extensive use in epidemiology and medicine, this is often known as the *relative risk* of one category compared to the reference category.  Mathematically speaking, if $X$ is the vector of input variables, and $y$ takes the value $A$, $B$ or $C$, with $A$ as the reference, a multinomial logistic regression model will calculate:
+An alternative to running separate binary stratified models is to run a multinomial logistic regression model.  A multinomial logistic model will base itself from a defined reference category, and run a generalized linear model on the log-odds of membership of each of the other categories versus the reference category.  `r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!relative risk}'`Due to its extensive use in epidemiology and medicine, this is often known as the *relative risk* of one category compared to the reference category.  Mathematically speaking, if $X$ is the vector of input variables, and $y$ takes the value $A$, $B$ or $C$, with $A$ as the reference, a multinomial logistic regression model will calculate:
 
 $$
 \mathrm{ln}\left(\frac{P(y = B)}{P(y=A)}\right) = \alpha{X}
@@ -167,8 +167,8 @@ First we will calculate our multinomial logistic regression model.
 library(nnet)
 
 multi_model <- multinom(
-  formula = product ~ age + gender + children + 
-    position_level + tenure, 
+  formula = product ~ age + gender + household + 
+    position_level + absent, 
   data = health_insurance
 )
 ```
@@ -203,7 +203,7 @@ data.frame(t(p_values))
 
 ### Interpreting the model
 
-This confirms that all variables except `tenure` play a role in the choice between all products relative to a reference of Product A.  We can also calculate odds ratios as before.
+This confirms that all variables except `absent` play a role in the choice between all products relative to a reference of Product A.  We can also calculate odds ratios as before.
 
 ```{r}
 # display odds ratios in transposed data frame
@@ -215,7 +215,7 @@ Here are some examples of how these odds ratios can be interpreted in the multin
 
 * All else being equal, every additional year of age increases the relative odds of selecting Product B versus Product A by approximately 28%, and increases the relative odds of selecting Product C versus Product A by approximately 31%
 * All else being equal, being Male reduces the relative odds of selecting Product B relative to Product A by 91%.
-* All else being equal, each additional child dependent deceases the odds of selecting product B relative to Product A by 62%, and increases the odds of selecting Product C relative to Product A by 23%.
+* All else being equal, each additional household member deceases the odds of selecting product B relative to Product A by 62%, and increases the odds of selecting Product C relative to Product A by 23%.
 
 ### Changing the reference {#changing-ref}
 
@@ -258,28 +258,28 @@ Simplifying a multinomial regression model needs to be done with care.  In a bin
 * If there is such a change, retain the variable and proceed to the next non-significant variable
 * Stop when all non-significant variables have been tested
 
-In our case, we can compare the coefficients of the model with and without `tenure` included and verify that the changes in the coefficients are not substantial.
+In our case, we can compare the coefficients of the model with and without `absent` included and verify that the changes in the coefficients are not substantial.
 
 ```{r, results = FALSE}
-# remove tenure
+# remove absent
 simpler_multi_model <- multinom(
-  formula = product ~ age + gender + children + position_level,
+  formula = product ~ age + gender + household + position_level,
   data = health_insurance, 
   model = TRUE
 )
 ```
 
 ```{r}
-# view coefficients with tenure
+# view coefficients with absent
 data.frame(t(summary(multi_model)$coefficients))
 ```
 
 ```{r}
-# view coefficients without tenure
+# view coefficients without absent
 data.frame(t(summary(simpler_multi_model)$coefficients))
 ```
 
-We can see that only `genderNon-binary` changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model^[Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done.  In the case of these observations of `genderNon-binary`, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a minuscule effect].  It therefore appears safe to remove `tenure`.  Furthermore, the Aikake Information Criterion is equally valid in multinomial models for evaluating model parsimony.   Here we can calculate that the AIC of our model with and without `tenure` is `r round(AIC(multi_model), 2)` and `r round(AIC(simpler_multi_model), 2)` respectively, confirming that the model without `tenure` is marginally more parsimonious.
+We can see that only `genderNon-binary` changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model^[Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done.  In the case of these observations of `genderNon-binary`, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a minuscule effect].  It therefore appears safe to remove `absent`.  Furthermore, the Aikake Information Criterion is equally valid in multinomial models for evaluating model parsimony.   Here we can calculate that the AIC of our model with and without `absent` is `r round(AIC(multi_model), 2)` and `r round(AIC(simpler_multi_model), 2)` respectively, confirming that the model without `absent` is marginally more parsimonious.
 
 ### Model fit and goodness-of-fit
 

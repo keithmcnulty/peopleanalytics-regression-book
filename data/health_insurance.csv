@@ -1,4 +1,4 @@
-"product","age","children","position_level","gender","tenure"
+"product","age","household","position_level","gender","absent"
 "C",57,2,2,"Male",10
 "A",21,7,2,"Male",7
 "C",66,7,2,"Male",1
