@@ -1,0 +1,284 @@
+---
+title: "Multinomial Logistic Regression and Batch Modeling with the Tidyverse"
+author: "Keith McNulty"
+output:
+  xaringan::moon_reader:
+    css: style.css
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+library(dplyr)
+```
+
+class: left, middle, r-logo
+
+## Notes
+
+This document is coded in R.  The code for this document is [here](https://github.com/keithmcnulty/peopleanalytics-regression-book/tree/master/presentations/multinom_tidymodels.Rmd).  
+
+Python code for multinomial regression models can be found in the Appendix.
+
+---
+class: left, middle, r-logo
+
+# Multinomial logistic regression for nominal category outcomes
+
+---
+class: left, middle, r-logo
+
+## Nominal category outcomes
+
+Nominal category outcomes are outcomes that can take the form of a number of categories or choices.  These do not have any order to them.
+
+Examples of nominal category outcomes include:
+
+* Which candidate/political party was selected in an election?
+* Which product was selected from a choice of products?
+* Which career path did an employee end up in after 5 years?
+
+If there are only two choices, multinomial logistic regression equates to binomial logistic regression.
+
+If categories have an order (eg performance or survey ratings), they are known as ordinal categories.  A multinomial approach also works for these, but there are better alternatives that are easier to interpret (eg proportional odds logistic regression).
+
+---
+class: left, middle, r-logo
+
+## The `health_insurance` data set
+
+This data set shows the choice made by a set of employees of one of three different company health insurance products, as well as various demographic and position data.
+
+```{r}
+# get health insurance data set
+url <- "http://peopleanalytics-regression-book.org/data/health_insurance.csv"
+health_insurance <- read.csv(url)
+head(health_insurance)
+```
+
+We want to understand whether and how any of the other variables influence the choice of product.
+
+---
+class: left, middle, r-logo
+
+## One option is to use individual 'stratified' binomial models (1/2)
+
+We can create binary dummy variables for each product choice.
+
+```{r}
+# create dummies for each product
+
+health_insurance_dummies <- dummies::dummy.data.frame(health_insurance,
+                                                      names = "product")
+
+head(health_insurance_dummies)
+
+```
+
+---
+class: left, middle, r-logo
+
+## One option is to use individual 'stratified' binomial models (2/2)
+
+```{r}
+# binomial on choice A
+modelA <- glm(productA ~ . - productB - productC, health_insurance_dummies,
+              family = "binomial")
+summary(modelA)
+```
+
+---
+class: left, middle, r-logo
+
+## Multinomial regression approach
+
+Stratified approach has disadvantages:
+
+1. Pretty laborious if there are lots of choices
+2. Every model compares different categories - no common reference
+3. Hard to simplify models or identify 'across the board' significance of variables
+
+Multinomial approach uses a common 'reference category' - let's say Product A - and models the odds of other choices relative to the reference:
+
+$$
+\frac{P(y = B)}{P(y = A)} = \beta{X} \space , \space \frac{P(y = C)}{P(y = A)} = \gamma{X}
+$$
+with different sets of coefficients $\beta$ and $\gamma$.
+
+---
+class: left, middle, r-logo
+
+## Multinomial models using `nnet::multinom()`
+
+```{r, eval = FALSE}
+multimodel<- nnet::multinom(product ~ ., health_insurance)
+summary(multimodel)
+```
+
+```{r, echo = FALSE, results = FALSE}
+multimodel<- nnet::multinom(product ~ ., health_insurance)
+```
+
+```{r, echo = FALSE}
+summary(multimodel)
+```
+
+Output quite basic - just coefficients and standard errors.
+
+---
+class: left, middle, r-logo
+
+## Calculating p-values and odds ratios
+
+These need to be generated manually from the coefficients and standard errors:
+
+```{r}
+# z-statistics (coefficients/standard errors)
+z_stats <- summary(multimodel)$coefficients/summary(multimodel)$standard.errors
+
+# p-values
+(p_values <- 2*(1-pnorm(abs(z_stats))))
+```
+
+Similarly for odds ratio:
+
+```{r}
+(odds_ratios <- exp(summary(multimodel)$coefficients))
+```
+
+---
+class: left, middle, r-logo
+
+## Model simplification/elimination of variables
+
+* Start with the variable with the least significant p-values in all sets of coefficients---in our case `absent` would be the obvious first candidate
+* Run the multinomial model without this variable
+* Test that none of the previous coefficients change by more than 20-25%
+* If there was no such change, safely remove the variable and proceed to the next non-significant variable
+* If there is such a change, retain the variable and proceed to the next non-significant variable
+* Stop when all non-significant variables have been tested
+
+---
+class: left, middle, r-logo
+
+# Batch modelling with the tidyverse
+
+---
+class: left, middle, r-logo
+
+## The `broom` package
+
+All the different modeling functions in R produce results in different formats, eg `lm()`, `glm()`, `nnet::multinom()`.  This can make them challenging to perform manipulations on - as we saw in the `multinom()` output.
+
+The `broom` package is built to tidy up the outputs of models and render them as tidy tables so we can manipulate with tidyverse grammar.
+
+```{r}
+# tidy approach to multinom
+(multimodel_tidy <- broom::tidy(multimodel))
+```
+
+---
+class: left, middle, r-logo
+
+## We can now manipulate using tidyverse grammar
+
+```{r}
+# add odds ratio easily using `dplyr`
+multimodel_tidy %>% 
+  dplyr::mutate(odds_ratio = exp(estimate))
+```
+
+---
+class: left, middle, r-logo
+
+## The `glance()` function is useful for model statistics
+
+```{r}
+model <- lm(mpg ~ hp + wt + disp + carb, mtcars)
+broom::glance(model)
+```
+
+This allows the batch running and assessing of models on subsets of data.
+
+```{r}
+mtcars %>% 
+  dplyr::nest_by(cyl) %>%
+  dplyr::summarise(
+      lm(mpg ~ hp + wt + disp + carb, data) %>% 
+        broom::glance()
+  )
+```
+
+---
+class: left, middle, r-logo
+
+## This also allows different variable combinations to be run and assessed
+
+```{r}
+# create dataframe with a column of model formulas
+models <- data.frame(
+  formula = c(
+    "mpg ~ cyl",
+    "mpg ~ cyl + wt", 
+    "mpg ~ cyl + wt + carb",
+    "mpg ~ cyl + wt + carb + hp",
+    "mpg ~ cyl + wt + carb + hp + disp"
+  )
+)
+
+# run all models
+models %>% 
+  dplyr::rowwise() %>% 
+  dplyr::mutate(
+    lm(formula, mtcars) %>% 
+      broom::glance()
+  )
+```
+
+---
+class: left, middle, r-logo
+
+## Appendix - Multinomial logistic regression code in Python
+
+```{python}
+import pandas as pd
+import statsmodels.api as sm
+
+# load health insurance data
+url = "http://peopleanalytics-regression-book.org/data/health_insurance.csv"
+health_insurance = pd.read_csv(url)
+
+# convert product to categorical as an outcome variable
+y = pd.Categorical(health_insurance['product'])
+
+# create dummies for gender
+X1 = pd.get_dummies(health_insurance['gender'], drop_first = True)
+
+# replace back into input variables 
+X2 = health_insurance.drop(['product', 'gender'], axis = 1)
+X = pd.concat([X1, X2], axis = 1)
+
+# add a constant term to ensure intercept is calculated
+Xc = sm.add_constant(X)
+
+# define model
+model = sm.MNLogit(y, Xc)
+
+# fit model
+insurance_model = model.fit()
+```
+
+---
+class: left, middle, r-logo
+
+## Appendix - Multinomial logistic regression results in Python
+
+```{python}
+print(insurance_model.summary())
+```
+

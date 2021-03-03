@@ -185,15 +185,15 @@ summary(multi_model)
 ```
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
-`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!coefficients}'`Notice that the output of `summary(multi_model)` is much less detailed than for our standard binomial models, and it effectively just delivers the coefficients and standard errors of the two models against the reference.  To determine whether specific input variables are significant we will need to calculate the p-values of the coefficients manually by calculating the t-statistics and converting (we covered this hypothesis testing methodology in Section \@ref(means-sig)).
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!coefficients}'`Notice that the output of `summary(multi_model)` is much less detailed than for our standard binomial models, and it effectively just delivers the coefficients and standard errors of the two models against the reference.  To determine whether specific input variables are significant we will need to calculate the p-values of the coefficients manually by calculating the z-statistics and converting (we covered this hypothesis testing methodology in Section \@ref(means-sig)).
 
 ```{r}
-# calculate t-statistics of coefficients
-t_stats <- summary(multi_model)$coefficients/
+# calculate z-statistics of coefficients
+z_stats <- summary(multi_model)$coefficients/
   summary(multi_model)$standard.errors
 
 # convert to p-values
-p_values <- (1 - pnorm(abs(t_stats)))*2
+p_values <- (1 - pnorm(abs(z_stats)))*2
 
 
 # display p-values in transposed data frame
@@ -251,7 +251,7 @@ Simplifying a multinomial regression model needs to be done with care.  In a bin
 
 `r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!model simplification}'`In @hosmer-logistic, a gradual process of elimination of variables is recommended to ensure that significant variables that confound each other in the different logistic models are not accidentally dropped from the final model. The recommended approach is as follows:
 
-* Start with the variable with the least significant p-values in all sets of coefficients---in our case `tenure` would be the obvious first candidate
+* Start with the variable with the least significant p-values in all sets of coefficients---in our case `absent` would be the obvious first candidate
 * Run the multinomial model without this variable
 * Test that none of the previous coefficients change by more than 20-25%
 * If there was no such change, safely remove the variable and proceed to the next non-significant variable

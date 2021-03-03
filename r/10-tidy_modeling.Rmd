@@ -286,7 +286,7 @@ Multinomial logistic regression is similarly available using the `statsmodels` f
 
 ```{python, eval = FALSE}
 import pandas as pd
-import statsmodels.formula.api as smf
+import statsmodels.api as sm
 
 # load health insurance data
 url = "http://peopleanalytics-regression-book.org/data/health_insurance.csv"
@@ -319,7 +319,7 @@ print(insurance_model.summary())
 `r if (knitr::is_latex_output()) '\\newpage \\small'`
 ```{python, echo = FALSE, results = FALSE}
 import pandas as pd
-import statsmodels.formula.api as smf
+import statsmodels.api as sm
 
 # load health insurance data
 url = "http://peopleanalytics-regression-book.org/data/health_insurance.csv"

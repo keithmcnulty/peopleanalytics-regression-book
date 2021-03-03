@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Multinomial Logistic Regression and Batch Modeling with the Tidyverse</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Keith McNulty" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Multinomial Logistic Regression and Batch Modeling with the Tidyverse
+### Keith McNulty
+
+---
+
+
+
+
+class: left, middle, r-logo
+
+## Notes
+
+This document is coded in R.  The code for this document is [here](https://github.com/keithmcnulty/peopleanalytics-regression-book/tree/master/presentations/multinom_tidymodels.Rmd).  
+
+Python code for multinomial regression models can be found in the Appendix.
+
+---
+class: left, middle, r-logo
+
+# Multinomial logistic regression for nominal category outcomes
+
+---
+class: left, middle, r-logo
+
+## Nominal category outcomes
+
+Nominal category outcomes are outcomes that can take the form of a number of categories or choices.  These do not have any order to them.
+
+Examples of nominal category outcomes include:
+
+* Which candidate/political party was selected in an election?
+* Which product was selected from a choice of products?
+* Which career path did an employee end up in after 5 years?
+
+If there are only two choices, multinomial logistic regression equates to binomial logistic regression.
+
+If categories have an order (eg performance or survey ratings), they are known as ordinal categories.  A multinomial approach also works for these, but there are better alternatives that are easier to interpret (eg proportional odds logistic regression).
+
+---
+class: left, middle, r-logo
+
+## The `health_insurance` data set
+
+This data set shows the choice made by a set of employees of one of three different company health insurance products, as well as various demographic and position data.
+
+
+```r
+# get health insurance data set
+url &lt;- "http://peopleanalytics-regression-book.org/data/health_insurance.csv"
+health_insurance &lt;- read.csv(url)
+head(health_insurance)
+```
+
+```
+##   product age household position_level gender absent
+## 1       C  57         2              2   Male     10
+## 2       A  21         7              2   Male      7
+## 3       C  66         7              2   Male      1
+## 4       A  36         4              2 Female      6
+## 5       A  23         0              2   Male     11
+## 6       A  31         5              1   Male     14
+```
+
+We want to understand whether and how any of the other variables influence the choice of product.
+
+---
+class: left, middle, r-logo
+
+## One option is to use individual 'stratified' binomial models (1/2)
+
+We can create binary dummy variables for each product choice.
+
+
+```r
+# create dummies for each product
+
+health_insurance_dummies &lt;- dummies::dummy.data.frame(health_insurance,
+                                                      names = "product")
+
+head(health_insurance_dummies)
+```
+
+```
+##   productA productB productC age household position_level gender absent
+## 1        0        0        1  57         2              2   Male     10
+## 2        1        0        0  21         7              2   Male      7
+## 3        0        0        1  66         7              2   Male      1
+## 4        1        0        0  36         4              2 Female      6
+## 5        1        0        0  23         0              2   Male     11
+## 6        1        0        0  31         5              1   Male     14
+```
+
+---
+class: left, middle, r-logo
+
+## One option is to use individual 'stratified' binomial models (2/2)
+
+
+```r
+# binomial on choice A
+modelA &lt;- glm(productA ~ . - productB - productC, health_insurance_dummies,
+              family = "binomial")
+summary(modelA)
+```
+
+```
+## 
+## Call:
+## glm(formula = productA ~ . - productB - productC, family = "binomial", 
+##     data = health_insurance_dummies)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -2.19640  -0.43691  -0.07051   0.46304   2.37416  
+## 
+## Coefficients:
+##                   Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)       5.873634   0.453041  12.965  &lt; 2e-16 ***
+## age              -0.239814   0.013945 -17.197  &lt; 2e-16 ***
+## household         0.240205   0.037358   6.430 1.28e-10 ***
+## position_level    0.321497   0.071770   4.480 7.48e-06 ***
+## genderMale        0.845978   0.168237   5.028 4.94e-07 ***
+## genderNon-binary  0.222521   1.246591   0.179    0.858    
+## absent           -0.003751   0.010753  -0.349    0.727    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1864.15  on 1452  degrees of freedom
+## Residual deviance:  940.92  on 1446  degrees of freedom
+## AIC: 954.92
+## 
+## Number of Fisher Scoring iterations: 6
+```
+
+---
+class: left, middle, r-logo
+
+## Multinomial regression approach
+
+Stratified approach has disadvantages:
+
+1. Pretty laborious if there are lots of choices
+2. Every model compares different categories - no common reference
+3. Hard to simplify models or identify 'across the board' significance of variables
+
+Multinomial approach uses a common 'reference category' - let's say Product A - and models the odds of other choices relative to the reference:
+
+$$
+\frac{P(y = B)}{P(y = A)} = \beta{X} \space , \space \frac{P(y = C)}{P(y = A)} = \gamma{X}
+$$
+with different sets of coefficients `\(\beta\)` and `\(\gamma\)`.
+
+---
+class: left, middle, r-logo
+
+## Multinomial models using `nnet::multinom()`
+
+
+```r
+multimodel&lt;- nnet::multinom(product ~ ., health_insurance)
+summary(multimodel)
+```
+
+
+
+
+```
+## Call:
+## nnet::multinom(formula = product ~ ., data = health_insurance)
+## 
+## Coefficients:
+##   (Intercept)       age  household position_level  genderMale genderNon-binary
+## B    -4.60100 0.2436645 -0.9677237     -0.4153040 -2.38259765        0.2523409
+## C   -10.22617 0.2698141  0.2043568     -0.2135843  0.09670752       -1.2715643
+##        absent
+## B 0.011676034
+## C 0.003263631
+## 
+## Std. Errors:
+##   (Intercept)        age  household position_level genderMale genderNon-binary
+## B   0.5105532 0.01543139 0.06943089     0.08916739  0.2324262         1.226141
+## C   0.6197408 0.01567034 0.04960655     0.08226087  0.1954353         2.036273
+##       absent
+## B 0.01298141
+## C 0.01241814
+## 
+## Residual Deviance: 1489.365 
+## AIC: 1517.365
+```
+
+Output quite basic - just coefficients and standard errors.
+
+---
+class: left, middle, r-logo
+
+## Calculating p-values and odds ratios
+
+These need to be generated manually from the coefficients and standard errors:
+
+
+```r
+# z-statistics (coefficients/standard errors)
+z_stats &lt;- summary(multimodel)$coefficients/summary(multimodel)$standard.errors
+
+# p-values
+(p_values &lt;- 2*(1-pnorm(abs(z_stats))))
+```
+
+```
+##   (Intercept) age    household position_level genderMale genderNon-binary
+## B           0   0 0.000000e+00   3.199529e-06  0.0000000        0.8369465
+## C           0   0 3.796088e-05   9.419906e-03  0.6207192        0.5323278
+##      absent
+## B 0.3684170
+## C 0.7926958
+```
+
+Similarly for odds ratio:
+
+
+```r
+(odds_ratios &lt;- exp(summary(multimodel)$coefficients))
+```
+
+```
+##    (Intercept)      age household position_level genderMale genderNon-binary
+## B 1.004179e-02 1.275916 0.3799469      0.6601396 0.09231048        1.2870347
+## C 3.621021e-05 1.309721 1.2267357      0.8076841 1.10153815        0.2803927
+##     absent
+## B 1.011744
+## C 1.003269
+```
+
+---
+class: left, middle, r-logo
+
+## Model simplification/elimination of variables
+
+* Start with the variable with the least significant p-values in all sets of coefficients---in our case `absent` would be the obvious first candidate
+* Run the multinomial model without this variable
+* Test that none of the previous coefficients change by more than 20-25%
+* If there was no such change, safely remove the variable and proceed to the next non-significant variable
+* If there is such a change, retain the variable and proceed to the next non-significant variable
+* Stop when all non-significant variables have been tested
+
+---
+class: left, middle, r-logo
+
+# Batch modelling with the tidyverse
+
+---
+class: left, middle, r-logo
+
+## The `broom` package
+
+All the different modeling functions in R produce results in different formats, eg `lm()`, `glm()`, `nnet::multinom()`.  This can make them challenging to perform manipulations on - as we saw in the `multinom()` output.
+
+The `broom` package is built to tidy up the outputs of models and render them as tidy tables so we can manipulate with tidyverse grammar.
+
+
+```r
+# tidy approach to multinom
+(multimodel_tidy &lt;- broom::tidy(multimodel))
+```
+
+```
+## # A tibble: 14 x 6
+##    y.level term              estimate std.error statistic  p.value
+##    &lt;chr&gt;   &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+##  1 B       (Intercept)       -4.60       0.511     -9.01  2.03e-19
+##  2 B       age                0.244      0.0154    15.8   3.64e-56
+##  3 B       household         -0.968      0.0694   -13.9   3.73e-44
+##  4 B       position_level    -0.415      0.0892    -4.66  3.20e- 6
+##  5 B       genderMale        -2.38       0.232    -10.3   1.17e-24
+##  6 B       genderNon-binary   0.252      1.23       0.206 8.37e- 1
+##  7 B       absent             0.0117     0.0130     0.899 3.68e- 1
+##  8 C       (Intercept)      -10.2        0.620    -16.5   3.63e-61
+##  9 C       age                0.270      0.0157    17.2   1.94e-66
+## 10 C       household          0.204      0.0496     4.12  3.80e- 5
+## 11 C       position_level    -0.214      0.0823    -2.60  9.42e- 3
+## 12 C       genderMale         0.0967     0.195      0.495 6.21e- 1
+## 13 C       genderNon-binary  -1.27       2.04      -0.624 5.32e- 1
+## 14 C       absent             0.00326    0.0124     0.263 7.93e- 1
+```
+
+---
+class: left, middle, r-logo
+
+## We can now manipulate using tidyverse grammar
+
+
+```r
+# add odds ratio easily using `dplyr`
+multimodel_tidy %&gt;% 
+  dplyr::mutate(odds_ratio = exp(estimate))
+```
+
+```
+## # A tibble: 14 x 7
+##    y.level term              estimate std.error statistic  p.value odds_ratio
+##    &lt;chr&gt;   &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
+##  1 B       (Intercept)       -4.60       0.511     -9.01  2.03e-19  0.0100   
+##  2 B       age                0.244      0.0154    15.8   3.64e-56  1.28     
+##  3 B       household         -0.968      0.0694   -13.9   3.73e-44  0.380    
+##  4 B       position_level    -0.415      0.0892    -4.66  3.20e- 6  0.660    
+##  5 B       genderMale        -2.38       0.232    -10.3   1.17e-24  0.0923   
+##  6 B       genderNon-binary   0.252      1.23       0.206 8.37e- 1  1.29     
+##  7 B       absent             0.0117     0.0130     0.899 3.68e- 1  1.01     
+##  8 C       (Intercept)      -10.2        0.620    -16.5   3.63e-61  0.0000362
+##  9 C       age                0.270      0.0157    17.2   1.94e-66  1.31     
+## 10 C       household          0.204      0.0496     4.12  3.80e- 5  1.23     
+## 11 C       position_level    -0.214      0.0823    -2.60  9.42e- 3  0.808    
+## 12 C       genderMale         0.0967     0.195      0.495 6.21e- 1  1.10     
+## 13 C       genderNon-binary  -1.27       2.04      -0.624 5.32e- 1  0.280    
+## 14 C       absent             0.00326    0.0124     0.263 7.93e- 1  1.00
+```
+
+---
+class: left, middle, r-logo
+
+## The `glance()` function is useful for model statistics
+
+
+```r
+model &lt;- lm(mpg ~ hp + wt + disp + carb, mtcars)
+broom::glance(model)
+```
+
+```
+## # A tibble: 1 x 12
+##   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
+##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     0.828         0.802  2.68      32.4 6.02e-10     4  -74.3  161.  169.
+## # … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+```
+
+This allows the batch running and assessing of models on subsets of data.
+
+
+```r
+mtcars %&gt;% 
+  dplyr::nest_by(cyl) %&gt;%
+  dplyr::summarise(
+      lm(mpg ~ hp + wt + disp + carb, data) %&gt;% 
+        broom::glance()
+  )
+```
+
+```
+## # A tibble: 3 x 13
+## # Groups:   cyl [3]
+##     cyl r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC
+##   &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1     4     0.743         0.572 2.95       4.35  0.0546     4 -24.2   60.3  62.7
+## 2     6     0.896         0.688 0.812      4.31  0.197      4  -4.09  20.2  19.8
+## 3     8     0.533         0.326 2.10       2.57  0.110      4 -27.2   66.3  70.2
+## # … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+```
+
+---
+class: left, middle, r-logo
+
+## This also allows different variable combinations to be run and assessed
+
+
+```r
+# create dataframe with a column of model formulas
+models &lt;- data.frame(
+  formula = c(
+    "mpg ~ cyl",
+    "mpg ~ cyl + wt", 
+    "mpg ~ cyl + wt + carb",
+    "mpg ~ cyl + wt + carb + hp",
+    "mpg ~ cyl + wt + carb + hp + disp"
+  )
+)
+
+# run all models
+models %&gt;% 
+  dplyr::rowwise() %&gt;% 
+  dplyr::mutate(
+    lm(formula, mtcars) %&gt;% 
+      broom::glance()
+  )
+```
+
+```
+## # A tibble: 5 x 13
+## # Rowwise: 
+##   formula r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC
+##   &lt;chr&gt;       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+## 1 mpg ~ …     0.726         0.717  3.21      79.6 6.11e-10     1  -81.7  169.
+## 2 mpg ~ …     0.830         0.819  2.57      70.9 6.81e-12     2  -74.0  156.
+## 3 mpg ~ …     0.842         0.826  2.52      49.9 2.32e-11     3  -72.8  156.
+## 4 mpg ~ …     0.845         0.822  2.54      36.9 1.41e-10     4  -72.5  157.
+## 5 mpg ~ …     0.849         0.820  2.56      29.2 7.06e-10     5  -72.2  158.
+## # … with 4 more variables: BIC &lt;dbl&gt;, deviance &lt;dbl&gt;, df.residual &lt;int&gt;,
+## #   nobs &lt;int&gt;
+```
+
+---
+class: left, middle, r-logo
+
+## Appendix - Multinomial logistic regression code in Python
+
+
+```python
+import pandas as pd
+import statsmodels.api as sm
+
+# load health insurance data
+url = "http://peopleanalytics-regression-book.org/data/health_insurance.csv"
+health_insurance = pd.read_csv(url)
+
+# convert product to categorical as an outcome variable
+y = pd.Categorical(health_insurance['product'])
+
+# create dummies for gender
+X1 = pd.get_dummies(health_insurance['gender'], drop_first = True)
+
+# replace back into input variables 
+X2 = health_insurance.drop(['product', 'gender'], axis = 1)
+X = pd.concat([X1, X2], axis = 1)
+
+# add a constant term to ensure intercept is calculated
+Xc = sm.add_constant(X)
+
+# define model
+model = sm.MNLogit(y, Xc)
+
+# fit model
+insurance_model = model.fit()
+```
+
+```
+## Optimization terminated successfully.
+##          Current function value: 0.512514
+##          Iterations 8
+```
+
+---
+class: left, middle, r-logo
+
+## Appendix - Multinomial logistic regression results in Python
+
+
+```python
+print(insurance_model.summary())
+```
+
+```
+##                           MNLogit Regression Results                          
+## ==============================================================================
+## Dep. Variable:                      y   No. Observations:                 1453
+## Model:                        MNLogit   Df Residuals:                     1439
+## Method:                           MLE   Df Model:                           12
+## Date:                Tue, 02 Mar 2021   Pseudo R-squ.:                  0.5332
+## Time:                        16:34:40   Log-Likelihood:                -744.68
+## converged:                       True   LL-Null:                       -1595.3
+## Covariance Type:            nonrobust   LLR p-value:                     0.000
+## ==================================================================================
+##            y=B       coef    std err          z      P&gt;|z|      [0.025      0.975]
+## ----------------------------------------------------------------------------------
+## const             -4.6010      0.511     -9.012      0.000      -5.602      -3.600
+## Male              -2.3826      0.232    -10.251      0.000      -2.838      -1.927
+## Non-binary         0.2528      1.226      0.206      0.837      -2.151       2.656
+## age                0.2437      0.015     15.790      0.000       0.213       0.274
+## household         -0.9677      0.069    -13.938      0.000      -1.104      -0.832
+## position_level    -0.4153      0.089     -4.658      0.000      -0.590      -0.241
+## absent             0.0117      0.013      0.900      0.368      -0.014       0.037
+## ----------------------------------------------------------------------------------
+##            y=C       coef    std err          z      P&gt;|z|      [0.025      0.975]
+## ----------------------------------------------------------------------------------
+## const            -10.2261      0.620    -16.501      0.000     -11.441      -9.011
+## Male               0.0967      0.195      0.495      0.621      -0.286       0.480
+## Non-binary        -1.2698      2.036     -0.624      0.533      -5.261       2.721
+## age                0.2698      0.016     17.218      0.000       0.239       0.301
+## household          0.2043      0.050      4.119      0.000       0.107       0.302
+## position_level    -0.2136      0.082     -2.597      0.009      -0.375      -0.052
+## absent             0.0033      0.012      0.263      0.793      -0.021       0.028
+## ==================================================================================
+```
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
