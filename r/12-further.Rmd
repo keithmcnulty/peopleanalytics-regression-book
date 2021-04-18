@@ -20,11 +20,11 @@ graduates <- read.csv("data/graduates.csv")
 
 Load the `graduates` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/graduates.csv].  The fields in the `graduate` data set are as follows:
 
-* `Major` is the specific subject major
-* `Discipline` is the broad subject discipline
-* `Total` is the number of graduates of working age in the US 
-* `Unemployment_rate` is the proportion of graduates currently unemployed
-* `Median_salary` is the current median salary of those employed in US dollars
+* `Major` is the specific subject major.
+* `Discipline` is the broad subject discipline.
+* `Total` is the number of graduates of working age in the US.
+* `Unemployment_rate` is the proportion of graduates currently unemployed.
+* `Median_salary` is the current median salary of those employed in US dollars.
 
 ### Discussion questions
 
@@ -32,7 +32,7 @@ Load the `graduates` data set via the `peopleanalyticsdata` package or download 
 2.  Which of the variables in the data set would you be interested in using to explain the `Median_salary` outcome? Why?
 3.  Are there any transformations you would consider on any of the input variables to help with interpreting the model?
 4.  What type of model would you use to try to explain the `Median_salary` outcome using these variables?
-5.  Describe the data type of each of the input variables. How you would interpret the coefficients of the model for each of these data types?
+5.  Describe the data type of each of the input variables. How would you interpret the coefficients of the model for each of these data types?
 
 ### Data exercises
 
@@ -65,21 +65,21 @@ recruiting <- read.csv("data/recruiting.csv")
 
 Load the `recruiting` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/recruiting.csv].  The fields in the `recruiting` data set are as follows:
 
-* `gender` is the gender of the applicant
-* `sat` is the SAT score of the applicant
-* `gpa` is the Undergraduate GPA of the applicant
-* `apttest` is the score on the aptitude test given to the applicant
-* `int1` is the rating of the first line manager interviewer
-* `int2` is the rating of the second line manager interviewer
-* `int3` is the rating of the human resources interviewer
-* `hired` is a binary indicator of whether a decision was made to hire the applicant
+* `gender` is the gender of the applicant.
+* `sat` is the SAT score of the applicant.
+* `gpa` is the Undergraduate GPA of the applicant.
+* `apttest` is the score on the aptitude test given to the applicant.
+* `int1` is the rating of the first line manager interviewer.
+* `int2` is the rating of the second line manager interviewer.
+* `int3` is the rating of the human resources interviewer.
+* `hired` is a binary indicator of whether a decision was made to hire the applicant.
 
 ### Discussion questions
 
 1.  Considering the way the recruiting process works, what kinds of inferential analysis or modeling would you be interested in applying to help understand its efficiency and effectiveness?
 2.  What kind of model is most appropriate for explaining the `hired` outcome?
-3.  One of your stakeholders is suggesting that the aptitude test is a waste of time and that the information it provides can already be gleaned from the applicants SAT scores and GPA.  What kind of statistical analysis or model would help you confirm or reject this? 
-4.  Do you think that collinearity might pose a risk in this data?  If so, what variables would you be concerned about?
+3.  One of your stakeholders is suggesting that the aptitude test is a waste of time and that the information it provides can already be gleaned from the applicants' SAT scores and GPA.  What kind of statistical analysis or model would help you confirm or reject this? 
+4.  Do you think that collinearity might pose a risk in this data?  If so, what variables would concern you?
 5.  What kind of hypothesis test would you use to determine if the hiring outcome may be different by gender?
 6.  What kind of hypothesis test would you use to determine if the aptitude test score may be different by gender?
 7.  How would you go about determining if any gender difference in the hiring outcome can be attributed to a specific part of the process? 
@@ -96,7 +96,7 @@ Load the `recruiting` data set via the `peopleanalyticsdata` package or download
 
 In many organizations and for many job types, promotion and performance ratings are the primary indicators of the success of employees.  However, promotion is not always available to employees and can be very dependent on role and timing.  Since performance ratings are usually generated on a regular basis, it is usually these that garner the most attention in the analysis of success.
 
-However, performance ratings are not perfect indicators of reality.  They are usually the result of some judgment from one or more evaluators.  Part of that judgment will be informed by data and part will be informed by contextual considerations or personal preferences outside of the data.  Therefore it is frequently of interest to analyze performance ratings as the outcome of a decision making process.  Such analysis can inform us as to what parts of the evaluation process are operating as intended and what parts are not.  Multivariate models around performance can help us understand the degree to which the evaluation process is data driven, the degree to which unfairness might exist in some evaluation decisions, and what might be the source of that unfairness.
+However, performance ratings are not perfect indicators of reality.  They are usually the result of some judgment from one or more evaluators.  Part of that judgment will be informed by data and part will be informed by contextual considerations or personal preferences outside of the data.  Therefore it is frequently of interest to analyze performance ratings as the outcome of a decision making process.  Such analysis can inform us as to what parts of the evaluation process are operating as intended and what parts are not.  Multivariate models around performance can help us understand the degree to which the evaluation process is data driven, the degree to which unfairness might exist in some evaluation decisions and what might be the source of that unfairness.
 
 ### The `employee_performance` data set
 
@@ -143,15 +143,15 @@ It is particularly interesting to compare subgroups of employees that have commo
 promotion <- read.csv("data/promotion.csv")
 ```
 
-`r if (knitr::is_latex_output()) '\\index{data sets!promotion@\\texttt{promotion}}'`The `promotion` data set contains data on `r nrow(promotion)` individuals who joined a retailer in an entry level job, and tracks them for up to eight subsequent years post joining.  For each individual the data records whether or not they were promoted, and if so in which year the promotion occurred, where the date of their joining is Year 0.  Once promotion occurs, an individual is no longer tracked.  If an individual was not promoted, then the year in which the last record occurred is captured.  
+`r if (knitr::is_latex_output()) '\\index{data sets!promotion@\\texttt{promotion}}'`The `promotion` data set contains data on `r nrow(promotion)` individuals who joined a retailer in an entry-level job, and tracks them for up to eight subsequent years post joining.  For each individual the data records whether or not they were promoted, and if so in which year the promotion occurred, where the date of their joining is Year 0.  Once promotion occurs, an individual is no longer tracked.  If an individual was not promoted, then the year in which the last record occurred is captured.  
 
 Load the `promotion` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/promotion.csv].  The fields in the data are as follows:
 
-* `diverse` indicates whether or not the individual is a member of one of the organization's diversity programs
-* `flexible` indicates whether the individual worked on a part-time program for at least 6 months
-* `store` indicates if the individual joined the company in a retail store position
-* `promoted` indicates whether the individual was promoted 
-* `year` indicates the year in which the last record was made of the individual
+* `diverse` indicates whether or not the individual is a member of one of the organization's diversity programs.
+* `flexible` indicates whether the individual worked on a part-time program for at least 6 months.
+* `store` indicates if the individual joined the company in a retail store position.
+* `promoted` indicates whether the individual was promoted. 
+* `year` indicates the year in which the last record was made of the individual.
 
 ### Discussion questions
 
@@ -186,14 +186,14 @@ learning <- read.csv("data/learning.csv")
 
 Load the `learning` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/learning.csv].  The fields in the `learning` data set are as follows:
 
-* `idcode` is the unique ID of the participant
-* `rec` is a binary value indicating whether the participant would recommend the program to others
-* `rel` is a rating from the participant on the relevance of the program to their work, where 1 is Very Low and 5 is Very High
+* `idcode` is the unique ID of the participant.
+* `rec` is a binary value indicating whether the participant would recommend the program to others.
+* `rel` is a rating from the participant on the relevance of the program to their work, where 1 is Very Low and 5 is Very High.
 * `fun` is a rating on how enjoyable and fun the participant found the program, where 1 is Very Low and 5 is Very High
-* `clar` is a rating from the participant on the clarity of the content and teaching in the program, where 1 is Very Low and 5 is Very High
-* `home` is a rating from the participant on the quality of the homework or project work in the program, where 1 is Very Low and 5 is Very High
-* `class` is a rating from the participant on the quality of the overall class who attended the program, where 1 is Very Low and 5 is Very High
-* `fac` is a rating from the participant on the quality of the program faculty and instructors, where 1 is Very Low and 5 is Very High  
+* `clar` is a rating from the participant on the clarity of the content and teaching in the program, where 1 is Very Low and 5 is Very High.
+* `home` is a rating from the participant on the quality of the homework or project work in the program, where 1 is Very Low and 5 is Very High.
+* `class` is a rating from the participant on the quality of the overall class who attended the program, where 1 is Very Low and 5 is Very High.
+* `fac` is a rating from the participant on the quality of the program faculty and instructors, where 1 is Very Low and 5 is Very High.
 
 ### Discussion questions
 

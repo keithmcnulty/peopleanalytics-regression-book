@@ -3,7 +3,7 @@
 `r if (knitr::is_latex_output()) '\\index{proportional odds logistic regression|(}'`
 Often our outcomes will be categorical in nature, but they will also have an order to them.  These are sometimes known as *ordinal* outcomes.`r if (knitr::is_latex_output()) '\\index{outcome variable!ordinal}'`  Some very common examples of this include ratings of some form, such as job performance ratings or survey responses on Likert scales. The appropriate modeling approach for these outcome types is ordinal logistic regression.  Surprisingly, this approach is frequently not understood or adopted by analysts.  Often they treat the outcome as a continuous variable and perform simple linear regression, which can lead to wildly inaccurate inferences.  Given the prevalence of ordinal outcomes in people analytics, it would serve analysts well to know how to run ordinal logistic regression models, how to interpret them and how to confirm their validity. 
 
-In fact, there are numerous known ways to approach the inferential modeling of ordinal outcomes, all of which build on the theory of linear, binomial and multinomial regression which we covered in previous chapters.  In this chapter, we will focus on the most commonly adopted approach: *proportional odds* logistic regression.  Proportional odds models (sometimes known as constrained cumulative logistic models) are more attractive than other approaches because of their ease of interpretation, but cannot be used blindly without important checking of underlying assumptions.  
+In fact, there are numerous known ways to approach the inferential modeling of ordinal outcomes, all of which build on the theory of linear, binomial and multinomial regression which we covered in previous chapters.  In this chapter, we will focus on the most commonly adopted approach: *proportional odds* logistic regression.  Proportional odds models (sometimes known as constrained cumulative logistic models) are more attractive than other approaches because of their ease of interpretation but cannot be used blindly without important checking of underlying assumptions.  
 
 ## When to use it
 
@@ -48,7 +48,7 @@ This approach leads to a highly interpretable model that provides a single set o
 
 ### Use cases for proportional odds logistic regression
 
-`r if (knitr::is_latex_output()) '\\index{proportional odds logistic regression!proportional odds assumption}'`Proportional odds logistic regression can be used when there are more than two outcome categories that have an order.  An important underlying assumption is that no input variable has a disproportionate effect on a specific level of the outcome variable.  This is known as the proportional odds assumption.  Referring to Figure \@ref(fig:prop-odds-int), this assumption means that the 'slope' of the logistic function is the same for all category cutoffs^[This also leads to another term for the assumption---the *parallel regression* assumption].  If this assumption is violated, we cannot reduce the coefficients of the model to a single set across all outcome categories, and this modeling approach fails.  Therefore, testing the proportional odds assumption is an important validation step for anyone running this type of model.  
+`r if (knitr::is_latex_output()) '\\index{proportional odds logistic regression!proportional odds assumption}'`Proportional odds logistic regression can be used when there are more than two outcome categories that have an order.  An important underlying assumption is that no input variable has a disproportionate effect on a specific level of the outcome variable.  This is known as the proportional odds assumption.  Referring to Figure \@ref(fig:prop-odds-int), this assumption means that the 'slope' of the logistic function is the same for all category cutoffs^[This also leads to another term for the assumption---the *parallel regression* assumption.].  If this assumption is violated, we cannot reduce the coefficients of the model to a single set across all outcome categories, and this modeling approach fails.  Therefore, testing the proportional odds assumption is an important validation step for anyone running this type of model.  
 
 Examples of problems that can utilize a proportional odds logistic regression approach include:
 
@@ -58,14 +58,14 @@ Examples of problems that can utilize a proportional odds logistic regression ap
 
 ### Walkthrough example {#ord-walkthrough}
 
-You are an analyst for a sports broadcaster who is doing a feature on player discipline in professional soccer games.  To prepare for the feature, you have been asked to verify whether certain metrics are significant in influencing the extent to which a player will be disciplined by the referee for unfair or dangerous play in a game.  You have been provided with data on over 2000 different players in different games and the data contains these fields:
+You are an analyst for a sports broadcaster who is doing a feature on player discipline in professional soccer games.  To prepare for the feature, you have been asked to verify whether certain metrics are significant in influencing the extent to which a player will be disciplined by the referee for unfair or dangerous play in a game.  You have been provided with data on over 2000 different players in different games, and the data contains these fields:
 
 * `discipline`: A record of the maximum discipline taken by the referee against the player in the game.  'None' means no discipline was taken, 'Yellow' means the player was issued a yellow card (warned), 'Red' means the player was issued a red card and ordered off the field of play.
-* `n_yellow_25` is the total number of yellow cards issued to the player in the previous 25 games they played prior to this game
-* `n_red_25` is the total number of red cards issued to the player in the previous 25 games they played prior to this game
+* `n_yellow_25` is the total number of yellow cards issued to the player in the previous 25 games they played prior to this game.
+* `n_red_25` is the total number of red cards issued to the player in the previous 25 games they played prior to this game.
 * `position` is the playing position of the player in the game:  'D' is defense (including goalkeeper), 'M' is midfield and 'S' is striker/attacker.
-* `level` is the skill level of the competition in which the game took place, with 1 being higher and 2 being lower
-* `country` is the country in which the game took place---England or Germany
+* `level` is the skill level of the competition in which the game took place, with 1 being higher and 2 being lower.
+* `country` is the country in which the game took place---England or Germany.
 * `result` is the result of the game for the team of the player---'W' is win, 'L' is lose, 'D' is a draw/tie.
 
 `r if (knitr::is_latex_output()) '\\index{data sets!soccer@\\texttt{soccer}}'`Let's download the `soccer` data set and take a quick look at it.
@@ -102,7 +102,7 @@ soccer$discipline <- ordered(soccer$discipline,
 str(soccer)
 ```
 
-We also know that `position`, `country`, `result` and `level` are categorical, so we convert them to factors.  We could in fact choose to convert `result` and `level` into ordered factors if we so wish, but this is not necessary for input variables and the results are usually a little bit easier to read as nominal factors.
+We also know that `position`, `country`, `result` and `level` are categorical, so we convert them to factors.  We could in fact choose to convert `result` and `level` into ordered factors if we so wish, but this is not necessary for input variables, and the results are usually a little bit easier to read as nominal factors.
 
 ```{r}
 # apply as.factor to four columns
@@ -117,11 +117,11 @@ Now our data is in a position to run a model.  You may wish to conduct some expl
 
 ## Modeling ordinal outcomes under the assumption of proportional odds
 
-For simplicity, and noting that this is easily generalizable, let's assume that we have an ordinal outcome variable $y$ with three levels similar to our walkthrough example, and that we have one input variable $x$.  Let's call the outcome levels 1, 2 and 3.  To follow our intuition from Section \@ref(ord-intuit), we can model a linear continuous variable $y' = \alpha_1x + \alpha_0 + E$ where $E$ is some error with a mean of zero, and two increasing cutoff values $\tau_1$ and $\tau_2$.  We define $y$ in terms of $y'$ as follows:  $y = 1$ if $y' \le \tau_1$, $y = 2$ if $\tau_1 < y' \le \tau_2$ and $y = 3$ if $y' > \tau_2$.     
+For simplicity, and noting that this is easily generalizable, let's assume that we have an ordinal outcome variable $y$ with three levels similar to our walkthrough example, and that we have one input variable $x$.  Let's call the outcome levels 1, 2 and 3.  To follow our intuition from Section \@ref(ord-intuit), we can model a linear continuous variable $y' = \alpha_1x + \alpha_0 + E$, where $E$ is some error with a mean of zero, and two increasing cutoff values $\tau_1$ and $\tau_2$.  We define $y$ in terms of $y'$ as follows:  $y = 1$ if $y' \le \tau_1$, $y = 2$ if $\tau_1 < y' \le \tau_2$ and $y = 3$ if $y' > \tau_2$.     
 
 ### Using a latent continuous outcome variable to derive a proportional odds model {#mod-lin-reg}
 
-Recall from Section \@ref(norm-dist-assum) that our linear regression approach assumes that our residuals  $E$ around our line $y' = \alpha_1x + \alpha_0$ have a normal distribution.  Let's modify that assumption slightly and instead assume that our residuals take a logistic distribution based on the variance of $y'$.  Therefore, $y' = \alpha_1x + \alpha_0 + \sigma\epsilon$ where $\sigma$ is proportional to the variance of $y'$ and $\epsilon$ follows the shape of a logistic function.  That is 
+Recall from Section \@ref(norm-dist-assum) that our linear regression approach assumes that our residuals  $E$ around our line $y' = \alpha_1x + \alpha_0$ have a normal distribution.  Let's modify that assumption slightly and instead assume that our residuals take a logistic distribution based on the variance of $y'$.  Therefore, $y' = \alpha_1x + \alpha_0 + \sigma\epsilon$, where $\sigma$ is proportional to the variance of $y'$ and $\epsilon$ follows the shape of a logistic function.  That is 
 
 $$
 P(\epsilon \leq z) = \frac{1}{1 + e^{-z}}
@@ -154,7 +154,7 @@ $$
 \end{aligned}
 $$
 
-By applying the natural logarithm, we conclude that the log odds of $y$ being in our bottom category is:
+By applying the natural logarithm, we conclude that the log odds of $y$ being in our bottom category is
 
 
 $$
@@ -165,7 +165,7 @@ In a similar way we can derive the log odds of our ordinal outcome being in our 
 $$
 \mathrm{ln}\left(\frac{P(y \leq 2)}{P(y = 3)}\right) = \gamma_2 - \beta{x}
 $$
-where $\gamma_2 = \frac{\tau_2 - \alpha_0}{\sigma}$.  One can easily see how this generalizes to an arbitrary number of ordinal categories, where we can state the log odds of being in category $k$ or lower as:
+where $\gamma_2 = \frac{\tau_2 - \alpha_0}{\sigma}$.  One can easily see how this generalizes to an arbitrary number of ordinal categories, where we can state the log odds of being in category $k$ or lower as
 
 $$
 \mathrm{ln}\left(\frac{P(y \leq k)}{P(y > k)}\right) = \gamma_k - \beta{x}
@@ -180,7 +180,7 @@ By taking exponents we see that the impact of a unit change in $x$ on the odds o
 
 ### Running a proportional odds logistic regression model
 
-`r if (knitr::is_latex_output()) '\\index{R!packages!MASS@\\texttt{MASS}}'`The `MASS` package provides a function `polr()` for running a proportional odds logistic regression model on a data set in a similar way to our previous models.  The key (and obvious) requirement is that the outcome is an ordered factor.  Since we did our conversions in Section \@ref(ord-walkthrough) we are ready to run this model. We will start by running it on all input variables, and let the `polr()` function handle our dummy variables automatically.
+`r if (knitr::is_latex_output()) '\\index{R!packages!MASS@\\texttt{MASS}}'`The `MASS` package provides a function `polr()` for running a proportional odds logistic regression model on a data set in a similar way to our previous models.  The key (and obvious) requirement is that the outcome is an ordered factor.  Since we did our conversions in Section \@ref(ord-walkthrough) we are ready to run this model. We will start by running it on all input variables and let the `polr()` function handle our dummy variables automatically.
 
 ```{r, warning = FALSE, message = FALSE}
 # run proportional odds model
@@ -228,17 +228,17 @@ We can display all our critical statistics by combining them into a dataframe.
 
 Taking into consideration the p-values, we can interpret our coefficients as follows, in each case assuming that other coefficients are held still:
 
-* Each additional yellow card received in the prior 25 games is associated with an approximately 38% higher odds of greater disciplinary action by the referee
-* Each additional red card received in the prior 25 games is associated with an approximately 47% higher odds of greater disciplinary action by the referee
-* Strikers have approximately 50% lower odds of greater disciplinary action from referees compared to Defenders
-* A player on a team that lost the game has approximately 62% higher odds of greater disciplinary action versus a player on a team that drew the game
-* A player on a team that won the game has approximately 52% lower odds of greater disciplinary action versus a player on a team that drew the game 
+* Each additional yellow card received in the prior 25 games is associated with an approximately 38% higher odds of greater disciplinary action by the referee.
+* Each additional red card received in the prior 25 games is associated with an approximately 47% higher odds of greater disciplinary action by the referee.
+* Strikers have approximately 50% lower odds of greater disciplinary action from referees compared to Defenders.
+* A player on a team that lost the game has approximately 62% higher odds of greater disciplinary action versus a player on a team that drew the game.
+* A player on a team that won the game has approximately 52% lower odds of greater disciplinary action versus a player on a team that drew the game.
 
-We can, as per previous chapters, remove the `level` and `country` variables from this model to simplify it if we wish.  An examination of the coefficients and the AIC of the simpler model will reveal no substantial difference and therefore we proceed with this model.
+We can, as per previous chapters, remove the `level` and `country` variables from this model to simplify it if we wish.  An examination of the coefficients and the AIC of the simpler model will reveal no substantial difference, and therefore we proceed with this model.
 
 ### Calculating the likelihood of an observation being in a specific ordinal category
 
-Recall from Section \@ref(mod-lin-reg) above that our proportional odds model generates multiple stratified binomial models, each of which has following form:
+Recall from Section \@ref(mod-lin-reg) that our proportional odds model generates multiple stratified binomial models, each of which has following form:
 
 $$
 P(y \leq k) = P(y' \leq \tau_k) 
@@ -251,7 +251,7 @@ head(fitted(model))
 
 `r if (knitr::is_latex_output()) '\\index{proportional odds logistic regression!predictions}'`It can be seen from this output how ordinal logistic regression models can be used in predictive analytics by classifying new observations into the ordinal category with the highest fitted probability. This also allows us to graphically understand the output of a proportional odds model.  `r if (knitr::is_html_output()) 'Interactive'` Figure \@ref(fig:ordgraph) shows the output from a simpler proportional odds model fitted against the `n_yellow_25` and `n_red_25` input variables, with the fitted probabilities of each level of discipline from the referee plotted on the different colored surfaces.  We can see in most situations that no discipline is the most likely outcome and a red card is the least likely outcome.  Only at the upper ends of the scales do we see the likelihood of discipline overcoming the likelihood of no discipline, with a strong likelihood of red cards for those with an extremely poor recent disciplinary record.  
 
-```{r ordgraph, fig.cap = if (knitr::is_latex_output()) {"3D visualization of a simple proportional odds model for \\texttt{discipline} fitted against \\texttt{n\\_yellow\\_25} and \\texttt{n\\_red\\_25} in the \\texttt{soccer} data set.  Blue represents the probability of no discipline from the referee.  Yellow and red represent the probability of a yellow card and a red card respectively"} else {"3D visualization of a simple proportional odds model for `discipline` fitted against `n_yellow_25` and `n_red_25` in the `soccer` data set.  Blue represents the probability of no discipline from the referee.  Yellow and red represent the probability of a yellow card and a red card respectively"}, fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
+```{r ordgraph, fig.cap = if (knitr::is_latex_output()) {"3D visualization of a simple proportional odds model for \\texttt{discipline} fitted against \\texttt{n\\_yellow\\_25} and \\texttt{n\\_red\\_25} in the \\texttt{soccer} data set.  Blue represents the probability of no discipline from the referee.  Yellow and red represent the probability of a yellow card and a red card, respectively."} else {"3D visualization of a simple proportional odds model for `discipline` fitted against `n_yellow_25` and `n_red_25` in the `soccer` data set.  Blue represents the probability of no discipline from the referee.  Yellow and red represent the probability of a yellow card and a red card, respectively."}, fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
 
 if (knitr::is_html_output()) {
   library(plotly)
@@ -287,7 +287,7 @@ if (knitr::is_html_output()) {
 
 ### Model diagnostics
 
-`r if (knitr::is_latex_output()) '\\index{Pseudo-R-squared!in ordinal logistic regression}'`Similar to binomial and multinomial models, pseudo-$R^2$ methods are available for assessing model fit and AIC can be used to assess model parsimony.  Note that `DescTools::PseudoR2()` also offers AIC.
+`r if (knitr::is_latex_output()) '\\index{Pseudo-R-squared!in ordinal logistic regression}'`Similar to binomial and multinomial models, pseudo-$R^2$ methods are available for assessing model fit, and AIC can be used to assess model parsimony.  Note that `DescTools::PseudoR2()` also offers AIC.
 
 ```{r}
 # diagnostics of simpler model
@@ -328,7 +328,7 @@ generalhoslem::pulkrob.chisq(model, catvars = cats)
 
 ## Testing the proportional odds assumption
 
-`r if (knitr::is_latex_output()) '\\index{proportional odds logistic regression!proportional odds assumption}'`As we discussed earlier, the suitability of a proportional odds logistic regression model depends on the assumption that each input variable has a similar effect on the different levels of the ordinal outcome variable.  It is very important to check that this assumption is not violated before proceeding to declare the results of a proportional odds model valid.  There are two common approaches to validating the proportional odds assumption and we will go through each of them here.  
+`r if (knitr::is_latex_output()) '\\index{proportional odds logistic regression!proportional odds assumption}'`As we discussed earlier, the suitability of a proportional odds logistic regression model depends on the assumption that each input variable has a similar effect on the different levels of the ordinal outcome variable.  It is very important to check that this assumption is not violated before proceeding to declare the results of a proportional odds model valid.  There are two common approaches to validating the proportional odds assumption, and we will go through each of them here.  
 
 ### Sighting the coefficients of stratified binomial models
 
@@ -376,7 +376,7 @@ We can now display the coefficients of both models and examine the difference be
 ))
 ```
 
-Ignoring the intercept which is not of concern here, the differences appear relatively small.  Large differences in coefficients would indicate that the proportional odds assumption is likely violated and alternative approaches to the problem should be considered.
+Ignoring the intercept, which is not of concern here, the differences appear relatively small.  Large differences in coefficients would indicate that the proportional odds assumption is likely violated and alternative approaches to the problem should be considered.
 
 
 ### The Brant-Wald test {#wald}
@@ -418,11 +418,11 @@ In the event where the option to remove variables is unattractive, alternative m
 
 ### Data exercises
 
-`r if (knitr::is_latex_output()) '\\index{data sets!managers@\\texttt{managers}}'`Load the `managers` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/managers.csv].  It is a set of information of 571 managers in a sales organization, and consists of the following fields:
+`r if (knitr::is_latex_output()) '\\index{data sets!managers@\\texttt{managers}}'`Load the `managers` data set via the `peopleanalyticsdata` package or download it from the internet^[http://peopleanalytics-regression-book.org/data/managers.csv].  It is a set of information of 571 managers in a sales organization and consists of the following fields:
 
 * `employee_id` for each manager
 * `performance_group` of each manager in a recent performance review: Bottom performer, Middle performer, Top performer
-* `yrs_employed`: Total length of time employed in years
+* `yrs_employed`: total length of time employed in years
 * `manager_hire`: whether or not the individual was hired directly to be a manager (Y) or promoted to manager (N)
 * `test_score`: score on a test given to all managers
 * `group_size`: the number of employees in the group they are responsible for

@@ -1,7 +1,7 @@
 # Multinomial Logistic Regression for Nominal Category Outcomes
 
 `r if (knitr::is_latex_output()) '\\index{multinomial logistic regression|(}'`
-In the previous chapter we looked at how to model a binary or dichotomous outcome using a logistic function.  In this chapter we look at how to extend this to the case when the outcome has a number of categories that do not have any order to them.  When an outcome has this nominal categorical form, it does not have a sense of direction.  There is no 'better' or 'worse', no 'higher' or 'lower', there is only 'different'.
+In the previous chapter we looked at how to model a binary or dichotomous outcome using a logistic function.  In this chapter we look at how to extend this to the case when the outcome has a number of categories that do not have any order to them.  When an outcome has this nominal categorical form, it does not have a sense of direction.  There is no 'better' or 'worse'&zwj;, no 'higher' or 'lower'&zwj;, there is only 'different'&zwj;.
 
 ## When to use it
 
@@ -11,13 +11,13 @@ A binary or dichotomous outcome like we studied in the previous chapter is alrea
 
 If we only wish to make inferences about the choice of each specific category---what drives whether an observation is in Category A versus the others, or Category B versus the others---then we have the option of running separate binomial logistic regression models on a 'one versus the rest' basis.  In this case we can refine our model differently for each category, eliminating variables that are not significant in determining membership of that category.  This could potentially lead to models being defined differently for different target outcome categories.  Notably, there will be no common comparison category between these models.  `r if (knitr::is_latex_output()) '\\index{stratified models}'`This is sometimes called a *stratified* approach.
 
-`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!reference category}'`However, in many studies there is a need for a 'reference' category to better understand the relative odds of category membership.  For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the 'most healthy' or 'most recovered' patients)^[In @hosmer-logistic, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient  Care as the reference]. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different, we would need to make decisions on refining the model differently and we interpret the coefficients in a different way.
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!reference category}'`However, in many studies there is a need for a 'reference' category to better understand the relative odds of category membership.  For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the 'most healthy' or 'most recovered' patients)^[In @hosmer-logistic, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient  Care as the reference.]. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different; we would need to make decisions on refining the model differently, and we interpret the coefficients in a different way.
 
 In this chapter we will briefly look at the stratified approach (which is effectively a repetition of work done in the previous chapter) before focusing more intently on how we construct models and make inferences using a multinomial approach. 
 
 ### Use cases for multinomial logistic regression
 
-`r if (knitr::is_latex_output()) '\\index{outcome variable!nominal categories}'`Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order.  `r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!Independence of Irrelevant Alternatives (IIA) assumption}'`An underlying assumption is the independence of irrelevant alternatives (IIA).  Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, would disproportionately influence the membership of one of the other categories^[Put differently, it assumes that adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption].  In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives which are beyond the scope of this book.
+`r if (knitr::is_latex_output()) '\\index{outcome variable!nominal categories}'`Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order.  `r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!Independence of Irrelevant Alternatives (IIA) assumption}'`An underlying assumption is the independence of irrelevant alternatives (IIA).  Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, would disproportionately influence the membership of one of the other categories^[Put differently, it assumes that adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption.].  In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives, which are beyond the scope of this book.
 
 Examples of typical situations that might be modeled by multinomial logistic regression include:
 
@@ -147,7 +147,7 @@ for different vectors of coefficients $\alpha$ and $\beta$.
 
 ### Defining a reference level and running the model {#def-ref}
 
-`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!reference category}'``r if (knitr::is_latex_output()) '\\index{R!packages!nnet@\\texttt{nnet}}'`The `nnet` package in R contains a `multinom()` function for running a multinomial logistic regression model using neural network technology^[Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onward in the network.  Most commonly they are used in deep learning, but a simple neural network here can model these different categories using a logistic function].  Before we can run the model we need to make sure our reference level is defined.
+`r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!reference category}'``r if (knitr::is_latex_output()) '\\index{R!packages!nnet@\\texttt{nnet}}'`The `nnet` package in R contains a `multinom()` function for running a multinomial logistic regression model using neural network technology^[Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onward in the network.  Most commonly they are used in deep learning, but a simple neural network here can model these different categories using a logistic function.].  Before we can run the model we need to make sure our reference level is defined.
 
 ```{r}
 # define reference by ensuring it is the first level of the factor
@@ -215,7 +215,7 @@ Here are some examples of how these odds ratios can be interpreted in the multin
 
 * All else being equal, every additional year of age increases the relative odds of selecting Product B versus Product A by approximately 28%, and increases the relative odds of selecting Product C versus Product A by approximately 31%
 * All else being equal, being Male reduces the relative odds of selecting Product B relative to Product A by 91%.
-* All else being equal, each additional household member deceases the odds of selecting product B relative to Product A by 62%, and increases the odds of selecting Product C relative to Product A by 23%.
+* All else being equal, each additional household member deceases the odds of selecting Product B relative to Product A by 62%, and increases the odds of selecting Product C relative to Product A by 23%.
 
 ### Changing the reference {#changing-ref}
 
@@ -251,12 +251,12 @@ Simplifying a multinomial regression model needs to be done with care.  In a bin
 
 `r if (knitr::is_latex_output()) '\\index{multinomial logistic regression!model simplification}'`In @hosmer-logistic, a gradual process of elimination of variables is recommended to ensure that significant variables that confound each other in the different logistic models are not accidentally dropped from the final model. The recommended approach is as follows:
 
-* Start with the variable with the least significant p-values in all sets of coefficients---in our case `absent` would be the obvious first candidate
-* Run the multinomial model without this variable
-* Test that none of the previous coefficients change by more than 20-25%
-* If there was no such change, safely remove the variable and proceed to the next non-significant variable
-* If there is such a change, retain the variable and proceed to the next non-significant variable
-* Stop when all non-significant variables have been tested
+* Start with the variable with the least significant p-values in all sets of coefficients---in our case `absent` would be the obvious first candidate.
+* Run the multinomial model without this variable.
+* Test that none of the previous coefficients change by more than 20--25%.
+* If there was no such change, safely remove the variable and proceed to the next non-significant variable.
+* If there is such a change, retain the variable and proceed to the next non-significant variable.
+* Stop when all non-significant variables have been tested.
 
 In our case, we can compare the coefficients of the model with and without `absent` included and verify that the changes in the coefficients are not substantial.
 
@@ -279,7 +279,7 @@ data.frame(t(summary(multi_model)$coefficients))
 data.frame(t(summary(simpler_multi_model)$coefficients))
 ```
 
-We can see that only `genderNon-binary` changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model^[Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done.  In the case of these observations of `genderNon-binary`, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a minuscule effect].  It therefore appears safe to remove `absent`.  Furthermore, the Aikake Information Criterion is equally valid in multinomial models for evaluating model parsimony.   Here we can calculate that the AIC of our model with and without `absent` is `r round(AIC(multi_model), 2)` and `r round(AIC(simpler_multi_model), 2)` respectively, confirming that the model without `absent` is marginally more parsimonious.
+We can see that only `genderNon-binary` changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model^[Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done.  In the case of these observations of `genderNon-binary`, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a minuscule effect].  It therefore appears safe to remove `absent`.  Furthermore, the Aikake Information Criterion is equally valid in multinomial models for evaluating model parsimony.   Here we can calculate that the AIC of our model with and without `absent` is `r round(AIC(multi_model), 2)` and `r round(AIC(simpler_multi_model), 2)`, respectively, confirming that the model without `absent` is marginally more parsimonious.
 
 ### Model fit and goodness-of-fit
 

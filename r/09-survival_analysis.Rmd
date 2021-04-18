@@ -1,22 +1,22 @@
 # Survival Analysis for Modeling Singular Events Over Time {#survival}
 
 `r if (knitr::is_latex_output()) '\\index{survival analysis|(}'`
-In previous chapters, the outcomes we have been modeling have or have not occurred at a particular point in time following when the input variables were measured.  For example, in Chapter \@ref(linear-reg-ols) input variables were measured in the first three years of an education program and the outcome was measured at the end of the fourth year.  In many situations, the outcome we are interested in is a singular event that can occur at any time following when the input variables were measured, can occur at a different time for different individuals, and once it has occurred it cannot reoccur or repeat.  In medical studies, death can occur or the onset of a disease can be diagnosed at any time during the study period.  In employment contexts an attrition event can occur at various times throughout the year.  
+In previous chapters, the outcomes we have been modeling have or have not occurred at a particular point in time following when the input variables were measured.  For example, in Chapter \@ref(linear-reg-ols) input variables were measured in the first three years of an education program and the outcome was measured at the end of the fourth year.  In many situations, the outcome we are interested in is a singular event that can occur at any time following when the input variables were measured, can occur at a different time for different individuals, and once it has occurred it cannot reoccur or repeat.  In medical studies, death can occur or the onset of a disease can be diagnosed at any time during the study period.  In employment contexts, an attrition event can occur at various times throughout the year.  
 
-An obvious and simple way to deal with this would be to simply agree to look at a specific point in time and measure whether or not the event had occurred at that point, for example 'How many employees had left at the three year point?'.  Such an approach allows us to use standard generic regression models like those studied in previous chapters.  But this approach has limitations.  
+An obvious and simple way to deal with this would be to simply agree to look at a specific point in time and measure whether or not the event had occurred at that point, for example, 'How many employees had left at the three-year point?'.  Such an approach allows us to use standard generic regression models like those studied in previous chapters.  But this approach has limitations.  
 
-Firstly, we are only able to infer conclusions about the likelihood of the event having occurred as at the end of the period of study.  We cannot make inferences about the likelihood of the event throughout the period of study.  Being able to say that attrition is twice as likely for certain types of individuals *at any time throughout the three years* is more powerful than merely saying that attrition is twice as likely at the three year point.
+Firstly, we are only able to infer conclusions about the likelihood of the event having occurred as at the end of the period of study.  We cannot make inferences about the likelihood of the event throughout the period of study.  Being able to say that attrition is twice as likely for certain types of individuals *at any time throughout the three years* is more powerful than merely saying that attrition is twice as likely at the three-year point.
 
-Secondly, our sample size is constrained by the state of our data at the end of the period of study.  Therefore if we lose track of an individual after two years and six months, that observation needs to be dropped from our data set if we are focused only on the three year point.  Wherever possible, loss of data is something a statistician will want to avoid as it effects the accuracy and statistical power of inferences, and also means research effort was wasted. 
+Secondly, our sample size is constrained by the state of our data at the end of the period of study.  Therefore if we lose track of an individual after two years and six months, that observation needs to be dropped from our data set if we are focused only on the three-year point.  Wherever possible, loss of data is something a statistician will want to avoid as it affects the accuracy and statistical power of inferences, and also means research effort was wasted. 
 
 *Survival analysis* is a general term for the modeling of a time-associated binary non-repeated outcome, usually involving an understanding of the comparative risk of that outcome between two or more different groups of interest.  There are two common components in an elementary survival analysis, as follows:
 
-* A graphical representation of the future outcome risk of the different groups over time, using *survival curves* based on `r if (knitr::is_latex_output()) '\\index{Kaplan-Meier estimates}'`Kaplan-Meier estimates of survival rate.  This is usually an effective way to establish *prima facie* relevance of a certain input variable to the survival outcome, and is a very effective visual way of communicating the relevance of the input variable to non-statisticians.
+* A graphical representation of the future outcome risk of the different groups over time, using *survival curves* based on `r if (knitr::is_latex_output()) '\\index{Kaplan-Meier estimates}'`Kaplan-Meier estimates of survival rate.  This is usually an effective way to establish *prima facie* relevance of a certain input variable to the survival outcome and is a very effective visual way of communicating the relevance of the input variable to non-statisticians.
 * A `r if (knitr::is_latex_output()) '\\index{Cox proportional hazard}'`*Cox proportional hazard* regression model to establish statistical significance of input variables and to estimate the effect of each input variable on the comparative risk of the outcome throughout the study period.  
 
 Those seeking a more in depth treatment of survival analysis should consult texts on its use in medical/clinical contexts, and a recommended source is @collett. In this chapter we will use a walkthrough example to illustrate a typical use of survival analysis in a people analytics context.  
 
-`r if (knitr::is_latex_output()) '\\index{data sets!job\\_retention@\\texttt{job\\_retention}}'`The `job_retention` data set shows the results of a study of around 3,800 individuals employed in various fields of employment over a 1 year period.  At the beginning of the study, the individuals were asked to rate their sentiment towards their job.  These individuals were then followed up monthly for a year to determine if they were still working in the same job or had left their job for a substantially different job.  If an individual was not successfully followed up in a given month, they were no longer followed up for the remainder of the study period.   
+`r if (knitr::is_latex_output()) '\\index{data sets!job\\_retention@\\texttt{job\\_retention}}'`The `job_retention` data set shows the results of a study of around 3,800 individuals employed in various fields of employment over a one-year period.  At the beginning of the study, the individuals were asked to rate their sentiment towards their job.  These individuals were then followed up monthly for a year to determine if they were still working in the same job or had left their job for a substantially different job.  If an individual was not successfully followed up in a given month, they were no longer followed up for the remainder of the study period.   
 
 `r if (knitr::is_latex_output()) '\\small'`
 ```{r}
@@ -31,19 +31,19 @@ For this walkthrough example, the particular fields we are interested in are:
 
 * `gender`:  The gender of the individual studied
 * `field`: The field of employment that they worked in at the beginning of the study
-* `level`:  The level of the position in their organization at the beginning of the study---`Low`, `Medium` or `High`.
+* `level`:  The level of the position in their organization at the beginning of the study---`Low`, `Medium` or `High`
 * `sentiment`:   The sentiment score reported on a scale of 1 to 10 at the beginning of the study, with 1 indicating extremely negative sentiment and 10 indicating extremely positive sentiment
 * `left`: A binary variable indicating whether or not the individual had left their job as at the last follow-up
-* `month`:  The month of the last follow-up.  
+* `month`:  The month of the last follow-up  
 
 ## Tracking and illustrating survival rates over the study period
 
-In our example, we are defining 'survival' as 'remaining in substantially the same job'.  We can regard the starting point as month 0 and we are following-up in each of months 1 through 12.  For a given month $i$, we can define a survival rate $S_i$ as follows:
+In our example, we are defining 'survival' as 'remaining in substantially the same job'&zwj;.  We can regard the starting point as month 0, and we are following up in each of months 1 through 12.  For a given month $i$, we can define a survival rate $S_i$ as follows
 
 $$
 S_i = S_{i - 1}(1 - \frac{l_i}{n_i})
 $$
-where $l_i$ is the number reported as left in month $i$ and $n_i$ is the number still in substantially the same job after month $i - 1$, with $S_0 = 1$.
+where $l_i$ is the number reported as left in month $i$, and $n_i$ is the number still in substantially the same job after month $i - 1$, with $S_0 = 1$.
 
 `r if (knitr::is_latex_output()) '\\index{R!packages!suvival@\\texttt{survival}}'`The `survival` package in R allows easy construction of survival rates on data in a similar format to that in our `job_retention` data set.  A survival object is created using the `Surv()` function to track the survival rate at each time period.
 
@@ -135,7 +135,7 @@ h(t) = h_0(t)e^{\beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p}
 $$
 where $h_0(t)$ is a base or intercept hazard at time $t$, and $\beta_i$ is the coefficient associated with $x_i$ .
 
-Now let's imagine we are comparing the hazard for two different individuals $A$ and $B$ from our population. We make an assumption that our hazard curves $h^A(t)$ for individual $A$ and $h^B(t)$ for individual $B$ are always proportional to each other and never cross---this is called the *proportional hazard assumption*. Under this assumption, we can conclude that:
+Now let's imagine we are comparing the hazard for two different individuals $A$ and $B$ from our population. We make an assumption that our hazard curves $h^A(t)$ for individual $A$ and $h^B(t)$ for individual $B$ are always proportional to each other and never cross---this is called the *proportional hazard assumption*. Under this assumption, we can conclude that
 
 $$
 \begin{aligned}
@@ -174,7 +174,7 @@ summary(cox_model)
 ```
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
-The model returns the following^[The concordance measure returned is a measure of how well the model can predict in any given pair who will survive longer, and is valuable in a number of medical research contexts]:
+The model returns the following^[The concordance measure returned is a measure of how well the model can predict in any given pair who will survive longer and is valuable in a number of medical research contexts.]
 
 * Coefficients for each input variable and their p-values.  Here we can conclude that working in Finance or Health is associated with a significantly greater likelihood of leaving over the period studied, and that higher sentiment is associated with a significantly lower likelihood of leaving.
 
@@ -189,7 +189,7 @@ Importantly, as well as statistically validating that sentiment has a significan
 
 `r if (knitr::is_latex_output()) '\\index{Cox proportional hazard!proportional hazard assumption}'`Note that we mentioned in the previous section a critical assumption for our Cox proportional hazard model to be valid, called the proportional hazard assumption.  As always, it is important to check this assumption before finalizing any inferences or conclusions from your model.  
 
-`r if (knitr::is_latex_output()) '\\index{Schoenfeld residual}'`The most popular test of this assumption uses a residual known as a *Schoenfeld residual* which would be expected to be independent of time if the proportional hazard assumption holds.  The `cox.zph()` function in the `survival` package runs a statistical test on the null hypothesis that the Schoenfeld residuals are independent of time.  The test is conducted on every input variable and on the model as a whole, and a significant result would reject the proportional hazard assumption.
+`r if (knitr::is_latex_output()) '\\index{Schoenfeld residual}'`The most popular test of this assumption uses a residual known as a *Schoenfeld residual*, which would be expected to be independent of time if the proportional hazard assumption holds.  The `cox.zph()` function in the `survival` package runs a statistical test on the null hypothesis that the Schoenfeld residuals are independent of time.  The test is conducted on every input variable and on the model as a whole, and a significant result would reject the proportional hazard assumption.
 
 ```{r}
 (ph_check <- survival::cox.zph(cox_model))
@@ -243,7 +243,7 @@ library(frailtypack)
 
 We can see that the frailty parameter is significant, indicating that there is sufficient difference in the background attrition risk to justify the application of a random hazard effect.  We also see that the level of employment now becomes more significant in addition to sentiment, with Low and Medium level employees more likely to leave compared to High level employees.
 
-The `frailtyPenal()` function can also be a useful way to observe the different baseline survivals for groups in the data.  For example, a simple stratified Cox proportional hazard model based on sentiment category can be constructed^[Note there needs to be a `kappa` for each level of the stratification].  
+The `frailtyPenal()` function can also be a useful way to observe the different baseline survivals for groups in the data.  For example, a simple stratified Cox proportional hazard model based on sentiment category can be constructed^[Note there needs to be a `kappa` for each level of the stratification.].  
 
 ```{r, results = "hide"}
 stratified_base <- frailtypack::frailtyPenal(
@@ -255,7 +255,7 @@ stratified_base <- frailtypack::frailtyPenal(
 )
 ```
 
-This can then be plotted to observe how baseline retention differs by group, as in Figure \@ref(fig:stratified)^[This is another route to calculating survival curves similar to Figure \@ref(fig:survivalplot)].
+This can then be plotted to observe how baseline retention differs by group, as in Figure \@ref(fig:stratified)^[This is another route to calculating survival curves similar to Figure \@ref(fig:survivalplot).].
 
 ```{r stratified, fig.pos = "!h", fig.align = "center", fig.cap = if (knitr::is_latex_output()) {"Baseline retention curves for the two sentiment categories in the \\texttt{job\\_retention} data set"} else {"Baseline retention curves for the two sentiment categories in the `job_retention` data set"}, out.width = if (knitr::is_latex_output()) {"90%"}}
 plot(stratified_base, type.plot = "Survival", 
@@ -276,7 +276,7 @@ plot(stratified_base, type.plot = "Survival",
 3. What are some common uses for survival curves in practice?
 4. Why is it important to run a Cox proportional hazard model in addition to calculating survival estimates when trying to understand the effect of a given variable on survival?
 5. Describe the assumption that underlies a Cox proportional hazard model and how this assumption can be checked.
-6. What is a frailty model and why might it be useful in the context of survival analysis?
+6. What is a frailty model, and why might it be useful in the context of survival analysis?
 
 ### Data exercises
 
@@ -286,6 +286,6 @@ plot(stratified_base, type.plot = "Survival",
 2.  Calculate Kaplan-Meier survival estimates for the three categories and visualize these using survival curves.
 3.  Determine the effect of `intention` on retention using a Cox proportional hazard model, controlling for `gender`, `field` and `level`.
 4.  Perform an appropriate check that the proportional hazard assumption holds for your model.
-5.  Run a similar model but this time include the `sentiment` input variable.  How would you interpret the results?
+5.  Run a similar model, but this time include the `sentiment` input variable.  How would you interpret the results?
 6.  Experiment with running a frailty model to take into account the different background attrition risk by field of employment.
 

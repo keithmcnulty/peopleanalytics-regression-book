@@ -2,13 +2,13 @@
 
 As outlined earlier in this book, all technical implementations of the modeling techniques in previous chapters have relied wherever possible on base R code and specialist packages for specific methodologies---this allowed a focus on the basics of understanding, running and interpreting these models which is the key aim of this book.    For those interested in a wider range of technical options for running inferential statistical models, this chapter illustrates some alternative options and should be considered a starting point for those interested rather than an in-depth exposition.  
 
-First we look at options for generating models in more predictable formats in R.  We have seen in prior chapters that the output of many models in R can be inconsistent.  In many cases we are given more information than we need and in some cases we have less than we need.  Formats can vary and we sometimes need to look in different parts of the output to see specific statistics that we seek.  `r if (knitr::is_latex_output()) '\\index{R!packages!tidymodels@\\texttt{tidymodels}}'`The `tidymodels` set of packages tries to bring the principles of tidy data into the realm of statistical modeling and we will illustrate this briefly.
+First we look at options for generating models in more predictable formats in R.  We have seen in prior chapters that the output of many models in R can be inconsistent.  In many cases we are given more information than we need, and in some cases we have less than we need.  Formats can vary, and we sometimes need to look in different parts of the output to see specific statistics that we seek.  `r if (knitr::is_latex_output()) '\\index{R!packages!tidymodels@\\texttt{tidymodels}}'`The `tidymodels` set of packages tries to bring the principles of tidy data into the realm of statistical modeling and we will illustrate this briefly.
 
 Second, for those whose preference is to use Python, we provide some examples for how inferential regression models can be run in Python.  While Python is particularly well-tooled for running predictive models, it does not have the full range of statistical inference tools that are available in R.  In particular, using predictive modeling or machine learning packages like `r if (knitr::is_latex_output()) '\\index{Python!packages!scikit-learn@\\texttt{scikit-learn}}'``scikit-learn` to conduct regression modeling can often leave the analyst lacking when seeking information about certain model statistics when those statistics are not typically sought after in a predictive modeling workflow.  We briefly illustrate some Python packages which perform modeling with a greater emphasis on inference versus prediction.  
 
 ## 'Tidier' modeling approaches in R
 
-The `tidymodels` meta-package is a collection of packages which collectively apply the principles of tidy data to the construction of statistical models.  More information and learning resources on `tidymodels` can be found `r if (knitr::is_latex_output()) {"at \\texttt{https://www.tidymodels.org/}"} else {"[here](https://www.tidymodels.org/)"}`.  Within `tidymodels` there are two packages which are particular useful in controlling the output of models in R:  the `broom` and `parsnip` packages.
+The `tidymodels` meta-package is a collection of packages which collectively apply the principles of tidy data to the construction of statistical models.  More information and learning resources on `tidymodels` can be found `r if (knitr::is_latex_output()) {"at \\texttt{https://www.tidymodels.org/}"} else {"[here](https://www.tidymodels.org/)"}`.  Within `tidymodels` there are two packages which are particularly useful in controlling the output of models in R:  the `broom` and `parsnip` packages.
 
 ### The `broom` package
 
@@ -64,7 +64,7 @@ head(broom::augment(promotion_model))
 ```
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
-`r if (knitr::is_latex_output()) '\\index{data sets!soccer@\\texttt{soccer}}'`These functions are model-agnostic for a very wide range of common models in R.  For example, we can use them on our proportional odds model on soccer discipline from Chapter \@ref(ord-reg) and they will generate the relevant statistics in tidy tables.
+`r if (knitr::is_latex_output()) '\\index{data sets!soccer@\\texttt{soccer}}'`These functions are model-agnostic for a very wide range of common models in R.  For example, we can use them on our proportional odds model on soccer discipline from Chapter \@ref(ord-reg), and they will generate the relevant statistics in tidy tables.
 
 ```{r}
 # get soccer data
@@ -149,7 +149,7 @@ models %>%
 
 ### The `parsnip` package
 
-`r if (knitr::is_latex_output()) '\\index{R!packages!parsnip@\\texttt{parsnip}}'`The `parsnip` package aims create a unified interface to running models, to avoid users needing to understand different model terminology and other minutiae.   It also takes a more hierarchical approach to defining models that is similar in nature to the object-oriented approaches that Python users would be more familiar with.
+`r if (knitr::is_latex_output()) '\\index{R!packages!parsnip@\\texttt{parsnip}}'`The `parsnip` package aims to create a unified interface to running models, to avoid users needing to understand different model terminology and other minutiae.   It also takes a more hierarchical approach to defining models that is similar in nature to the object-oriented approaches that Python users would be more familiar with.
 
 Again let's use our salesperson promotion model example to illustrate.  We start by defining a model family that we wish to use, in this case logistic regression, and define a specific engine and mode.
 
@@ -188,7 +188,7 @@ model %>%
 
 `r if (knitr::is_latex_output()) '\\index{Python!packages!scikit-learn@\\texttt{scikit-learn}}'`In general, the modeling functions contained in `scikit-learn`---which tends to be the go-to modeling package for most Python users---are oriented towards predictive modeling and can be challenging to navigate for those who are primarily interested in inferential modeling.  In this section we will briefly review approaches for running some of the models contained in this book in Python.  `r if (knitr::is_latex_output()) '\\index{Python!packages!statsmodels@\\texttt{statsmodels}}'`The `statsmodels` package is highly recommended as it offers a wide range of models which report similar statistics to those reviewed in this book.  Full `statsmodels` documentation can be found `r if (knitr::is_latex_output()) {"at \\texttt{https://www.statsmodels.org/stable/index.html}"} else {"[here](https://www.statsmodels.org/stable/index.html)"}`.
 
-### Ordinary least squares (OLS) linear regression
+### Ordinary Least Squares (OLS) linear regression
 
 The OLS linear regression model reviewed in Chapter \@ref(linear-reg-ols) can be generated using the `statsmodels` package, which can report a reasonably thorough set of model statistics.  By using the `statsmodels` formula API, model formulas similar to those used in R can be used.  
 
@@ -485,7 +485,7 @@ plt.show()
 
 
 
-And here is an example of how to fit a Cox Proportional Hazard model similarly to Section \@ref(coxphmodel)^[I am not aware of any way of running frailty models currently in Python].
+And here is an example of how to fit a Cox Proportional Hazard model similarly to Section \@ref(coxphmodel)^[I am not aware of any way of running frailty models currently in Python.].
 
 ```{python, results = "hide"}
 from lifelines import CoxPHFitter
@@ -508,7 +508,7 @@ cph.print_summary()
 ```
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
-Proportional Hazard assumptions can be checked using the `check_assumptions()` method^[Schoenfeld residual plots can be seen by setting `show_plots = True` in the parameters].
+Proportional Hazard assumptions can be checked using the `check_assumptions()` method^[Schoenfeld residual plots can be seen by setting `show_plots = True` in the parameters.].
 
 ```{python, eval = FALSE}
 cph.check_assumptions(job_retention, p_value_threshold = 0.05)
@@ -524,7 +524,7 @@ cph.check_assumptions(job_retention, p_value_threshold = 0.05)
 
 Implementation of other model variants featured in earlier chapters becomes thinner in Python.  However, of note are the following:
 
-* Ordinal regression is not currently available in the release version of the `statsmodels` package, but is available in the development version.  The `mord` package offers an implementation of ordinal regression for predictive analytics purposes, but for inferential modeling users will need to wait for a release of `statsmodels` that contains ordinal regression methods or for immediate use they will need to install the development version from source.
+* Ordinal regression is not currently available in the release version of the `statsmodels` package but is available in the development version.  The `mord` package offers an implementation of ordinal regression for predictive analytics purposes, but for inferential modeling users will need to wait for a release of `statsmodels` that contains ordinal regression methods or for immediate use they will need to install the development version from source.
 
 * Mixed models only currently have an implementation for linear mixed modeling in `statsmodels`.  Generalized linear mixed models equivalent to those found in the `lme4` R package are not yet available in Python.
 

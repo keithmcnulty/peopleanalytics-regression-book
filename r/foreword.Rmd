@@ -11,21 +11,21 @@ their cases and to refine their approaches for greater efficiency, effectiveness
 
 Doing data work with people in organizations has complexities that some other types of data work
 doesn’t. Often, the employee populations are relatively smaller than data sets used in other areas,
-sometimes limiting the methods than can be used. Various regulatory requirements may dictate what
+sometimes limiting the methods that can be used. Various regulatory requirements may dictate what
 data can be gathered and used, and what types of evidence might be required for various programs or
 people strategies. Human behavior and organizations are sufficiently complex that typically, multiple
-factors work together in influencing an outcome. Effects can be subtle, or meaningful only in
+factors work together in influencing an outcome. Effects can be subtle or meaningful only in
 combination, or difficult to tease apart. While in many disciplines, prediction is the most important aim,
 for most people analytics projects and practitioners, understanding *why* something is happening is
 critical.
 
-While the universe of analytical approaches is wonderful and vast, the best 'swiss army knife' we have
+While the universe of analytical approaches is wonderful and vast, the best 'Swiss army knife' we have
 in people analytics is regression. This volume is an accessible, targeted work aimed directly at
 supporting professionals doing people analytics work. I’ve had the privilege of knowing and respecting
 Keith McNulty for many years – he is the rare and marvelous individual who is deeply expert in the
 mechanics of data and analytics, curious about and steeped in the opportunities to improve the
 effectiveness and well-being of people at work, and a gifted teacher and storyteller. He is among the
-most prolific standard bearers for people analytics. This new open source volume is in keeping with
+most prolific standard-bearers for people analytics. This new open-source volume is in keeping with
 many years of contributions to the practice of understanding people at work.
 
 After nearly 30 years of doing people analytics work and the privilege of leading people analytics teams

@@ -1038,6 +1038,13 @@
       "Repository": "CRAN",
       "Hash": "d908914ae53b04d4c0c0fd72ecc35370"
     },
+    "learnr": {
+      "Package": "learnr",
+      "Version": "0.10.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "ee4c94c586f032847b5ff679935f2ba4"
+    },
     "lhs": {
       "Package": "lhs",
       "Version": "1.1.1",
@@ -1299,15 +1306,15 @@
     },
     "peopleanalyticsdata": {
       "Package": "peopleanalyticsdata",
-      "Version": "0.1.9000",
+      "Version": "0.2.9000",
       "Source": "GitHub",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "peopleanalyticsdata",
       "RemoteUsername": "keithmcnulty",
-      "RemoteRef": "main",
-      "RemoteSha": "58dd1feea17a7d6b74af5f61a88cb5dba01610a8",
-      "Hash": "6fd01b92c247f9f5708b8e5a27986e34"
+      "RemoteRef": "HEAD",
+      "RemoteSha": "c5df8dfb54168d70b949e7ee33c4fcbed0375ad2",
+      "Hash": "6f194c596966a2e7cb527102f116ec54"
     },
     "pillar": {
       "Package": "pillar",
