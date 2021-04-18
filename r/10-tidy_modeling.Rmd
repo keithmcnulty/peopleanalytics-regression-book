@@ -284,6 +284,7 @@ print(promotion_model.summary())
 
 Multinomial logistic regression is similarly available using the `statsmodels` formula API.  As usual, care must be taken to ensure that the reference category is appropriately defined, dummy input variables need to be explicitly constructed, and a constant term must be added to ensure an intercept is calculated.
 
+`r if (knitr::is_latex_output()) '\\small'`
 ```{python, eval = FALSE}
 import pandas as pd
 import statsmodels.api as sm

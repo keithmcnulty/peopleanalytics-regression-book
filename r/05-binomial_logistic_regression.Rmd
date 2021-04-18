@@ -267,7 +267,7 @@ $$
 
 ## Running a multivariate binomial logistic regression model
 
-The derivations in the previous section easily extend to multivariate data.  Let $y$ be a dichotomous outcome, and let $x_1, x_2, \dots, x_p$ be our input variables.  Then
+The derivations in the previous section extend to multivariate data.  Let $y$ be a dichotomous outcome, and let $x_1, x_2, \dots, x_p$ be our input variables.  Then
 
 $$
 \ln\left(\frac{P(y = 1)}{P(y = 0)}\right) = \beta_0 + \beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p
