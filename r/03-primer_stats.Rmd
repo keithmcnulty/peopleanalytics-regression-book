@@ -426,7 +426,7 @@ In practice, there are numerous alphas that are of interest to analysts, each re
 
 `r if (knitr::is_latex_output()) '\\index{hypothesis testing!p-hacking}'`Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data.  In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards---a process known as 'p-hacking'---has been of increasing concern recently.  See Chapter \@ref(power-tests) for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.
 
-### Testing for a non-zero correlation between two variables ($t$-test for correlation)
+### Testing for a non-zero correlation between two variables ($t$-test for correlation) {#t-test-cor}
 
 `r if (knitr::is_latex_output()) '\\index{hypothesis testing!test of non-zero correlation}'`Imagine that we are given a sample of data for two variables and we are asked if the variables are correlated in the overall population.  We can take a null hypothesis that the variables are not correlated, determine a t-statistic associated with a zero correlation and convert this to a p-value.  The t-statistic associated with a correlation $r$ between two samples of length $n$ is often notated $t^*$ and is defined as 
 
@@ -632,6 +632,91 @@ print(chi2_test)
 ```
 `r if (knitr::is_latex_output()) '\\index{hypothesis testing|)}'`
 
+`r if (knitr::is_latex_output()) '<!--'`
+## Foundational statistics in Julia
+
+The `Statistics` package in Julia provides a wide range of functions for univariate and bivariate analysis.  Note that Julia has a particular `missing` type for missing data, and the specific string form of missing data may need to be defined when importing data from CSVs and other data sources.  A little more up front work is required in Julia to ensure missing data structures are not being passed to statistics functions.
+
+```{julia, message = FALSE, warning = FALSE}
+using DataFrames, CSV, Statistics, Missings;
+
+# get salespeople data
+url = "http://peopleanalytics-regression-book.org/data/salespeople.csv";
+salespeople = CSV.read(download(url), DataFrame, missingstrings=["NA"]);
+
+# remove missing value rows from dataset
+salespeople = salespeople[completecases(salespeople), :];
+# ensure no missing data structures
+salespeople = mapcols(col -> disallowmissing(col), salespeople);
+
+# mean of sales
+mean(salespeople.sales)
+# sample variance
+var(salespeople.sales)
+# sample standard deviation
+std(salespeople.sales)
+```
+
+Population statistics can be obtained by setting the `corrected` argument to `false` inside the standard statistics functions.
+
+```{julia, message = FALSE, warning = FALSE}
+# population standard deviation
+std(salespeople.sales, corrected = false)
+```
+
+Note that there are some useful time-saving double functions in Julia for common statistics.
+
+```{julia, message = FALSE, warning = FALSE}
+# sample mean and variance
+mean_and_var(salespeople.sales)
+# sample mean and standard deviation
+mean_and_std(salespeople.sales)
+```
+
+Covariance and correlations are straightforward, with specific functions for Spearman's rho and Kendall's tau: 
+
+```{julia, message = FALSE, warning = FALSE}
+# sample covariance
+cov(salespeople.sales, salespeople.customer_rate)
+# sample Pearson correlation
+cor(salespeople.sales, salespeople.customer_rate)
+# sample Spearman correlation
+corspearman(salespeople.sales, salespeople.performance)
+# sample Kendall correlation
+corkendall(salespeople.sales, salespeople.performance)
+```
+
+The `HypothesisTests` package provides common hypothesis testing functionality with nicely formatted output.  To perform a two-tailed t-test on samples of unequal variance:
+
+```{julia, message = FALSE, warning = FALSE}
+using HypothesisTests
+
+# get sales for top and bottom performers
+perf1 = salespeople[salespeople.performance .== 1, :].sales;
+perf4 = salespeople[salespeople.performance .== 4, :].sales;
+
+# perform two-tailed t-test with unequal variance
+UnequalVarianceTTest(perf4, perf1)
+```
+
+Currently, Julia does not have packaged hypothesis tests for correlations, so these would need to be done manually using the methods illustrated in Section \@ref(t-test-cor)^[Julia is a relatively young language and a quick perusal of the `HypothesisTests` Github repo reveals active work to add correlation testing in upcoming versions].  A chi-square test is conducted on a contingency matrix as follows:
+
+```{julia, message = FALSE, warning = FALSE}
+# chi-square test
+contingency = counts(salespeople.promoted, salespeople.performance);
+ChisqTest(contingency)
+```
+
+Specific elements of the hypothesis test results can be extracted as follows:
+
+```{julia, message = FALSE, warning = FALSE}
+# get confidence interval of t-test
+confint(UnequalVarianceTTest(perf4, perf1))
+# get p-value of chi-square test
+pvalue(ChisqTest(contingency))
+```
+
+`r if (knitr::is_latex_output()) '-->'`
 
 ## Learning exercises
 

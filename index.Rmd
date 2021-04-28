@@ -1,6 +1,6 @@
 --- 
 title: "Handbook of Regression Modeling in People Analytics"
-subtitle: "With Examples in R and Python"
+subtitle: "`r if (knitr::is_latex_output()) {'With Examples in R and Python'} else {'With Examples in R, Python and Julia'}`"
 author: "Keith McNulty"
 site: bookdown::bookdown_site
 always_allow_html: true
@@ -14,6 +14,7 @@ github-repo: keithmcnulty/peopleanalytics-regression-book
 
 ```{r, echo = FALSE}
 library(reticulate)
+library(JuliaCall)
 matplotlib <- import("matplotlib")
 matplotlib$use("Agg", force = TRUE)
 
@@ -40,7 +41,7 @@ This book is available in [bootstrap format](http://peopleanalytics-regression-b
 
 ### Notes on data used in this book {-}
 
-For R and Python users, each of the data sets used in this book can be downloaded individually by following the code in each chapter.  Alternatively for R users who intend to work through all of the chapters, all data sets can be loaded into an R session in advance by installing and loading the `peopleanalyticsdata` R package.  
+`r if (knitr::is_html_output()) {'For R, Python and Julia'} else {'For R and Python'}` users, each of the data sets used in this book can be downloaded individually by following the code in each chapter.  Alternatively for R users who intend to work through all of the chapters, all data sets can be loaded into an R session in advance by installing and loading the `peopleanalyticsdata` R package.  
 
 ```{r, eval = FALSE}
 # install peopleanalyticsdata package

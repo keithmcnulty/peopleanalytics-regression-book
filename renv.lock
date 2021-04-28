@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.0.3",
+    "Version": "4.0.5",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -95,6 +95,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "35bce0d50fdf86441171ff6742e29c8c"
+    },
+    "JuliaCall": {
+      "Package": "JuliaCall",
+      "Version": "0.17.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "0b171d1969ca870787a816e30836754c"
     },
     "KMsurv": {
       "Package": "KMsurv",

@@ -1,10 +1,14 @@
-# Alternative Technical Approaches in R and Python {#alt-approaches}
+# `r if (knitr::is_latex_output()) {"Alternative Technical Approaches in R and Python"} else {"Alternative Technical Approaches in R, Python and Julia"}` {#alt-approaches}
 
 As outlined earlier in this book, all technical implementations of the modeling techniques in previous chapters have relied wherever possible on base R code and specialist packages for specific methodologies---this allowed a focus on the basics of understanding, running and interpreting these models which is the key aim of this book.    For those interested in a wider range of technical options for running inferential statistical models, this chapter illustrates some alternative options and should be considered a starting point for those interested rather than an in-depth exposition.  
 
 First we look at options for generating models in more predictable formats in R.  We have seen in prior chapters that the output of many models in R can be inconsistent.  In many cases we are given more information than we need, and in some cases we have less than we need.  Formats can vary, and we sometimes need to look in different parts of the output to see specific statistics that we seek.  `r if (knitr::is_latex_output()) '\\index{R!packages!tidymodels@\\texttt{tidymodels}}'`The `tidymodels` set of packages tries to bring the principles of tidy data into the realm of statistical modeling and we will illustrate this briefly.
 
 Second, for those whose preference is to use Python, we provide some examples for how inferential regression models can be run in Python.  While Python is particularly well-tooled for running predictive models, it does not have the full range of statistical inference tools that are available in R.  In particular, using predictive modeling or machine learning packages like `r if (knitr::is_latex_output()) '\\index{Python!packages!scikit-learn@\\texttt{scikit-learn}}'``scikit-learn` to conduct regression modeling can often leave the analyst lacking when seeking information about certain model statistics when those statistics are not typically sought after in a predictive modeling workflow.  We briefly illustrate some Python packages which perform modeling with a greater emphasis on inference versus prediction.  
+
+`r if (knitr::is_latex_output()) '<!--'`
+Finally, we show some examples of regression models in Julia, which is a new but increasingly popular open source programming language.  Julia is considerably younger as a language than both R and Python, but its uptake is rapid.  Already many of the most common models can be easily implemented in Julia, but more advanced models are still awaiting the development of packages that implement them.  
+`r if (knitr::is_latex_output()) '-->'`
 
 ## 'Tidier' modeling approaches in R
 
@@ -529,6 +533,143 @@ Implementation of other model variants featured in earlier chapters becomes thin
 
 * Mixed models only currently have an implementation for linear mixed modeling in `statsmodels`.  Generalized linear mixed models equivalent to those found in the `lme4` R package are not yet available in Python.
 
+`r if (knitr::is_latex_output()) '<!--'`
+## Inferential statistical modeling in Julia
 
+The `GLM` package in Julia offers functions for a variety of elementary regression models.  This package contains an implementation of linear regression as well as binomial logistic regression.  
+
+### Ordinary Least Squares (OLS) linear regression
+
+Here is how to run our OLS linear model on the `ugtests` data set from Chapter \@ref(linear-reg-ols):
+
+```{julia, message = FALSE, warning = FALSE}
+using DataFrames, CSV, GLM;
+
+# get data
+url = "http://peopleanalytics-regression-book.org/data/ugtests.csv";
+ugtests = CSV.read(download(url), DataFrame);
+
+# run linear model
+ols_model = lm(@formula(Final ~ Yr1 + Yr2 + Yr3), ugtests)
+```
+
+Summary statistics such as the $R^2$ or adjusted $R^2$ can be obtained using appropriate functions:
+
+```{julia, message = FALSE, warning = FALSE}
+# r-squared
+r2(ols_model)
+# adjusted r-squared
+adjr2(ols_model)
+
+```
+
+### Binomial logistic regression
+
+Here is how to run our binomial logistic regression on the `salespeople` data set from Chapter \@ref(bin-log-reg).  Note that categorical inputs will need to be explicitly converted before running the model.  
+
+```{julia, message = FALSE, warning = FALSE}
+using DataFrames, CSV, GLM, Missings, CategoricalArrays;
+
+# get salespeople data
+url = "http://peopleanalytics-regression-book.org/data/salespeople.csv";
+salespeople = CSV.read(download(url), DataFrame, missingstrings=["NA"]);
+
+# remove missing value rows from dataset
+salespeople = salespeople[completecases(salespeople), :];
+
+# ensure no missing data structures
+salespeople = mapcols(col -> disallowmissing(col), salespeople);
+
+# map categorical input columns
+salespeople.performance = CategoricalArray(salespeople.performance);
+
+# run binomial logistic regression model
+promotion_model = glm(@formula(promoted ~ sales + customer_rate + performance), salespeople, Binomial(), LogitLink())
+
+
+
+```
+
+The AIC, log likelihood and other summary statistics of the model can be obtained using the appropriate functions.  For example: 
+
+```{julia, message = FALSE, warning = FALSE}
+# AIC
+aic(promotion_model)
+# log likelihood
+loglikelihood(promotion_model)
+```
+
+### Multinomial logistic regression
+
+The `Econometrics` package provides a convenient function for a multinomial logistic regression model, where the levels of the outcome variable can be set as an argument.
+
+```{julia, message = FALSE, warning = FALSE}
+using DataFrames, CSV, Econometrics, CategoricalArrays;
+
+# get health_insurance data
+url = "http://peopleanalytics-regression-book.org/data/health_insurance.csv";
+health_insurance = CSV.read(download(url), DataFrame, missingstrings=["NA"]);
+
+# map gender and product to categorical
+health_insurance.gender = CategoricalArray(health_insurance.gender);
+health_insurance.product = CategoricalArray(health_insurance.product);
+
+# fit model defining reference level
+model = fit(EconometricModel, 
+            @formula(product ~ age + household + position_level + gender + absent),
+            health_insurance,
+            contrasts = Dict(:product => DummyCoding(base = "A")))
+```
+
+### Proportional odds logistic regression
+
+The `Econometrics` package also provides a convenient function for proportional odds logistic regression.
+
+```{julia, message = FALSE, warning = FALSE}
+using DataFrames, CSV, Econometrics, CategoricalArrays;
+
+# get soccer data
+url = "http://peopleanalytics-regression-book.org/data/soccer.csv";
+soccer = CSV.read(download(url), DataFrame, missingstrings=["NA"]);
+
+# map columns not starting with "n" to categorical
+transform!(soccer, names(soccer, r"^(?!n)") .=> CategoricalArray, renamecols = false);
+
+# map discipline column to ordinal
+soccer.discipline = levels!(categorical(soccer.discipline, ordered = true), ["None", "Yellow", "Red"]);
+
+# run proportional odds model
+soccer_model = fit(EconometricModel,
+                   @formula(discipline ~ n_yellow_25 + n_red_25 + position + result + country + level),
+                   soccer)
+
+```
+
+Note that the $R^2$ results presented correspond to the McFadden variant of the pseudo-$R^2$, although other variants can be obtained by specifying them in the appropriate function.
+
+```{julia, message = FALSE, warning = FALSE}
+r2(soccer_model, :Nagelkerke)
+```
+
+### Mixed models
+
+The `MixedModels` package allows for the construction of both linear mixed models and mixed GLMs.  Here is an approach to our mixed model on speed dating from Section \@ref(mixed):
+
+```{julia, message = FALSE, warning = FALSE}
+using DataFrames, CSV, MixedModels, CategoricalArrays;
+
+# get speed_dating data
+url = "http://peopleanalytics-regression-book.org/data/speed_dating.csv";
+speed_dating = CSV.read(download(url), DataFrame, missingstrings=["NA"]);
+
+# make iid categorical
+speed_dating.iid = CategoricalArray(speed_dating.iid);
+
+# run mixed GLM
+dating_model = fit(MixedModel, @formula(dec ~ agediff + samerace + attr + intel + prob + (1|iid)),
+                   speed_dating, Binomial(), LogitLink())
+```
+
+`r if (knitr::is_latex_output()) '-->'`
 
 
