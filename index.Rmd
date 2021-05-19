@@ -31,6 +31,8 @@ if (knitr::is_latex_output()) {
 Welcome to the website for the book *Handbook of Regression Modeling in People Analytics* by [Keith McNulty](https://twitter.com/dr_keithmcnulty).  
 
 ```{asis}
+<p style="text-align: center;"><a href="https://www.routledge.com/Handbook-of-Regression-Modeling-in-People-Analytics-With-Examples-in-R/McNulty/p/book/9781032041742"><img src="www/cover/coverpage.jpg" alt="Handbook of Regression Modeling Cover" width="500"/></a></p>
+  
 ::: {.infobox .caution}
 **Note**: This book is to be published by Chapman & Hall/CRC later in 2021. The online version of this book is free to read here (thanks to Chapman & Hall/CRC), and licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/). If you have any feedback, please feel free to [file an issue on GitHub](https://github.com/keithmcnulty/peopleanalytics-regression-book/issues). Thank you!
 :::

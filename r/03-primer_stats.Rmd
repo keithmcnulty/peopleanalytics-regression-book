@@ -638,7 +638,7 @@ print(chi2_test)
 The `Statistics` package in Julia provides a wide range of functions for univariate and bivariate analysis.  Note that Julia has a particular `missing` type for missing data, and the specific string form of missing data may need to be defined when importing data from CSVs and other data sources.  A little more up front work is required in Julia to ensure missing data structures are not being passed to statistics functions.
 
 ```{julia, message = FALSE, warning = FALSE}
-using DataFrames, CSV, Statistics, Missings;
+using DataFrames, CSV, StatsBase, Statistics, Missings;
 
 # get salespeople data
 url = "http://peopleanalytics-regression-book.org/data/salespeople.csv";
