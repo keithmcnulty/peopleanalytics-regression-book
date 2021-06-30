@@ -31,10 +31,10 @@ if (knitr::is_latex_output()) {
 Welcome to the website for the book *Handbook of Regression Modeling in People Analytics* by [Keith McNulty](https://twitter.com/dr_keithmcnulty).  
 
 ```{asis}
-<p style="text-align: center;"><a href="https://www.routledge.com/Handbook-of-Regression-Modeling-in-People-Analytics-With-Examples-in-R/McNulty/p/book/9781032041742"><img src="www/cover/coverpage.png" alt="Handbook of Regression Modeling Cover" width="500"/></a></p>
+<p style="text-align: center;"><a href="https://www.routledge.com/Handbook-of-Regression-Modeling-in-People-Analytics-With-Examples-in-R/McNulty/p/book/9781032041742"><img src="www/cover/coverpage.png" alt="Handbook of Regression Modeling Cover" width="300"/></a></p>
   
 ::: {.infobox .caution}
-**Note**: This book is to be published by Chapman & Hall/CRC later in 2021. The online version of this book is free to read here (thanks to Chapman & Hall/CRC), and licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/). If you have any feedback, please feel free to [file an issue on GitHub](https://github.com/keithmcnulty/peopleanalytics-regression-book/issues). Thank you!
+**Note**: This book is published by Chapman & Hall/CRC and can be purchased [directly from their website](https://www.routledge.com/Handbook-of-Regression-Modeling-in-People-Analytics-With-Examples-in-R/McNulty/p/book/9781032041742), as well as from Amazon and other book retailers. The online version of this book is free to read here (thanks to Chapman & Hall/CRC), and licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/). If you have any feedback, please feel free to [file an issue on GitHub](https://github.com/keithmcnulty/peopleanalytics-regression-book/issues). Thank you!
 :::
 ```
 
@@ -43,7 +43,7 @@ This book is available in [bootstrap format](http://peopleanalytics-regression-b
 
 ### Notes on data used in this book {-}
 
-`r if (knitr::is_html_output()) {'For R, Python and Julia'} else {'For R and Python'}` users, each of the data sets used in this book can be downloaded individually by following the code in each chapter.  Alternatively for R users who intend to work through all of the chapters, all data sets can be loaded into an R session in advance by installing and loading the `peopleanalyticsdata` R package.  
+`r if (knitr::is_html_output()) {'For R, Python and Julia'} else {'For R and Python'}` users, each of the data sets used in this book can be downloaded individually by following the code in each chapter.  Alternatively, packages containing all the data sets used in this book are now available in R and Python.  For R users, install and load the `peopleanalyticsdata` R package.  
 
 ```{r, eval = FALSE}
 # install peopleanalyticsdata package
@@ -57,6 +57,23 @@ data(package = "peopleanalyticsdata")
 help(managers)
 ```
 
+For Python users , use `pip install peopleanalyticsdata` to install the package into your environment. Then, to use the package:
+
+```{python, eval = FALSE}
+# import peopleanalyticsdata package
+import peopleanalyticsdata as pad
+import pandas as pd
+
+# see a list of data sets
+pad.list_sets()
+
+# load data into a dataframe
+df = pad.managers()
+
+# find out more about a specific data set ('managers' example)
+pad.managers().info()
+
+```
 
 `r if (knitr::is_latex_output()) '<!--'`
 ### Solutions to exercises {-}
