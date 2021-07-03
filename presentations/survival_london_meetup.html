@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Regression Modeling in People Analytics: Survival Analysis</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Keith McNulty" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Regression Modeling in People Analytics: Survival Analysis
+### Keith McNulty
+
+---
+
+
+
+
+class: left, middle, r-logo
+
+## Note on source
+
+This document is a summary learning developed for the London HR Analytics Meetup on 6 July 2021.  It is based on material in the textbook *[Handbook of Regression Modeling in People Analytics](https://www.routledge.com/Handbook-of-Regression-Modeling-in-People-Analytics-With-Examples-in-R/McNulty/p/book/9781032041742)*. Please consult this book for a deeper understanding/treatment. 
+
+The code for this document is [here](https://github.com/keithmcnulty/peopleanalytics-regression-book/tree/master/presentations/survival_london_meetup.Rmd).
+
+## Note on languages
+
+This document is coded in R.  Instructions in Python are included in the Appendix.
+
+---
+class: left, middle, r-logo
+
+## What is regression?
+
+* Regression is a statistical method that helps relate certain input data to an outcome of interest, based on certain statistical assumptions oriented around the *Central Limit Theorem*.
+
+* It is helpful as a way to explain how certain constructs influence (or do not influence) your outcome, but it *cannot prove causality*, which is much harder to do.
+
+* It is an extremely useful technique in practice.  Because it is often too difficult to prove causation, decision makers use the next best thing --- proof of influence combined with expert knowledge and judgment --- in making business decisions.  
+
+---
+class: left, middle, r-logo
+
+## How does regression help?
+
+Given data on a set of input variables and an outcome of interest, regression analysis can estimate the following:
+
+1.  Which of the input variables have a statistically significant influence on the outcome?
+2.  'How big' is the influence of each significant variable?
+3.  How much of the overall outcome do your input variables explain?
+
+---
+class: left, middle, r-logo
+
+## Example 1 - Linear Regression
+
+Circa 1880, Francis Galton did a study on some British children to see how their heights related to that of their parents.  Let's grab Galton's data.
+
+
+```r
+# get data from URL
+url &lt;- "https://raw.githubusercontent.com/keithmcnulty/peopleanalytics-regression-book/master/data/Galton.txt"
+galton &lt;- read.delim(url)
+
+# view first few rows
+head(galton)
+```
+
+```
+##   Family Father Mother Gender Height Kids
+## 1      1   78.5   67.0      M   73.2    4
+## 2      1   78.5   67.0      F   69.2    4
+## 3      1   78.5   67.0      F   69.0    4
+## 4      1   78.5   67.0      F   69.0    4
+## 5      2   75.5   66.5      M   73.5    4
+## 6      2   75.5   66.5      M   72.5    4
+```
+
+---
+class: left, middle, r-logo
+
+## What is the relationship between mid-parent height and child height
+
+Galton simplistically expected the child's height to be perfectly explained by the average height of their parents.  We can test that using a simple linear regression model.
+
+
+```r
+library(dplyr)
+
+# create midParentHeight column
+galton &lt;- galton %&gt;% 
+  dplyr::mutate(midParentHeight = (Father + Mother)/2)
+
+# simple linear regression of child vs mid-parent height
+simplemodel &lt;- lm(formula = Height ~ midParentHeight, data = galton)
+
+# how much does it explain (R-squared)
+summary(simplemodel)$r.squared
+```
+
+```
+## [1] 0.1069774
+```
+
+---
+class: left, middle, r-logo
+
+## Galton realized that children 'regress' away from their parents height towards a mean population height
+
+
+&lt;img src="survival_london_meetup_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: left, middle, r-logo
+
+## Example 2 - Logistic Regression
+
+In 1986, the Space Shuttle Challenger exploded shortly after take off and all on board were killed.  This started a major investigation by NASA.  Video evidence pointed to unstable structures called O-rings as the cause of the accident, and there was a strong hypothesis that these structures did not function well in colder temperatures, such as on the day of the tragic accident.
+
+Let's get some data on the Space Shuttle launches up to and including Challengers.
+
+
+```r
+shuttles &lt;- read.table(
+  "https://archive.ics.uci.edu/ml/machine-learning-databases/space-shuttle/o-ring-erosion-only.data"
+)
+
+colnames(shuttles) &lt;- c("total_orings", "distressed_orings", "temp", "leakcheck_psi", "order")
+head(shuttles)
+```
+
+```
+##   total_orings distressed_orings temp leakcheck_psi order
+## 1            6                 0   66            50     1
+## 2            6                 1   70            50     2
+## 3            6                 0   69            50     3
+## 4            6                 0   68            50     4
+## 5            6                 0   67            50     5
+## 6            6                 0   72            50     6
+```
+
+We create a new binary field called `incident` based on where there were any distressed o-rings:
+
+
+```r
+shuttles &lt;- shuttles |&gt; 
+  dplyr::mutate(incident = ifelse(distressed_orings &gt; 0, 1, 0))
+```
+
+---
+class: left, middle, r-logo
+
+## A simple logistic regression associates the temperature with the likelihood of o-ring failure
+
+Now we run a logistic regression model to relate `temp` and `leakcheck_psi` to the likelihood of there being an incident:
+
+
+```r
+model &lt;- glm("incident ~ temp + leakcheck_psi", data = shuttles, family = "binomial")
+
+summary(model)
+```
+
+```
+## 
+## Call:
+## glm(formula = "incident ~ temp + leakcheck_psi", family = "binomial", 
+##     data = shuttles)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -1.00837  -0.54507  -0.28098   0.02512   2.21488  
+## 
+## Coefficients:
+##                Estimate Std. Error z value Pr(&gt;|z|)  
+## (Intercept)   21.843631  11.936459   1.830   0.0673 .
+## temp          -0.350098   0.172977  -2.024   0.0430 *
+## leakcheck_psi  0.006007   0.009749   0.616   0.5378  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 26.402  on 22  degrees of freedom
+## Residual deviance: 14.033  on 20  degrees of freedom
+## AIC: 20.033
+## 
+## Number of Fisher Scoring iterations: 6
+```
+
+---
+class: left, middle, r-logo
+
+## Methods covered in textbook
+
+&lt;p&gt;
+&lt;img src="www/coverpage.png" style="float:left;margin-right:50px;
+}" width="260" align = "middle"&gt;
+&lt;ul&gt;
+&lt;li&gt;Hypothesis testing
+&lt;li&gt;Linear Regression
+&lt;li&gt;Binomial Logistic Regression
+&lt;li&gt;Multinomial Logistic Regression
+&lt;li&gt;Proportional Odds Regression
+&lt;li&gt;Multilevel Models
+&lt;li&gt;Structural Equation Models
+&lt;li&gt;Survival Analysis
+&lt;li&gt;Power Analysis
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.routledge.com/Handbook-of-Regression-Modeling-in-People-Analytics-With-Examples-in-R/McNulty/p/book/9781032041742"&gt;Pre-order now&lt;/a&gt; for print/Kindle.  All author proceeds donated to &lt;a href="https://rladies.org/"&gt;R-ladies Global&lt;/a&gt;
+&lt;li&gt;&lt;a href="https://peopleanalytics-regression-book.org"&gt;Free online version&lt;/a&gt;
+&lt;/ul&gt;
+&lt;/p&gt;
+
+
+---
+class: left, middle, r-logo
+
+## Analyzing time-based event outcomes
+
+Most elementary models analyze an outcome as at a specific point in time.  For example, in a logistic regression we might model the likelihood of high job performance (Yes or No) as at a specific performance review cycle.  In this case our outcome variable `\(y\)` is simply 1 or 0.
+
+Then if our input variables are `\(x_1, x_2, ...,x_n\)`, our model estimates the *odds* of `\(y\)` being positive as
+
+$$
+\frac{P(y = 1)}{P(y = 0)} = e^{\beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_nx_n}
+$$
+where `\(\beta_0, \beta_1, \beta_2, ..., \beta_n\)` are our coefficients which we can use to explain the influence of each input variable.
+
+But in People Analytics, many of our outcomes can occur *at any time* after we take measures of our input variables, and we are also interested in the time effect as well as the event itself.  Common examples of this are attrition or promotion.
+
+---
+class: left, middle, r-logo
+
+## Survival analysis
+
+Survival analysis is family of regression-based techniques designed to understand outcome events that occur over time.  This family of techniques came into existence to research the effect of lifestyle factors, drug treatment and other interventions on adverse clinical outcomes like death or the onset of serious disease.  Medically, while it is important to understand *whether* such an outcome occurs, it is also important to understand *when* it occurs.
+
+Key components of a basic survival analysis are:
+
+1.  The construction of a survival outcome
+2.  The calculation of Kaplan-Meier survival rates and curves
+3.  Running and checking a Cox Proportional Hazard regression model
+
+---
+class: left, middle, r-logo
+
+## Case example:  Employee surveys and attrition
+
+*Dropping Like Flies, Inc* is a company that is experiencing very high employee attrition.  The Chief People Officer believes that the employee experience is not a major factor in this issue and that this issue is being caused be aggressive competitors 'poaching' staff.
+
+You have been asked to find evidence to support or contradict this claim by analyzing the data on past survey responses and on employee departures.
+
+**Key question:**. Is there a reason to believe that poor employee experience is a factor in recent attrition?
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
