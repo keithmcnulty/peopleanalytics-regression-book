@@ -511,7 +511,7 @@ class: left, middle, r-logo
 Chapter 3 - Hypothesis testing
 Chapter 4 - Basic elements of multivariate regression
 Chapter 5 - Binomial logistic regression (binary event modeling)
-Chapter 9 - Survivial analysis
+Chapter 9 - Survival analysis
 
 
 
