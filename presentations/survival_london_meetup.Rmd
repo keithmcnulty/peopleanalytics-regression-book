@@ -27,7 +27,18 @@ The code for this document is [here](https://github.com/keithmcnulty/peopleanaly
 
 ## Note on languages
 
-This document is coded in R.  Instructions in Python are included in the Appendix.
+This document is coded in R based on the material in Chapter 9 of the textbook.  Instructions for doing this analysis in Python can be found in Section 10.2.5 of the textbook.
+
+
+
+---
+class: left, middle, r-logo
+
+## Quick poll
+
+> "I am confident that I know about regression modeling."
+>
+> `r tufte::quote_footer('Yes or No?')`
 
 ---
 class: left, middle, r-logo
@@ -36,9 +47,9 @@ class: left, middle, r-logo
 
 * Regression is a statistical method that helps relate certain input data to an outcome of interest, based on certain statistical assumptions oriented around the *Central Limit Theorem*.
 
-* It is helpful as a way to explain how certain constructs influence (or do not influence) your outcome, but it *cannot prove causality*, which is much harder to do.
+* It is helpful as a way to explain how certain constructs influence (or do not influence) your outcome, but it *cannot prove causation*, which is much harder to do.
 
-* It is an extremely useful technique in practice.  Because it is often too difficult to prove causation, decision makers use the next best thing --- proof of influence combined with expert knowledge and judgment --- in making business decisions.  
+* It is an extremely useful technique in practice.  Because it is often too difficult to prove causation, decision makers use the next best thing - proof of influence combined with expert knowledge and judgment - in making business decisions.  
 
 ---
 class: left, middle, r-logo
@@ -180,7 +191,7 @@ class: left, middle, r-logo
 
 ## Analyzing time-based event outcomes
 
-Most elementary models analyze an outcome as at a specific point in time.  For example, in a logistic regression we might model the likelihood of high job performance (Yes or No) as at a specific performance review cycle.  In this case our outcome variable $y$ is simply 1 or 0.
+Most elementary models analyze an outcome as at a specific point in time.  For example, in a logistic regression we might model the likelihood of high job performance (Yes or No) as at a specific performance review cycle.  In this case our outcome variable $y$ is simply positive (1) or negative (0).
 
 Then if our input variables are $x_1, x_2, ...,x_n$, our model estimates the *odds* of $y$ being positive as
 
@@ -209,7 +220,7 @@ class: left, middle, r-logo
 
 ## Case example:  Employee surveys and attrition
 
-*Dropping Like Flies, Inc* is a company that is experiencing very high employee attrition.  The Chief People Officer believes that the employee experience is not a major factor in this issue and that this issue is being caused be aggressive competitors 'poaching' staff.
+*Dropping Like Flies, Inc* is a company that is experiencing very high employee attrition.  The Chief People Officer believes that the employee experience is not a major factor in this issue and that this issue is being caused by aggressive competitors 'poaching' staff.
 
 You have been asked to find evidence to support or contradict this claim by analyzing the data on past survey responses and on employee departures.
 
@@ -222,8 +233,401 @@ class: left, middle, r-logo
 ## Data set 1 - Survey responses from survey conducted at the end of 2018
 
 ```{r}
-survey_responses <- read.csv("")
+survey_responses <- read.csv("https://raw.githubusercontent.com/keithmcnulty/peopleanalytics-regression-book/master/presentations/survey_responses.csv")
+
+head(survey_responses)
+```
+
+* `sentiment` is the level of agreement to the statement 'I am happy in my job' on a Likert scale of 1 to 10.
+* `intention` is the level of agreement to the statement 'I intend to find a new job' on a Likert scale of 1 to 10.
+
+
+---
+class: left, middle, r-logo
+
+## Quick look at the survey response distribution
+
+```{r, echo = FALSE, fig.align = "center"}
+library(ggplot2)
+
+ggplot(data = survey_responses |> 
+         dplyr::mutate(across(c("sentiment", "intention"), as.factor)) |> 
+         tidyr::pivot_longer(c("sentiment", "intention"), names_to = "response"), 
+       aes(x = value, fill= response)) +
+    geom_histogram(color = "#e9ecef", alpha = 0.6, position = 'identity', stat = "count") +
+    scale_fill_manual(values = c("lightblue", "pink")) +
+    theme_minimal() +
+    labs(fill = "Response to:")
+  
+```
+
+---
+class: left, middle, r-logo
+
+## Quick poll
+
+> "Do you think sentiment or intention to leave will make a difference in departures over the next two years?"
+>
+> `r tufte::quote_footer('None, Sentiment Only, Intention Only, Both')`
+
+---
+class: left, middle, r-logo
+
+## Data set 2 - Data on departures in the past in 2019 and 2020
+
+```{r}
+departure_dates <- read.csv("https://raw.githubusercontent.com/keithmcnulty/peopleanalytics-regression-book/master/presentations/departure_dates.csv")
+
+head(departure_dates)
+```
+
+* Only employees who departed are in this data
+* All departure dates are end of month
+
+
+---
+class: left, middle, r-logo
+
+## Designing the analysis
+
+Survival analysis requires an event and a time, so we will need to define and extract both of these from this data.
+
+* **Event:** Clearly we are interested in whether someone departed or not, which means they have a departure date in our records.  So our event would be labelled 1 if there is a departure date and 0 otherwise.
+* **Time:** Given that the data is captured as at the end of every month over a two-year period, it makes sense to count our time in months from 1 to 24.  If there is no departure date recorded for an individual, we assume they remain at the company and assign the time for that individual as 24.  That is, we are assuming our data is well-captured and there are no *censored* observations.
+
+---
+class: left, middle, r-logo
+
+## Creating the data set - generating the departure event
+
+First we left join the survey responses to the departure data and create the event column.
+
+```{r}
+survival_data <- survey_responses |> 
+  dplyr::left_join(departure_dates, by = "iid") |> 
+  dplyr::select(-iid) |> 
+  dplyr::mutate(departure_event = ifelse(is.na(departure_date), 0, 1))
+
+head(survival_data)
+```
+
+---
+class: left, middle, r-logo
+
+## Creating the data set - generating the time
+
+To create the time, we will extract the month and year.  If the year is 2019, we use the month.  If the year is 2020, we add 12 to the month.  Finally, if the event is zero, we assign a month value of 24.
+
+```{r}
+library(lubridate)
+
+survival_data <- survival_data |> 
+  dplyr::mutate(month = dplyr::case_when(
+    year(departure_date) == 2019 ~ month(departure_date),
+    year(departure_date) == 2020 ~ month(departure_date) + 12,
+    departure_event == 0 ~ 24,
+    TRUE ~ NA_real_
+  )) |> 
+  dplyr::select(-departure_date)
+
+head(survival_data)
+```
+
+---
+class: left, middle, r-logo
+
+## Creating the survivial outcome
+
+The survival outcome is generated from both the `departure_event` and the `month` columns.
+
+```{r}
+library(survival)
+
+survival_outcome <- Surv(event = survival_data$departure_event, 
+                         time = survival_data$month)
+
+unique(survival_outcome)
 
 ```
 
 
+---
+class: left, middle, r-logo
+
+## Kaplan-Meier survival rates
+
+We can calculate survival rates and sketch curves for any *categorical* variable.   The survival rate $S_i$ at month $i$ is calculated as
+
+
+$$
+\begin{align*}
+S_i = S_{i - 1}(1 - \frac{l_i}{n_i})
+\end{align*}
+$$
+
+
+where $l_i$ is the number reported as departed in month $i$, and $n_i$ is the number still at the company after month $i - 1$, with $S_0 = 1$.
+
+Let's look at how employee sentiment affects survival rates.  
+
+---
+class: left, middle, r-logo
+
+## How does sentiment relate to survival?
+
+To do this we will convert our sentiment rating into three categories: "High", "Medium", "Low".
+
+```{r}
+# create a new field to define high, medium and low sentiment (>= 7)
+survival_data$sentiment_category <- dplyr::case_when(
+  survival_data$sentiment >= 7 ~ "High",
+  survival_data$sentiment >= 4 ~ "Medium",
+  survival_data$sentiment < 4 ~ "Low",
+  TRUE ~ NA_character_
+)
+```
+
+
+We can then use a simple function in the `survival` R package to relate these categories to the survival rate:
+
+```{r}
+# generate survival rates by sentiment category
+kmestimate_sentimentcat <- survival::survfit(
+  formula = Surv(event = departure_event, time = month) ~ sentiment_category,
+  data = survival_data
+)
+```
+
+
+---
+class: left, middle, r-logo
+
+## Kaplan-Meier survival curves
+
+```{r, out.height = 400, fig.align = "center"}
+library(survminer)
+
+# show survival curves with p-value estimate and confidence intervals
+survminer::ggsurvplot(
+  kmestimate_sentimentcat, pval = TRUE, conf.int = TRUE,
+  palette = c("blue", "green", "red"),
+  linetype = c("solid", "dashed", "dotted"), xlab = "Month",
+  ylab = "Retention Rate"
+)
+```
+
+
+---
+class: left, middle, r-logo
+
+## We can do the same for the `intention` survey response
+
+```{r, echo = FALSE, out.height = 400, fig.align = "center"}
+# create a new field to define high, medium and low intention (>= 7)
+survival_data$intention_category <- dplyr::case_when(
+  survival_data$intention >= 7 ~ "High",
+  survival_data$intention >= 4 ~ "Medium",
+  survival_data$intention < 4 ~ "Low",
+  TRUE ~ NA_character_
+)
+
+# generate survival rates by intention category
+kmestimate_intentioncat <- survival::survfit(
+  formula = Surv(event = departure_event, time = month) ~ intention_category,
+  data = survival_data
+)
+
+# show survival curves with p-value estimate and confidence intervals
+survminer::ggsurvplot(
+  kmestimate_intentioncat, pval = TRUE, conf.int = TRUE,
+  palette = c("blue", "green", "red"),
+  linetype = c("solid", "dashed", "dotted"), xlab = "Month",
+  ylab = "Retention Rate"
+)
+```
+
+
+---
+class: left, middle, r-logo
+
+## Performing regression analysis on time-based events using Cox's proportional hazard model
+
+We assume that each individual has a 'baseline' probability of departing as a function of time.  This is called the 'baseline hazard' function and denoted $h_0(t)$.  Like any logistic regression model, each input variable $x_1, x2, \dots, x_p$ will have an effect on that baseline hazard function, increasing it or decreasing it by certain multiples depending on a set of coefficients $\beta_1, \beta_2, \dots, \beta_p$.  For individual A, their personal hazard function will be:
+
+$$
+h_A(t) = h_0(t)e^{\beta_1x_1^A + \beta_2x_2^A + \dots + \beta_px_p^A}
+$$
+If we take another person B and then ask 'what is their hazard function relative to person A?', we get:
+
+$$
+\begin{aligned}
+\frac{h^B(t)}{h^A(t)} &= \frac{h_0(t)e^{\beta_1x_1^B + \beta_2x_2^B + \dots + \beta_px_p^B}}{h_0(t)e^{\beta_1x_1^A + \beta_2x_2^A + \dots + \beta_px_p^A}} \\
+&= e^{\beta_1(x_1^B-x_1^A) + \beta_2(x_2^B-x_2^A) + \dots \beta_p(x_p^B-x_p^A)}
+\end{aligned}
+$$
+Note that time has disappeared from our calculation.  This works on the assumption that $h_B(t)$ and $h_A(t)$ are *proportional to each other*, in other words the hazard curves do not cross.  This assumption needs to be checked before finalizing your model (see Section 9.2.2 of the textbook).
+
+---
+class: left, middle, r-logo
+
+## Running a Cox's proportional hazard model
+
+We can run a multiple regression to understand the relative effects of many input variables:
+
+```{r, eval = FALSE}
+# run cox model against survival outcome
+cox_model <- survival::coxph(
+  formula = Surv(event = departure_event, time = month) ~ gender + 
+    department + level + sentiment + intention,
+  data = survival_data
+)
+
+summary(cox_model)
+
+```
+
+---
+class: left, middle, r-logo
+
+## Interpreting model results
+
+```{r, echo = FALSE}
+# run cox model against survival outcome
+cox_model <- survival::coxph(
+  formula = Surv(event = departure_event, time = month) ~ gender + 
+    department + level + sentiment + intention,
+  data = survival_data
+)
+
+summary(cox_model)
+```
+
+
+---
+class: left, middle, r-logo
+
+## Thank you!  Key textbook chapters to learn this methodology.
+
+Chapter 3 - Hypothesis testing
+Chapter 4 - Basic elements of multivariate regression
+Chapter 5 - Binomial logistic regression (binary event modeling)
+Chapter 9 - Survivial analysis
+
+
+```{r, eval = FALSE, echo = FALSE}
+library(tidyverse)
+
+map_5levels <- function(x) {
+ dplyr::case_when(
+      tolower(x) == "strongly disagree" ~ 1,
+      tolower(x) == "disagree" ~ 2,
+      tolower(x) == "neither agree nor disagree" ~ 3,
+      tolower(x) == "agree" ~ 4,
+      tolower(x) == "strongly agree" ~ 5,
+      TRUE ~ NA_real_
+    )
+}
+
+map_3levels1 <- function(x) {
+  dplyr::case_when(
+    x == "Beginner" ~ 1,
+    x == "Intermediate" ~ 2,
+    x == "Advanced" ~ 3,
+    TRUE ~ NA_real_
+  )
+}
+
+map_3levels2 <- function(x) {
+  dplyr::case_when(
+    x == "Never" ~ 1,
+    x == "Sometimes" ~ 2,
+    x == "Regularly" ~ 3,
+    TRUE ~ NA_real_
+  )
+}
+
+map_2levels <- function(x) {
+  x <- ifelse(x == "", 0, 1)
+  as.factor(x)
+}
+
+survey <- read.csv("../conf/surveydata.csv")
+colnames(survey) <- c("iid", "role", "delete3", "roletitle", "delete5", "delete6",
+                      "delete7", "delete8", "skilled", "deliver", "excited",
+                      "years", "years_pa", "background", "hrqual", "values_soft",
+                      "training_soft", "values_tech", "training_tech",
+                      "ps_skills", "translation_skills", "delete22", "leading_skills",
+                      "communicating_skills", "judging_skills", "assessing_skills", "delete27",
+                      "know_ai", "know_cloud", "know_cleaning", "know_engineering", "know_reporting",
+                      "know_explanatory", "know_eda", "know_ona", "know_predictive", "delete37", "delete38", 
+                      "delete39", "delete40", "delete41", "tech_excel", "tech_julia", "tech_other_opensource", 
+                      "tech_other_vendor",
+                      "tech_python", "tech_r", "tech_spss", "tech_sql", "delete50", "delete51")
+
+survey <- survey |> 
+  dplyr::select(-starts_with("delete")) |> 
+  dplyr::mutate(across(c("skilled", "deliver", "excited", 
+                         "values_soft", "training_soft",
+                         "values_tech", "training_tech"), map_5levels),
+                across(ends_with("skills"), map_3levels1),
+                across(starts_with("know"), map_2levels),
+                across(starts_with("tech"), map_3levels2),
+                across(c("skilled", "deliver", "excited"), 
+                       ~ordered(.x, levels = 1:5)),
+                across(c("background", "hrqual"), as.factor))
+```
+
+```{r, eval = FALSE, echo = FALSE}
+library(MASS)
+library(broom)
+
+model <- polr("deliver ~ know_ai + know_cloud + know_cleaning + know_engineering + know_reporting +
+                      know_explanatory + know_eda + know_ona + know_predictive", data = survey)
+
+model_results <- tidy(model) |> 
+  filter(coef.type == "coefficient") |> 
+  dplyr::mutate(
+    pval = (1 - pnorm(abs(statistic), 0, 1))*2
+  )
+
+model_results
+```
+
+```{r, eval = FALSE, echo = FALSE}
+map_cat <- function(x) {
+  dplyr::case_when(
+    x >= 4 ~ 1,
+    x < 4 ~ 0,
+    TRUE ~ NA_real_
+  )
+}
+
+survey_cat <- survey |> 
+  dplyr::mutate(across(c("skilled", "deliver", "excited"), map_cat))
+
+```
+
+```{r, eval = FALSE, echo = FALSE}
+library(effsize)
+
+cohen_survey1 <- survey_cat |> 
+  dplyr::select(-iid, -role, -roletitle, -deliver, -excited, -background, -hrqual) |> 
+  mutate(across(is.factor, as.numeric))
+
+
+effectsizes_skilled <- lapply(cohen_survey1[c(2:ncol(cohen_survey1))],
+                              function(x) cohen.d(x ~ !cohen_survey1$skilled))
+
+
+effectsizes_skilled <- data.frame(matrix(unlist(effectsizes_skilled), nrow=length(effectsizes_skilled), byrow=TRUE)) %>% 
+  dplyr::mutate(Feature = names(effectsizes_skilled)) %>% 
+  dplyr::select(Feature, `Cohen's d` = X3, `Lower 95% CI` = X5, `Upper 95% CI` = X6) %>% 
+  dplyr::mutate(across(all_of(c("Cohen's d", "Lower 95% CI", "Upper 95% CI")), as.numeric)) %>% 
+  dplyr::mutate(Effect = dplyr::case_when(
+    abs(`Cohen's d`) < 0.15 ~ "Very Small/Negligible",
+    between(abs(`Cohen's d`), 0.15, 0.3) ~ "Small",
+    between(abs(`Cohen's d`), 0.300001, 0.6) ~ "Moderate",
+    abs(`Cohen's d`) > 0.6 ~ "Large",
+    TRUE ~ "Unknown"
+  ))
+```

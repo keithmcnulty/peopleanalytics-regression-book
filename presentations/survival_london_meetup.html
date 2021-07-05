@@ -29,7 +29,18 @@ The code for this document is [here](https://github.com/keithmcnulty/peopleanaly
 
 ## Note on languages
 
-This document is coded in R.  Instructions in Python are included in the Appendix.
+This document is coded in R based on the material in Chapter 9 of the textbook.  Instructions for doing this analysis in Python can be found in Section 10.2.5 of the textbook.
+
+
+
+---
+class: left, middle, r-logo
+
+## Quick poll
+
+&gt; "I am confident that I know about regression modeling."
+&gt;
+&gt; &lt;footer&gt;Yes or No?&lt;/footer&gt;
 
 ---
 class: left, middle, r-logo
@@ -38,9 +49,9 @@ class: left, middle, r-logo
 
 * Regression is a statistical method that helps relate certain input data to an outcome of interest, based on certain statistical assumptions oriented around the *Central Limit Theorem*.
 
-* It is helpful as a way to explain how certain constructs influence (or do not influence) your outcome, but it *cannot prove causality*, which is much harder to do.
+* It is helpful as a way to explain how certain constructs influence (or do not influence) your outcome, but it *cannot prove causation*, which is much harder to do.
 
-* It is an extremely useful technique in practice.  Because it is often too difficult to prove causation, decision makers use the next best thing --- proof of influence combined with expert knowledge and judgment --- in making business decisions.  
+* It is an extremely useful technique in practice.  Because it is often too difficult to prove causation, decision makers use the next best thing - proof of influence combined with expert knowledge and judgment - in making business decisions.  
 
 ---
 class: left, middle, r-logo
@@ -224,7 +235,7 @@ class: left, middle, r-logo
 
 ## Analyzing time-based event outcomes
 
-Most elementary models analyze an outcome as at a specific point in time.  For example, in a logistic regression we might model the likelihood of high job performance (Yes or No) as at a specific performance review cycle.  In this case our outcome variable `\(y\)` is simply 1 or 0.
+Most elementary models analyze an outcome as at a specific point in time.  For example, in a logistic regression we might model the likelihood of high job performance (Yes or No) as at a specific performance review cycle.  In this case our outcome variable `\(y\)` is simply positive (1) or negative (0).
 
 Then if our input variables are `\(x_1, x_2, ...,x_n\)`, our model estimates the *odds* of `\(y\)` being positive as
 
@@ -253,11 +264,355 @@ class: left, middle, r-logo
 
 ## Case example:  Employee surveys and attrition
 
-*Dropping Like Flies, Inc* is a company that is experiencing very high employee attrition.  The Chief People Officer believes that the employee experience is not a major factor in this issue and that this issue is being caused be aggressive competitors 'poaching' staff.
+*Dropping Like Flies, Inc* is a company that is experiencing very high employee attrition.  The Chief People Officer believes that the employee experience is not a major factor in this issue and that this issue is being caused by aggressive competitors 'poaching' staff.
 
 You have been asked to find evidence to support or contradict this claim by analyzing the data on past survey responses and on employee departures.
 
 **Key question:**. Is there a reason to believe that poor employee experience is a factor in recent attrition?
+
+
+---
+class: left, middle, r-logo
+
+## Data set 1 - Survey responses from survey conducted at the end of 2018
+
+
+```r
+survey_responses &lt;- read.csv("https://raw.githubusercontent.com/keithmcnulty/peopleanalytics-regression-book/master/presentations/survey_responses.csv")
+
+head(survey_responses)
+```
+
+```
+##                                iid gender department  level sentiment intention
+## 1 dad26b9ee392cb7197bc7df941b92e2b      M         IT   High         3         8
+## 2 0fa80c4c486e1d22ef1ae51373c21e56      F    Finance    Low         8         4
+## 3 e122762138e5e1b1c9cd09d1f3935c13      M         HR Medium         7         7
+## 4 f67f76e945aa8ce99454c66c47b78c87      M    Finance    Low         8         4
+## 5 bd3276714f5f60d356309f1533a24920      M    Finance   High         7         6
+## 6 e8edf7a19afb5841a8e6997e467dbfbf      F        R&amp;D Medium         6        10
+```
+
+* `sentiment` is the level of agreement to the statement 'I am happy in my job' on a Likert scale of 1 to 10.
+* `intention` is the level of agreement to the statement 'I intend to find a new job' on a Likert scale of 1 to 10.
+
+
+---
+class: left, middle, r-logo
+
+## Quick look at the survey response distribution
+
+&lt;img src="survival_london_meetup_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+class: left, middle, r-logo
+
+## Quick poll
+
+&gt; "Do you think sentiment or intention to leave will make a difference in departures over the next two years?"
+&gt;
+&gt; &lt;footer&gt;None, Sentiment Only, Intention Only, Both&lt;/footer&gt;
+
+---
+class: left, middle, r-logo
+
+## Data set 2 - Data on departures in the past in 2019 and 2020
+
+
+```r
+departure_dates &lt;- read.csv("https://raw.githubusercontent.com/keithmcnulty/peopleanalytics-regression-book/master/presentations/departure_dates.csv")
+
+head(departure_dates)
+```
+
+```
+##                                iid departure_date
+## 1 dad26b9ee392cb7197bc7df941b92e2b     2019-01-31
+## 2 e122762138e5e1b1c9cd09d1f3935c13     2019-11-30
+## 3 bd3276714f5f60d356309f1533a24920     2019-02-28
+## 4 e8edf7a19afb5841a8e6997e467dbfbf     2019-05-31
+## 5 b0f5468f305c719192575909563e7ea6     2019-11-30
+## 6 86d665dc11c92142b46db64260223cbe     2019-07-31
+```
+
+* Only employees who departed are in this data
+* All departure dates are end of month
+
+
+---
+class: left, middle, r-logo
+
+## Designing the analysis
+
+Survival analysis requires an event and a time, so we will need to define and extract both of these from this data.
+
+* **Event:** Clearly we are interested in whether someone departed or not, which means they have a departure date in our records.  So our event would be labelled 1 if there is a departure date and 0 otherwise.
+* **Time:** Given that the data is captured as at the end of every month over a two-year period, it makes sense to count our time in months from 1 to 24.  If there is no departure date recorded for an individual, we assume they remain at the company and assign the time for that individual as 24.  That is, we are assuming our data is well-captured and there are no *censored* observations.
+
+---
+class: left, middle, r-logo
+
+## Creating the data set - generating the departure event
+
+First we left join the survey responses to the departure data and create the event column.
+
+
+```r
+survival_data &lt;- survey_responses |&gt; 
+  dplyr::left_join(departure_dates, by = "iid") |&gt; 
+  dplyr::select(-iid) |&gt; 
+  dplyr::mutate(departure_event = ifelse(is.na(departure_date), 0, 1))
+
+head(survival_data)
+```
+
+```
+##   gender department  level sentiment intention departure_date departure_event
+## 1      M         IT   High         3         8     2019-01-31               1
+## 2      F    Finance    Low         8         4           &lt;NA&gt;               0
+## 3      M         HR Medium         7         7     2019-11-30               1
+## 4      M    Finance    Low         8         4           &lt;NA&gt;               0
+## 5      M    Finance   High         7         6     2019-02-28               1
+## 6      F        R&amp;D Medium         6        10     2019-05-31               1
+```
+
+---
+class: left, middle, r-logo
+
+## Creating the data set - generating the time
+
+To create the time, we will extract the month and year.  If the year is 2019, we use the month.  If the year is 2020, we add 12 to the month.  Finally, if the event is zero, we assign a month value of 24.
+
+
+```r
+library(lubridate)
+
+survival_data &lt;- survival_data |&gt; 
+  dplyr::mutate(month = dplyr::case_when(
+    year(departure_date) == 2019 ~ month(departure_date),
+    year(departure_date) == 2020 ~ month(departure_date) + 12,
+    departure_event == 0 ~ 24,
+    TRUE ~ NA_real_
+  )) |&gt; 
+  dplyr::select(-departure_date)
+
+head(survival_data)
+```
+
+```
+##   gender department  level sentiment intention departure_event month
+## 1      M         IT   High         3         8               1     1
+## 2      F    Finance    Low         8         4               0    24
+## 3      M         HR Medium         7         7               1    11
+## 4      M    Finance    Low         8         4               0    24
+## 5      M    Finance   High         7         6               1     2
+## 6      F        R&amp;D Medium         6        10               1     5
+```
+
+---
+class: left, middle, r-logo
+
+## Creating the survivial outcome
+
+The survival outcome is generated from both the `departure_event` and the `month` columns.
+
+
+```r
+library(survival)
+
+survival_outcome &lt;- Surv(event = survival_data$departure_event, 
+                         time = survival_data$month)
+
+unique(survival_outcome)
+```
+
+```
+##  [1]  1  24+ 11   2   5   7  16   9   6  17  22  21   3  19  12   8  23  13  20 
+## [20] 15  24  10  18  14   4
+```
+
+
+---
+class: left, middle, r-logo
+
+## Kaplan-Meier survival rates
+
+We can calculate survival rates and sketch curves for any *categorical* variable.   The survival rate `\(S_i\)` at month `\(i\)` is calculated as
+
+
+$$
+`\begin{align*}
+S_i = S_{i - 1}(1 - \frac{l_i}{n_i})
+\end{align*}`
+$$
+
+
+where `\(l_i\)` is the number reported as departed in month `\(i\)`, and `\(n_i\)` is the number still at the company after month `\(i - 1\)`, with `\(S_0 = 1\)`.
+
+Let's look at how employee sentiment affects survival rates.  
+
+---
+class: left, middle, r-logo
+
+## How does sentiment relate to survival?
+
+To do this we will convert our sentiment rating into three categories: "High", "Medium", "Low".
+
+
+```r
+# create a new field to define high, medium and low sentiment (&gt;= 7)
+survival_data$sentiment_category &lt;- dplyr::case_when(
+  survival_data$sentiment &gt;= 7 ~ "High",
+  survival_data$sentiment &gt;= 4 ~ "Medium",
+  survival_data$sentiment &lt; 4 ~ "Low",
+  TRUE ~ NA_character_
+)
+```
+
+
+We can then use a simple function in the `survival` R package to relate these categories to the survival rate:
+
+
+```r
+# generate survival rates by sentiment category
+kmestimate_sentimentcat &lt;- survival::survfit(
+  formula = Surv(event = departure_event, time = month) ~ sentiment_category,
+  data = survival_data
+)
+```
+
+
+---
+class: left, middle, r-logo
+
+## Kaplan-Meier survival curves
+
+
+```r
+library(survminer)
+
+# show survival curves with p-value estimate and confidence intervals
+survminer::ggsurvplot(
+  kmestimate_sentimentcat, pval = TRUE, conf.int = TRUE,
+  palette = c("blue", "green", "red"),
+  linetype = c("solid", "dashed", "dotted"), xlab = "Month",
+  ylab = "Retention Rate"
+)
+```
+
+&lt;img src="survival_london_meetup_files/figure-html/unnamed-chunk-15-1.png" height="400" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: left, middle, r-logo
+
+## We can do the same for the `intention` survey response
+
+&lt;img src="survival_london_meetup_files/figure-html/unnamed-chunk-16-1.png" height="400" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: left, middle, r-logo
+
+## Performing regression analysis on time-based events using Cox's proportional hazard model
+
+We assume that each individual has a 'baseline' probability of departing as a function of time.  This is called the 'baseline hazard' function and denoted `\(h_0(t)\)`.  Like any logistic regression model, each input variable `\(x_1, x2, \dots, x_p\)` will have an effect on that baseline hazard function, increasing it or decreasing it by certain multiples depending on a set of coefficients `\(\beta_1, \beta_2, \dots, \beta_p\)`.  For individual A, their personal hazard function will be:
+
+$$
+h_A(t) = h_0(t)e^{\beta_1x_1^A + \beta_2x_2^A + \dots + \beta_px_p^A}
+$$
+If we take another person B and then ask 'what is their hazard function relative to person A?', we get:
+
+$$
+`\begin{aligned}
+\frac{h^B(t)}{h^A(t)} &amp;= \frac{h_0(t)e^{\beta_1x_1^B + \beta_2x_2^B + \dots + \beta_px_p^B}}{h_0(t)e^{\beta_1x_1^A + \beta_2x_2^A + \dots + \beta_px_p^A}} \\
+&amp;= e^{\beta_1(x_1^B-x_1^A) + \beta_2(x_2^B-x_2^A) + \dots \beta_p(x_p^B-x_p^A)}
+\end{aligned}`
+$$
+Note that time has disappeared from our calculation.  This works on the assumption that `\(h_B(t)\)` and `\(h_A(t)\)` are *proportional to each other*, in other words the hazard curves do not cross.  This assumption needs to be checked before finalizing your model (see Section 9.2.2 of the textbook).
+
+---
+class: left, middle, r-logo
+
+## Running a Cox's proportional hazard model
+
+We can run a multiple regression to understand the relative effects of many input variables:
+
+
+```r
+# run cox model against survival outcome
+cox_model &lt;- survival::coxph(
+  formula = Surv(event = departure_event, time = month) ~ gender + 
+    department + level + sentiment + intention,
+  data = survival_data
+)
+
+summary(cox_model)
+```
+
+---
+class: left, middle, r-logo
+
+## Interpreting model results
+
+
+```
+## Call:
+## survival::coxph(formula = Surv(event = departure_event, time = month) ~ 
+##     gender + department + level + sentiment + intention, data = survival_data)
+## 
+##   n= 3770, number of events= 1354 
+## 
+##                                     coef exp(coef) se(coef)      z Pr(&gt;|z|)    
+## genderM                          0.04324   1.04418  0.05899  0.733 0.463556    
+## departmentHR                    -0.25350   0.77608  0.06684 -3.792 0.000149 ***
+## departmentIT                    -0.14364   0.86620  0.08576 -1.675 0.093978 .  
+## departmentR&amp;D                    0.04249   1.04341  0.12699  0.335 0.737920    
+## departmentSales/Marketing       -0.12443   0.88300  0.09949 -1.251 0.211053    
+## departmentStrategy &amp; Operations -0.12534   0.88220  0.14328 -0.875 0.381689    
+## levelLow                         0.17191   1.18757  0.08976  1.915 0.055450 .  
+## levelMedium                      0.12096   1.12858  0.10201  1.186 0.235707    
+## sentiment                       -0.02984   0.97060  0.01521 -1.961 0.049830 *  
+## intention                        0.20556   1.22821  0.01354 15.181  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##                                 exp(coef) exp(-coef) lower .95 upper .95
+## genderM                            1.0442     0.9577    0.9302    1.1722
+## departmentHR                       0.7761     1.2885    0.6808    0.8847
+## departmentIT                       0.8662     1.1545    0.7322    1.0248
+## departmentR&amp;D                      1.0434     0.9584    0.8135    1.3383
+## departmentSales/Marketing          0.8830     1.1325    0.7266    1.0731
+## departmentStrategy &amp; Operations    0.8822     1.1335    0.6662    1.1682
+## levelLow                           1.1876     0.8421    0.9960    1.4160
+## levelMedium                        1.1286     0.8861    0.9241    1.3784
+## sentiment                          0.9706     1.0303    0.9421    1.0000
+## intention                          1.2282     0.8142    1.1960    1.2612
+## 
+## Concordance= 0.638  (se = 0.008 )
+## Likelihood ratio test= 309  on 10 df,   p=&lt;2e-16
+## Wald test            = 327.2  on 10 df,   p=&lt;2e-16
+## Score (logrank) test = 337.3  on 10 df,   p=&lt;2e-16
+```
+
+
+---
+class: left, middle, r-logo
+
+## Thank you!  Key textbook chapters to learn this methodology.
+
+Chapter 3 - Hypothesis testing
+Chapter 4 - Basic elements of multivariate regression
+Chapter 5 - Binomial logistic regression (binary event modeling)
+Chapter 9 - Survivial analysis
+
+
+
+
+
+
+
+
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
