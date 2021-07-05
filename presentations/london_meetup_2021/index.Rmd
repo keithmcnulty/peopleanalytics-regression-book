@@ -71,7 +71,7 @@ Circa 1880, Francis Galton did a study on some British children to see how their
 
 ```{r}
 # get data from URL
-url <- "https://raw.githubusercontent.com/keithmcnulty/peopleanalytics-regression-book/master/data/Galton.txt"
+url <- "https://peopleanalytics-regression-book.org/data/Galton.txt"
 galton <- read.delim(url)
 
 # view first few rows
@@ -233,7 +233,7 @@ class: left, middle, r-logo
 ## Data set 1 - Survey responses from survey conducted at the end of 2018
 
 ```{r}
-survey_responses <- read.csv("https://raw.githubusercontent.com/keithmcnulty/peopleanalytics-regression-book/master/presentations/survey_responses.csv")
+survey_responses <- read.csv("https://peopleanalytics-regression-book.org/data/survey_responses.csv")
 
 head(survey_responses)
 ```
@@ -276,7 +276,7 @@ class: left, middle, r-logo
 ## Data set 2 - Data on departures in the past in 2019 and 2020
 
 ```{r}
-departure_dates <- read.csv("https://raw.githubusercontent.com/keithmcnulty/peopleanalytics-regression-book/master/presentations/departure_dates.csv")
+departure_dates <- read.csv("https://peopleanalytics-regression-book.org/data/departure_dates.csv")
 
 head(departure_dates)
 ```
@@ -508,10 +508,10 @@ class: left, middle, r-logo
 
 ## Thank you!  Key textbook chapters to learn this methodology.
 
-Chapter 3 - Hypothesis testing
-Chapter 4 - Basic elements of multivariate regression
-Chapter 5 - Binomial logistic regression (binary event modeling)
-Chapter 9 - Survival analysis
+* Chapter 3 - Hypothesis testing
+* Chapter 4 - Basic elements of multivariate regression
+* Chapter 5 - Binomial logistic regression (binary event modeling)
+* Chapter 9 - Survival analysis
 
 
 
