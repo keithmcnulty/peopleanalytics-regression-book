@@ -283,6 +283,16 @@ strong {
   background-position: 99% 1%;
 }
 
+/* small scarymath class */
+.scarymath {
+  background-image: url(www/scarymath.png);
+  background-repeat: no-repeat;
+  background-size: 200px;
+  background-color: #fff;
+  background-position: 99% 1%;
+}
+
+
 
 
 /* Color and font adjustments to text and headers */

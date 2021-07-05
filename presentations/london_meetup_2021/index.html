@@ -231,7 +231,7 @@ class: left, middle, r-logo
 
 
 ---
-class: left, middle, r-logo
+class: left, middle, scarymath
 
 ## Analyzing time-based event outcomes
 
@@ -512,11 +512,11 @@ class: left, middle, r-logo
 
 
 ---
-class: left, middle, r-logo
+class: left, middle, scarymath
 
-## Performing regression analysis on time-based events using Cox's proportional hazard model
+## Regression using Cox's proportional hazard model
 
-We assume that each individual has a 'baseline' probability of departing as a function of time.  This is called the 'baseline hazard' function and denoted `\(h_0(t)\)`.  Like any logistic regression model, each input variable `\(x_1, x2, \dots, x_p\)` will have an effect on that baseline hazard function, increasing it or decreasing it by certain multiples depending on a set of coefficients `\(\beta_1, \beta_2, \dots, \beta_p\)`.  For individual A, their personal hazard function will be:
+We assume that each individual has a 'baseline' probability of departing as a function of time.  This is called the 'baseline hazard' function and denoted `\(h_0(t)\)`.  Like any logistic regression model, each input variable `\(x_1, x_2, \dots, x_p\)` will have an effect on that baseline hazard function, increasing it or decreasing it by certain multiples depending on a set of coefficients `\(\beta_1, \beta_2, \dots, \beta_p\)`.  For individual A, their personal hazard function will be:
 
 $$
 h_A(t) = h_0(t)e^{\beta_1x_1^A + \beta_2x_2^A + \dots + \beta_px_p^A}
