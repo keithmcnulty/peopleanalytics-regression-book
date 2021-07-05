@@ -284,12 +284,15 @@ strong {
 }
 
 /* small scarymath class */
+
+
+
 .scarymath {
-  background-image: url(www/scarymath.png);
+  background-image: url(www/scarymath-transparent.png);
   background-repeat: no-repeat;
-  background-size: 200px;
+  background-size: 400px;
   background-color: #fff;
-  background-position: 99% 1%;
+  background-position: 50% 50%;
 }
 
 
