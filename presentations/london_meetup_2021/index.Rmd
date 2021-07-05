@@ -89,7 +89,7 @@ Galton simplistically expected the child's height to be perfectly explained by t
 library(dplyr)
 
 # create midParentHeight column
-galton <- galton %>% 
+galton <- galton |> 
   dplyr::mutate(midParentHeight = (Father + Mother)/2)
 
 # simple linear regression of child vs mid-parent height
