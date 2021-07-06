@@ -38,7 +38,9 @@ class: left, middle, r-logo
 
 > "I am confident that I know about regression modeling."
 >
-> `r tufte::quote_footer('Yes or No?')`
+> Yes
+>
+> No
 
 ---
 class: left, middle, r-logo
@@ -266,9 +268,15 @@ class: left, middle, r-logo
 
 ## Quick poll
 
-> "Do you think sentiment or intention to leave will make a difference in departures over the next two years?"
+> Do you think sentiment or intention to leave will make a significant difference in departures over the next two years?
 >
-> `r tufte::quote_footer('None, Sentiment Only, Intention Only, Both')`
+> None
+>
+> Sentiment Only
+>
+> Intention Only
+>
+> Both of them
 
 ---
 class: left, middle, r-logo
@@ -336,7 +344,7 @@ head(survival_data)
 ---
 class: left, middle, r-logo
 
-## Creating the survivial outcome
+## Creating the survival outcome
 
 The survival outcome is generated from both the `departure_event` and the `month` columns.
 
@@ -446,6 +454,21 @@ survminer::ggsurvplot(
 )
 ```
 
+
+---
+class: left, middle, r-logo
+
+## Quick poll
+
+> What kind of regression model should we use to understand multivariate effects on a survival outcome?
+>
+> Linear Regression
+>
+> Structural Equation Model
+>
+> Cox Proportional Hazard Model
+>
+> Multinomial Logistic Regression
 
 ---
 class: left, middle, r-logo
