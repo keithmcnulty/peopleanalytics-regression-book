@@ -1,5 +1,15 @@
 delete_merged_file: true
 output_dir: "_book_r/gitbook"
+config:
+    sharing:
+        facebook: yes
+        twitter: yes
+        linkedin: yes
+        google: no
+        weibo: no
+        instapper: no
+        vk: no
+        all: ['facebook', 'twitter', 'linkedin', 'google', 'weibo', 'instapaper']
 
 rmd_files:
 - "index.Rmd"

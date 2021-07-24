@@ -1,6 +1,5 @@
 delete_merged_file: true
 output_dir: "_book_r"
-
 rmd_files:
 - "index.Rmd"
 - "r/foreword.Rmd"

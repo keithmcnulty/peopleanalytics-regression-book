@@ -9,6 +9,11 @@ bibliography: r/book.bib
 fig-caption: yes
 link-citations: yes
 github-repo: keithmcnulty/peopleanalytics-regression-book
+pagetitle: "Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia"
+description:  "A technical manual of inferential statistics and regression modeling in the people and social sciences"
+url:  "https://peopleanalytics-regression-book.org"
+cover-image: "www/cover/coverpage-og.png"
+twitter-handle: "dr_keithmcnulty"
 ---
 
 
@@ -21,8 +26,24 @@ matplotlib$use("Agg", force = TRUE)
 if (knitr::is_latex_output()) {
   options(width = 100)
 }
-# knitr::opts_chunk$set(dpi=300)
 
+# bookdown::render_book("index.Rmd", output_format = "bookdown::bs4_book", config_file = "_bookdown_bs4.yml")
+# knitr::opts_chunk$set(dpi=300)
+```
+
+```{r, echo = FALSE}
+# google scholar metadata
+library(metathis)
+
+if (knitr::is_html_output()) {
+  meta() |> 
+    meta_google_scholar(
+      title = "Handbook of Regression Modeling in People Analytics: With Examples in R and Python",
+      author = "Keith McNulty",
+      publication_date = "2021",
+      isbn = "9781003194156"
+    ) 
+}
 ```
 
 `r if (knitr::is_latex_output()) '<!--'`
@@ -38,7 +59,7 @@ Welcome to the website for the book *Handbook of Regression Modeling in People A
 :::
 ```
 
-This book is available in [bootstrap format](http://peopleanalytics-regression-book.org) and, for those who prefer, in a more plain [gitbook format](http://peopleanalytics-regression-book.org/gitbook).
+This book is available in [bootstrap format](http://peopleanalytics-regression-book.org) and, for those who prefer, in a more plain [gitbook format](http://peopleanalytics-regression-book.org/gitbook/index.html).
 `r if (knitr::is_latex_output()) '--> \\newpage\\thispagestyle{empty}\\null'`
 
 ### Notes on data used in this book {-}
