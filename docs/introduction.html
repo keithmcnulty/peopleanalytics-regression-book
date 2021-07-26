@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Introduction | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
+<meta name="author" content="Keith McNulty">
+<meta name="description" content="As a fresh-faced undergraduate in mathematics in the 1990s, I took an introductory course in statistics in my first term. I would never take another. I struggled with the subject, scored my lowest...">
+<meta name="generator" content="bookdown 0.22.15 with bs4_book()">
+<meta property="og:title" content="Introduction | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://peopleanalytics-regression-book.org/introduction.html">
+<meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
+<meta property="og:description" content="As a fresh-faced undergraduate in mathematics in the 1990s, I took an introductory course in statistics in my first term. I would never take another. I struggled with the subject, scored my lowest...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Introduction | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
+<meta name="twitter:site" content="@dr_keithmcnulty">
+<meta name="twitter:description" content="As a fresh-faced undergraduate in mathematics in the 1990s, I took an introductory course in statistics in my first term. I would never take another. I struggled with the subject, scored my lowest...">
+<meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.9.5/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.2.5.1/tabs.js"></script><script src="libs/bs3compat-0.2.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python">
+<meta name="citation_author" content="Keith McNulty">
+<meta name="citation_publication_date" content="2021">
+<meta name="citation_isbn" content="9781003194156">
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script><script src="libs/plotly-binding-4.9.2.1/plotly.js"></script><script src="libs/typedarray-0.1/typedarray.min.js"></script><link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet">
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-N7JZGMVRZK');
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="css/style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="With Examples in R, Python and Julia">Handbook of Regression Modeling in People Analytics</a>:
+        <small class="text-muted">With Examples in R, Python and Julia</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Welcome</a></li>
+<li><a class="" href="foreword-by-alexis-fink.html">Foreword by Alexis Fink</a></li>
+<li><a class="active" href="introduction.html">Introduction</a></li>
+<li><a class="" href="inf-model.html"><span class="header-section-number">1</span> The Importance of Regression in People Analytics</a></li>
+<li><a class="" href="the-basics-of-the-r-programming-language.html"><span class="header-section-number">2</span> The Basics of the R Programming Language</a></li>
+<li><a class="" href="found-stats.html"><span class="header-section-number">3</span> Statistics Foundations</a></li>
+<li><a class="" href="linear-reg-ols.html"><span class="header-section-number">4</span> Linear Regression for Continuous Outcomes</a></li>
+<li><a class="" href="bin-log-reg.html"><span class="header-section-number">5</span> Binomial Logistic Regression for Binary Outcomes</a></li>
+<li><a class="" href="multinomial-logistic-regression-for-nominal-category-outcomes.html"><span class="header-section-number">6</span> Multinomial Logistic Regression for Nominal Category Outcomes</a></li>
+<li><a class="" href="ord-reg.html"><span class="header-section-number">7</span> Proportional Odds Logistic Regression for Ordered Category Outcomes</a></li>
+<li><a class="" href="modeling-explicit-and-latent-hierarchy-in-data.html"><span class="header-section-number">8</span> Modeling Explicit and Latent Hierarchy in Data</a></li>
+<li><a class="" href="survival.html"><span class="header-section-number">9</span> Survival Analysis for Modeling Singular Events Over Time</a></li>
+<li><a class="" href="alt-approaches.html"><span class="header-section-number">10</span> Alternative Technical Approaches in R, Python and Julia</a></li>
+<li><a class="" href="power-tests.html"><span class="header-section-number">11</span> Power Analysis to Estimate Required Sample Sizes for Modeling</a></li>
+<li><a class="" href="solutions-to-exercises.html">Solutions to Exercises</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/keithmcnulty/peopleanalytics-regression-book">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="introduction" class="section level1 unnumbered">
+<h1>Introduction<a class="anchor" aria-label="anchor" href="#introduction"><i class="fas fa-link"></i></a>
+</h1>
+<p>As a fresh-faced undergraduate in mathematics in the 1990s, I took an introductory course in statistics in my first term. I would never take another. I struggled with the subject, scored my lowest grade in it and swore I would never go anywhere near it again.</p>
+<p>How wrong I was. Today I live and breathe statistics. How did that happen?</p>
+<p>Firstly, statistics is about solving real-world problems, and amazingly there was not a single mention of a relatable problem from real life in that course I took all those years ago, just abstract mathematics. Nowadays, I know from my work and my personal learning activities that the mathematics has no meaning without a motivating problem to apply it to, and you’ll see example problems all through this book.</p>
+<p>Secondly, statistics is all about data, and working with real data has encouraged me to reengage with statistics and come at it from a different angle—bottom-up you could say. Suddenly all those concepts that were put up on whiteboards using abstract formulas now had real meaning and consequence to the data I was working with. For me, real data helps statistical theory come to life, and this book is supported by numerous data sets designed for the reader to engage with.</p>
+<p>But one more step solidified my newfound love of statistics, and that was when I put regression modeling into practice. Faced with data sets that I initially believed were just far too messy and random to be able to produce genuine insights, I progressively became more and more fascinated by how regression can cut through the messiness, compartmentalize the randomness and lead you straight to inferences that are often surprising both in their clarity and in their conclusions.</p>
+<p>Hence my motivation for writing this book, which is to give others—whether working in people analytics or otherwise—a starting point for a practical learning of regression methods, with the hope that they will see immediate applications to their work and take advantage of a much-underused toolkit that provides strong support for evidence-based practice.</p>
+<p>I am a mathematician who is now a practitioner of analytics. For this reason you should see that this book is neither afraid of nor obsessed with the mathematics of the methodologies covered. It is my general observation that many students and practitioners make the mistake of trying to run multivariate models without even a basic understanding of the underlying mathematics of those models, and I find it very difficult to see how they can be credible in responding to a wide range of questions or critique about their work without such an understanding. That said, it is also not necessary for students and practitioners to understand the deepest levels of theory in order to be fluent in running and interpreting multivariate models. In this book I have tried to limit the mathematical exposition to a level that allows confident and fluent execution and interpretation.</p>
+<p>I subscribe strongly to the principles of open source sharing of knowledge. If you want to reference the material in this book or use the exercises or data sets in trainings or classes, you are free to do so and you do not need to request my permission. I only ask that you make reference to this book as the source.</p>
+<p>I expect this book to improve over time. If you found this book or any part of it helpful to solving a problem, I’d love to hear about it. If you have comments to improve or question any aspect of the contents of this book I encourage you to <a href="https://github.com/keithmcnulty/peopleanalytics-regression-book/issues">leave an issue</a> on its Github repository. This is the most reliable way for me to see your comment. I promise to consider all comments and input, but I do have to make a personal judgment about whether they are helpful to the aims and purpose of this book. If I do make changes or additions based on your input I will make a point to acknowledge your contribution.</p>
+<p>I would like to thank the following individuals who have reviewed or contributed to this book at some point during its development: <a href="https://www.linkedin.com/in/liz-romero-664a6533/">Liz Romero</a>, <a href="https://www.linkedin.com/in/alexander-lopilato-0ba5a132/">Alex LoPilato</a>, <a href="https://www.linkedin.com/in/kevin-jaggs-a2116b94/">Kevin Jaggs</a>, <a href="https://www.linkedin.com/in/sethsaavedra/">Seth Saavedra</a>, <a href="https://www.linkedin.com/in/akshaykotha/">Akshay Kotha</a>. My sincere thanks to <a href="https://www.linkedin.com/in/alexisfink/">Alexis Fink</a> for drawing on her years of people analytics experience to set the context for this book in her foreword. My thanks to the people analytics community for their constant encouragement and support in sharing theory, content and method, and to the R community for all the work they do in giving us amazing and constantly improving statistical tools to work with. Finally, I would like to thank my family for their patience and understanding on the evenings and weekends I dedicated to the writing of this book, and for tolerating far too much dinner conversation on the topic of statistics.</p>
+<p>Keith McNulty<br>
+December 2020</p>
+
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="foreword-by-alexis-fink.html">Foreword by Alexis Fink</a></div>
+<div class="next"><a href="inf-model.html"><span class="header-section-number">1</span> The Importance of Regression in People Analytics</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav"><li><a class="nav-link" href="#introduction">Introduction</a></li></ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/keithmcnulty/peopleanalytics-regression-book/blob/master/r/introduction.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/keithmcnulty/peopleanalytics-regression-book/edit/master/r/introduction.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Handbook of Regression Modeling in People Analytics</strong>: With Examples in R, Python and Julia" was written by Keith McNulty. </p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

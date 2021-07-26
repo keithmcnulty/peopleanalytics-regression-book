@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Statistics Foundations | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
+  <meta name="description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="generator" content="bookdown 0.22.15 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Statistics Foundations | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://peopleanalytics-regression-book.org" />
+  <meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png" />
+  <meta property="og:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="github-repo" content="keithmcnulty/peopleanalytics-regression-book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Statistics Foundations | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
+  <meta name="twitter:site" content="@dr_keithmcnulty" />
+  <meta name="twitter:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png" />
+
+<meta name="author" content="Keith McNulty" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="the-basics-of-the-r-programming-language.html"/>
+<link rel="next" href="linear-reg-ols.html"/>
+<script src="libs/header-attrs-2.9.5/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python"/>
+<meta name="citation_author" content="Keith McNulty"/>
+<meta name="citation_publication_date" content="2021"/>
+<meta name="citation_isbn" content="9781003194156"/>
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-N7JZGMVRZK');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Handbook of Regression Modeling in People Analytics</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#notes-on-data-used-in-this-book"><i class="fa fa-check"></i>Notes on data used in this book</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="foreword-by-alexis-fink.html"><a href="foreword-by-alexis-fink.html"><i class="fa fa-check"></i>Foreword by Alexis Fink</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="inf-model.html"><a href="inf-model.html"><i class="fa fa-check"></i><b>1</b> The Importance of Regression in People Analytics</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="inf-model.html"><a href="inf-model.html#why-is-regression-modeling-so-important-in-people-analytics"><i class="fa fa-check"></i><b>1.1</b> Why is regression modeling so important in people analytics?</a></li>
+<li class="chapter" data-level="1.2" data-path="inf-model.html"><a href="inf-model.html#theory-modeling"><i class="fa fa-check"></i><b>1.2</b> What do we mean by ‘modeling’‍?</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="inf-model.html"><a href="inf-model.html#the-theory-of-inferential-modeling"><i class="fa fa-check"></i><b>1.2.1</b> The theory of inferential modeling</a></li>
+<li class="chapter" data-level="1.2.2" data-path="inf-model.html"><a href="inf-model.html#the-process-of-inferential-modeling"><i class="fa fa-check"></i><b>1.2.2</b> The process of inferential modeling</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="inf-model.html"><a href="inf-model.html#the-structure-system-and-organization-of-this-book"><i class="fa fa-check"></i><b>1.3</b> The structure, system and organization of this book</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html"><i class="fa fa-check"></i><b>2</b> The Basics of the R Programming Language</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#what-is-r"><i class="fa fa-check"></i><b>2.1</b> What is R?</a></li>
+<li class="chapter" data-level="2.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#how-to-start-using-r"><i class="fa fa-check"></i><b>2.2</b> How to start using R</a></li>
+<li class="chapter" data-level="2.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-in-r"><i class="fa fa-check"></i><b>2.3</b> Data in R</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-types"><i class="fa fa-check"></i><b>2.3.1</b> Data types</a></li>
+<li class="chapter" data-level="2.3.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#homogeneous-data-structures"><i class="fa fa-check"></i><b>2.3.2</b> Homogeneous data structures</a></li>
+<li class="chapter" data-level="2.3.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#heterogeneous-data-structures"><i class="fa fa-check"></i><b>2.3.3</b> Heterogeneous data structures</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#working-with-dataframes"><i class="fa fa-check"></i><b>2.4</b> Working with dataframes</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#loading-and-tidying-data-in-dataframes"><i class="fa fa-check"></i><b>2.4.1</b> Loading and tidying data in dataframes</a></li>
+<li class="chapter" data-level="2.4.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#manipulating-dataframes"><i class="fa fa-check"></i><b>2.4.2</b> Manipulating dataframes</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#functions-packages-and-libraries"><i class="fa fa-check"></i><b>2.5</b> Functions, packages and libraries</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#using-functions"><i class="fa fa-check"></i><b>2.5.1</b> Using functions</a></li>
+<li class="chapter" data-level="2.5.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#help-with-functions"><i class="fa fa-check"></i><b>2.5.2</b> Help with functions</a></li>
+<li class="chapter" data-level="2.5.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#writing-your-own-functions"><i class="fa fa-check"></i><b>2.5.3</b> Writing your own functions</a></li>
+<li class="chapter" data-level="2.5.4" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#installing-packages"><i class="fa fa-check"></i><b>2.5.4</b> Installing packages</a></li>
+<li class="chapter" data-level="2.5.5" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#using-packages"><i class="fa fa-check"></i><b>2.5.5</b> Using packages</a></li>
+<li class="chapter" data-level="2.5.6" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#the-pipe-operator"><i class="fa fa-check"></i><b>2.5.6</b> The pipe operator</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#errors-warnings-and-messages"><i class="fa fa-check"></i><b>2.6</b> Errors, warnings and messages</a></li>
+<li class="chapter" data-level="2.7" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#plotting-and-graphing"><i class="fa fa-check"></i><b>2.7</b> Plotting and graphing</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#plotting-in-base-r"><i class="fa fa-check"></i><b>2.7.1</b> Plotting in base R</a></li>
+<li class="chapter" data-level="2.7.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#specialist-plotting-and-graphing-packages"><i class="fa fa-check"></i><b>2.7.2</b> Specialist plotting and graphing packages</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#documenting-your-work-using-r-markdown"><i class="fa fa-check"></i><b>2.8</b> Documenting your work using R Markdown</a></li>
+<li class="chapter" data-level="2.9" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#learning-exercises"><i class="fa fa-check"></i><b>2.9</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="2.9.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#discussion-questions"><i class="fa fa-check"></i><b>2.9.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="2.9.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-exercises"><i class="fa fa-check"></i><b>2.9.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="found-stats.html"><a href="found-stats.html"><i class="fa fa-check"></i><b>3</b> Statistics Foundations</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="found-stats.html"><a href="found-stats.html#elementary-descriptive-statistics-of-populations-and-samples"><i class="fa fa-check"></i><b>3.1</b> Elementary descriptive statistics of populations and samples</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="found-stats.html"><a href="found-stats.html#mean-var-sd"><i class="fa fa-check"></i><b>3.1.1</b> Mean, variance and standard deviation</a></li>
+<li class="chapter" data-level="3.1.2" data-path="found-stats.html"><a href="found-stats.html#covariance-and-correlation"><i class="fa fa-check"></i><b>3.1.2</b> Covariance and correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="found-stats.html"><a href="found-stats.html#distribution-of-random-variables"><i class="fa fa-check"></i><b>3.2</b> Distribution of random variables</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="found-stats.html"><a href="found-stats.html#sampling-of-random-variables"><i class="fa fa-check"></i><b>3.2.1</b> Sampling of random variables</a></li>
+<li class="chapter" data-level="3.2.2" data-path="found-stats.html"><a href="found-stats.html#standard-errors-the-t-distribution-and-confidence-intervals"><i class="fa fa-check"></i><b>3.2.2</b> Standard errors, the <span class="math inline">\(t\)</span>-distribution and confidence intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="found-stats.html"><a href="found-stats.html#hyp-tests"><i class="fa fa-check"></i><b>3.3</b> Hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="found-stats.html"><a href="found-stats.html#means-sig"><i class="fa fa-check"></i><b>3.3.1</b> Testing for a difference in means (Welch’s <span class="math inline">\(t\)</span>-test)</a></li>
+<li class="chapter" data-level="3.3.2" data-path="found-stats.html"><a href="found-stats.html#t-test-cor"><i class="fa fa-check"></i><b>3.3.2</b> Testing for a non-zero correlation between two variables (<span class="math inline">\(t\)</span>-test for correlation)</a></li>
+<li class="chapter" data-level="3.3.3" data-path="found-stats.html"><a href="found-stats.html#testing-for-a-difference-in-frequency-distribution-between-different-categories-in-a-data-set-chi-square-test"><i class="fa fa-check"></i><b>3.3.3</b> Testing for a difference in frequency distribution between different categories in a data set (Chi-square test)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="found-stats.html"><a href="found-stats.html#foundational-statistics-in-python"><i class="fa fa-check"></i><b>3.4</b> Foundational statistics in Python</a></li>
+<li class="chapter" data-level="3.5" data-path="found-stats.html"><a href="found-stats.html#foundational-statistics-in-julia"><i class="fa fa-check"></i><b>3.5</b> Foundational statistics in Julia</a></li>
+<li class="chapter" data-level="3.6" data-path="found-stats.html"><a href="found-stats.html#learning-exercises-1"><i class="fa fa-check"></i><b>3.6</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="found-stats.html"><a href="found-stats.html#discussion-questions-1"><i class="fa fa-check"></i><b>3.6.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="3.6.2" data-path="found-stats.html"><a href="found-stats.html#data-exercises-1"><i class="fa fa-check"></i><b>3.6.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html"><i class="fa fa-check"></i><b>4</b> Linear Regression for Continuous Outcomes</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#when-ols"><i class="fa fa-check"></i><b>4.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#origins-ols"><i class="fa fa-check"></i><b>4.1.1</b> Origins and intuition of linear regression</a></li>
+<li class="chapter" data-level="4.1.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#use-cases-ols"><i class="fa fa-check"></i><b>4.1.2</b> Use cases for linear regression</a></li>
+<li class="chapter" data-level="4.1.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#walkthrough-ols"><i class="fa fa-check"></i><b>4.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#simple-ols"><i class="fa fa-check"></i><b>4.2</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#linear-single"><i class="fa fa-check"></i><b>4.2.1</b> Linear relationship between a single input and an outcome</a></li>
+<li class="chapter" data-level="4.2.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#minimising-error-ols"><i class="fa fa-check"></i><b>4.2.2</b> Minimising the error</a></li>
+<li class="chapter" data-level="4.2.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#best-fit-simple-ols"><i class="fa fa-check"></i><b>4.2.3</b> Determining the best fit</a></li>
+<li class="chapter" data-level="4.2.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#measuring-the-fit-of-the-model"><i class="fa fa-check"></i><b>4.2.4</b> Measuring the fit of the model</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#multiple-linear-regression"><i class="fa fa-check"></i><b>4.3</b> Multiple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#running-a-multiple-linear-regression-model-and-interpreting-its-coefficients"><i class="fa fa-check"></i><b>4.3.1</b> Running a multiple linear regression model and interpreting its coefficients</a></li>
+<li class="chapter" data-level="4.3.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#coefficient-confidence"><i class="fa fa-check"></i><b>4.3.2</b> Coefficient confidence</a></li>
+<li class="chapter" data-level="4.3.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#lin-good-fit"><i class="fa fa-check"></i><b>4.3.3</b> Model ‘goodness-of-fit’</a></li>
+<li class="chapter" data-level="4.3.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#making-predictions-from-your-model"><i class="fa fa-check"></i><b>4.3.4</b> Making predictions from your model</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#managing-inputs-in-linear-regression"><i class="fa fa-check"></i><b>4.4</b> Managing inputs in linear regression</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#relevance-of-input-variables"><i class="fa fa-check"></i><b>4.4.1</b> Relevance of input variables</a></li>
+<li class="chapter" data-level="4.4.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#sparseness-missingness-of-data"><i class="fa fa-check"></i><b>4.4.2</b> Sparseness (‘missingness’) of data</a></li>
+<li class="chapter" data-level="4.4.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#transforming-categorical-inputs-to-dummy-variables"><i class="fa fa-check"></i><b>4.4.3</b> Transforming categorical inputs to dummy variables</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#testing-your-model-assumptions"><i class="fa fa-check"></i><b>4.5</b> Testing your model assumptions</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#assumption-of-linearity-and-additivity"><i class="fa fa-check"></i><b>4.5.1</b> Assumption of linearity and additivity</a></li>
+<li class="chapter" data-level="4.5.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#lin-reg-const-var"><i class="fa fa-check"></i><b>4.5.2</b> Assumption of constant error variance</a></li>
+<li class="chapter" data-level="4.5.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#norm-dist-assum"><i class="fa fa-check"></i><b>4.5.3</b> Assumption of normally distributed errors</a></li>
+<li class="chapter" data-level="4.5.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#collinearity"><i class="fa fa-check"></i><b>4.5.4</b> Avoiding high collinearity and multicollinearity between input variables</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#extending-multiple-linear-regression"><i class="fa fa-check"></i><b>4.6</b> Extending multiple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#interactions-between-input-variables"><i class="fa fa-check"></i><b>4.6.1</b> Interactions between input variables</a></li>
+<li class="chapter" data-level="4.6.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#quadratic-and-higher-order-polynomial-terms"><i class="fa fa-check"></i><b>4.6.2</b> Quadratic and higher-order polynomial terms</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#learning-exercises-2"><i class="fa fa-check"></i><b>4.7</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="4.7.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#discussion-questions-2"><i class="fa fa-check"></i><b>4.7.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="4.7.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#data-exercises-2"><i class="fa fa-check"></i><b>4.7.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="bin-log-reg.html"><a href="bin-log-reg.html"><i class="fa fa-check"></i><b>5</b> Binomial Logistic Regression for Binary Outcomes</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#when-to-use-it"><i class="fa fa-check"></i><b>5.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#logistic-origins"><i class="fa fa-check"></i><b>5.1.1</b> Origins and intuition of binomial logistic regression</a></li>
+<li class="chapter" data-level="5.1.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#use-cases-for-binomial-logistic-regression"><i class="fa fa-check"></i><b>5.1.2</b> Use cases for binomial logistic regression</a></li>
+<li class="chapter" data-level="5.1.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#walkthrough-logit"><i class="fa fa-check"></i><b>5.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#mod-prob"><i class="fa fa-check"></i><b>5.2</b> Modeling probabilistic outcomes using a logistic function</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#deriving-the-concept-of-log-odds"><i class="fa fa-check"></i><b>5.2.1</b> Deriving the concept of log odds</a></li>
+<li class="chapter" data-level="5.2.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#modeling-the-log-odds-and-interpreting-the-coefficients"><i class="fa fa-check"></i><b>5.2.2</b> Modeling the log odds and interpreting the coefficients</a></li>
+<li class="chapter" data-level="5.2.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#odds-versus-probability"><i class="fa fa-check"></i><b>5.2.3</b> Odds versus probability</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#running-a-multivariate-binomial-logistic-regression-model"><i class="fa fa-check"></i><b>5.3</b> Running a multivariate binomial logistic regression model</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#running-and-interpreting-a-multivariate-binomial-logistic-regression-model"><i class="fa fa-check"></i><b>5.3.1</b> Running and interpreting a multivariate binomial logistic regression model</a></li>
+<li class="chapter" data-level="5.3.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#logistic-gof"><i class="fa fa-check"></i><b>5.3.2</b> Understanding the fit and goodness-of-fit of a binomial logistic regression model</a></li>
+<li class="chapter" data-level="5.3.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#model-parsimony"><i class="fa fa-check"></i><b>5.3.3</b> Model parsimony</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="bin-log-reg.html"><a href="bin-log-reg.html#other-considerations-in-binomial-logistic-regression"><i class="fa fa-check"></i><b>5.4</b> Other considerations in binomial logistic regression</a></li>
+<li class="chapter" data-level="5.5" data-path="bin-log-reg.html"><a href="bin-log-reg.html#learning-exercises-3"><i class="fa fa-check"></i><b>5.5</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#discussion-questions-3"><i class="fa fa-check"></i><b>5.5.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="5.5.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#data-exercises-3"><i class="fa fa-check"></i><b>5.5.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html"><i class="fa fa-check"></i><b>6</b> Multinomial Logistic Regression for Nominal Category Outcomes</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#when-to-use-it-1"><i class="fa fa-check"></i><b>6.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#intuition-for-multinomial-logistic-regression"><i class="fa fa-check"></i><b>6.1.1</b> Intuition for multinomial logistic regression</a></li>
+<li class="chapter" data-level="6.1.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#use-cases-for-multinomial-logistic-regression"><i class="fa fa-check"></i><b>6.1.2</b> Use cases for multinomial logistic regression</a></li>
+<li class="chapter" data-level="6.1.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#walkthrough-example"><i class="fa fa-check"></i><b>6.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#stratified"><i class="fa fa-check"></i><b>6.2</b> Running stratified binomial models</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#modeling-the-choice-of-product-a-versus-other-products"><i class="fa fa-check"></i><b>6.2.1</b> Modeling the choice of Product A versus other products</a></li>
+<li class="chapter" data-level="6.2.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#modeling-other-choices"><i class="fa fa-check"></i><b>6.2.2</b> Modeling other choices</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#running-a-multinomial-regression-model"><i class="fa fa-check"></i><b>6.3</b> Running a multinomial regression model</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#def-ref"><i class="fa fa-check"></i><b>6.3.1</b> Defining a reference level and running the model</a></li>
+<li class="chapter" data-level="6.3.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#interpreting-the-model"><i class="fa fa-check"></i><b>6.3.2</b> Interpreting the model</a></li>
+<li class="chapter" data-level="6.3.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#changing-ref"><i class="fa fa-check"></i><b>6.3.3</b> Changing the reference</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#model-simplification-fit-and-goodness-of-fit-for-multinomial-logistic-regression-models"><i class="fa fa-check"></i><b>6.4</b> Model simplification, fit and goodness-of-fit for multinomial logistic regression models</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#elim"><i class="fa fa-check"></i><b>6.4.1</b> Gradual safe elimination of variables</a></li>
+<li class="chapter" data-level="6.4.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#model-fit-and-goodness-of-fit"><i class="fa fa-check"></i><b>6.4.2</b> Model fit and goodness-of-fit</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#learning-exercises-4"><i class="fa fa-check"></i><b>6.5</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#discussion-questions-4"><i class="fa fa-check"></i><b>6.5.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="6.5.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#data-exercises-4"><i class="fa fa-check"></i><b>6.5.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ord-reg.html"><a href="ord-reg.html"><i class="fa fa-check"></i><b>7</b> Proportional Odds Logistic Regression for Ordered Category Outcomes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="ord-reg.html"><a href="ord-reg.html#when-to-use-it-2"><i class="fa fa-check"></i><b>7.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="ord-reg.html"><a href="ord-reg.html#ord-intuit"><i class="fa fa-check"></i><b>7.1.1</b> Intuition for proportional odds logistic regression</a></li>
+<li class="chapter" data-level="7.1.2" data-path="ord-reg.html"><a href="ord-reg.html#use-cases-for-proportional-odds-logistic-regression"><i class="fa fa-check"></i><b>7.1.2</b> Use cases for proportional odds logistic regression</a></li>
+<li class="chapter" data-level="7.1.3" data-path="ord-reg.html"><a href="ord-reg.html#ord-walkthrough"><i class="fa fa-check"></i><b>7.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="ord-reg.html"><a href="ord-reg.html#modeling-ordinal-outcomes-under-the-assumption-of-proportional-odds"><i class="fa fa-check"></i><b>7.2</b> Modeling ordinal outcomes under the assumption of proportional odds</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="ord-reg.html"><a href="ord-reg.html#mod-lin-reg"><i class="fa fa-check"></i><b>7.2.1</b> Using a latent continuous outcome variable to derive a proportional odds model</a></li>
+<li class="chapter" data-level="7.2.2" data-path="ord-reg.html"><a href="ord-reg.html#running-a-proportional-odds-logistic-regression-model"><i class="fa fa-check"></i><b>7.2.2</b> Running a proportional odds logistic regression model</a></li>
+<li class="chapter" data-level="7.2.3" data-path="ord-reg.html"><a href="ord-reg.html#calculating-the-likelihood-of-an-observation-being-in-a-specific-ordinal-category"><i class="fa fa-check"></i><b>7.2.3</b> Calculating the likelihood of an observation being in a specific ordinal category</a></li>
+<li class="chapter" data-level="7.2.4" data-path="ord-reg.html"><a href="ord-reg.html#model-diagnostics"><i class="fa fa-check"></i><b>7.2.4</b> Model diagnostics</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="ord-reg.html"><a href="ord-reg.html#testing-the-proportional-odds-assumption"><i class="fa fa-check"></i><b>7.3</b> Testing the proportional odds assumption</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="ord-reg.html"><a href="ord-reg.html#sighting-the-coefficients-of-stratified-binomial-models"><i class="fa fa-check"></i><b>7.3.1</b> Sighting the coefficients of stratified binomial models</a></li>
+<li class="chapter" data-level="7.3.2" data-path="ord-reg.html"><a href="ord-reg.html#wald"><i class="fa fa-check"></i><b>7.3.2</b> The Brant-Wald test</a></li>
+<li class="chapter" data-level="7.3.3" data-path="ord-reg.html"><a href="ord-reg.html#alternatives-to-proportional-odds-models"><i class="fa fa-check"></i><b>7.3.3</b> Alternatives to proportional odds models</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="ord-reg.html"><a href="ord-reg.html#learning-exercises-5"><i class="fa fa-check"></i><b>7.4</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="ord-reg.html"><a href="ord-reg.html#discussion-questions-5"><i class="fa fa-check"></i><b>7.4.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="7.4.2" data-path="ord-reg.html"><a href="ord-reg.html#data-exercises-5"><i class="fa fa-check"></i><b>7.4.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html"><i class="fa fa-check"></i><b>8</b> Modeling Explicit and Latent Hierarchy in Data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#mixed"><i class="fa fa-check"></i><b>8.1</b> Mixed models for explicit hierarchy in data</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#fixed-and-random-effects"><i class="fa fa-check"></i><b>8.1.1</b> Fixed and random effects</a></li>
+<li class="chapter" data-level="8.1.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-a-mixed-model"><i class="fa fa-check"></i><b>8.1.2</b> Running a mixed model</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#struc-eq-model"><i class="fa fa-check"></i><b>8.2</b> Structural equation models for latent hierarchy in data</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-and-assessing-the-measurement-model"><i class="fa fa-check"></i><b>8.2.1</b> Running and assessing the measurement model</a></li>
+<li class="chapter" data-level="8.2.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-and-interpreting-the-structural-model"><i class="fa fa-check"></i><b>8.2.2</b> Running and interpreting the structural model</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#learning-exercises-6"><i class="fa fa-check"></i><b>8.3</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#discussion-questions-6"><i class="fa fa-check"></i><b>8.3.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="8.3.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#data-exercises-6"><i class="fa fa-check"></i><b>8.3.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="survival.html"><a href="survival.html"><i class="fa fa-check"></i><b>9</b> Survival Analysis for Modeling Singular Events Over Time</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="survival.html"><a href="survival.html#tracking-and-illustrating-survival-rates-over-the-study-period"><i class="fa fa-check"></i><b>9.1</b> Tracking and illustrating survival rates over the study period</a></li>
+<li class="chapter" data-level="9.2" data-path="survival.html"><a href="survival.html#coxphmodel"><i class="fa fa-check"></i><b>9.2</b> Cox proportional hazard regression models</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="survival.html"><a href="survival.html#running-a-cox-proportional-hazard-regression-model"><i class="fa fa-check"></i><b>9.2.1</b> Running a Cox proportional hazard regression model</a></li>
+<li class="chapter" data-level="9.2.2" data-path="survival.html"><a href="survival.html#checking-the-proportional-hazard-assumption"><i class="fa fa-check"></i><b>9.2.2</b> Checking the proportional hazard assumption</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="survival.html"><a href="survival.html#frailty-models"><i class="fa fa-check"></i><b>9.3</b> Frailty models</a></li>
+<li class="chapter" data-level="9.4" data-path="survival.html"><a href="survival.html#learning-exercises-7"><i class="fa fa-check"></i><b>9.4</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="survival.html"><a href="survival.html#discussion-questions-7"><i class="fa fa-check"></i><b>9.4.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="9.4.2" data-path="survival.html"><a href="survival.html#data-exercises-7"><i class="fa fa-check"></i><b>9.4.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="alt-approaches.html"><a href="alt-approaches.html"><i class="fa fa-check"></i><b>10</b> Alternative Technical Approaches in R, Python and Julia</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="alt-approaches.html"><a href="alt-approaches.html#tidier-modeling-approaches-in-r"><i class="fa fa-check"></i><b>10.1</b> ‘Tidier’ modeling approaches in R</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="alt-approaches.html"><a href="alt-approaches.html#the-broom-package"><i class="fa fa-check"></i><b>10.1.1</b> The <code>broom</code> package</a></li>
+<li class="chapter" data-level="10.1.2" data-path="alt-approaches.html"><a href="alt-approaches.html#the-parsnip-package"><i class="fa fa-check"></i><b>10.1.2</b> The <code>parsnip</code> package</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="alt-approaches.html"><a href="alt-approaches.html#inferential-statistical-modeling-in-python"><i class="fa fa-check"></i><b>10.2</b> Inferential statistical modeling in Python</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="alt-approaches.html"><a href="alt-approaches.html#ordinary-least-squares-ols-linear-regression"><i class="fa fa-check"></i><b>10.2.1</b> Ordinary Least Squares (OLS) linear regression</a></li>
+<li class="chapter" data-level="10.2.2" data-path="alt-approaches.html"><a href="alt-approaches.html#binomial-logistic-regression"><i class="fa fa-check"></i><b>10.2.2</b> Binomial logistic regression</a></li>
+<li class="chapter" data-level="10.2.3" data-path="alt-approaches.html"><a href="alt-approaches.html#multinomial-logistic-regression"><i class="fa fa-check"></i><b>10.2.3</b> Multinomial logistic regression</a></li>
+<li class="chapter" data-level="10.2.4" data-path="alt-approaches.html"><a href="alt-approaches.html#structural-equation-models"><i class="fa fa-check"></i><b>10.2.4</b> Structural equation models</a></li>
+<li class="chapter" data-level="10.2.5" data-path="alt-approaches.html"><a href="alt-approaches.html#survival-analysis"><i class="fa fa-check"></i><b>10.2.5</b> Survival analysis</a></li>
+<li class="chapter" data-level="10.2.6" data-path="alt-approaches.html"><a href="alt-approaches.html#other-model-variants"><i class="fa fa-check"></i><b>10.2.6</b> Other model variants</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="alt-approaches.html"><a href="alt-approaches.html#inferential-statistical-modeling-in-julia"><i class="fa fa-check"></i><b>10.3</b> Inferential statistical modeling in Julia</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="alt-approaches.html"><a href="alt-approaches.html#ordinary-least-squares-ols-linear-regression-1"><i class="fa fa-check"></i><b>10.3.1</b> Ordinary Least Squares (OLS) linear regression</a></li>
+<li class="chapter" data-level="10.3.2" data-path="alt-approaches.html"><a href="alt-approaches.html#binomial-logistic-regression-1"><i class="fa fa-check"></i><b>10.3.2</b> Binomial logistic regression</a></li>
+<li class="chapter" data-level="10.3.3" data-path="alt-approaches.html"><a href="alt-approaches.html#multinomial-logistic-regression-1"><i class="fa fa-check"></i><b>10.3.3</b> Multinomial logistic regression</a></li>
+<li class="chapter" data-level="10.3.4" data-path="alt-approaches.html"><a href="alt-approaches.html#proportional-odds-logistic-regression"><i class="fa fa-check"></i><b>10.3.4</b> Proportional odds logistic regression</a></li>
+<li class="chapter" data-level="10.3.5" data-path="alt-approaches.html"><a href="alt-approaches.html#mixed-models"><i class="fa fa-check"></i><b>10.3.5</b> Mixed models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="power-tests.html"><a href="power-tests.html"><i class="fa fa-check"></i><b>11</b> Power Analysis to Estimate Required Sample Sizes for Modeling</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="power-tests.html"><a href="power-tests.html#errors-effect-sizes-and-statistical-power"><i class="fa fa-check"></i><b>11.1</b> Errors, effect sizes and statistical power</a></li>
+<li class="chapter" data-level="11.2" data-path="power-tests.html"><a href="power-tests.html#simple-stats"><i class="fa fa-check"></i><b>11.2</b> Power analysis for simple hypothesis tests</a></li>
+<li class="chapter" data-level="11.3" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-linear-regression-models"><i class="fa fa-check"></i><b>11.3</b> Power analysis for linear regression models</a></li>
+<li class="chapter" data-level="11.4" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-log-likelihood-regression-models"><i class="fa fa-check"></i><b>11.4</b> Power analysis for log-likelihood regression models</a></li>
+<li class="chapter" data-level="11.5" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-hierarchical-regression-models"><i class="fa fa-check"></i><b>11.5</b> Power analysis for hierarchical regression models</a></li>
+<li class="chapter" data-level="11.6" data-path="power-tests.html"><a href="power-tests.html#power-analysis-using-python"><i class="fa fa-check"></i><b>11.6</b> Power analysis using Python</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="solutions-to-exercises.html"><a href="solutions-to-exercises.html"><i class="fa fa-check"></i>Solutions to Exercises</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Handbook of Regression Modeling in People Analytics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="found-stats" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Statistics Foundations</h1>
+<p>To properly understand multivariate models, an analyst needs to have a decent grasp of foundational statistics. Many of the assumptions and results of multivariate models require an understanding of these foundations in order to be properly interpreted. There are three topics that are particularly important for those proceeding further in this book:</p>
+<ol style="list-style-type: decimal">
+<li>Descriptive statistics of populations and samples</li>
+<li>Distribution of random variables</li>
+<li>Hypothesis testing</li>
+</ol>
+<p>If you have never really studied these topics, I would strongly recommend taking a course in them and spending good time getting to know them. Again, just as the last chapter was not intended to be a comprehensive tutorial on R, neither is this chapter intended to be a comprehensive tutorial on introductory statistics. However, we will introduce some key concepts here that are critical to understanding later chapters, and as always we will illustrate using real data examples.</p>
+<p>In preparation for this chapter we are going to download a data set that we will work through in a later chapter, and use it for practical examples and illustration purposes. The data are a set of information on the sales, customer ratings and performance ratings on a set of 351 salespeople as well as an indication of whether or not they were promoted.</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="found-stats.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, use online url to download salespeople data</span></span>
+<span id="cb113-2"><a href="found-stats.html#cb113-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/salespeople.csv&quot;</span></span>
+<span id="cb113-3"><a href="found-stats.html#cb113-3" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code></pre></div>
+<p>Let’s take a brief look at the first few rows of this data to make sure we know what is inside it.</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="found-stats.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(salespeople)</span></code></pre></div>
+<pre><code>##   promoted sales customer_rate performance
+## 1        0   594          3.94           2
+## 2        0   446          4.06           3
+## 3        1   674          3.83           4
+## 4        0   525          3.62           2
+## 5        1   657          4.40           3
+## 6        1   918          4.54           2</code></pre>
+<p>And let’s understand the structure of this data.</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="found-stats.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(salespeople)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    351 obs. of  4 variables:
+##  $ promoted     : int  0 0 1 0 1 1 0 0 0 0 ...
+##  $ sales        : int  594 446 674 525 657 918 318 364 342 387 ...
+##  $ customer_rate: num  3.94 4.06 3.83 3.62 4.4 4.54 3.09 4.89 3.74 3 ...
+##  $ performance  : int  2 3 4 2 3 2 3 1 3 3 ...</code></pre>
+<p>It looks like:</p>
+<ul>
+<li><code>promoted</code> is a binary value, either 1 or 0, indicating ‘promoted’ or ‘not promoted,’ respectively.</li>
+<li><code>sales</code> and <code>customer_rate</code> look like normal numerical values.</li>
+<li><code>performance</code> looks like a set of performance categories—there appear to be four based on what we can see.</li>
+</ul>
+<div id="elementary-descriptive-statistics-of-populations-and-samples" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Elementary descriptive statistics of populations and samples</h2>
+<p>Any collection of numerical data on one or more variables can be described using a number of common statistical concepts. Let <span class="math inline">\(x = x_1, x_2, \dots, x_n\)</span> be a sample of <span class="math inline">\(n\)</span> observations of a variable drawn from a population.</p>
+<div id="mean-var-sd" class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Mean, variance and standard deviation</h3>
+<p>The <strong>mean</strong> is the average value of the observations and is defined by adding up all the values and dividing by the number of observations. The mean <span class="math inline">\(\bar{x}\)</span> of our sample <span class="math inline">\(x\)</span> is defined as:</p>
+<p><span class="math display">\[
+\bar{x} = \frac{1}{n}\sum_{i = 1}^{n}x_i
+\]</span>
+While the mean of a sample <span class="math inline">\(x\)</span> is denoted by <span class="math inline">\(\bar{x}\)</span>, the mean of an entire population is usually denoted by <span class="math inline">\(\mu\)</span>. The mean can have a different interpretation depending on the type of data being studied. Let’s look at the mean of three different columns of our <code>salespeople</code> data, making sure to ignore any missing data.</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="found-stats.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(salespeople<span class="sc">$</span>sales, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 527.0057</code></pre>
+<p>This looks very intuitive and appears to be the average amount of sales made by the individuals in the data set.</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="found-stats.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(salespeople<span class="sc">$</span>promoted, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 0.3219373</code></pre>
+<p>Given that this data can only have the value of 0 or 1, we interpret this mean as <em>likelihood</em> or <em>expectation</em> that an individual will be labeled as 1. That is, the average probability of promotion in the data set. If this data showed a perfectly random likelihood of promotion, we would expect this to take the value of 0.5. But it is lower than 0.5, which tells us that the majority of individuals are not promoted.</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="found-stats.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(salespeople<span class="sc">$</span>performance, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 2.5</code></pre>
+<p>Given that this data can only have the values 1, 2, 3 or 4, we interpret this as the <em>expected value</em> of the performance rating in the data set. Higher or lower means inform us about the distribution of the performance ratings. A low mean will indicate a skew towards a low rating, and a high mean will indicate a skew towards a high rating.</p>
+<p>Other common statistical summary measures include the <em>median</em>, which is the middle value when the values are ranked in order, and the <em>mode</em>, which is the most frequently occurring value.</p>
+<p>The <strong>variance</strong> is a measure of how much the data varies around its mean. There are two different definitions of variance. The <strong>population variance</strong> assumes that that we are working with the entire population and is defined as the average squared difference from the mean:</p>
+<p><span class="math display">\[
+\mathrm{Var}_p(x) = \frac{1}{n}\sum_{i = 1}^{n}(x_i - \bar{x})^2
+\]</span>
+The <strong>sample variance</strong> assumes that we are working with a sample and attempts to estimate the variance of a larger population by applying <em>Bessel’s correction</em> to account for potential sampling error. The sample variance is:</p>
+<p><span class="math display">\[
+\mathrm{Var}_s(x) = \frac{1}{n-1}\sum_{i = 1}^{n}(x_i - \bar{x})^2
+\]</span></p>
+<p>You can see that</p>
+<p><span class="math display">\[
+\mathrm{Var}_p(x) = \frac{n - 1}{n}\mathrm{Var}_s(x)
+\]</span>
+So as the data set gets larger, the sample variance and the population variance become less and less distinguishable, which intuitively makes sense.</p>
+<p>Because we rarely work with full populations, the sample variance is calculated by default in R and in many other statistical software packages.</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="found-stats.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample variance </span></span>
+<span id="cb124-2"><a href="found-stats.html#cb124-2" aria-hidden="true" tabindex="-1"></a>(sample_variance_sales <span class="ot">&lt;-</span> <span class="fu">var</span>(salespeople<span class="sc">$</span>sales, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<pre><code>## [1] 34308.11</code></pre>
+<p>So where necessary, we need to apply a transformation to get the population variance.</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="found-stats.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="co"># population variance (need length of non-NA data)</span></span>
+<span id="cb126-2"><a href="found-stats.html#cb126-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">na.omit</span>(salespeople<span class="sc">$</span>sales))</span>
+<span id="cb126-3"><a href="found-stats.html#cb126-3" aria-hidden="true" tabindex="-1"></a>(population_variance_sales <span class="ot">&lt;-</span> ((n<span class="dv">-1</span>)<span class="sc">/</span>n) <span class="sc">*</span> sample_variance_sales)</span></code></pre></div>
+<pre><code>## [1] 34210.09</code></pre>
+<p>Variance does not have intuitive scale relative to the data being studied, because we have used a ‘squared distance metric’‍, therefore we can square-root it to get a measure of ‘deviance’ on the same scale as the data. We call this the <em>standard deviation</em> <span class="math inline">\(\sigma(x)\)</span>, where <span class="math inline">\(\mathrm{Var}(x) = \sigma(x)^2\)</span>. As with variance, standard deviation has both population and sample versions, and the sample version is calculated by default. Conversion between the two takes the form</p>
+<p><span class="math display">\[
+\sigma_p(x) = \sqrt{\frac{n-1}{n}}\sigma_s(x)
+\]</span></p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="found-stats.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample standard deviation</span></span>
+<span id="cb128-2"><a href="found-stats.html#cb128-2" aria-hidden="true" tabindex="-1"></a>(sample_sd_sales <span class="ot">&lt;-</span> <span class="fu">sd</span>(salespeople<span class="sc">$</span>sales, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<pre><code>## [1] 185.2245</code></pre>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="found-stats.html#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="co"># verify that sample sd is sqrt(sample var)</span></span>
+<span id="cb130-2"><a href="found-stats.html#cb130-2" aria-hidden="true" tabindex="-1"></a>sample_sd_sales <span class="sc">==</span> <span class="fu">sqrt</span>(sample_variance_sales)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="found-stats.html#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate population standard deviation</span></span>
+<span id="cb132-2"><a href="found-stats.html#cb132-2" aria-hidden="true" tabindex="-1"></a>(population_sd_sales <span class="ot">&lt;-</span> <span class="fu">sqrt</span>((n<span class="dv">-1</span>)<span class="sc">/</span>n) <span class="sc">*</span> sample_sd_sales)</span></code></pre></div>
+<pre><code>## [1] 184.9597</code></pre>
+<p>Given the range of sales is [151, 945] and the mean is 527, we see that the standard deviation gives a more intuitive sense of the ‘spread’ of the data relative to its inherent scale.</p>
+</div>
+<div id="covariance-and-correlation" class="section level3" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Covariance and correlation</h3>
+<p>The <strong>covariance</strong> between two variables is a measure of the extent to which one changes as the other changes. If <span class="math inline">\(y = y_1, y_2, \dots, y_n\)</span> is a second variable, and <span class="math inline">\(\bar{x}\)</span> and <span class="math inline">\(\bar{y}\)</span> are the means of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, respectively, then the <strong>sample covariance</strong> of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> is defined as</p>
+<p><span class="math display">\[
+\mathrm{cov}_s(x, y) = \frac{1}{n - 1}\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})
+\]</span>
+and as with variance, the <strong>population covariance</strong> is</p>
+<p><span class="math display">\[
+\mathrm{cov}_p(x, y) = \frac{n-1}{n}\mathrm{cov}_s(x, y) 
+\]</span></p>
+<p>Again, the sample covariance is the default in R, and we need to transform to obtain the population covariance.</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="found-stats.html#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get sample covariance for sales and customer_rate, </span></span>
+<span id="cb134-2"><a href="found-stats.html#cb134-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ignoring observations with missing data</span></span>
+<span id="cb134-3"><a href="found-stats.html#cb134-3" aria-hidden="true" tabindex="-1"></a>(sample_cov <span class="ot">&lt;-</span> <span class="fu">cov</span>(salespeople<span class="sc">$</span>sales, salespeople<span class="sc">$</span>customer_rate, </span>
+<span id="cb134-4"><a href="found-stats.html#cb134-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">use =</span> <span class="st">&quot;complete.obs&quot;</span>))</span></code></pre></div>
+<pre><code>## [1] 55.81769</code></pre>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="found-stats.html#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to population covariance (need number of complete obs)</span></span>
+<span id="cb136-2"><a href="found-stats.html#cb136-2" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">subset</span>(salespeople, <span class="at">select =</span> <span class="fu">c</span>(<span class="st">&quot;sales&quot;</span>, <span class="st">&quot;customer_rate&quot;</span>))</span>
+<span id="cb136-3"><a href="found-stats.html#cb136-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(cols[<span class="fu">complete.cases</span>(cols), ])</span>
+<span id="cb136-4"><a href="found-stats.html#cb136-4" aria-hidden="true" tabindex="-1"></a>(population_cov <span class="ot">&lt;-</span> ((n<span class="dv">-1</span>)<span class="sc">/</span>n) <span class="sc">*</span> sample_cov)</span></code></pre></div>
+<pre><code>## [1] 55.65821</code></pre>
+<p>As can be seen, the difference in covariance is very small between the sample and population versions, and both confirm a positive relationship between sales and customer rating. However, we again see this issue that there is no intuitive sense of scale for this measure.</p>
+<p><strong>Pearson’s correlation</strong> coefficient divides the covariance by the product of the standard deviations of the two variables:</p>
+<p><span class="math display">\[
+r_{x, y} = \frac{\mathrm{cov}(x, y)}{\sigma(x)\sigma(y)}
+\]</span>
+This creates a scale of <span class="math inline">\(-1\)</span> to <span class="math inline">\(1\)</span> for <span class="math inline">\(r_{x, y}\)</span>, which is an intuitive way of understanding both the direction and strength of the relationship between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, with <span class="math inline">\(-1\)</span> indicating that <span class="math inline">\(x\)</span> increases perfectly as <span class="math inline">\(y\)</span> decreases, <span class="math inline">\(1\)</span> indicating that <span class="math inline">\(x\)</span> increases perfectly as <span class="math inline">\(y\)</span> increases, and <span class="math inline">\(0\)</span> indicating that there is no relationship between the two.</p>
+<p>As before, there is a sample and population version of the correlation coefficient, and R calculates the sample version by default. Similar transformations can be used to determine a population correlation coefficient and over large samples the two measures converge.</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="found-stats.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate sample correlation between sales and customer_rate</span></span>
+<span id="cb138-2"><a href="found-stats.html#cb138-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(salespeople<span class="sc">$</span>sales, salespeople<span class="sc">$</span>customer_rate, <span class="at">use =</span> <span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.337805</code></pre>
+<p>This tells us that there is a moderate positive correlation between sales and customer rating.</p>
+<p>You will notice that we have so far used two variables on a continuous scale to demonstrate covariance and correlation. Pearson’s correlation can also be used between a continuous scale and a dichotomous (binary) scale variable, and this is known as a <strong>point-biserial correlation</strong>.</p>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="found-stats.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(salespeople<span class="sc">$</span>sales, salespeople<span class="sc">$</span>promoted, <span class="at">use =</span> <span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.8511283</code></pre>
+<p>Correlating ranked variables involves an adjusted approach leading to <strong>Spearman’s rho</strong> (<span class="math inline">\(\rho\)</span>) or <strong>Kendall’s tau</strong> (<span class="math inline">\(\tau\)</span>), among others. We will not dive into the mathematics of this here, but a good source is <span class="citation"><a href="#ref-bhattacharya" role="doc-biblioref">Bhattacharya and Burman</a> (<a href="#ref-bhattacharya" role="doc-biblioref">2016</a>)</span>. Spearman’s or Kendall’s variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.</p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="found-stats.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="co"># spearman&#39;s rho correlation</span></span>
+<span id="cb142-2"><a href="found-stats.html#cb142-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(salespeople<span class="sc">$</span>sales, salespeople<span class="sc">$</span>performance, </span>
+<span id="cb142-3"><a href="found-stats.html#cb142-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">use =</span> <span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.2735446</code></pre>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="found-stats.html#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="co"># kendall&#39;s tau correlation</span></span>
+<span id="cb144-2"><a href="found-stats.html#cb144-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(salespeople<span class="sc">$</span>sales, salespeople<span class="sc">$</span>performance, </span>
+<span id="cb144-3"><a href="found-stats.html#cb144-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;kendall&quot;</span>, <span class="at">use =</span> <span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.2073609</code></pre>
+<p>In this case, both indicate a low to moderate correlation. Spearman’s rho or Kendall’s tau can also be used to correlate a ranked and a dichotomous variable, and this is known as a <strong>rank-biserial correlation</strong>.</p>
+</div>
+</div>
+<div id="distribution-of-random-variables" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Distribution of random variables</h2>
+<p>As we outlined in Section <a href="inf-model.html#theory-modeling">1.2</a>, when we build a model we are using a set of sample data to infer a general relationship on a larger population. A major underlying assumption in our inference is that we believe the real-life variables we are dealing with are random in nature. For example, we might be trying to model the drivers of the voting choice of millions of people in a national election, but we may only have sample data on a few thousand people. When we infer nationwide voting intentions from our sample, we assume that the characteristics of the voting population are random variables.</p>
+<div id="sampling-of-random-variables" class="section level3" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Sampling of random variables</h3>
+<p>When we describe variables as random, we are assuming that they take a form which is <em>independent and identically distributed</em>. Using our <code>salespeople</code> data as an example, we are assuming that the sales of one person in the data set is not influenced by the sales of another person in the data set. In this case, this seems like a reasonable assumption, and we will be making it for many (though not all) of the statistical methods used in this book. However, it is good to recognize that there are scenarios where this assumption cannot be made. For example, if the salespeople worked together in serving the same customers on the same products, and each individual’s sales represented some proportion of the overall sales to the customer, we cannot say that the sales data is independent and identically distributed. In this case, we will expect to see some hierarchy in our data and will need to adjust our techniques accordingly to take this into consideration.</p>
+<p>Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let’s test this with a little experiment on our <code>salespeople</code> data. Figure <a href="found-stats.html#fig:sales-sample">3.1</a> shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the <code>salespeople</code> data set and creating a histogram of the resulting mean sales values. We can see how greater numbers of samples (down the rows) lead to a more normal distribution curve and larger sample sizes (across the columns) lead to a ‘spikier’ distribution with a smaller standard deviation.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sales-sample"></span>
+<img src="_main_files/figure-html/sales-sample-1.png" alt="Histogram and density of mean `sales` from the `salespeople` data set based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)" width="672" />
+<p class="caption">
+Figure 3.1: Histogram and density of mean <code>sales</code> from the <code>salespeople</code> data set based on sample sizes of 50, 100 and 150 (columns) and 10, 100 and 1000 samplings (rows)
+</p>
+</div>
+</div>
+<div id="standard-errors-the-t-distribution-and-confidence-intervals" class="section level3" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Standard errors, the <span class="math inline">\(t\)</span>-distribution and confidence intervals</h3>
+<p>One consequence of the observations in Figure <a href="found-stats.html#fig:sales-sample">3.1</a> is that the summary statistics calculated from larger sample sizes fall into distributions that are ‘narrower’ and hence represent more precise estimations of the population statistic. The standard deviation of a sampled statistic is called the <strong>standard error</strong> of that statistic. In the special case of a sampled mean, the formula for the standard error of the mean can be derived to be</p>
+<p><span class="math display">\[
+SE = \frac{\sigma}{\sqrt{n}}
+\]</span>
+where <span class="math inline">\(\sigma\)</span> is the (sample) standard deviation and <span class="math inline">\(n\)</span> is the sample size<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>. This confirms that the standard error of the mean decreases with greater sample size, confirming our intuition that the estimation of the mean is more precise with larger samples.</p>
+<p>To apply this logic to our <code>salespeople</code> data set, let’s take a random sample of 100 values of <code>customer_rate</code>.</p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="found-stats.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed for reproducibility of sampling</span></span>
+<span id="cb146-2"><a href="found-stats.html#cb146-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb146-3"><a href="found-stats.html#cb146-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-4"><a href="found-stats.html#cb146-4" aria-hidden="true" tabindex="-1"></a><span class="co"># generate a sample of 100 observations</span></span>
+<span id="cb146-5"><a href="found-stats.html#cb146-5" aria-hidden="true" tabindex="-1"></a>custrate <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(salespeople<span class="sc">$</span>customer_rate)</span>
+<span id="cb146-6"><a href="found-stats.html#cb146-6" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb146-7"><a href="found-stats.html#cb146-7" aria-hidden="true" tabindex="-1"></a>sample_custrate <span class="ot">&lt;-</span> <span class="fu">sample</span>(custrate, n)</span></code></pre></div>
+<p>We can calculate the mean of the sample and the standard error of the mean.</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="found-stats.html#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mean</span></span>
+<span id="cb147-2"><a href="found-stats.html#cb147-2" aria-hidden="true" tabindex="-1"></a>(sample_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(sample_custrate))</span></code></pre></div>
+<pre><code>## [1] 3.6485</code></pre>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="found-stats.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="co"># standard error</span></span>
+<span id="cb149-2"><a href="found-stats.html#cb149-2" aria-hidden="true" tabindex="-1"></a>(se <span class="ot">&lt;-</span> <span class="fu">sd</span>(sample_custrate)<span class="sc">/</span><span class="fu">sqrt</span>(n))</span></code></pre></div>
+<pre><code>## [1] 0.08494328</code></pre>
+<p>Because the normal distribution is a frequency (or probability) distribution, we can interpret the standard error as a fundamental unit of ‘sensitivity’ around the sample mean. For greater multiples of standard errors around the sample mean, we can have greater certainty that the range contains the true population mean.</p>
+<p>To calculate how many standard errors we would need around the sample mean to have a 95% probability of including the true population mean, we need to use the <span class="math inline">\(t\)</span>-distribution. The <span class="math inline">\(t\)</span>-distribution is essentially an approximation of the normal distribution acknowledging that we only have a sample estimate of the true population standard deviation in how we calculate the standard error. In this case where we are dealing with a single sample mean, we use the <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n-1\)</span> degrees of freedom. We can use the <code>qt()</code> function in R to find the standard error multiple associated with the level of certainty we need. In this case, we are looking for our true population mean to be outside the top 2.5% or bottom 2.5% of the distribution<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a>.</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="found-stats.html#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get se multiple for 0.975</span></span>
+<span id="cb151-2"><a href="found-stats.html#cb151-2" aria-hidden="true" tabindex="-1"></a>(t <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="at">p =</span> <span class="fl">0.975</span>, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">1</span>))</span></code></pre></div>
+<pre><code>## [1] 1.984217</code></pre>
+<p>We see that approximately 1.98 standard errors on either side of our sample mean will give us 95% confidence that our range contains the true population mean. This is called the <em>95% confidence interval</em><a href="#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a>.</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="found-stats.html#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 95% confidence interval lower and upper bounds</span></span>
+<span id="cb153-2"><a href="found-stats.html#cb153-2" aria-hidden="true" tabindex="-1"></a>lower_bound <span class="ot">&lt;-</span> sample_mean <span class="sc">-</span> t<span class="sc">*</span>se</span>
+<span id="cb153-3"><a href="found-stats.html#cb153-3" aria-hidden="true" tabindex="-1"></a>upper_bound <span class="ot">&lt;-</span> sample_mean <span class="sc">+</span> t<span class="sc">*</span>se</span>
+<span id="cb153-4"><a href="found-stats.html#cb153-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb153-5"><a href="found-stats.html#cb153-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">paste0</span>(<span class="st">&#39;[&#39;</span>, lower_bound, <span class="st">&#39;, &#39;</span>, upper_bound, <span class="st">&#39;]&#39;</span>)) </span></code></pre></div>
+<pre><code>## [3.47995410046738, 3.81704589953262]</code></pre>
+</div>
+</div>
+<div id="hyp-tests" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Hypothesis testing</h2>
+<p>Observations about the distribution of statistics on samples of random variables allow us to construct tests for hypotheses of difference or similarity. Such hypothesis testing is useful in itself for simple bivariate analysis in practice settings, but it will be particularly critical in later chapters in determining whether models are useful or not. Before we go through some technical examples of hypothesis testing, let’s overview the logic and intuition for how hypothesis testing works.</p>
+<p>The purpose of hypothesis testing is to establish a high degree of statistical certainty regarding a claim of difference in a population based on the properties of a sample. Consistent with a high burden of proof, we start from the hypothesis that there is no difference, called the <em>null hypothesis</em>. We only reject the null hypothesis if the statistical properties of the sample data render it very unlikely, in which case we confirm the <em>alternative hypothesis</em> that a statistical difference does exist in the population.</p>
+<p>Most hypothesis tests can return a p-value, which is the maximum probability of finding the sample results (or results that are more extreme or unusual than the sample results) when the null hypothesis is true for the population. The analyst must decide on the level of p-value needed to reject the null hypothesis. This threshold is referred to as the significance level <span class="math inline">\(\alpha\)</span> (alpha). A common standard is to set <span class="math inline">\(\alpha\)</span> at 0.05. That is, we reject the null hypothesis if the p-value that we find for our sample results is less than 0.05. If we reject the null hypothesis at <span class="math inline">\(\alpha = 0.05\)</span>, this means that the results we observe in the sample are so extreme or unusual that they would only occur by chance at most 1 in 20 times if the null hypothesis were true. An alpha of 0.05 is not the only standard of certainty used in research and practice, and in some fields of study smaller alphas are the norm, particularly if erroneous conclusions might have very serious consequences.</p>
+<p>Three of the most common types of hypothesis tests are<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a>:</p>
+<ol style="list-style-type: decimal">
+<li>Testing for a difference in the means of two groups</li>
+<li>Testing for a non-zero correlation between two variables</li>
+<li>Testing for a difference in frequency distributions between different categories</li>
+</ol>
+<p>We will go through an example of each of these. In each case, you will see a three-step process. First, we calculate a test statistic. Second, we determine an expected distribution for that test statistic. Finally, we determine where our calculated statistic falls in that distribution in order to assess the likelihood of our sample occurring if the null hypothesis is true. During these examples, we will go through all the logic and calculation steps needed to do the hypothesis testing, before we demonstrate the simple functions that perform all the steps for you in R. Readers don’t absolutely need to know all the details contained in this section, but a strong understanding of the underlying methods is encouraged.</p>
+<div id="means-sig" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Testing for a difference in means (Welch’s <span class="math inline">\(t\)</span>-test)</h3>
+<p>Imagine that we are asked if, in general, the sales of low-performing salespeople are different from the sales of high-performing salespeople. This question refers to all salespeople, but we only have data for the sample in our <code>salespeople</code> data set. Let’s take two subsets of our data for those with a performance rating of 1 and those with a performance rating of 4, and calculate the difference in mean sales.</p>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="found-stats.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take two performance group samples </span></span>
+<span id="cb155-2"><a href="found-stats.html#cb155-2" aria-hidden="true" tabindex="-1"></a>perf1 <span class="ot">&lt;-</span> <span class="fu">subset</span>(salespeople, <span class="at">subset =</span> performance <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb155-3"><a href="found-stats.html#cb155-3" aria-hidden="true" tabindex="-1"></a>perf4 <span class="ot">&lt;-</span> <span class="fu">subset</span>(salespeople, <span class="at">subset =</span> performance <span class="sc">==</span> <span class="dv">4</span>)</span>
+<span id="cb155-4"><a href="found-stats.html#cb155-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb155-5"><a href="found-stats.html#cb155-5" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the difference in mean sales</span></span>
+<span id="cb155-6"><a href="found-stats.html#cb155-6" aria-hidden="true" tabindex="-1"></a>(diff <span class="ot">&lt;-</span> <span class="fu">mean</span>(perf4<span class="sc">$</span>sales) <span class="sc">-</span> <span class="fu">mean</span>(perf1<span class="sc">$</span>sales))</span></code></pre></div>
+<pre><code>## [1] 154.9742</code></pre>
+<p>We can see that those with a higher performance rating in our sample did generate higher mean sales than those with a lower performance rating. But these are just samples, and we are being asked to give a conclusion about the populations they are drawn from.</p>
+<p>Let’s take a null hypothesis that there is no difference in true mean sales between the two performance groups that these samples are drawn from. We combine the two samples and calculate the distribution around the difference in means. To <em>reject</em> the null hypothesis at <span class="math inline">\(\alpha = 0.05\)</span>, we would need to determine that the 95% confidence interval of this distribution does not contain zero.</p>
+<p>We calculate the standard error of the combined sample using the formula<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a>:</p>
+<p><span class="math display">\[
+\sqrt{\frac{\sigma_{\mathrm{perf1}}^2}{n_{\mathrm{perf1}}} + \frac{\sigma_{\mathrm{perf4}}^2}{n_{\mathrm{perf4}}}}
+\]</span>
+where <span class="math inline">\(\sigma_{\mathrm{perf1}}\)</span> and <span class="math inline">\(\sigma_{\mathrm{perf4}}\)</span> are the standard deviations of the two samples and <span class="math inline">\(n_{\mathrm{perf1}}\)</span> and <span class="math inline">\(n_{\mathrm{perf4}}\)</span> are the two sample sizes.</p>
+<p>We use a special formula called the <a href="https://en.wikipedia.org/wiki/Welch–Satterthwaite_equation">Welch-Satterthwaite approximation</a> to calculate the degrees of freedom for the two samples, which in this case calculates to 100.98<a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a>. This allows us to construct a 95% confidence interval for the difference between the means, and we can test whether this contains zero.</p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="found-stats.html#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate standard error of the two sets</span></span>
+<span id="cb157-2"><a href="found-stats.html#cb157-2" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">sd</span>(perf1<span class="sc">$</span>sales)<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span><span class="fu">length</span>(perf1<span class="sc">$</span>sales) </span>
+<span id="cb157-3"><a href="found-stats.html#cb157-3" aria-hidden="true" tabindex="-1"></a>           <span class="sc">+</span> <span class="fu">sd</span>(perf4<span class="sc">$</span>sales)<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span><span class="fu">length</span>(perf4<span class="sc">$</span>sales))</span>
+<span id="cb157-4"><a href="found-stats.html#cb157-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb157-5"><a href="found-stats.html#cb157-5" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the required t-statistic</span></span>
+<span id="cb157-6"><a href="found-stats.html#cb157-6" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="at">p =</span> <span class="fl">0.975</span>, <span class="at">df =</span> <span class="fl">100.98</span>)</span>
+<span id="cb157-7"><a href="found-stats.html#cb157-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb157-8"><a href="found-stats.html#cb157-8" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate 95% confidence interval</span></span>
+<span id="cb157-9"><a href="found-stats.html#cb157-9" aria-hidden="true" tabindex="-1"></a>(lower_bound <span class="ot">&lt;-</span> diff <span class="sc">-</span> t<span class="sc">*</span>se)</span></code></pre></div>
+<pre><code>## [1] 88.56763</code></pre>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="found-stats.html#cb159-1" aria-hidden="true" tabindex="-1"></a>(upper_bound <span class="ot">&lt;-</span> diff <span class="sc">+</span> t<span class="sc">*</span>se)</span></code></pre></div>
+<pre><code>## [1] 221.3809</code></pre>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="found-stats.html#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test if zero is inside this interval</span></span>
+<span id="cb161-2"><a href="found-stats.html#cb161-2" aria-hidden="true" tabindex="-1"></a>(<span class="dv">0</span> <span class="sc">&lt;=</span> upper_bound) <span class="sc">&amp;</span> (<span class="dv">0</span> <span class="sc">&gt;=</span> lower_bound)</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<p>Since this has returned <code>FALSE</code>, we conclude that a mean difference of zero is outside the 95% confidence interval of our sample mean difference, and so we cannot have 95% certainty that the difference in population means is zero. We reject the null hypothesis that the mean sales of both performance levels are the same.</p>
+<p>Looking at this graphically, we are assuming a <span class="math inline">\(t\)</span>-distribution of the mean difference, and we are determining where zero sits in that distribution, as in Figure <a href="found-stats.html#fig:norm-dist">3.2</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:norm-dist"></span>
+<img src="_main_files/figure-html/norm-dist-1.png" alt="t-distribution of the mean sales difference between `perf1` and `perf4`, 95% confidence intervals (red dashed lines) and a zero difference (blue dot-dash line)" width="672" />
+<p class="caption">
+Figure 3.2: t-distribution of the mean sales difference between <code>perf1</code> and <code>perf4</code>, 95% confidence intervals (red dashed lines) and a zero difference (blue dot-dash line)
+</p>
+</div>
+<p>The red dashed lines in this diagram represent the 95% confidence interval around the mean difference of our two samples. The ‘tails’ of the curve outside of these two lines each represent a maximum of 0.025 probability for the true population mean. So we can see that the position of the blue dot-dashed line can correspond to a <em>maximum probability</em> that the population mean difference is zero. This is the <em>p-value</em> of the hypothesis test<a href="#fn14" class="footnote-ref" id="fnref14"><sup>14</sup></a>.</p>
+<p>The p-value can be derived by calculating the standard error multiple associated with zero in the <span class="math inline">\(t\)</span>-distribution (called the <em><span class="math inline">\(t\)</span>-statistic</em> or <em><span class="math inline">\(t\)</span>-value</em>), by applying the conversion function <code>pt()</code> to obtain the upper tail probability and then multiplying by 2 to get the probability associated with both tails of the distribution.</p>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="found-stats.html#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get t-statistic</span></span>
+<span id="cb163-2"><a href="found-stats.html#cb163-2" aria-hidden="true" tabindex="-1"></a>t_actual <span class="ot">&lt;-</span> diff<span class="sc">/</span>se </span>
+<span id="cb163-3"><a href="found-stats.html#cb163-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb163-4"><a href="found-stats.html#cb163-4" aria-hidden="true" tabindex="-1"></a><span class="co"># convert t-statistic to p-value</span></span>
+<span id="cb163-5"><a href="found-stats.html#cb163-5" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(t_actual, <span class="at">df =</span> <span class="fl">100.98</span>, <span class="at">lower =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 1.093212e-05</code></pre>
+<p>Nowadays, it is never necessary to do these manual calculations ourselves because hypothesis tests are a standard part of statistical software. In R, the <code>t.test()</code> function performs a hypothesis test of difference in means of two samples and confirms our manually calculated p-value and 95% confidence interval.</p>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="found-stats.html#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(perf4<span class="sc">$</span>sales, perf1<span class="sc">$</span>sales)</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  perf4$sales and perf1$sales
+## t = 4.6295, df = 100.98, p-value = 1.093e-05
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##   88.5676 221.3809
+## sample estimates:
+## mean of x mean of y 
+##  619.8909  464.9167</code></pre>
+<p>Because our p-value is less than our alpha of 0.05, we reject the null hypothesis in favor of the alternative hypothesis. The standard <span class="math inline">\(\alpha = 0.05\)</span> is associated with the term <em>statistically significant</em>. Therefore we could say here that the two performance groups have a statistically significant difference in mean sales.</p>
+<p>In practice, there are numerous alphas that are of interest to analysts, each reflecting different levels of certainty. While 0.05 is the most common standard in many disciplines, more stringent alphas of 0.01 and 0.001 are often used in situations where a high degree of certainty is desirable (for example, some medical fields). Similarly, a less stringent alpha standard of 0.1 can be of interest particularly when sample sizes are small and the analyst is satisfied with ‘indications’ from the data. In many statistical software packages, including those that we will see in this book, tests that meet an <span class="math inline">\(\alpha = 0.1\)</span> standard are usually marked with period(<code>.</code>), those that meet <span class="math inline">\(\alpha = 0.05\)</span> with an asterisk(<code>*</code>), <span class="math inline">\(\alpha = 0.01\)</span> a double asterisk(<code>**</code>) and <span class="math inline">\(\alpha = 0.001\)</span> a triple asterisk(<code>***</code>).</p>
+<p>Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data. In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards—a process known as ‘p-hacking’—has been of increasing concern recently. See Chapter <a href="power-tests.html#power-tests">11</a> for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.</p>
+</div>
+<div id="t-test-cor" class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Testing for a non-zero correlation between two variables (<span class="math inline">\(t\)</span>-test for correlation)</h3>
+<p>Imagine that we are given a sample of data for two variables and we are asked if the variables are correlated in the overall population. We can take a null hypothesis that the variables are not correlated, determine a t-statistic associated with a zero correlation and convert this to a p-value. The t-statistic associated with a correlation <span class="math inline">\(r\)</span> between two samples of length <span class="math inline">\(n\)</span> is often notated <span class="math inline">\(t^*\)</span> and is defined as</p>
+<p><span class="math display">\[
+t^* = \frac{r\sqrt{n-2}}{\sqrt{1-r^2}}
+\]</span>
+<span class="math inline">\(t^*\)</span> can be converted to an associated p-value using a <span class="math inline">\(t\)</span>-distribution in a similar way to the previous section, this time with <span class="math inline">\(n - 2\)</span> degrees of freedom in our <span class="math inline">\(t\)</span>-distribution. As an example, let’s calculate <span class="math inline">\(t^*\)</span> for the correlation between sales and customer rating in our sample and convert it to a p-value.</p>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="found-stats.html#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove NAs from salespeople</span></span>
+<span id="cb167-2"><a href="found-stats.html#cb167-2" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> salespeople[<span class="fu">complete.cases</span>(salespeople), ]</span>
+<span id="cb167-3"><a href="found-stats.html#cb167-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb167-4"><a href="found-stats.html#cb167-4" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate t_star</span></span>
+<span id="cb167-5"><a href="found-stats.html#cb167-5" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">cor</span>(salespeople<span class="sc">$</span>sales, salespeople<span class="sc">$</span>customer_rate)</span>
+<span id="cb167-6"><a href="found-stats.html#cb167-6" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(salespeople)</span>
+<span id="cb167-7"><a href="found-stats.html#cb167-7" aria-hidden="true" tabindex="-1"></a>t_star <span class="ot">&lt;-</span> (r<span class="sc">*</span><span class="fu">sqrt</span>(n <span class="sc">-</span> <span class="dv">2</span>))<span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> r<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb167-8"><a href="found-stats.html#cb167-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb167-9"><a href="found-stats.html#cb167-9" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to p-value on t-distribution with n - 2 degrees of freedom</span></span>
+<span id="cb167-10"><a href="found-stats.html#cb167-10" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(t_star, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">2</span>, <span class="at">lower =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 8.647952e-11</code></pre>
+<p>Again, there is a useful function in R to cut out the need for all our manual calculations. The <code>cor.test()</code> function in R performs a hypothesis test on the null hypothesis that two variables have zero correlation.</p>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="found-stats.html#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(salespeople<span class="sc">$</span>sales, salespeople<span class="sc">$</span>customer_rate)</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  salespeople$sales and salespeople$customer_rate
+## t = 6.6952, df = 348, p-value = 8.648e-11
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  0.2415282 0.4274964
+## sample estimates:
+##      cor 
+## 0.337805</code></pre>
+<p>This confirms our manual calculations, and we see the null hypothesis has been rejected and we can conclude that there is a significant correlation between sales and customer rating.</p>
+</div>
+<div id="testing-for-a-difference-in-frequency-distribution-between-different-categories-in-a-data-set-chi-square-test" class="section level3" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Testing for a difference in frequency distribution between different categories in a data set (Chi-square test)</h3>
+<p>Imagine that we are asked if the performance category of each person in the <code>salespeople</code> data set has a relationship with their promotion likelihood. We will test the null hypothesis that there is no difference in the distribution of promoted versus not promoted across the four performance categories.</p>
+<p>First we can produce a <em>contingency table</em>, which is a matrix containing counts of how many people were promoted or not promoted in each category.</p>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="found-stats.html#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create contingency table of promoted vs performance</span></span>
+<span id="cb171-2"><a href="found-stats.html#cb171-2" aria-hidden="true" tabindex="-1"></a>(contingency <span class="ot">&lt;-</span> <span class="fu">table</span>(salespeople<span class="sc">$</span>promoted, salespeople<span class="sc">$</span>performance))</span></code></pre></div>
+<pre><code>##    
+##      1  2  3  4
+##   0 50 85 77 25
+##   1 10 25 48 30</code></pre>
+<p>We can see by summing each row that for the total sample we can expect 113 people to be promoted and 237 to miss out on promotion. We can use this ratio to compute an expected proportion in each performance category under the assumption that the distribution was exactly the same across all four categories.</p>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="found-stats.html#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate expected promoted and not promoted</span></span>
+<span id="cb173-2"><a href="found-stats.html#cb173-2" aria-hidden="true" tabindex="-1"></a>(expected_promoted <span class="ot">&lt;-</span> (<span class="fu">sum</span>(contingency[<span class="dv">2</span>, ])<span class="sc">/</span><span class="fu">sum</span>(contingency)) <span class="sc">*</span> </span>
+<span id="cb173-3"><a href="found-stats.html#cb173-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">colSums</span>(contingency))</span></code></pre></div>
+<pre><code>##        1        2        3        4 
+## 19.37143 35.51429 40.35714 17.75714</code></pre>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="found-stats.html#cb175-1" aria-hidden="true" tabindex="-1"></a>(expected_notpromoted <span class="ot">&lt;-</span> (<span class="fu">sum</span>(contingency[<span class="dv">1</span>, ])<span class="sc">/</span><span class="fu">sum</span>(contingency)) <span class="sc">*</span> </span>
+<span id="cb175-2"><a href="found-stats.html#cb175-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">colSums</span>(contingency))</span></code></pre></div>
+<pre><code>##        1        2        3        4 
+## 40.62857 74.48571 84.64286 37.24286</code></pre>
+<p>Now we can compare our observed versus expected values using the difference metric:</p>
+<p><span class="math display">\[
+\frac{(\mathrm{observed} - \mathrm{expected})^2}{\mathrm{expected}}
+\]</span>
+and add these all up to get a total, known as the <span class="math inline">\(\chi^2\)</span> statistic.</p>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="found-stats.html#cb177-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the difference metrics for promoted and not promoted</span></span>
+<span id="cb177-2"><a href="found-stats.html#cb177-2" aria-hidden="true" tabindex="-1"></a>promoted <span class="ot">&lt;-</span> <span class="fu">sum</span>((expected_promoted <span class="sc">-</span> contingency[<span class="dv">2</span>, ])<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span></span>
+<span id="cb177-3"><a href="found-stats.html#cb177-3" aria-hidden="true" tabindex="-1"></a>                  expected_promoted)</span>
+<span id="cb177-4"><a href="found-stats.html#cb177-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb177-5"><a href="found-stats.html#cb177-5" aria-hidden="true" tabindex="-1"></a>notpromoted <span class="ot">&lt;-</span> <span class="fu">sum</span>((expected_notpromoted <span class="sc">-</span> contingency[<span class="dv">1</span>, ])<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span></span>
+<span id="cb177-6"><a href="found-stats.html#cb177-6" aria-hidden="true" tabindex="-1"></a>                     expected_notpromoted)</span>
+<span id="cb177-7"><a href="found-stats.html#cb177-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb177-8"><a href="found-stats.html#cb177-8" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate chi-squared statistic</span></span>
+<span id="cb177-9"><a href="found-stats.html#cb177-9" aria-hidden="true" tabindex="-1"></a>(chi_sq_stat <span class="ot">&lt;-</span> notpromoted <span class="sc">+</span> promoted)</span></code></pre></div>
+<pre><code>## [1] 25.89541</code></pre>
+<p>The <span class="math inline">\(\chi^2\)</span> statistic has an expected distribution that can be used to determine the p-value associated with this statistic. As with the <span class="math inline">\(t\)</span>-distribution, the <span class="math inline">\(\chi^2\)</span>-distribution depends on the degrees of freedom. This is calculated by subtracting one from the number of rows and from the number of columns in the contingency table and multiplying them together. In this case we have 2 rows and 4 columns, which calculates to 3 degrees of freedom. Armed with our <span class="math inline">\(\chi^2\)</span> statistic and our degrees of freedom, we can now calculate the p-value for the hypothesis test using the <code>pchisq()</code> function.</p>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="found-stats.html#cb179-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate p-value from chi_squared stat</span></span>
+<span id="cb179-2"><a href="found-stats.html#cb179-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(chi_sq_stat, <span class="at">df =</span> <span class="dv">3</span>, <span class="at">lower.tail=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 1.003063e-05</code></pre>
+<p>The <code>chisq.test()</code> function in R performs all the steps involved in a chi-square test of independence on a contingency table and returns the <span class="math inline">\(\chi^2\)</span> statistic and associated p-value for the null hypothesis, in this case confirming our manual calculations.</p>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="found-stats.html#cb181-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(contingency)</span></code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  contingency
+## X-squared = 25.895, df = 3, p-value = 1.003e-05</code></pre>
+<p>Again, we can reject the null hypothesis and confirm the alternative hypothesis that there is a difference in the distribution of promoted/not promoted individuals between the four performance categories.</p>
+</div>
+</div>
+<div id="foundational-statistics-in-python" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Foundational statistics in Python</h2>
+<p>Elementary descriptive statistics can be performed in Python using various packages. Descriptive statistics of <code>numpy</code> arrays are usually available as methods.</p>
+<div class="sourceCode" id="cb183"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb183-1"><a href="found-stats.html#cb183-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb183-2"><a href="found-stats.html#cb183-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb183-3"><a href="found-stats.html#cb183-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb183-4"><a href="found-stats.html#cb183-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get data</span></span>
+<span id="cb183-5"><a href="found-stats.html#cb183-5" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/salespeople.csv&quot;</span></span>
+<span id="cb183-6"><a href="found-stats.html#cb183-6" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> pd.read_csv(url)</span>
+<span id="cb183-7"><a href="found-stats.html#cb183-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb183-8"><a href="found-stats.html#cb183-8" aria-hidden="true" tabindex="-1"></a><span class="co"># mean sales</span></span>
+<span id="cb183-9"><a href="found-stats.html#cb183-9" aria-hidden="true" tabindex="-1"></a>mean_sales <span class="op">=</span> salespeople.sales.mean()</span>
+<span id="cb183-10"><a href="found-stats.html#cb183-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mean_sales)</span></code></pre></div>
+<pre><code>## 527.0057142857142</code></pre>
+<div class="sourceCode" id="cb185"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb185-1"><a href="found-stats.html#cb185-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample variance</span></span>
+<span id="cb185-2"><a href="found-stats.html#cb185-2" aria-hidden="true" tabindex="-1"></a>var_sales <span class="op">=</span> salespeople.sales.var()</span>
+<span id="cb185-3"><a href="found-stats.html#cb185-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(var_sales)</span></code></pre></div>
+<pre><code>## 34308.11458043389</code></pre>
+<div class="sourceCode" id="cb187"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb187-1"><a href="found-stats.html#cb187-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample standard deviation</span></span>
+<span id="cb187-2"><a href="found-stats.html#cb187-2" aria-hidden="true" tabindex="-1"></a>sd_sales <span class="op">=</span> salespeople.sales.std()</span>
+<span id="cb187-3"><a href="found-stats.html#cb187-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sd_sales)</span></code></pre></div>
+<pre><code>## 185.2244977869663</code></pre>
+<p>Population statistics can be obtained by setting the <code>ddof</code> parameter to zero.</p>
+<div class="sourceCode" id="cb189"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb189-1"><a href="found-stats.html#cb189-1" aria-hidden="true" tabindex="-1"></a><span class="co"># population standard deviation</span></span>
+<span id="cb189-2"><a href="found-stats.html#cb189-2" aria-hidden="true" tabindex="-1"></a>popsd_sales <span class="op">=</span> salespeople.sales.std(ddof <span class="op">=</span> <span class="dv">0</span>)</span>
+<span id="cb189-3"><a href="found-stats.html#cb189-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(popsd_sales)</span></code></pre></div>
+<pre><code>## 184.9597020864771</code></pre>
+<p>The <code>numpy</code> covariance function produces a covariance matrix.</p>
+<div class="sourceCode" id="cb191"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb191-1"><a href="found-stats.html#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate a sample covariance matrix between two variables</span></span>
+<span id="cb191-2"><a href="found-stats.html#cb191-2" aria-hidden="true" tabindex="-1"></a>sales_rate <span class="op">=</span> salespeople[[<span class="st">&#39;sales&#39;</span>, <span class="st">&#39;customer_rate&#39;</span>]]</span>
+<span id="cb191-3"><a href="found-stats.html#cb191-3" aria-hidden="true" tabindex="-1"></a>sales_rate <span class="op">=</span> sales_rate[<span class="op">~</span>np.isnan(sales_rate)]</span>
+<span id="cb191-4"><a href="found-stats.html#cb191-4" aria-hidden="true" tabindex="-1"></a>cov <span class="op">=</span> sales_rate.cov()</span>
+<span id="cb191-5"><a href="found-stats.html#cb191-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cov)</span></code></pre></div>
+<pre><code>##                       sales  customer_rate
+## sales          34308.114580      55.817691
+## customer_rate     55.817691       0.795820</code></pre>
+<p>Specific covariances between variable pairs can be pulled out of the matrix.</p>
+<div class="sourceCode" id="cb193"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb193-1"><a href="found-stats.html#cb193-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pull out specific covariances</span></span>
+<span id="cb193-2"><a href="found-stats.html#cb193-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cov[<span class="st">&#39;sales&#39;</span>][<span class="st">&#39;customer_rate&#39;</span>])</span></code></pre></div>
+<pre><code>## 55.817691199345006</code></pre>
+<p>Similarly for Pearson correlation:</p>
+<div class="sourceCode" id="cb195"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb195-1"><a href="found-stats.html#cb195-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample pearson correlation matrix</span></span>
+<span id="cb195-2"><a href="found-stats.html#cb195-2" aria-hidden="true" tabindex="-1"></a>cor <span class="op">=</span> sales_rate.corr()</span>
+<span id="cb195-3"><a href="found-stats.html#cb195-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cor)</span></code></pre></div>
+<pre><code>##                   sales  customer_rate
+## sales          1.000000       0.337805
+## customer_rate  0.337805       1.000000</code></pre>
+<p>Specific types of correlation coefficients can be accessed via the <code>stats</code> module of the <code>scipy</code> package.</p>
+<div class="sourceCode" id="cb197"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb197-1"><a href="found-stats.html#cb197-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb197-2"><a href="found-stats.html#cb197-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb197-3"><a href="found-stats.html#cb197-3" aria-hidden="true" tabindex="-1"></a><span class="co"># spearman&#39;s correlation</span></span>
+<span id="cb197-4"><a href="found-stats.html#cb197-4" aria-hidden="true" tabindex="-1"></a>stats.spearmanr(salespeople.sales, salespeople.performance, </span>
+<span id="cb197-5"><a href="found-stats.html#cb197-5" aria-hidden="true" tabindex="-1"></a>nan_policy<span class="op">=</span><span class="st">&#39;omit&#39;</span>)</span></code></pre></div>
+<pre><code>## SpearmanrResult(correlation=0.27354459847452534, pvalue=2.0065434379079837e-07)</code></pre>
+<div class="sourceCode" id="cb199"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb199-1"><a href="found-stats.html#cb199-1" aria-hidden="true" tabindex="-1"></a><span class="co"># kendall&#39;s tau</span></span>
+<span id="cb199-2"><a href="found-stats.html#cb199-2" aria-hidden="true" tabindex="-1"></a>stats.kendalltau(salespeople.sales, salespeople.performance, </span>
+<span id="cb199-3"><a href="found-stats.html#cb199-3" aria-hidden="true" tabindex="-1"></a>nan_policy<span class="op">=</span><span class="st">&#39;omit&#39;</span>)</span></code></pre></div>
+<pre><code>## KendalltauResult(correlation=0.20736088105812, pvalue=2.7353258226376615e-07)</code></pre>
+<p>Common hypothesis testing tools are available in <code>scipy.stats</code>. Here is an example of how to perform Welch’s <span class="math inline">\(t\)</span>-test on a difference in means of samples of unequal variance.</p>
+<div class="sourceCode" id="cb201"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb201-1"><a href="found-stats.html#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get sales for top and bottom performers</span></span>
+<span id="cb201-2"><a href="found-stats.html#cb201-2" aria-hidden="true" tabindex="-1"></a>perf1 <span class="op">=</span> salespeople[salespeople.performance <span class="op">==</span> <span class="dv">1</span>].sales</span>
+<span id="cb201-3"><a href="found-stats.html#cb201-3" aria-hidden="true" tabindex="-1"></a>perf4 <span class="op">=</span> salespeople[salespeople.performance <span class="op">==</span> <span class="dv">4</span>].sales</span>
+<span id="cb201-4"><a href="found-stats.html#cb201-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb201-5"><a href="found-stats.html#cb201-5" aria-hidden="true" tabindex="-1"></a><span class="co"># welch&#39;s t-test with unequal variance</span></span>
+<span id="cb201-6"><a href="found-stats.html#cb201-6" aria-hidden="true" tabindex="-1"></a>ttest <span class="op">=</span> stats.ttest_ind(perf4, perf1, equal_var<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb201-7"><a href="found-stats.html#cb201-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ttest)</span></code></pre></div>
+<pre><code>## Ttest_indResult(statistic=4.629477606844271, pvalue=1.0932443461577038e-05)</code></pre>
+<p>As seen above, hypothesis tests for non-zero correlation coefficients are performed automatically as part of <code>scipy.stats</code> correlation calculations.</p>
+<div class="sourceCode" id="cb203"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb203-1"><a href="found-stats.html#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate correlation and p-value </span></span>
+<span id="cb203-2"><a href="found-stats.html#cb203-2" aria-hidden="true" tabindex="-1"></a>sales <span class="op">=</span> salespeople.sales[<span class="op">~</span>np.isnan(salespeople.sales)]</span>
+<span id="cb203-3"><a href="found-stats.html#cb203-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb203-4"><a href="found-stats.html#cb203-4" aria-hidden="true" tabindex="-1"></a>cust_rate <span class="op">=</span> salespeople.customer_rate[</span>
+<span id="cb203-5"><a href="found-stats.html#cb203-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">~</span>np.isnan(salespeople.customer_rate)</span>
+<span id="cb203-6"><a href="found-stats.html#cb203-6" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb203-7"><a href="found-stats.html#cb203-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb203-8"><a href="found-stats.html#cb203-8" aria-hidden="true" tabindex="-1"></a>cor <span class="op">=</span> stats.pearsonr(sales, cust_rate)</span>
+<span id="cb203-9"><a href="found-stats.html#cb203-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cor)</span></code></pre></div>
+<pre><code>## (0.33780504485867796, 8.647952212091035e-11)</code></pre>
+<p>Finally, a chi-square test of difference in frequency distribution can be performed on a contingency table as follows. The first value of the output is the <span class="math inline">\(\chi^2\)</span> statistic, and the second value is the p-value.</p>
+<div class="sourceCode" id="cb205"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb205-1"><a href="found-stats.html#cb205-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create contingency table for promoted versus performance</span></span>
+<span id="cb205-2"><a href="found-stats.html#cb205-2" aria-hidden="true" tabindex="-1"></a>contingency <span class="op">=</span> pd.crosstab(salespeople.promoted, salespeople.performance)</span>
+<span id="cb205-3"><a href="found-stats.html#cb205-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb205-4"><a href="found-stats.html#cb205-4" aria-hidden="true" tabindex="-1"></a><span class="co"># perform chi-square test</span></span>
+<span id="cb205-5"><a href="found-stats.html#cb205-5" aria-hidden="true" tabindex="-1"></a>chi2_test <span class="op">=</span> stats.chi2_contingency(contingency)</span>
+<span id="cb205-6"><a href="found-stats.html#cb205-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(chi2_test)</span></code></pre></div>
+<pre><code>## (25.895405268094862, 1.0030629464566802e-05, 3, array([[40.62857143, 74.48571429, 84.64285714, 37.24285714],
+##        [19.37142857, 35.51428571, 40.35714286, 17.75714286]]))</code></pre>
+</div>
+<div id="foundational-statistics-in-julia" class="section level2" number="3.5">
+<h2><span class="header-section-number">3.5</span> Foundational statistics in Julia</h2>
+<p>The <code>Statistics</code> package in Julia provides a wide range of functions for univariate and bivariate analysis. Note that Julia has a particular <code>missing</code> type for missing data, and the specific string form of missing data may need to be defined when importing data from CSVs and other data sources. A little more up front work is required in Julia to ensure missing data structures are not being passed to statistics functions.</p>
+<div class="sourceCode" id="cb207"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb207-1"><a href="found-stats.html#cb207-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> DataFrames<span class="op">,</span> CSV<span class="op">,</span> StatsBase<span class="op">,</span> Statistics<span class="op">,</span> Missings<span class="op">;</span></span>
+<span id="cb207-2"><a href="found-stats.html#cb207-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb207-3"><a href="found-stats.html#cb207-3" aria-hidden="true" tabindex="-1"></a><span class="co"># get salespeople data</span></span>
+<span id="cb207-4"><a href="found-stats.html#cb207-4" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/salespeople.csv&quot;</span><span class="op">;</span></span>
+<span id="cb207-5"><a href="found-stats.html#cb207-5" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> CSV.<span class="cn">read</span>(download(url)<span class="op">,</span> DataFrame<span class="op">,</span> missingstrings<span class="op">=</span>[<span class="st">&quot;NA&quot;</span>])<span class="op">;</span></span>
+<span id="cb207-6"><a href="found-stats.html#cb207-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb207-7"><a href="found-stats.html#cb207-7" aria-hidden="true" tabindex="-1"></a><span class="co"># remove missing value rows from dataset</span></span>
+<span id="cb207-8"><a href="found-stats.html#cb207-8" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> salespeople[completecases(salespeople)<span class="op">,</span> <span class="op">:</span>]<span class="op">;</span></span>
+<span id="cb207-9"><a href="found-stats.html#cb207-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ensure no missing data structures</span></span>
+<span id="cb207-10"><a href="found-stats.html#cb207-10" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> mapcols(col <span class="op">-&gt;</span> disallowmissing(col)<span class="op">,</span> salespeople)<span class="op">;</span></span>
+<span id="cb207-11"><a href="found-stats.html#cb207-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb207-12"><a href="found-stats.html#cb207-12" aria-hidden="true" tabindex="-1"></a><span class="co"># mean of sales</span></span>
+<span id="cb207-13"><a href="found-stats.html#cb207-13" aria-hidden="true" tabindex="-1"></a>mean(salespeople.sales)</span></code></pre></div>
+<pre><code>## 527.0057142857142</code></pre>
+<div class="sourceCode" id="cb209"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb209-1"><a href="found-stats.html#cb209-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample variance</span></span>
+<span id="cb209-2"><a href="found-stats.html#cb209-2" aria-hidden="true" tabindex="-1"></a>var(salespeople.sales)</span></code></pre></div>
+<pre><code>## 34308.1145804339</code></pre>
+<div class="sourceCode" id="cb211"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb211-1"><a href="found-stats.html#cb211-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample standard deviation</span></span>
+<span id="cb211-2"><a href="found-stats.html#cb211-2" aria-hidden="true" tabindex="-1"></a>std(salespeople.sales)</span></code></pre></div>
+<pre><code>## 185.22449778696634</code></pre>
+<p>Population statistics can be obtained by setting the <code>corrected</code> argument to <code>false</code> inside the standard statistics functions.</p>
+<div class="sourceCode" id="cb213"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb213-1"><a href="found-stats.html#cb213-1" aria-hidden="true" tabindex="-1"></a><span class="co"># population standard deviation</span></span>
+<span id="cb213-2"><a href="found-stats.html#cb213-2" aria-hidden="true" tabindex="-1"></a>std(salespeople.sales<span class="op">,</span> corrected <span class="op">=</span> <span class="ex">false</span>)</span></code></pre></div>
+<pre><code>## 184.95970208647714</code></pre>
+<p>Note that there are some useful time-saving double functions in Julia for common statistics.</p>
+<div class="sourceCode" id="cb215"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb215-1"><a href="found-stats.html#cb215-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample mean and variance</span></span>
+<span id="cb215-2"><a href="found-stats.html#cb215-2" aria-hidden="true" tabindex="-1"></a>mean_and_var(salespeople.sales)</span></code></pre></div>
+<pre><code>## (527.0057142857142, 34308.1145804339)</code></pre>
+<div class="sourceCode" id="cb217"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb217-1"><a href="found-stats.html#cb217-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample mean and standard deviation</span></span>
+<span id="cb217-2"><a href="found-stats.html#cb217-2" aria-hidden="true" tabindex="-1"></a>mean_and_std(salespeople.sales)</span></code></pre></div>
+<pre><code>## (527.0057142857142, 185.22449778696634)</code></pre>
+<p>Covariance and correlations are straightforward, with specific functions for Spearman’s rho and Kendall’s tau:</p>
+<div class="sourceCode" id="cb219"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb219-1"><a href="found-stats.html#cb219-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample covariance</span></span>
+<span id="cb219-2"><a href="found-stats.html#cb219-2" aria-hidden="true" tabindex="-1"></a>cov(salespeople.sales<span class="op">,</span> salespeople.customer_rate)</span></code></pre></div>
+<pre><code>## 55.81769119934503</code></pre>
+<div class="sourceCode" id="cb221"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb221-1"><a href="found-stats.html#cb221-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample Pearson correlation</span></span>
+<span id="cb221-2"><a href="found-stats.html#cb221-2" aria-hidden="true" tabindex="-1"></a>cor(salespeople.sales<span class="op">,</span> salespeople.customer_rate)</span></code></pre></div>
+<pre><code>## 0.337805044858678</code></pre>
+<div class="sourceCode" id="cb223"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb223-1"><a href="found-stats.html#cb223-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample Spearman correlation</span></span>
+<span id="cb223-2"><a href="found-stats.html#cb223-2" aria-hidden="true" tabindex="-1"></a>corspearman(salespeople.sales<span class="op">,</span> salespeople.performance)</span></code></pre></div>
+<pre><code>## 0.2735445984745253</code></pre>
+<div class="sourceCode" id="cb225"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb225-1"><a href="found-stats.html#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample Kendall correlation</span></span>
+<span id="cb225-2"><a href="found-stats.html#cb225-2" aria-hidden="true" tabindex="-1"></a>corkendall(salespeople.sales<span class="op">,</span> salespeople.performance)</span></code></pre></div>
+<pre><code>## 0.20736088105812</code></pre>
+<p>The <code>HypothesisTests</code> package provides common hypothesis testing functionality with nicely formatted output. To perform a two-tailed t-test on samples of unequal variance:</p>
+<div class="sourceCode" id="cb227"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb227-1"><a href="found-stats.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> HypothesisTests</span>
+<span id="cb227-2"><a href="found-stats.html#cb227-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb227-3"><a href="found-stats.html#cb227-3" aria-hidden="true" tabindex="-1"></a><span class="co"># get sales for top and bottom performers</span></span>
+<span id="cb227-4"><a href="found-stats.html#cb227-4" aria-hidden="true" tabindex="-1"></a>perf1 <span class="op">=</span> salespeople[salespeople.performance .<span class="op">==</span> <span class="fl">1</span><span class="op">,</span> <span class="op">:</span>].sales<span class="op">;</span></span>
+<span id="cb227-5"><a href="found-stats.html#cb227-5" aria-hidden="true" tabindex="-1"></a>perf4 <span class="op">=</span> salespeople[salespeople.performance .<span class="op">==</span> <span class="fl">4</span><span class="op">,</span> <span class="op">:</span>].sales<span class="op">;</span></span>
+<span id="cb227-6"><a href="found-stats.html#cb227-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb227-7"><a href="found-stats.html#cb227-7" aria-hidden="true" tabindex="-1"></a><span class="co"># perform two-tailed t-test with unequal variance</span></span>
+<span id="cb227-8"><a href="found-stats.html#cb227-8" aria-hidden="true" tabindex="-1"></a>UnequalVarianceTTest(perf4<span class="op">,</span> perf1)</span></code></pre></div>
+<pre><code>## Two sample t-test (unequal variance)
+## ------------------------------------
+## Population details:
+##     parameter of interest:   Mean difference
+##     value under h_0:         0
+##     point estimate:          154.974
+##     95% confidence interval: (88.5676, 221.381)
+## 
+## Test summary:
+##     outcome with 95% confidence: reject h_0
+##     two-sided p-value:           &lt;1e-04
+## 
+## Details:
+##     number of observations:   [55,60]
+##     t-statistic:              4.629477606844271
+##     degrees of freedom:       100.97689117620553
+##     empirical standard error: 33.47553559717553</code></pre>
+<p>Currently, Julia does not have packaged hypothesis tests for correlations, so these would need to be done manually using the methods illustrated in Section <a href="found-stats.html#t-test-cor">3.3.2</a><a href="#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a>. A chi-square test is conducted on a contingency matrix as follows:</p>
+<div class="sourceCode" id="cb229"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb229-1"><a href="found-stats.html#cb229-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chi-square test</span></span>
+<span id="cb229-2"><a href="found-stats.html#cb229-2" aria-hidden="true" tabindex="-1"></a>contingency <span class="op">=</span> counts(salespeople.promoted<span class="op">,</span> salespeople.performance)<span class="op">;</span></span>
+<span id="cb229-3"><a href="found-stats.html#cb229-3" aria-hidden="true" tabindex="-1"></a>ChisqTest(contingency)</span></code></pre></div>
+<pre><code>## Pearson&#39;s Chi-square Test
+## -------------------------
+## Population details:
+##     parameter of interest:   Multinomial Probabilities
+##     value under h_0:         [0.116082, 0.0553469, 0.212816, 0.101469, 0.241837, 0.115306, 0.106408, 0.0507347]
+##     point estimate:          [0.142857, 0.0285714, 0.242857, 0.0714286, 0.22, 0.137143, 0.0714286, 0.0857143]
+##     95% confidence interval: [(0.0943, 0.1958), (0.0, 0.0815), (0.1943, 0.2958), (0.0229, 0.1243), (0.1714, 0.2729), (0.0886, 0.19), (0.0229, 0.1243), (0.0371, 0.1386)]
+## 
+## Test summary:
+##     outcome with 95% confidence: reject h_0
+##     one-sided p-value:           &lt;1e-04
+## 
+## Details:
+##     Sample size:        350
+##     statistic:          25.895405268094883
+##     degrees of freedom: 3
+##     residuals:          [1.47025, -2.12924, 1.21827, -1.76432, -0.830731, 1.20308, -2.00614, 2.90534]
+##     std. residuals:     [2.84263, -2.84263, 2.58921, -2.58921, -1.82347, 1.82347, -3.84573, 3.84573]</code></pre>
+<p>Specific elements of the hypothesis test results can be extracted as follows:</p>
+<div class="sourceCode" id="cb231"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb231-1"><a href="found-stats.html#cb231-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get confidence interval of t-test</span></span>
+<span id="cb231-2"><a href="found-stats.html#cb231-2" aria-hidden="true" tabindex="-1"></a>confint(UnequalVarianceTTest(perf4<span class="op">,</span> perf1))</span></code></pre></div>
+<pre><code>## (88.56760038276616, 221.38088446571862)</code></pre>
+<div class="sourceCode" id="cb233"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb233-1"><a href="found-stats.html#cb233-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get p-value of chi-square test</span></span>
+<span id="cb233-2"><a href="found-stats.html#cb233-2" aria-hidden="true" tabindex="-1"></a>pvalue(ChisqTest(contingency))</span></code></pre></div>
+<pre><code>## 1.0030629464566678e-5</code></pre>
+</div>
+<div id="learning-exercises-1" class="section level2" number="3.6">
+<h2><span class="header-section-number">3.6</span> Learning exercises</h2>
+<div id="discussion-questions-1" class="section level3" number="3.6.1">
+<h3><span class="header-section-number">3.6.1</span> Discussion questions</h3>
+<p>Where relevant in these discussion exercises, let <span class="math inline">\(x = x_1, x_2, \dots, x_n\)</span> and <span class="math inline">\(y = y_1, y_2, \dots, y_m\)</span> be samples of two random variables of length <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span> respectively.</p>
+<ol style="list-style-type: decimal">
+<li>If the values of <span class="math inline">\(x\)</span> can only take the form 0 or 1, and if their mean is 0.25, how many of the values equal 0?</li>
+<li>If <span class="math inline">\(m = n\)</span> and <span class="math inline">\(x + y\)</span> is formed from the element-wise sum of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, show that the mean of <span class="math inline">\(x + y\)</span> is equal to the sum of the mean of <span class="math inline">\(x\)</span> and the mean of <span class="math inline">\(y\)</span>.</li>
+<li>For a scalar multiplier <span class="math inline">\(a\)</span>, show that <span class="math inline">\(\mathrm{Var}(ax) = a^2\mathrm{Var}(x)\)</span>.</li>
+<li>Explain why the standard deviation of <span class="math inline">\(x\)</span> is a more intuitive measure of the deviation in <span class="math inline">\(x\)</span> than the variance.</li>
+<li>Describe which two types of correlation you could use if <span class="math inline">\(x\)</span> is an ordered ranking.</li>
+<li>Describe the role of sample size and sampling frequency in the distribution of sampling means for a random variable.</li>
+<li>Describe what a standard error of a statistic is and how it can be used to determine a confidence interval for the true population statistic.</li>
+<li>If we conduct a t-test on the null hypothesis that <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are drawn from populations with the same mean, describe what a p-value of 0.01 means.</li>
+<li><strong>Extension:</strong> The sum of variance law states that, for independent random variables <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, <span class="math inline">\(\mathrm{Var}(x \pm y) = \mathrm{Var}(x) + \mathrm{Var}(y)\)</span>. Use this together with the identity from Exercise 3 to derive the formula for the standard error of the mean of <span class="math inline">\(x = x_1, x_2, \dots, x_n\)</span>:</li>
+</ol>
+<p><span class="math display">\[
+SE = \frac{\sigma(x)}{\sqrt{n}}
+\]</span></p>
+<ol start="10" style="list-style-type: decimal">
+<li><strong>Extension:</strong> In a similar way to Exercise 9, show that the standard error for the difference between the means of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> is</li>
+</ol>
+<p><span class="math display">\[
+\sqrt{\frac{\sigma(x)^2}{n} + \frac{\sigma(y)^2}{m}}
+\]</span></p>
+</div>
+<div id="data-exercises-1" class="section level3" number="3.6.2">
+<h3><span class="header-section-number">3.6.2</span> Data exercises</h3>
+<p>For these exercises, load the <code>charity_donation</code> data set via the <code>peopleanalyticsdata</code> package, or download it from the internet<a href="#fn16" class="footnote-ref" id="fnref16"><sup>16</sup></a>. This data set contains information on a sample of individuals who made donations to a nature charity.</p>
+<ol style="list-style-type: decimal">
+<li>Calculate the mean <code>total_donations</code> from the data set.</li>
+<li>Calculate the sample variance for <code>total_donation</code> and convert this to a population variance.</li>
+<li>Calculate the sample standard deviation for <code>total_donations</code> and verify that it is the same as the square root of the sample variance.</li>
+<li>Calculate the sample correlation between <code>total_donations</code> and <code>time_donating</code>. By using an appropriate hypothesis test, determine if these two variables are independent in the overall population.</li>
+<li>Calculate the mean and the standard error of the mean for the first 20 entries of <code>total_donations</code>.</li>
+<li>Calculate the mean and the standard error of the mean for the first 50 entries of <code>total_donations</code>. Verify that the standard error is less than in Exercise 5.</li>
+<li>By using an appropriate hypothesis test, determine if the mean age of those who made a recent donation is different from those who did not.</li>
+<li>By using an appropriate hypothesis test, determine if there is a difference in whether or not a recent donation was made according to where people reside.</li>
+<li><strong>Extension:</strong> By using an appropriate hypothesis test, determine if the age of those who have recently donated is at least 10 years older than those who have not recently donated in the population.</li>
+<li><strong>Extension:</strong> By using an appropriate hypothesis test, determine if the average donation amount is at least 10 dollars higher for those who recently donated versus those who did not. Retest for 20 dollars higher.</li>
+</ol>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-bhattacharya" class="csl-entry">
+Bhattacharya, P. K., and Prabir Burman. 2016. <em>Theory and Methods of Statistics</em>.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="8">
+<li id="fn8"><p>Note that this formula assumes that the sample standard deviation is a close approximation of the population standard deviation, which is generally fine for samples that are not very small.<a href="found-stats.html#fnref8" class="footnote-back">↩︎</a></p></li>
+<li id="fn9"><p>As sample sizes increase and sample statistics get very close to population statistics, whether we use a <span class="math inline">\(t\)</span>-distribution or a <span class="math inline">\(z\)</span>-distribution (normal distribution) for determining confidence intervals or p-values becomes less important as they become almost identical on large samples. The output of some later models will refer to <span class="math inline">\(t\)</span>-statistics and others to <span class="math inline">\(z\)</span>-statistics, but the difference is only likely to matter in small samples of less than 50 or so observations. In this chapter we will use the <span class="math inline">\(t\)</span>-distribution as it is a better choice for all sample sizes.<a href="found-stats.html#fnref9" class="footnote-back">↩︎</a></p></li>
+<li id="fn10"><p>Often we can use a rough estimate for larger samples that the 95% confidence interval is 2 standard errors either side of the sample mean.<a href="found-stats.html#fnref10" class="footnote-back">↩︎</a></p></li>
+<li id="fn11"><p>We go through these three examples both because they are relatively common and to illustrate the details of the logic behind hypothesis testing. By understanding how hypothesis tests work, this will allow the reader to grasp the meaning of other such tests like the F-test or the Wald test, which we will refer to in later chapters of this book<a href="found-stats.html#fnref11" class="footnote-back">↩︎</a></p></li>
+<li id="fn12"><p>If you are inquisitive about this formula, see the exercises at the end of this chapter.<a href="found-stats.html#fnref12" class="footnote-back">↩︎</a></p></li>
+<li id="fn13"><p>I’ve kept the gory details of how this is derived out of view, but you can see them if you view the source code for this book.<a href="found-stats.html#fnref13" class="footnote-back">↩︎</a></p></li>
+<li id="fn14"><p>We call this type of hypothesis test a <em>two-tailed</em> test, because the tested population mean can be either higher or lower than the sample mean, thus it can appear in any of the two tails for the null hypothesis to be rejected. <em>One-tailed</em> tests are used when you are testing for an alternative hypothesis that the difference is specifically ‘less than zero’ or ‘greater than zero’‍. In the <code>t.test()</code> function in R, you can specify this in the arguments.<a href="found-stats.html#fnref14" class="footnote-back">↩︎</a></p></li>
+<li id="fn15"><p>Julia is a relatively young language and a quick perusal of the <code>HypothesisTests</code> Github repo reveals active work to add correlation testing in upcoming versions<a href="found-stats.html#fnref15" class="footnote-back">↩︎</a></p></li>
+<li id="fn16"><p><a href="http://peopleanalytics-regression-book.org/data/charity_donation.csv" class="uri">http://peopleanalytics-regression-book.org/data/charity_donation.csv</a><a href="found-stats.html#fnref16" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="the-basics-of-the-r-programming-language.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="linear-reg-ols.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

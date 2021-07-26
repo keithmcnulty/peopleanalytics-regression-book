@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>2 The Basics of the R Programming Language | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
+<meta name="author" content="Keith McNulty">
+<meta name="description" content="Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis....">
+<meta name="generator" content="bookdown 0.22.15 with bs4_book()">
+<meta property="og:title" content="2 The Basics of the R Programming Language | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://peopleanalytics-regression-book.org/the-basics-of-the-r-programming-language.html">
+<meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
+<meta property="og:description" content="Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis....">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2 The Basics of the R Programming Language | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
+<meta name="twitter:site" content="@dr_keithmcnulty">
+<meta name="twitter:description" content="Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis....">
+<meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.9.5/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.2.5.1/tabs.js"></script><script src="libs/bs3compat-0.2.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python">
+<meta name="citation_author" content="Keith McNulty">
+<meta name="citation_publication_date" content="2021">
+<meta name="citation_isbn" content="9781003194156">
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script><script src="libs/plotly-binding-4.9.2.1/plotly.js"></script><script src="libs/typedarray-0.1/typedarray.min.js"></script><link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet">
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-N7JZGMVRZK');
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="css/style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="With Examples in R, Python and Julia">Handbook of Regression Modeling in People Analytics</a>:
+        <small class="text-muted">With Examples in R, Python and Julia</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Welcome</a></li>
+<li><a class="" href="foreword-by-alexis-fink.html">Foreword by Alexis Fink</a></li>
+<li><a class="" href="introduction.html">Introduction</a></li>
+<li><a class="" href="inf-model.html"><span class="header-section-number">1</span> The Importance of Regression in People Analytics</a></li>
+<li><a class="active" href="the-basics-of-the-r-programming-language.html"><span class="header-section-number">2</span> The Basics of the R Programming Language</a></li>
+<li><a class="" href="found-stats.html"><span class="header-section-number">3</span> Statistics Foundations</a></li>
+<li><a class="" href="linear-reg-ols.html"><span class="header-section-number">4</span> Linear Regression for Continuous Outcomes</a></li>
+<li><a class="" href="bin-log-reg.html"><span class="header-section-number">5</span> Binomial Logistic Regression for Binary Outcomes</a></li>
+<li><a class="" href="multinomial-logistic-regression-for-nominal-category-outcomes.html"><span class="header-section-number">6</span> Multinomial Logistic Regression for Nominal Category Outcomes</a></li>
+<li><a class="" href="ord-reg.html"><span class="header-section-number">7</span> Proportional Odds Logistic Regression for Ordered Category Outcomes</a></li>
+<li><a class="" href="modeling-explicit-and-latent-hierarchy-in-data.html"><span class="header-section-number">8</span> Modeling Explicit and Latent Hierarchy in Data</a></li>
+<li><a class="" href="survival.html"><span class="header-section-number">9</span> Survival Analysis for Modeling Singular Events Over Time</a></li>
+<li><a class="" href="alt-approaches.html"><span class="header-section-number">10</span> Alternative Technical Approaches in R, Python and Julia</a></li>
+<li><a class="" href="power-tests.html"><span class="header-section-number">11</span> Power Analysis to Estimate Required Sample Sizes for Modeling</a></li>
+<li><a class="" href="solutions-to-exercises.html">Solutions to Exercises</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/keithmcnulty/peopleanalytics-regression-book">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="the-basics-of-the-r-programming-language" class="section level1" number="2">
+<h1>
+<span class="header-section-number">2</span> The Basics of the R Programming Language<a class="anchor" aria-label="anchor" href="#the-basics-of-the-r-programming-language"><i class="fas fa-link"></i></a>
+</h1>
+<p>Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis. Sample implementations in Python are also provided at various points in the book, as well as implementations in Julia for those who are keen on this newer and up-and-coming language. I have made efforts to keep the code as simple as possible, and I have tried to avoid the use of too many external packages. For the most part, readers should see (especially in the earlier chapters) that code blocks are short and simple, relying wherever possible on base R functionality. No doubt there are neater and more effective ways to code some of the material in this book using a wide array of R packages—and some of these are illustrated in Chapter <a href="alt-approaches.html#alt-approaches">10</a>—but my priority has been to keep the code simple, consistent and easily reproducible.</p>
+<p>For those who wish to follow the method and theory without the implementations in this book, there is no need to read this chapter. However, the style of this book is to use implementation to illustrate theory and practice, and so tolerance of many code blocks will be necessary as you read onward.</p>
+<p>For those who wish to simply replicate the models as quickly as possible, they will be able to avail of the code block copying feature, which appears whenever you scroll over an input code block. Assuming all the required external packages have been installed, these code blocks should all be transportable and immediately usable. For those who are extra-inquisitive and want to explore how I constructed graphics used for illustration (for which code is usually not displayed), the best place to go is the <a href="https://github.com/keithmcnulty/peopleanalytics-regression-book">Github repository</a> for this book.</p>
+<p>This chapter is for those who wish to learn the methods in this book but do not know how to use R. However, it is not intended to be a full tutorial on R. There are many more qualified individuals and existing resources that would better serve that purpose—in particular I recommend <span class="citation"><a href="references.html#ref-wickham" role="doc-biblioref">Wickham and Grolemund</a> (<a href="references.html#ref-wickham" role="doc-biblioref">2016</a>)</span>. It is recommended that you consult these resources and become comfortable with the basics of R before proceeding into the later chapters of this book. However, acknowledging that many will want to dive in sooner rather than later, this chapter covers the absolute basics of R that will allow the uninitiated reader to proceed with at least some orientation.</p>
+<div id="what-is-r" class="section level2" number="2.1">
+<h2>
+<span class="header-section-number">2.1</span> What is R?<a class="anchor" aria-label="anchor" href="#what-is-r"><i class="fas fa-link"></i></a>
+</h2>
+<p>R is a programming language that was originally developed by and for statisticians, but in recent years its capabilities and the environments in which it is used have expanded greatly, with extensive use nowadays in academia and the public and private sectors. There are many advantages to using a programming language like R. Here are some:</p>
+<ol style="list-style-type: decimal">
+<li>It is completely free and open source.</li>
+<li>It is faster and more efficient with memory than popular graphical user interface analytics tools.</li>
+<li>It facilitates easier replication of analysis from person to person compared with many alternatives.</li>
+<li>It has a large and growing global community of active users.</li>
+<li>It has a large and rapidly growing universe of packages, which are all free and which provide the ability to do an extremely wide range of general and highly specialized tasks, statistical and otherwise.</li>
+</ol>
+<p>There is often heated debate about which tools are better for doing non-trivial statistical analysis. I personally find that R provides the widest array of resources for those interested in inferential modeling, while Python has a more well-developed toolkit for predictive modeling and machine learning. Since the primary focus of this book is inferential modeling, the in-depth walkthroughs are coded in R.</p>
+</div>
+<div id="how-to-start-using-r" class="section level2" number="2.2">
+<h2>
+<span class="header-section-number">2.2</span> How to start using R<a class="anchor" aria-label="anchor" href="#how-to-start-using-r"><i class="fas fa-link"></i></a>
+</h2>
+<p>Just like most programming languages, R itself is an interpreter which receives input and returns output. It is not very easy to use without an IDE. An IDE is an <em>Integrated Development Environment</em>, which is a convenient user interface allowing an R programmer to do all their main tasks including writing and running R code, saving files, viewing data and plots, integrating code into documents and many other things. By far the most popular IDE for R is RStudio. An example of what the RStudio IDE looks like can be seen in Figure <a href="the-basics-of-the-r-programming-language.html#fig:rstudio-ide">2.1</a>.</p>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:rstudio-ide"></span>
+<img src="www/R/rstudio-windows.png" alt="The RStudio IDE" width="474"><p class="caption">
+Figure 2.1: The RStudio IDE
+</p>
+</div>
+<p>To start using R, follow these steps:</p>
+<ol style="list-style-type: decimal">
+<li>Download and install the latest version of R from <a href="https://www.r-project.org/" class="uri">https://www.r-project.org/</a>. Ensure that the version suits your operating system.</li>
+<li>Download the latest version of the RStudio IDE from <a href="https://rstudio.com/products/rstudio/" class="uri">https://rstudio.com/products/rstudio/</a> and view the video on that page to familiarize yourself with its features.<br>
+</li>
+<li>Open RStudio and play around.</li>
+</ol>
+<p>The initial stages of using R can be challenging, mostly due to the need to become familiar with how R understands, stores and processes data. Extensive trial and error is a learning necessity. Perseverance is important in these early stages, as well as an openness to seek help from others either in person or via online forums.</p>
+</div>
+<div id="data-in-r" class="section level2" number="2.3">
+<h2>
+<span class="header-section-number">2.3</span> Data in R<a class="anchor" aria-label="anchor" href="#data-in-r"><i class="fas fa-link"></i></a>
+</h2>
+<p>As you start to do tasks involving data in R, you will generally want to store the things you create so that you can refer to them later. Simply calculating something does not store it in R. For example, a simple calculation like this can be performed easily:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fl">3</span> <span class="op">+</span> <span class="fl">3</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<p>However, as soon as the calculation is complete, it is forgotten by R because the result hasn’t been assigned anywhere. To store something in your R session, you will assign it a name using the <code><a href="https://rdrr.io/r/base/assignOps.html">&lt;-</a></code> operator. So I can assign my previous calculation to an object called <code>my_sum</code>, and this allows me to access the value at any time.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># store the result</span>
+<span class="va">my_sum</span> <span class="op">&lt;-</span> <span class="fl">3</span> <span class="op">+</span> <span class="fl">3</span>
+
+<span class="co"># now I can work with it</span>
+<span class="va">my_sum</span> <span class="op">+</span> <span class="fl">3</span></code></pre></div>
+<pre><code>## [1] 9</code></pre>
+<p>You will see above that you can comment your code by simply adding a <code>#</code> to the start of a line to ensure that the line is ignored by the interpreter.</p>
+<p>Note that assignment to an object does not result in the value being displayed. To display the value, the name of the object must be typed, the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> command used or the command should be wrapped in parentheses.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># show me the value of my_sum</span>
+<span class="va">my_sum</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># assign my_sum + 3 to new_sum and show its value</span>
+<span class="op">(</span><span class="va">new_sum</span> <span class="op">&lt;-</span> <span class="va">my_sum</span> <span class="op">+</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 9</code></pre>
+<div id="data-types" class="section level3" number="2.3.1">
+<h3>
+<span class="header-section-number">2.3.1</span> Data types<a class="anchor" aria-label="anchor" href="#data-types"><i class="fas fa-link"></i></a>
+</h3>
+<p>All data in R has an associated type, to reflect the wide range of data that R is able to work with. The <code><a href="https://rdrr.io/r/base/typeof.html">typeof()</a></code> function can be used to see the type of a single scalar value. Let’s look at the most common scalar data types.</p>
+<p><strong>Numeric data</strong> can be in integer form or double (decimal) form.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># integers can be signified by adding an 'L' to the end</span>
+<span class="va">my_integer</span> <span class="op">&lt;-</span> <span class="fl">1L</span>  
+<span class="va">my_double</span> <span class="op">&lt;-</span> <span class="fl">6.38</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">my_integer</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] "integer"</code></pre>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">my_double</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] "double"</code></pre>
+<p><strong>Character data</strong> is text data surrounded by single or double quotes.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">my_character</span> <span class="op">&lt;-</span> <span class="st">"THIS IS TEXT"</span>
+<span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">my_character</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] "character"</code></pre>
+<p><strong>Logical data</strong> takes the form <code>TRUE</code> or <code>FALSE</code>.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">my_logical</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span>
+<span class="fu"><a href="https://rdrr.io/r/base/typeof.html">typeof</a></span><span class="op">(</span><span class="va">my_logical</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] "logical"</code></pre>
+</div>
+<div id="homogeneous-data-structures" class="section level3" number="2.3.2">
+<h3>
+<span class="header-section-number">2.3.2</span> Homogeneous data structures<a class="anchor" aria-label="anchor" href="#homogeneous-data-structures"><i class="fas fa-link"></i></a>
+</h3>
+<p><strong>Vectors</strong> are one-dimensional structures containing data of the same type and are notated by using <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>. The type of the vector can also be viewed using the <code><a href="https://rdrr.io/r/base/typeof.html">typeof()</a></code> function, but the <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code> function can be used to display both the contents of the vector and its type.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">my_double_vector</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.3</span>, <span class="fl">6.8</span>, <span class="fl">4.5</span>, <span class="fl">65</span>, <span class="fl">6</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">my_double_vector</span><span class="op">)</span></code></pre></div>
+<pre><code>##  num [1:5] 2.3 6.8 4.5 65 6</code></pre>
+<p>Categorical data—which takes only a finite number of possible values—can be stored as a factor vector to make it easier to perform grouping and manipulation.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">categories</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"A"</span>, <span class="st">"C"</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">categories</span><span class="op">)</span></code></pre></div>
+<pre><code>##  Factor w/ 3 levels "A","B","C": 1 2 3 1 3</code></pre>
+<p>If needed, the factors can be given order.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># character vector </span>
+<span class="va">ranking</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Medium"</span>, <span class="st">"High"</span>, <span class="st">"Low"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">ranking</span><span class="op">)</span></code></pre></div>
+<pre><code>##  chr [1:3] "Medium" "High" "Low"</code></pre>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># turn it into an ordered factor</span>
+<span class="va">ranking_factors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">ordered</a></span><span class="op">(</span>
+  <span class="va">ranking</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Low"</span>, <span class="st">"Medium"</span>, <span class="st">"High"</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">ranking_factors</span><span class="op">)</span></code></pre></div>
+<pre><code>##  Ord.factor w/ 3 levels "Low"&lt;"Medium"&lt;..: 2 3 1</code></pre>
+<p>The number of elements in a vector can be seen using the <code><a href="https://rdrr.io/r/base/length.html">length()</a></code> function.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">categories</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<p>Simple numeric sequence vectors can be created using shorthand notation.</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="va">my_sequence</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></code></pre></div>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<p>If you try to mix data types inside a vector, it will usually result in <em>type coercion</em>, where one or more of the types are forced into a different type to ensure homogeneity. Often this means the vector will become a character vector.</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># numeric sequence vector</span>
+<span class="va">vec</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">vec</span><span class="op">)</span></code></pre></div>
+<pre><code>##  int [1:5] 1 2 3 4 5</code></pre>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create a new vector containing vec and the character "hello"</span>
+<span class="va">new_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">vec</span>, <span class="st">"hello"</span><span class="op">)</span>
+
+<span class="co"># numeric values have been coerced into their character equivalents</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">new_vec</span><span class="op">)</span></code></pre></div>
+<pre><code>##  chr [1:6] "1" "2" "3" "4" "5" "hello"</code></pre>
+<p>But sometimes logical or factor types will be coerced to numeric.</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># attempt a mixed logical and numeric</span>
+<span class="va">mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="fl">6</span><span class="op">)</span>
+
+<span class="co"># logical has been converted to binary numeric (TRUE = 1)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">mix</span><span class="op">)</span></code></pre></div>
+<pre><code>##  num [1:2] 1 6</code></pre>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># try to add a numeric to our previous categories factor vector</span>
+<span class="va">new_categories</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">categories</span>, <span class="fl">1</span><span class="op">)</span>
+
+<span class="co"># categories have been coerced to background integer representations</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">new_categories</span><span class="op">)</span></code></pre></div>
+<pre><code>##  num [1:6] 1 2 3 1 3 1</code></pre>
+<p><strong>Matrices</strong> are two-dimensional data structures of the same type and are built from a vector by defining the number of rows and columns. Data is read into the matrix down the columns, starting left and moving right. Matrices are rarely used for non-numeric data types.</p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create a 2x2 matrix with the first four integers</span>
+<span class="op">(</span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4</code></pre>
+<p><strong>Arrays</strong> are n-dimensional data structures with the same data type and are not used extensively by most R users.</p>
+</div>
+<div id="heterogeneous-data-structures" class="section level3" number="2.3.3">
+<h3>
+<span class="header-section-number">2.3.3</span> Heterogeneous data structures<a class="anchor" aria-label="anchor" href="#heterogeneous-data-structures"><i class="fas fa-link"></i></a>
+</h3>
+<p><strong>Lists</strong> are one-dimensional data structures that can take data of any type.</p>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">my_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fl">6</span>, <span class="cn">TRUE</span>, <span class="st">"hello"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">my_list</span><span class="op">)</span></code></pre></div>
+<pre><code>## List of 3
+##  $ : num 6
+##  $ : logi TRUE
+##  $ : chr "hello"</code></pre>
+<p>List elements can be any data type and any dimension. Each element can be given a name.</p>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">new_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+  scalar <span class="op">=</span> <span class="fl">6</span>, 
+  vector <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Hello"</span>, <span class="st">"Goodbye"</span><span class="op">)</span>, 
+  matrix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">new_list</span><span class="op">)</span></code></pre></div>
+<pre><code>## List of 3
+##  $ scalar: num 6
+##  $ vector: chr [1:2] "Hello" "Goodbye"
+##  $ matrix: int [1:2, 1:2] 1 2 3 4</code></pre>
+<p>Named list elements can be accessed by using <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code>.</p>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">new_list</span><span class="op">$</span><span class="va">matrix</span></code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4</code></pre>
+<p><strong>Dataframes</strong> are the most used data structure in R; they are effectively a named list of vectors of the same length, with each vector as a column. As such, a dataframe is very similar in nature to a typical database table or spreadsheet.</p>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># two vectors of different types but same length</span>
+<span class="va">names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"John"</span>, <span class="st">"Ayesha"</span><span class="op">)</span>
+<span class="va">ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">31</span>, <span class="fl">24</span><span class="op">)</span>
+
+<span class="co"># create a dataframe</span>
+<span class="op">(</span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">names</span>, <span class="va">ages</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>##    names ages
+## 1   John   31
+## 2 Ayesha   24</code></pre>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># get types of columns</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></code></pre></div>
+<pre><code>## 'data.frame':    2 obs. of  2 variables:
+##  $ names: chr  "John" "Ayesha"
+##  $ ages : num  31 24</code></pre>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># get dimensions of df</span>
+<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 2 2</code></pre>
+</div>
+</div>
+<div id="working-with-dataframes" class="section level2" number="2.4">
+<h2>
+<span class="header-section-number">2.4</span> Working with dataframes<a class="anchor" aria-label="anchor" href="#working-with-dataframes"><i class="fas fa-link"></i></a>
+</h2>
+<p>The dataframe is the most common data structure used by analysts in R, due to its similarity to data tables found in databases and spreadsheets. We will work almost entirely with dataframes in this book, so let’s get to know them.</p>
+<div id="loading-and-tidying-data-in-dataframes" class="section level3" number="2.4.1">
+<h3>
+<span class="header-section-number">2.4.1</span> Loading and tidying data in dataframes<a class="anchor" aria-label="anchor" href="#loading-and-tidying-data-in-dataframes"><i class="fas fa-link"></i></a>
+</h3>
+<p>To work with data in R, you usually need to pull it in from an outside source into a dataframe<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;R also has some built-in data sets for testing and playing with. For example, check out &lt;code&gt;mtcars&lt;/code&gt; by typing it into the terminal, or type &lt;code&gt;data()&lt;/code&gt; to see a full list of built-in data sets.&lt;/p&gt;"><sup>3</sup></a>. R facilitates numerous ways of importing data from simple <code>.csv</code> files, from Excel files, from online sources or from databases. Let’s load a data set that we will use later—the <code>salespeople</code> data set, which contains some information on the sales, average customer ratings and performance ratings of salespeople. The <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code> function can accept a URL address of the file if it is online.</p>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># url of data set </span>
+<span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"http://peopleanalytics-regression-book.org/data/salespeople.csv"</span>
+
+<span class="co"># load the data set and store it as a dataframe called salespeople</span>
+<span class="va">salespeople</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span></code></pre></div>
+<p>We might not want to display this entire data set before knowing how big it is. We can view the dimensions, and if it is too big to display, we can use the <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> function to display just the first few rows.</p>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 351   4</code></pre>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># hundreds of rows, so view first few</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">)</span></code></pre></div>
+<pre><code>##   promoted sales customer_rate performance
+## 1        0   594          3.94           2
+## 2        0   446          4.06           3
+## 3        1   674          3.83           4
+## 4        0   525          3.62           2
+## 5        1   657          4.40           3
+## 6        1   918          4.54           2</code></pre>
+<p>We can view a specific column by using <code><a href="https://rdrr.io/r/base/Extract.html">$</a></code>, and we can use square brackets to view a specific entry. For example if we wanted to see the 6th entry of the <code>sales</code> column:</p>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">salespeople</span><span class="op">$</span><span class="va">sales</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span></code></pre></div>
+<pre><code>## [1] 918</code></pre>
+<p>Alternatively, we can use a <code>[row, column]</code> index to get a specific entry in the dataframe.</p>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">salespeople</span><span class="op">[</span><span class="fl">34</span>, <span class="fl">4</span><span class="op">]</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>We can take a look at the data types using <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code>.</p>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">)</span></code></pre></div>
+<pre><code>## 'data.frame':    351 obs. of  4 variables:
+##  $ promoted     : int  0 0 1 0 1 1 0 0 0 0 ...
+##  $ sales        : int  594 446 674 525 657 918 318 364 342 387 ...
+##  $ customer_rate: num  3.94 4.06 3.83 3.62 4.4 4.54 3.09 4.89 3.74 3 ...
+##  $ performance  : int  2 3 4 2 3 2 3 1 3 3 ...</code></pre>
+<p>We can also see a statistical summary of each column using <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>, which tells us various statistics depending on the type of the column.</p>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">)</span></code></pre></div>
+<pre><code>##     promoted          sales       customer_rate    performance 
+##  Min.   :0.0000   Min.   :151.0   Min.   :1.000   Min.   :1.0  
+##  1st Qu.:0.0000   1st Qu.:389.2   1st Qu.:3.000   1st Qu.:2.0  
+##  Median :0.0000   Median :475.0   Median :3.620   Median :3.0  
+##  Mean   :0.3219   Mean   :527.0   Mean   :3.608   Mean   :2.5  
+##  3rd Qu.:1.0000   3rd Qu.:667.2   3rd Qu.:4.290   3rd Qu.:3.0  
+##  Max.   :1.0000   Max.   :945.0   Max.   :5.000   Max.   :4.0  
+##                   NA's   :1       NA's   :1       NA's   :1</code></pre>
+<p>Note that there is missing data in this dataframe, indicated by <code>NA</code>s in the summary. Missing data is identified by a special <code>NA</code> value in R. This should not be confused with <code>"NA"</code>, which is simply a character string. The function <code><a href="https://rdrr.io/r/base/NA.html">is.na()</a></code> will look at all values in a vector or dataframe and return <code>TRUE</code> or <code>FALSE</code> based on whether they are <code>NA</code> or not. By adding these up using the <code><a href="https://rdrr.io/r/base/sum.html">sum()</a></code> function, it will take <code>TRUE</code> as 1 and <code>FALSE</code> as 0, which effectively provides a count of missing data.</p>
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>This is a small number of <code>NA</code>s given the dimensions of our data set and we might want to remove the rows of data that contain NAs. The easiest way is to use the <code><a href="https://rdrr.io/r/stats/complete.cases.html">complete.cases()</a></code> function, which identifies the rows that have no <code>NA</code>s, and then we can select those rows from the dataframe based on that condition. Note that you can overwrite objects with the same name in R.</p>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">salespeople</span> <span class="op">&lt;-</span> <span class="va">salespeople</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html">complete.cases</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">)</span>, <span class="op">]</span>
+
+<span class="co"># confirm no NAs</span>
+<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<p>We can see the unique values of a vector or column using the <code><a href="https://rdrr.io/r/base/unique.html">unique()</a></code> function.</p>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">$</span><span class="va">performance</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 2 3 4 1</code></pre>
+<p>If we need to change the type of a column in a dataframe, we can use the <code><a href="https://rdrr.io/r/base/numeric.html">as.numeric()</a></code>, <code><a href="https://rdrr.io/r/base/character.html">as.character()</a></code>, <code><a href="https://rdrr.io/r/base/logical.html">as.logical()</a></code> or <code><a href="https://rdrr.io/r/base/factor.html">as.factor()</a></code> functions. For example, given that there are only four unique values for the <code>performance</code> column, we may want to convert it to a factor.</p>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">salespeople</span><span class="op">$</span><span class="va">performance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">$</span><span class="va">performance</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">)</span></code></pre></div>
+<pre><code>## 'data.frame':    350 obs. of  4 variables:
+##  $ promoted     : int  0 0 1 0 1 1 0 0 0 0 ...
+##  $ sales        : int  594 446 674 525 657 918 318 364 342 387 ...
+##  $ customer_rate: num  3.94 4.06 3.83 3.62 4.4 4.54 3.09 4.89 3.74 3 ...
+##  $ performance  : Factor w/ 4 levels "1","2","3","4": 2 3 4 2 3 2 3 1 3 3 ...</code></pre>
+</div>
+<div id="manipulating-dataframes" class="section level3" number="2.4.2">
+<h3>
+<span class="header-section-number">2.4.2</span> Manipulating dataframes<a class="anchor" aria-label="anchor" href="#manipulating-dataframes"><i class="fas fa-link"></i></a>
+</h3>
+<p>Dataframes can be subsetted to contain only rows that satisfy specific conditions.</p>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="op">(</span><span class="va">sales_720</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">salespeople</span>, subset <span class="op">=</span> <span class="va">sales</span> <span class="op">==</span> <span class="fl">720</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>##     promoted sales customer_rate performance
+## 290        1   720          3.76           3</code></pre>
+<p>Note the use of <code><a href="https://rdrr.io/r/base/Comparison.html">==</a></code>, which is used in many programming languages, to test for precise equality. Similarly we can select columns based on inequalities (<code><a href="https://rdrr.io/r/base/Comparison.html">&gt;</a></code> for ‘greater than’‍, <code><a href="https://rdrr.io/r/base/Comparison.html">&lt;</a></code> for ‘less than’‍, <code><a href="https://rdrr.io/r/base/Comparison.html">&gt;=</a></code> for ‘greater than or equal to’‍, <code><a href="https://rdrr.io/r/base/Comparison.html">&lt;=</a></code> for ‘less than or equal to’‍, or <code><a href="https://rdrr.io/r/base/Comparison.html">!=</a></code> for ‘not equal to’). For example:</p>
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">high_sales</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">salespeople</span>, subset <span class="op">=</span> <span class="va">sales</span> <span class="op">&gt;=</span> <span class="fl">700</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">high_sales</span><span class="op">)</span></code></pre></div>
+<pre><code>##    promoted sales customer_rate performance
+## 6         1   918          4.54           2
+## 12        1   716          3.16           3
+## 20        1   937          5.00           2
+## 21        1   702          3.53           4
+## 25        1   819          4.45           2
+## 26        1   736          3.94           4</code></pre>
+<p>To select specific columns use the <code>select</code> argument.</p>
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">salespeople_sales_perf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">salespeople</span>, 
+                                 select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"sales"</span>, <span class="st">"performance"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">salespeople_sales_perf</span><span class="op">)</span></code></pre></div>
+<pre><code>##   sales performance
+## 1   594           2
+## 2   446           3
+## 3   674           4
+## 4   525           2
+## 5   657           3
+## 6   918           2</code></pre>
+<p>Two dataframes with the same column names can be combined by their rows.</p>
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">low_sales</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">salespeople</span>, subset <span class="op">=</span> <span class="va">sales</span> <span class="op">&lt;</span> <span class="fl">400</span><span class="op">)</span>
+
+<span class="co"># bind the rows of low_sales and high_sales together</span>
+<span class="va">low_and_high_sales</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">low_sales</span>, <span class="va">high_sales</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">low_and_high_sales</span><span class="op">)</span></code></pre></div>
+<pre><code>##    promoted sales customer_rate performance
+## 7         0   318          3.09           3
+## 8         0   364          4.89           1
+## 9         0   342          3.74           3
+## 10        0   387          3.00           3
+## 15        0   344          3.02           2
+## 16        0   372          3.87           3</code></pre>
+<p>Two dataframes with different column names can be combined by their columns.</p>
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># two dataframes with two columns each</span>
+<span class="va">sales_perf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">salespeople</span>, 
+                     select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"sales"</span>, <span class="st">"performance"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">prom_custrate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">salespeople</span>, 
+                        select <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"promoted"</span>, <span class="st">"customer_rate"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co"># bind the columns to create a dataframe with four columns</span>
+<span class="va">full_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">sales_perf</span>, <span class="va">prom_custrate</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">full_df</span><span class="op">)</span></code></pre></div>
+<pre><code>##   sales performance promoted customer_rate
+## 1   594           2        0          3.94
+## 2   446           3        0          4.06
+## 3   674           4        1          3.83
+## 4   525           2        0          3.62
+## 5   657           3        1          4.40
+## 6   918           2        1          4.54</code></pre>
+</div>
+</div>
+<div id="functions-packages-and-libraries" class="section level2" number="2.5">
+<h2>
+<span class="header-section-number">2.5</span> Functions, packages and libraries<a class="anchor" aria-label="anchor" href="#functions-packages-and-libraries"><i class="fas fa-link"></i></a>
+</h2>
+<p>In the code so far we have used a variety of functions. For example <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>, <code><a href="https://rdrr.io/r/base/subset.html">subset()</a></code>, <code><a href="https://rdrr.io/r/base/cbind.html">rbind()</a></code>. Functions are operations that take certain defined inputs and return an output. Functions exist to perform common useful operations.</p>
+<div id="using-functions" class="section level3" number="2.5.1">
+<h3>
+<span class="header-section-number">2.5.1</span> Using functions<a class="anchor" aria-label="anchor" href="#using-functions"><i class="fas fa-link"></i></a>
+</h3>
+<p>Functions usually take one or more arguments. Often there are a large number of arguments that a function can take, but many are optional and not required to be specified by the user. For example, the function <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>, which displays the first rows of a dataframe<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;It actually has a broader definition but is mostly used for showing the first rows of a dataframe.&lt;/p&gt;"><sup>4</sup></a>, has only one required argument <code>x</code>: the name of the dataframe. A second argument is optional, <code>n</code>: the number of rows to display. If <code>n</code> is not entered, it is assumed to have the default value <code>n = 6</code>.</p>
+<p>When running a function, you can either specify the arguments by name or you can enter them in order without their names. If you enter arguments without naming them, R expects the arguments to be entered in exactly the right order.</p>
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># see the head of salespeople, with the default of six rows</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">)</span></code></pre></div>
+<pre><code>##   promoted sales customer_rate performance
+## 1        0   594          3.94           2
+## 2        0   446          4.06           3
+## 3        1   674          3.83           4
+## 4        0   525          3.62           2
+## 5        1   657          4.40           3
+## 6        1   918          4.54           2</code></pre>
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># see fewer rows - arguments need to be in the right order if not named</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">salespeople</span>, <span class="fl">3</span><span class="op">)</span></code></pre></div>
+<pre><code>##   promoted sales customer_rate performance
+## 1        0   594          3.94           2
+## 2        0   446          4.06           3
+## 3        1   674          3.83           4</code></pre>
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># or if you don't know the right order, </span>
+<span class="co"># name your arguments and you can put them in any order</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">3</span>, x <span class="op">=</span> <span class="va">salespeople</span><span class="op">)</span></code></pre></div>
+<pre><code>##   promoted sales customer_rate performance
+## 1        0   594          3.94           2
+## 2        0   446          4.06           3
+## 3        1   674          3.83           4</code></pre>
+</div>
+<div id="help-with-functions" class="section level3" number="2.5.2">
+<h3>
+<span class="header-section-number">2.5.2</span> Help with functions<a class="anchor" aria-label="anchor" href="#help-with-functions"><i class="fas fa-link"></i></a>
+</h3>
+<p>Most functions in R have excellent help documentation. To get help on the <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> function, type <code><a href="https://rdrr.io/r/utils/head.html">help(head)</a></code> or <code><a href="https://rdrr.io/r/utils/head.html">?head</a></code>. This will display the results in the Help browser window in RStudio. Alternatively you can open the Help browser window directly in RStudio and do a search there. An example of the browser results for <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> is in Figure <a href="the-basics-of-the-r-programming-language.html#fig:head-help">2.2</a>.</p>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:head-help"></span>
+<img src="www/R/head-help-small.png" alt="Results of a search for the `head()` function in the RStudio Help browser" width="821"><p class="caption">
+Figure 2.2: Results of a search for the <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> function in the RStudio Help browser
+</p>
+</div>
+<p>The help page normally shows the following:</p>
+<ul>
+<li>Description of the purpose of the function</li>
+<li>Usage examples, so you can quickly see how it is used</li>
+<li>Arguments list so you can see the names and order of arguments</li>
+<li>Details or notes on further considerations on use</li>
+<li>Expected value of the output (for example <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> is expected to return a similar object to its first input <code>x</code>)</li>
+<li>Examples to help orient you further (sometimes examples can be very abstract in nature and not so helpful to users)</li>
+</ul>
+</div>
+<div id="writing-your-own-functions" class="section level3" number="2.5.3">
+<h3>
+<span class="header-section-number">2.5.3</span> Writing your own functions<a class="anchor" aria-label="anchor" href="#writing-your-own-functions"><i class="fas fa-link"></i></a>
+</h3>
+<p>Functions are not limited to those that come packaged in R. Users can write their own functions to perform tasks that are helpful to their objectives. Experienced programmers in most languages subscribe to a principle called DRY (Don’t Repeat Yourself). Whenever a task needs to be done repeatedly, it is poor practice to write the same code numerous times. It makes more sense to write a function to do the task.</p>
+<p>In this example, a simple function is written which generates a report on a dataframe:</p>
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create df_report function</span>
+<span class="va">df_report</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"This dataframe contains"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>, <span class="st">"rows and"</span>, 
+        <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span>, <span class="st">"columns. There are"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">)</span>, <span class="st">"NA entries."</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<p>We can test our function by using the built-in <code>mtcars</code> data set in R.</p>
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">df_report</span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] "This dataframe contains 32 rows and 11 columns. There are 0 NA entries."</code></pre>
+</div>
+<div id="installing-packages" class="section level3" number="2.5.4">
+<h3>
+<span class="header-section-number">2.5.4</span> Installing packages<a class="anchor" aria-label="anchor" href="#installing-packages"><i class="fas fa-link"></i></a>
+</h3>
+<p>All the common functions that we have used so far exist in the base R installation. However, the beauty of open source languages like R is that users can write their own functions or resources and release them to others via packages. A package is an additional module that can be installed easily; it makes resources available which are not in the base R installation. In this book we will be using functions from both base R and from popular and useful packages. As an example, a popular package used for statistical modeling is the <code>MASS</code> package, which is based on methods in a popular applied statistics book<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;span class="citation"&gt;&lt;a href="references.html#ref-ripley" role="doc-biblioref"&gt;Venables and Ripley&lt;/a&gt; (&lt;a href="references.html#ref-ripley" role="doc-biblioref"&gt;2002&lt;/a&gt;)&lt;/span&gt;&lt;/p&gt;'><sup>5</sup></a>.</p>
+<p>Before an external package can be used, it must be installed into your package library using <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code>. So to install <code>MASS</code>, type <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("MASS")</a></code> into the console. This will send R to the main internet repository for R packages (known as CRAN). It will find the right version of <code>MASS</code> for your operating system and download and install it into your package library. If <code>MASS</code> needs other packages in order to work, it will also install these packages.</p>
+<p>If you want to install more than one package, put the names of the packages inside a character vector—for example:</p>
+<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">my_packages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"MASS"</span>, <span class="st">"DescTools"</span>, <span class="st">"dplyr"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="va">my_packages</span><span class="op">)</span></code></pre></div>
+<p>Once you have installed a package, you can see what functions are available by calling for help on it, for example using <code><a href="https://rdrr.io/pkg/MASS/man">help(package = MASS)</a></code>. One package you may wish to install now is the <code>peopleanalyticsdata</code> package, which contains all the data sets used in this book. By installing and loading this package, all the data sets used in this book will be loaded into your R session and ready to work with. If you do this, you can ignore the <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code> commands later in the book, which download the data from the internet.</p>
+</div>
+<div id="using-packages" class="section level3" number="2.5.5">
+<h3>
+<span class="header-section-number">2.5.5</span> Using packages<a class="anchor" aria-label="anchor" href="#using-packages"><i class="fas fa-link"></i></a>
+</h3>
+<p>Once you have installed a package into your package library, to use it in your R session you need to load it using the <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> function. For example, to load <code>MASS</code> after installing it, use <code><a href="http://www.stats.ox.ac.uk/pub/MASS4/">library(MASS)</a></code>. Often nothing will happen when you use this command, but rest assured the package has been loaded and you can start to use the functions inside it. Sometimes when you load the package a series of messages will display, usually to make you aware of certain things that you need to keep in mind when using the package. Note that whenever you see the <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> command in this book, it is assumed that you have already installed the package in that command. If you have not, the <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> command will fail.</p>
+<p>Once a package is loaded from your library, you can use any of the functions inside it. For example, the <code><a href="https://rdrr.io/pkg/MASS/man/stepAIC.html">stepAIC()</a></code> function is not available before you load the <code>MASS</code> package but becomes available after it is loaded. In this sense, functions ‘belong’ to packages.</p>
+<p>Problems can occur when you load packages that contain functions with the same name as functions that already exist in your R session. Often the messages you see when loading a package will alert you to this. When R is faced with a situation where a function exists in multiple packages you have loaded, R always defaults to the function in <em>the most recently loaded</em> package. This may not always be what you intended.</p>
+<p>One way to completely avoid this issue is to get in the habit of <em>namespacing</em> your functions. To namespace, you simply use <code>package::function()</code>, so to safely call <code><a href="https://rdrr.io/pkg/MASS/man/stepAIC.html">stepAIC()</a></code> from <code>MASS</code>, you use <code><a href="https://rdrr.io/pkg/MASS/man/stepAIC.html">MASS::stepAIC()</a></code>. Most of the time in this book when a function is being called from a package outside base R, I use namespacing to call that function. This should help avoid confusion about which packages are being used for which functions.</p>
+</div>
+<div id="the-pipe-operator" class="section level3" number="2.5.6">
+<h3>
+<span class="header-section-number">2.5.6</span> The pipe operator<a class="anchor" aria-label="anchor" href="#the-pipe-operator"><i class="fas fa-link"></i></a>
+</h3>
+<p>Even in the most elementary briefing about R, it is very difficult to ignore the pipe operator. The pipe operator makes code more natural to read and write and reduces the typical computing problem of many nested operations inside parentheses. The pipe operator comes inside many R packages, particularly <code>magrittr</code> and <code>dplyr</code>.</p>
+<p>As an example, imagine we wanted to do the following two operations in one command:</p>
+<ol style="list-style-type: decimal">
+<li>Subset <code>salespeople</code> to only the <code>sales</code> values of those with <code>sales</code> less than 500</li>
+<li>Take the mean of those values</li>
+</ol>
+<p>In base R, one way to do this is:</p>
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">$</span><span class="va">sales</span>, subset <span class="op">=</span> <span class="va">salespeople</span><span class="op">$</span><span class="va">sales</span> <span class="op">&lt;</span> <span class="fl">500</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 388.6684</code></pre>
+<p>This is nested and needs to be read from the inside out in order to align with the instructions. The pipe operator <code><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></code> takes the command that comes before it and places it inside the function that follows it (by default as the first argument). This reduces complexity and allows you to follow the logic more clearly.</p>
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># load magrittr library to get the pipe operator</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
+
+<span class="co"># use the pipe operator to lay out the steps more logically</span>
+<span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">$</span><span class="va">sales</span>, subset <span class="op">=</span> <span class="va">salespeople</span><span class="op">$</span><span class="va">sales</span> <span class="op">&lt;</span> <span class="fl">500</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="op">)</span> </code></pre></div>
+<pre><code>## [1] 388.6684</code></pre>
+<p>This can be extended to perform arbitrarily many operations in one piped command.</p>
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">salespeople</span><span class="op">$</span><span class="va">sales</span> <span class="op">%&gt;%</span> <span class="co"># start with all data</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span>subset <span class="op">=</span> <span class="va">salespeople</span><span class="op">$</span><span class="va">sales</span> <span class="op">&lt;</span> <span class="fl">500</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># get the subsetted data</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># take the mean value</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># round to the nearest integer</span></code></pre></div>
+<pre><code>## [1] 389</code></pre>
+<p>The pipe operator is unique to R and is very widely used because it helps to make code more readable, it reduces complexity, and it helps orient around a common ‘grammar’ for the manipulation of data. The pipe operator helps you structure your code more clearly around nouns (objects), verbs (functions) and adverbs (arguments of functions). One of the most developed sets of packages in R that follows these principles is the <code>tidyverse</code> family of packages, which I encourage you to explore.</p>
+</div>
+</div>
+<div id="errors-warnings-and-messages" class="section level2" number="2.6">
+<h2>
+<span class="header-section-number">2.6</span> Errors, warnings and messages<a class="anchor" aria-label="anchor" href="#errors-warnings-and-messages"><i class="fas fa-link"></i></a>
+</h2>
+<p>As I mentioned earlier in this chapter, getting familiar with R can be frustrating at the beginning if you have never programmed before. You can expect to regularly see messages, warnings or errors in response to your commands. I encourage you to regard these as your friend rather than your enemy. It is very tempting to take the latter approach when you are starting out, but over time I hope you will appreciate some wisdom from my words.</p>
+<p><em>Errors</em> are serious problems which usually result in the halting of your code and a failure to return your requested output. They usually come with an indication of the source of the error, and these can sometimes be easy to understand and sometimes frustratingly vague and abstract. For example, an easy-to-understand error is:</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="the-basics-of-the-r-programming-language.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(salespeople, <span class="at">subset =</span> <span class="at">sales =</span> <span class="dv">720</span>)</span></code></pre></div>
+<pre><code>Error: unexpected '=' in "subset(salespeople, subset = sales ="</code></pre>
+<p>This helps you see that you have used <code>sales = 720</code> as a condition to subset your data, when you should have used <code>sales == 720</code> for precise equality.</p>
+<p>A much more challenging error to understand is:</p>
+<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">head</span><span class="op">[</span><span class="va">salespeople</span><span class="op">]</span></code></pre></div>
+<pre><code>Error in head[salespeople] : object of type 'closure' is not subsettable</code></pre>
+<p>When first faced with an error that you can’t understand, try not to get frustrated and proceed in the knowledge that it usually can be fixed easily and quickly. Often the problem is much more obvious than you think, and if not, there is still a 99% likelihood that others have made this error and you can read about it online. The first step is to take a look at your code to see if you can spot what you did wrong. In this case, you may see that you have used square brackets <code>[]</code> instead of parentheses <code>()</code> when calling your <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> function. If you cannot see what is wrong, the next step is to ask a colleague or do an internet search with the text of the error message you receive, or to consult online forums like <a href="https://stackoverflow.com" class="uri">https://stackoverflow.com</a>. The more experienced you become, the easier it is to interpret error messages.</p>
+<p><em>Warnings</em> are less serious and usually alert you to something that you might be overlooking and which could indicate a problem with the output. In many cases you can ignore warnings, but sometimes they are an important reminder to go back and edit your code. For example, you may run a model which doesn’t converge, and while this does not stop R from returning results, it is also very useful for you to know that it didn’t converge.</p>
+<p><em>Messages</em> are pieces of information that may or may not be useful to you at a particular point in time. Sometimes you will receive messages when you load a package from your library. Sometimes messages will keep you up to date on the progress of a process that is taking a long time to execute.</p>
+</div>
+<div id="plotting-and-graphing" class="section level2" number="2.7">
+<h2>
+<span class="header-section-number">2.7</span> Plotting and graphing<a class="anchor" aria-label="anchor" href="#plotting-and-graphing"><i class="fas fa-link"></i></a>
+</h2>
+<p>As you might expect in a well-developed programming language, there are numerous ways to plot and graph information in R. If you are doing exploratory data analysis on fairly simple data and you don’t need to worry about pretty appearance or formatting, the built-in plot capabilities of base R are fine. If you need a pretty appearance, more precision, color coding or even 3D graphics or animation, there are also specialized plotting and graphing packages for these purposes. In general when working interactively in RStudio, graphical output will be rendered in the Plots pane, where you can copy it or save it as an image.</p>
+<div id="plotting-in-base-r" class="section level3" number="2.7.1">
+<h3>
+<span class="header-section-number">2.7.1</span> Plotting in base R<a class="anchor" aria-label="anchor" href="#plotting-in-base-r"><i class="fas fa-link"></i></a>
+</h3>
+<p>The simplest plot function in base R is <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code>. This performs basic X-Y plotting. As an example, this code will generate a scatter plot of <code>customer_rate</code> against <code>sales</code> in the <code>salespeople</code> data set, with the results displayed in Figure <a href="the-basics-of-the-r-programming-language.html#fig:basicscatter">2.3</a>. Note the use of the arguments <code>main</code>, <code>xlab</code> and <code>ylab</code> for customizing the axis labels and title for the plot.</p>
+<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># scatter plot of customer_rate against sales</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">salespeople</span><span class="op">$</span><span class="va">sales</span>, y <span class="op">=</span> <span class="va">salespeople</span><span class="op">$</span><span class="va">customer_rate</span>,
+     xlab <span class="op">=</span> <span class="st">"Sales ($m)"</span>, ylab <span class="op">=</span> <span class="st">"Average customer rating"</span>,
+     main <span class="op">=</span> <span class="st">"Scatterplot of Sales vs Customer Rating"</span><span class="op">)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:basicscatter"></span>
+<img src="_main_files/figure-html/basicscatter-1.png" alt="Simple scatterplot of `customer_rate` against `sales` in the `salespeople` data set" width="672"><p class="caption">
+Figure 2.3: Simple scatterplot of <code>customer_rate</code> against <code>sales</code> in the <code>salespeople</code> data set
+</p>
+</div>
+<p>Histograms of data can be generated using the <code><a href="https://rdrr.io/r/graphics/hist.html">hist()</a></code> function. This command will generate a histogram of <code>performance</code> as displayed in Figure <a href="the-basics-of-the-r-programming-language.html#fig:basichist">2.4</a>. Note the use of <code>breaks</code> to customize how the bars appear.</p>
+<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># convert performance ratings back to numeric data type for histogram</span>
+<span class="va">salespeople</span><span class="op">$</span><span class="va">performance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">$</span><span class="va">performance</span><span class="op">)</span>
+
+<span class="co"># histogram of performance ratings</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">$</span><span class="va">performance</span>, breaks <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">4</span>,
+     xlab <span class="op">=</span> <span class="st">"Performance Rating"</span>, 
+     main <span class="op">=</span> <span class="st">"Histogram of Performance Ratings"</span><span class="op">)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:basichist"></span>
+<img src="_main_files/figure-html/basichist-1.png" alt="Simple histogram of `performance` in the `salespeople` data set" width="672"><p class="caption">
+Figure 2.4: Simple histogram of <code>performance</code> in the <code>salespeople</code> data set
+</p>
+</div>
+<p>Box and whisker plots are excellent ways to see the distribution of a variable, and can be grouped against another variable to see bivariate patterns. For example, this command will show a box and whisker plot of <code>sales</code> grouped against <code>performance</code>, with the output shown in Figure <a href="the-basics-of-the-r-programming-language.html#fig:basicbox">2.5</a>. Note the use of the <code>formula</code> and <code>data</code> notation here to define the variable we are interested in and how we want it grouped. We will study this formula notation in greater depth later in this book.</p>
+<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># box plot of sales by performance rating</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">sales</span> <span class="op">~</span> <span class="va">performance</span>, data <span class="op">=</span> <span class="va">salespeople</span>,
+        xlab <span class="op">=</span> <span class="st">"Performance Rating"</span>, ylab <span class="op">=</span> <span class="st">"Sales ($m)"</span>,
+        main <span class="op">=</span> <span class="st">"Boxplot of Sales by Performance Rating"</span><span class="op">)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:basicbox"></span>
+<img src="_main_files/figure-html/basicbox-1.png" alt="Simple box plot of `sales` grouped against `performance` in the `salespeople` data set" width="672"><p class="caption">
+Figure 2.5: Simple box plot of <code>sales</code> grouped against <code>performance</code> in the <code>salespeople</code> data set
+</p>
+</div>
+<p>These are among the most common plots used for data exploration purposes. They are examples of a wider range of plotting and graphing functions available in base R, such as line plots, bar plots and other varieties which you may see later in this book.</p>
+</div>
+<div id="specialist-plotting-and-graphing-packages" class="section level3" number="2.7.2">
+<h3>
+<span class="header-section-number">2.7.2</span> Specialist plotting and graphing packages<a class="anchor" aria-label="anchor" href="#specialist-plotting-and-graphing-packages"><i class="fas fa-link"></i></a>
+</h3>
+<p>By far the most commonly used specialist plotting and graphing package in R is <code>ggplot2</code>. <code>ggplot2</code> allows the flexible construction of a very wide range of charts and graphs, but uses a very specific command grammar which can take some getting used to. However, once learned, <code>ggplot2</code> can be an extremely powerful tool. Many of the illustratory figures used in this book are developed using <code>ggplot2</code> and while the code for these figures is generally not included for the sake of brevity, you can always find it in the source code of this book on Github<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://github.com/keithmcnulty/peopleanalytics-regression-book" class="uri"&gt;https://github.com/keithmcnulty/peopleanalytics-regression-book&lt;/a&gt;&lt;/p&gt;'><sup>6</sup></a>. A great learning resource for <code>ggplot2</code> is <span class="citation"><a href="references.html#ref-ggplot2" role="doc-biblioref">Wickham</a> (<a href="references.html#ref-ggplot2" role="doc-biblioref">2016</a>)</span>.</p>
+<p>The <code>plotly</code> package allows the use of the <code>plotly</code> graphing library in R. This is an excellent package for interactive graphing and is used for 3D illustrations in this book. Output can be rendered in HTML—allowing the user to play with and explore the graphs interactively—or can be saved as static 2D images.</p>
+<p><code>GGally</code> is a package that extends <code>ggplot2</code> to allow easy combination of charts and graphs. This is particularly valuable for quicker exploratory data analysis. One of its most popular functions is <code><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs()</a></code>, which produces a pairplot. A pairplot is a visualization of all univariate and bivariate patterns in a data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed in the off-diagonal. Figure <a href="the-basics-of-the-r-programming-language.html#fig:basicpair">2.6</a> is an example of a pairplot for the <code>salespeople</code> data set, which we will explore further in Chapter <a href="bin-log-reg.html#bin-log-reg">5</a>.</p>
+<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggobi.github.io/ggally">GGally</a></span><span class="op">)</span>
+
+<span class="co"># convert performance and promotion to categorical</span>
+<span class="va">salespeople</span><span class="op">$</span><span class="va">promoted</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">$</span><span class="va">promoted</span><span class="op">)</span>
+<span class="va">salespeople</span><span class="op">$</span><span class="va">performance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">$</span><span class="va">performance</span><span class="op">)</span>
+
+<span class="co"># pairplot of salespeople</span>
+<span class="fu">GGally</span><span class="fu">::</span><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:basicpair"></span>
+<img src="_main_files/figure-html/basicpair-1.png" alt="Pairplot of the `salespeople` data set" width="672"><p class="caption">
+Figure 2.6: Pairplot of the <code>salespeople</code> data set
+</p>
+</div>
+</div>
+</div>
+<div id="documenting-your-work-using-r-markdown" class="section level2" number="2.8">
+<h2>
+<span class="header-section-number">2.8</span> Documenting your work using R Markdown<a class="anchor" aria-label="anchor" href="#documenting-your-work-using-r-markdown"><i class="fas fa-link"></i></a>
+</h2>
+<p>For anyone performing any sort of multivariate analysis using a statistical programming language, appropriate documentation and reproducibility of the work is essential to its success and longevity. If your code is not easily obtained or run by others, it is likely to have a very limited impact and lifetime. Learning how to create integrated documents that contain both text and code is critical to providing access to your code and narration of your work.</p>
+<p>R Markdown is a package which allows you to create integrated documents containing both formatted text and executed code. It is, in my opinion, one of the best resources available currently for this purpose. This entire book has been created using R Markdown. You can start an R Markdown document in RStudio by installing the <code>rmarkdown</code> package and then opening a new R Markdown document file, which will have the suffix <code>.Rmd</code>.</p>
+<p>R Markdown documents always start with a particular heading type called a YAML header, which contains overall information on the document you are creating. Care must be taken with the precise formatting of the YAML header, as it is sensitive to spacing and indentation. Usually a basic YAML header is created for you in RStudio when you start a new <code>.Rmd</code> file. Here is an example.</p>
+<pre><code>---
+title: "My new document"
+author: "Keith McNulty"
+date: "25/01/2021"
+output: html_document
+---</code></pre>
+<p>The <code>output</code> part of this header has numerous options, but the most commonly used are <code>html_document</code>, which generates your document as a web page, and <code>pdf_document</code>, which generates your document as a PDF using the open source <code>LaTeX</code> software package. If you wish to create PDF documents you will need to have a version of <code>LaTeX</code> installed on your system. One R package that can do this for you easily is the <code>tinytex</code> package. The function <code>install_tinytex()</code> from this package will install a minimal version of <code>LaTeX</code> which is fine for most purposes.</p>
+<p>R Markdown allows you to build a formatted document using many shorthand formatting commands. Here are a few examples of how to format headings and place web links or images in your document:</p>
+<pre><code># My top heading
+
+This section is about this general topic.
+
+## My first sub heading 
+
+To see more information on this sub-topic visit [here](https://my.web.link).
+
+## My second sub heading
+
+Here is a nice picture about this sub-topic.
+
+![](path/to/image)</code></pre>
+<p>Code can be written and executed and the results displayed inline using backticks. For example, writing</p>
+<pre><code>`r nrow(salespeople)`</code></pre>
+<p>inline will display 351 in the final document. Entire code blocks can be included and executed by using triple-backticks. The following code block:</p>
+<pre><code>```{r}
+# show the first few rows of salespeople
+head(salespeople)
+```</code></pre>
+<p>will display this output:</p>
+<pre><code>##   promoted sales customer_rate performance
+## 1        0   594          3.94           2
+## 2        0   446          4.06           3
+## 3        1   674          3.83           4
+## 4        0   525          3.62           2
+## 5        1   657          4.40           3
+## 6        1   918          4.54           2</code></pre>
+<p>The <code>{}</code> wrapping allows you to specify different languages for your code chunk. For example, if you wanted to run Python code instead of R code you can use <code>{python}</code>. It also allows you to set options for the code chunk display separated by commas. For example, if you want the results of your code to be displayed, but without the code itself being displayed, you can use <code>{r, echo = FALSE}</code>.</p>
+<p>The process of compiling your R Markdown code to produce a document is known as ‘knitting.’ To create a knitted document, you simply need to click on the ‘Knit’ button in RStudio that appears above your R Markdown code.</p>
+<p>If you are not familiar with R Markdown, I strongly encourage you to learn it alongside R and to challenge yourself to write up any practice exercises you take on in this book using R Markdown. Useful cheat sheets and reference guides for R Markdown formatting and commands are available through the Cheatsheets section of the Help menu in RStudio. I also recommend <span class="citation"><a href="references.html#ref-rmarkdown" role="doc-biblioref">Xie, Dervieux, and Riederer</a> (<a href="references.html#ref-rmarkdown" role="doc-biblioref">2020</a>)</span> for a really thorough instruction and reference guide.</p>
+</div>
+<div id="learning-exercises" class="section level2" number="2.9">
+<h2>
+<span class="header-section-number">2.9</span> Learning exercises<a class="anchor" aria-label="anchor" href="#learning-exercises"><i class="fas fa-link"></i></a>
+</h2>
+<div id="discussion-questions" class="section level3" number="2.9.1">
+<h3>
+<span class="header-section-number">2.9.1</span> Discussion questions<a class="anchor" aria-label="anchor" href="#discussion-questions"><i class="fas fa-link"></i></a>
+</h3>
+<ol style="list-style-type: decimal">
+<li>Describe the following data types: numeric, character, logical, factor.</li>
+<li>Why is a vector known as a homogeneous data structure?</li>
+<li>Give an example of a heterogeneous data structure in R.</li>
+<li>What is the difference between <code>NA</code> and <code>"NA"</code>?</li>
+<li>What operator is used to return named elements of a list and named columns of a dataframe?</li>
+<li>Describe some functions that are used to manipulate dataframes.</li>
+<li>What is a package and how do you install and use a new package?</li>
+<li>Describe what is meant by ‘namespacing’ and why it might be useful.</li>
+<li>What is the pipe operator, and why is it popular in R?</li>
+<li>What is the difference between an error and a warning in R?</li>
+<li>Name some simple plotting functions in base R.</li>
+<li>Name some common specialist plotting and graphing packages in R.</li>
+<li>What is R Markdown, and why is it useful to someone performing analysis using programming languages?</li>
+</ol>
+</div>
+<div id="data-exercises" class="section level3" number="2.9.2">
+<h3>
+<span class="header-section-number">2.9.2</span> Data exercises<a class="anchor" aria-label="anchor" href="#data-exercises"><i class="fas fa-link"></i></a>
+</h3>
+<ol style="list-style-type: decimal">
+<li>Create a character vector called <code>my_names</code> that contains all your first, middle and last names as elements. Calculate the length of <code>my_names</code>.</li>
+<li>Create a second numeric vector called <code>which</code> which corresponds to <code>my_names</code>. The entries should be the position of each name in the order of your full name. Verify that it has the same length as <code>my_names</code>.</li>
+<li>Create a dataframe called <code>names</code>, which consists of the two vectors <code>my_names</code> and <code>which</code> as columns. Calculate the dimensions of <code>names</code>.</li>
+<li>Create a new dataframe <code>new_names</code> with the <code>which</code> column converted to character type. Verify that your command worked using <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code>.</li>
+<li>Load the <code>ugtests</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="http://peopleanalytics-regression-book.org/data/ugtests.csv" class="uri"&gt;http://peopleanalytics-regression-book.org/data/ugtests.csv&lt;/a&gt;&lt;/p&gt;'><sup>7</sup></a>. Calculate the dimensions of <code>ugtests</code> and view the first three rows only.</li>
+<li>View a statistical summary of all of the columns of <code>ugtests</code>. Determine if there are any missing values.</li>
+<li>View the subset of <code>ugtests</code> for values of <code>Yr1</code> greater than 50.</li>
+<li>Install and load the package <code>dplyr</code>. Look up the help for the <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> function in this package and try to use it to repeat the task in the previous question.</li>
+<li>Write code to find the mean of the <code>Yr1</code> test scores for all those who achieved <code>Yr3</code> test scores greater than 100. Round this mean to the nearest integer.</li>
+<li>Familiarize yourself with the two functions <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> and <code>pull()</code> from <code>dplyr</code>. Use these functions to try to do the same calculation in the previous question using a single unbroken piped command. Be sure to namespace where necessary.</li>
+<li>Create a scatter plot using the <code>ugtests</code> data with <code>Final</code> scores on the <span class="math inline">\(y\)</span> axis and <code>Yr3</code> scores on the <span class="math inline">\(x\)</span> axis.</li>
+<li>Create your own 5-level grading logic and use it to create a new <code>finalgrade</code> column in the <code>ugtests</code> data set with grades 1–5 of increasing attainment based on the <code>Final</code> score in <code>ugtests</code>. Generate a histogram of this <code>finalgrade</code> column.</li>
+<li>Using your new <code>ugtests</code> data with the extra column from the previous exercise, create a box plot of <code>Yr3</code> scores grouped by <code>finalgrade</code>.</li>
+<li>Knit all of your answers to these exercises into an R Markdown document. Create one version that displays your code and answers, and another that just displays the answers.</li>
+</ol>
+</div>
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="inf-model.html"><span class="header-section-number">1</span> The Importance of Regression in People Analytics</a></div>
+<div class="next"><a href="found-stats.html"><span class="header-section-number">3</span> Statistics Foundations</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#the-basics-of-the-r-programming-language"><span class="header-section-number">2</span> The Basics of the R Programming Language</a></li>
+<li><a class="nav-link" href="#what-is-r"><span class="header-section-number">2.1</span> What is R?</a></li>
+<li><a class="nav-link" href="#how-to-start-using-r"><span class="header-section-number">2.2</span> How to start using R</a></li>
+<li>
+<a class="nav-link" href="#data-in-r"><span class="header-section-number">2.3</span> Data in R</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#data-types"><span class="header-section-number">2.3.1</span> Data types</a></li>
+<li><a class="nav-link" href="#homogeneous-data-structures"><span class="header-section-number">2.3.2</span> Homogeneous data structures</a></li>
+<li><a class="nav-link" href="#heterogeneous-data-structures"><span class="header-section-number">2.3.3</span> Heterogeneous data structures</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#working-with-dataframes"><span class="header-section-number">2.4</span> Working with dataframes</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#loading-and-tidying-data-in-dataframes"><span class="header-section-number">2.4.1</span> Loading and tidying data in dataframes</a></li>
+<li><a class="nav-link" href="#manipulating-dataframes"><span class="header-section-number">2.4.2</span> Manipulating dataframes</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#functions-packages-and-libraries"><span class="header-section-number">2.5</span> Functions, packages and libraries</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#using-functions"><span class="header-section-number">2.5.1</span> Using functions</a></li>
+<li><a class="nav-link" href="#help-with-functions"><span class="header-section-number">2.5.2</span> Help with functions</a></li>
+<li><a class="nav-link" href="#writing-your-own-functions"><span class="header-section-number">2.5.3</span> Writing your own functions</a></li>
+<li><a class="nav-link" href="#installing-packages"><span class="header-section-number">2.5.4</span> Installing packages</a></li>
+<li><a class="nav-link" href="#using-packages"><span class="header-section-number">2.5.5</span> Using packages</a></li>
+<li><a class="nav-link" href="#the-pipe-operator"><span class="header-section-number">2.5.6</span> The pipe operator</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#errors-warnings-and-messages"><span class="header-section-number">2.6</span> Errors, warnings and messages</a></li>
+<li>
+<a class="nav-link" href="#plotting-and-graphing"><span class="header-section-number">2.7</span> Plotting and graphing</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#plotting-in-base-r"><span class="header-section-number">2.7.1</span> Plotting in base R</a></li>
+<li><a class="nav-link" href="#specialist-plotting-and-graphing-packages"><span class="header-section-number">2.7.2</span> Specialist plotting and graphing packages</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#documenting-your-work-using-r-markdown"><span class="header-section-number">2.8</span> Documenting your work using R Markdown</a></li>
+<li>
+<a class="nav-link" href="#learning-exercises"><span class="header-section-number">2.9</span> Learning exercises</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#discussion-questions"><span class="header-section-number">2.9.1</span> Discussion questions</a></li>
+<li><a class="nav-link" href="#data-exercises"><span class="header-section-number">2.9.2</span> Data exercises</a></li>
+</ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/keithmcnulty/peopleanalytics-regression-book/blob/master/r/02-basic_r.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/keithmcnulty/peopleanalytics-regression-book/edit/master/r/02-basic_r.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Handbook of Regression Modeling in People Analytics</strong>: With Examples in R, Python and Julia" was written by Keith McNulty. </p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

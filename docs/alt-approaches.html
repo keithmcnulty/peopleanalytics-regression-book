@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>10 Alternative Technical Approaches in R, Python and Julia | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
+<meta name="author" content="Keith McNulty">
+<meta name="description" content="As outlined earlier in this book, all technical implementations of the modeling techniques in previous chapters have relied wherever possible on base R code and specialist packages for specific...">
+<meta name="generator" content="bookdown 0.22.15 with bs4_book()">
+<meta property="og:title" content="10 Alternative Technical Approaches in R, Python and Julia | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://peopleanalytics-regression-book.org/alt-approaches.html">
+<meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
+<meta property="og:description" content="As outlined earlier in this book, all technical implementations of the modeling techniques in previous chapters have relied wherever possible on base R code and specialist packages for specific...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="10 Alternative Technical Approaches in R, Python and Julia | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
+<meta name="twitter:site" content="@dr_keithmcnulty">
+<meta name="twitter:description" content="As outlined earlier in this book, all technical implementations of the modeling techniques in previous chapters have relied wherever possible on base R code and specialist packages for specific...">
+<meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.9.5/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.2.5.1/tabs.js"></script><script src="libs/bs3compat-0.2.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python">
+<meta name="citation_author" content="Keith McNulty">
+<meta name="citation_publication_date" content="2021">
+<meta name="citation_isbn" content="9781003194156">
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script><script src="libs/plotly-binding-4.9.2.1/plotly.js"></script><script src="libs/typedarray-0.1/typedarray.min.js"></script><link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet">
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-N7JZGMVRZK');
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="css/style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="With Examples in R, Python and Julia">Handbook of Regression Modeling in People Analytics</a>:
+        <small class="text-muted">With Examples in R, Python and Julia</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Welcome</a></li>
+<li><a class="" href="foreword-by-alexis-fink.html">Foreword by Alexis Fink</a></li>
+<li><a class="" href="introduction.html">Introduction</a></li>
+<li><a class="" href="inf-model.html"><span class="header-section-number">1</span> The Importance of Regression in People Analytics</a></li>
+<li><a class="" href="the-basics-of-the-r-programming-language.html"><span class="header-section-number">2</span> The Basics of the R Programming Language</a></li>
+<li><a class="" href="found-stats.html"><span class="header-section-number">3</span> Statistics Foundations</a></li>
+<li><a class="" href="linear-reg-ols.html"><span class="header-section-number">4</span> Linear Regression for Continuous Outcomes</a></li>
+<li><a class="" href="bin-log-reg.html"><span class="header-section-number">5</span> Binomial Logistic Regression for Binary Outcomes</a></li>
+<li><a class="" href="multinomial-logistic-regression-for-nominal-category-outcomes.html"><span class="header-section-number">6</span> Multinomial Logistic Regression for Nominal Category Outcomes</a></li>
+<li><a class="" href="ord-reg.html"><span class="header-section-number">7</span> Proportional Odds Logistic Regression for Ordered Category Outcomes</a></li>
+<li><a class="" href="modeling-explicit-and-latent-hierarchy-in-data.html"><span class="header-section-number">8</span> Modeling Explicit and Latent Hierarchy in Data</a></li>
+<li><a class="" href="survival.html"><span class="header-section-number">9</span> Survival Analysis for Modeling Singular Events Over Time</a></li>
+<li><a class="active" href="alt-approaches.html"><span class="header-section-number">10</span> Alternative Technical Approaches in R, Python and Julia</a></li>
+<li><a class="" href="power-tests.html"><span class="header-section-number">11</span> Power Analysis to Estimate Required Sample Sizes for Modeling</a></li>
+<li><a class="" href="solutions-to-exercises.html">Solutions to Exercises</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/keithmcnulty/peopleanalytics-regression-book">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="alt-approaches" class="section level1" number="10">
+<h1>
+<span class="header-section-number">10</span> Alternative Technical Approaches in R, Python and Julia<a class="anchor" aria-label="anchor" href="#alt-approaches"><i class="fas fa-link"></i></a>
+</h1>
+<p>As outlined earlier in this book, all technical implementations of the modeling techniques in previous chapters have relied wherever possible on base R code and specialist packages for specific methodologies—this allowed a focus on the basics of understanding, running and interpreting these models which is the key aim of this book. For those interested in a wider range of technical options for running inferential statistical models, this chapter illustrates some alternative options and should be considered a starting point for those interested rather than an in-depth exposition.</p>
+<p>First we look at options for generating models in more predictable formats in R. We have seen in prior chapters that the output of many models in R can be inconsistent. In many cases we are given more information than we need, and in some cases we have less than we need. Formats can vary, and we sometimes need to look in different parts of the output to see specific statistics that we seek. The <code>tidymodels</code> set of packages tries to bring the principles of tidy data into the realm of statistical modeling and we will illustrate this briefly.</p>
+<p>Second, for those whose preference is to use Python, we provide some examples for how inferential regression models can be run in Python. While Python is particularly well-tooled for running predictive models, it does not have the full range of statistical inference tools that are available in R. In particular, using predictive modeling or machine learning packages like <code>scikit-learn</code> to conduct regression modeling can often leave the analyst lacking when seeking information about certain model statistics when those statistics are not typically sought after in a predictive modeling workflow. We briefly illustrate some Python packages which perform modeling with a greater emphasis on inference versus prediction.</p>
+<p>Finally, we show some examples of regression models in Julia, which is a new but increasingly popular open source programming language. Julia is considerably younger as a language than both R and Python, but its uptake is rapid. Already many of the most common models can be easily implemented in Julia, but more advanced models are still awaiting the development of packages that implement them.</p>
+<div id="tidier-modeling-approaches-in-r" class="section level2" number="10.1">
+<h2>
+<span class="header-section-number">10.1</span> ‘Tidier’ modeling approaches in R<a class="anchor" aria-label="anchor" href="#tidier-modeling-approaches-in-r"><i class="fas fa-link"></i></a>
+</h2>
+<p>The <code>tidymodels</code> meta-package is a collection of packages which collectively apply the principles of tidy data to the construction of statistical models. More information and learning resources on <code>tidymodels</code> can be found <a href="https://www.tidymodels.org/">here</a>. Within <code>tidymodels</code> there are two packages which are particularly useful in controlling the output of models in R: the <code>broom</code> and <code>parsnip</code> packages.</p>
+<div id="the-broom-package" class="section level3" number="10.1.1">
+<h3>
+<span class="header-section-number">10.1.1</span> The <code>broom</code> package<a class="anchor" aria-label="anchor" href="#the-broom-package"><i class="fas fa-link"></i></a>
+</h3>
+<p>Consistent with how it is named, <code>broom</code> aims to tidy up the output of the models into a predictable format. It works with over 100 different types of models in R. In order to illustrate its use, let’s run a model from a previous chapter—specifically our salesperson promotion model in Chapter <a href="bin-log-reg.html#bin-log-reg">5</a>.</p>
+<div class="sourceCode" id="cb423"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># obtain salespeople data</span>
+<span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"http://peopleanalytics-regression-book.org/data/salespeople.csv"</span>
+<span class="va">salespeople</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span></code></pre></div>
+<p>As in Chapter <a href="bin-log-reg.html#bin-log-reg">5</a>, we convert the <code>promoted</code> column to a factor and run a binomial logistic regression model on the <code>promoted</code> outcome.</p>
+<div class="sourceCode" id="cb424"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># convert promoted to factor</span>
+<span class="va">salespeople</span><span class="op">$</span><span class="va">promoted</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">$</span><span class="va">promoted</span><span class="op">)</span>
+
+<span class="co"># build model to predict promotion based on sales and customer_rate</span>
+<span class="va">promotion_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">promoted</span> <span class="op">~</span> <span class="va">sales</span> <span class="op">+</span> <span class="va">customer_rate</span>,
+                       family <span class="op">=</span> <span class="st">"binomial"</span>,
+                       data <span class="op">=</span> <span class="va">salespeople</span><span class="op">)</span></code></pre></div>
+<p>We now have our model sitting in memory. We can use three key functions in the <code>broom</code> package to view a variety of model statistics. First, the <code>tidy()</code> function allows us to see the coefficient statistics of the model.</p>
+<div class="sourceCode" id="cb425"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># load tidymodels metapackage</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span>
+
+<span class="co"># view coefficient statistics</span>
+<span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">promotion_model</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 3 x 5
+##   term          estimate std.error statistic  p.value
+##   &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)   -19.5      3.35        -5.83 5.48e- 9
+## 2 sales           0.0404   0.00653      6.19 6.03e-10
+## 3 customer_rate  -1.12     0.467       -2.40 1.63e- 2</code></pre>
+<p>The <code>glance()</code> function allows us to see a row of overall model statistics:</p>
+<div class="sourceCode" id="cb427"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># view model statistics</span>
+<span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html">glance</a></span><span class="op">(</span><span class="va">promotion_model</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 1 x 8
+##   null.deviance df.null logLik   AIC   BIC deviance df.residual  nobs
+##           &lt;dbl&gt;   &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;
+## 1          440.     349  -32.6  71.1  82.7     65.1         347   350</code></pre>
+<p>The <code>augment()</code> function augments the observations in the data set with a range of observation-level model statistics such as residuals:</p>
+<div class="sourceCode" id="cb429"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># view augmented data</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">promotion_model</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 9
+##   promoted sales customer_rate .fitted   .resid .std.resid      .hat .sigma  .cooksd
+##   &lt;fct&gt;    &lt;int&gt;         &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
+## 1 0          594          3.94  0.0522 -1.20      -1.22    0.0289     0.429 1.08e- 2
+## 2 0          446          4.06 -6.06   -0.0683    -0.0684  0.00212    0.434 1.66e- 6
+## 3 1          674          3.83  3.41    0.255      0.257   0.0161     0.434 1.84e- 4
+## 4 0          525          3.62 -2.38   -0.422     -0.425   0.0153     0.433 4.90e- 4
+## 5 1          657          4.4   2.08    0.485      0.493   0.0315     0.433 1.40e- 3
+## 6 1          918          4.54 12.5     0.00278    0.00278 0.0000174  0.434 2.24e-11</code></pre>
+<p>These functions are model-agnostic for a very wide range of common models in R. For example, we can use them on our proportional odds model on soccer discipline from Chapter <a href="ord-reg.html#ord-reg">7</a>, and they will generate the relevant statistics in tidy tables.</p>
+<div class="sourceCode" id="cb431"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># get soccer data</span>
+<span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"http://peopleanalytics-regression-book.org/data/soccer.csv"</span>
+<span class="va">soccer</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span>
+
+<span class="co"># convert discipline to ordered factor</span>
+<span class="va">soccer</span><span class="op">$</span><span class="va">discipline</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">ordered</a></span><span class="op">(</span><span class="va">soccer</span><span class="op">$</span><span class="va">discipline</span>, 
+                             levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"None"</span>, <span class="st">"Yellow"</span>, <span class="st">"Red"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co"># run proportional odds model</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span>
+<span class="va">soccer_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/polr.html">polr</a></span><span class="op">(</span>
+  formula <span class="op">=</span> <span class="va">discipline</span> <span class="op">~</span> <span class="va">n_yellow_25</span> <span class="op">+</span> <span class="va">n_red_25</span> <span class="op">+</span> <span class="va">position</span> <span class="op">+</span> 
+    <span class="va">country</span> <span class="op">+</span> <span class="va">level</span> <span class="op">+</span> <span class="va">result</span>, 
+  data <span class="op">=</span> <span class="va">soccer</span>
+<span class="op">)</span>
+
+<span class="co"># view model statistics</span>
+<span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html">glance</a></span><span class="op">(</span><span class="va">soccer_model</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 1 x 7
+##     edf logLik   AIC   BIC deviance df.residual  nobs
+##   &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
+## 1    10 -1722. 3465. 3522.    3445.        2281  2291</code></pre>
+<p><code>broom</code> functions integrate well into other tidyverse methods, and allow easy running of models over nested subsets of data. For example, if we want to run our soccer discipline model across the different countries in the data set and see all the model statistics in a neat table, we can use typical tidyverse grammar to do so using <code>dplyr</code>.</p>
+<div class="sourceCode" id="cb433"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># load the tidyverse metapackage (includes dplyr)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+
+<span class="co"># define function to run soccer model and glance at results</span>
+<span class="va">soccer_model_glance</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">form</span>, <span class="va">df</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/polr.html">polr</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">form</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span>
+  <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html">glance</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>
+<span class="op">}</span>
+
+<span class="co"># run it nested by country</span>
+<span class="va">soccer</span> <span class="op">%&gt;%</span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/nest_by.html">nest_by</a></span><span class="op">(</span><span class="va">country</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>
+    <span class="fu">soccer_model_glance</span><span class="op">(</span><span class="st">"discipline ~ n_yellow_25 + n_red_25"</span>, <span class="va">data</span><span class="op">)</span>
+  <span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 8
+## # Groups:   country [2]
+##   country   edf logLik   AIC   BIC deviance df.residual  nobs
+##   &lt;chr&gt;   &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
+## 1 England     4  -883. 1773. 1794.    1765.        1128  1132
+## 2 Germany     4  -926. 1861. 1881.    1853.        1155  1159</code></pre>
+<p>In a similar way, by putting model formulas in a dataframe column, numerous models can be run in a single command and results viewed in a tidy dataframe.</p>
+<div class="sourceCode" id="cb435"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create model formula column</span>
+<span class="va">formula</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+  <span class="st">"discipline ~ n_yellow_25"</span>, 
+  <span class="st">"discipline ~ n_yellow_25 + n_red_25"</span>,
+  <span class="st">"discipline ~ n_yellow_25 + n_red_25 + position"</span>
+<span class="op">)</span>
+
+<span class="co"># create dataframe</span>
+<span class="va">models</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">formula</span><span class="op">)</span>
+
+<span class="co"># run models and glance at results</span>
+<span class="va">models</span> <span class="op">%&gt;%</span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">formula</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span><span class="fu">soccer_model_glance</span><span class="op">(</span><span class="va">formula</span>, <span class="va">soccer</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 3 x 8
+##   formula                                          edf logLik   AIC   BIC deviance df.residual  nobs
+##   &lt;chr&gt;                                          &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
+## 1 discipline ~ n_yellow_25                           3 -1861. 3728. 3745.    3722.        2288  2291
+## 2 discipline ~ n_yellow_25 + n_red_25                4 -1809. 3627. 3650.    3619.        2287  2291
+## 3 discipline ~ n_yellow_25 + n_red_25 + position     6 -1783. 3579. 3613.    3567.        2285  2291</code></pre>
+</div>
+<div id="the-parsnip-package" class="section level3" number="10.1.2">
+<h3>
+<span class="header-section-number">10.1.2</span> The <code>parsnip</code> package<a class="anchor" aria-label="anchor" href="#the-parsnip-package"><i class="fas fa-link"></i></a>
+</h3>
+<p>The <code>parsnip</code> package aims to create a unified interface to running models, to avoid users needing to understand different model terminology and other minutiae. It also takes a more hierarchical approach to defining models that is similar in nature to the object-oriented approaches that Python users would be more familiar with.</p>
+<p>Again let’s use our salesperson promotion model example to illustrate. We start by defining a model family that we wish to use, in this case logistic regression, and define a specific engine and mode.</p>
+<div class="sourceCode" id="cb437"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/logistic_reg.html">logistic_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"glm"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_args.html">set_mode</a></span><span class="op">(</span><span class="st">"classification"</span><span class="op">)</span></code></pre></div>
+<p>We can use the <code>translate()</code> function to see what kind of model we have created:</p>
+<div class="sourceCode" id="cb438"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">%&gt;%</span> 
+  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://parsnip.tidymodels.org/reference/translate.html">translate</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## Logistic Regression Model Specification (classification)
+## 
+## Computational engine: glm 
+## 
+## Model fit template:
+## stats::glm(formula = missing_arg(), data = missing_arg(), weights = missing_arg(), 
+##     family = stats::binomial)</code></pre>
+<p>Now with our model defined, we can fit it using a formula and data and then use <code>broom</code> to view the coefficients:</p>
+<div class="sourceCode" id="cb440"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op">%&gt;%</span> 
+  <span class="fu">parsnip</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">promoted</span> <span class="op">~</span> <span class="va">sales</span> <span class="op">+</span> <span class="va">customer_rate</span>,
+               data <span class="op">=</span> <span class="va">salespeople</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">broom</span><span class="fu">::</span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 3 x 5
+##   term          estimate std.error statistic  p.value
+##   &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)   -19.5      3.35        -5.83 5.48e- 9
+## 2 sales           0.0404   0.00653      6.19 6.03e-10
+## 3 customer_rate  -1.12     0.467       -2.40 1.63e- 2</code></pre>
+<p><code>parsnip</code> functions are particularly motivated around tooling for machine learning model workflows in a similar way to <code>scikit-learn</code> in Python, but they can offer an attractive approach to coding inferential models, particularly where common families of models are used.</p>
+</div>
+</div>
+<div id="inferential-statistical-modeling-in-python" class="section level2" number="10.2">
+<h2>
+<span class="header-section-number">10.2</span> Inferential statistical modeling in Python<a class="anchor" aria-label="anchor" href="#inferential-statistical-modeling-in-python"><i class="fas fa-link"></i></a>
+</h2>
+<p>In general, the modeling functions contained in <code>scikit-learn</code>—which tends to be the go-to modeling package for most Python users—are oriented towards predictive modeling and can be challenging to navigate for those who are primarily interested in inferential modeling. In this section we will briefly review approaches for running some of the models contained in this book in Python. The <code>statsmodels</code> package is highly recommended as it offers a wide range of models which report similar statistics to those reviewed in this book. Full <code>statsmodels</code> documentation can be found <a href="https://www.statsmodels.org/stable/index.html">here</a>.</p>
+<div id="ordinary-least-squares-ols-linear-regression" class="section level3" number="10.2.1">
+<h3>
+<span class="header-section-number">10.2.1</span> Ordinary Least Squares (OLS) linear regression<a class="anchor" aria-label="anchor" href="#ordinary-least-squares-ols-linear-regression"><i class="fas fa-link"></i></a>
+</h3>
+<p>The OLS linear regression model reviewed in Chapter <a href="linear-reg-ols.html#linear-reg-ols">4</a> can be generated using the <code>statsmodels</code> package, which can report a reasonably thorough set of model statistics. By using the <code>statsmodels</code> formula API, model formulas similar to those used in R can be used.</p>
+<div class="sourceCode" id="cb442"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb442-1"><a href="alt-approaches.html#cb442-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb442-2"><a href="alt-approaches.html#cb442-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
+<span id="cb442-3"><a href="alt-approaches.html#cb442-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb442-4"><a href="alt-approaches.html#cb442-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get data</span></span>
+<span id="cb442-5"><a href="alt-approaches.html#cb442-5" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/ugtests.csv"</span></span>
+<span id="cb442-6"><a href="alt-approaches.html#cb442-6" aria-hidden="true" tabindex="-1"></a>ugtests <span class="op">=</span> pd.read_csv(url)</span>
+<span id="cb442-7"><a href="alt-approaches.html#cb442-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb442-8"><a href="alt-approaches.html#cb442-8" aria-hidden="true" tabindex="-1"></a><span class="co"># define model</span></span>
+<span id="cb442-9"><a href="alt-approaches.html#cb442-9" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> smf.ols(formula <span class="op">=</span> <span class="st">"Final ~ Yr3 + Yr2 + Yr1"</span>, data <span class="op">=</span> ugtests)</span>
+<span id="cb442-10"><a href="alt-approaches.html#cb442-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb442-11"><a href="alt-approaches.html#cb442-11" aria-hidden="true" tabindex="-1"></a><span class="co"># fit model</span></span>
+<span id="cb442-12"><a href="alt-approaches.html#cb442-12" aria-hidden="true" tabindex="-1"></a>ugtests_model <span class="op">=</span> model.fit()</span>
+<span id="cb442-13"><a href="alt-approaches.html#cb442-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb442-14"><a href="alt-approaches.html#cb442-14" aria-hidden="true" tabindex="-1"></a><span class="co"># see results summary</span></span>
+<span id="cb442-15"><a href="alt-approaches.html#cb442-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ugtests_model.summary())</span></code></pre></div>
+<pre><code>##                             OLS Regression Results                            
+## ==============================================================================
+## Dep. Variable:                  Final   R-squared:                       0.530
+## Model:                            OLS   Adj. R-squared:                  0.529
+## Method:                 Least Squares   F-statistic:                     365.5
+## Date:                Mon, 26 Jul 2021   Prob (F-statistic):          8.22e-159
+## Time:                        09:01:13   Log-Likelihood:                -4711.6
+## No. Observations:                 975   AIC:                             9431.
+## Df Residuals:                     971   BIC:                             9451.
+## Df Model:                           3                                         
+## Covariance Type:            nonrobust                                         
+## ==============================================================================
+##                  coef    std err          t      P&gt;|t|      [0.025      0.975]
+## ------------------------------------------------------------------------------
+## Intercept     14.1460      5.480      2.581      0.010       3.392      24.900
+## Yr3            0.8657      0.029     29.710      0.000       0.809       0.923
+## Yr2            0.4313      0.033     13.267      0.000       0.367       0.495
+## Yr1            0.0760      0.065      1.163      0.245      -0.052       0.204
+## ==============================================================================
+## Omnibus:                        0.762   Durbin-Watson:                   2.006
+## Prob(Omnibus):                  0.683   Jarque-Bera (JB):                0.795
+## Skew:                           0.067   Prob(JB):                        0.672
+## Kurtosis:                       2.961   Cond. No.                         858.
+## ==============================================================================
+## 
+## Notes:
+## [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</code></pre>
+</div>
+<div id="binomial-logistic-regression" class="section level3" number="10.2.2">
+<h3>
+<span class="header-section-number">10.2.2</span> Binomial logistic regression<a class="anchor" aria-label="anchor" href="#binomial-logistic-regression"><i class="fas fa-link"></i></a>
+</h3>
+<p>Binomial logistic regression models can be generated in a similar way to OLS linear regression models using the <code>statsmodels</code> formula API, calling the binomial family from the general <code>statsmodels</code> API.</p>
+<div class="sourceCode" id="cb444"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb444-1"><a href="alt-approaches.html#cb444-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb444-2"><a href="alt-approaches.html#cb444-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb444-3"><a href="alt-approaches.html#cb444-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
+<span id="cb444-4"><a href="alt-approaches.html#cb444-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb444-5"><a href="alt-approaches.html#cb444-5" aria-hidden="true" tabindex="-1"></a><span class="co"># obtain salespeople data</span></span>
+<span id="cb444-6"><a href="alt-approaches.html#cb444-6" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
+<span id="cb444-7"><a href="alt-approaches.html#cb444-7" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> pd.read_csv(url)</span>
+<span id="cb444-8"><a href="alt-approaches.html#cb444-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb444-9"><a href="alt-approaches.html#cb444-9" aria-hidden="true" tabindex="-1"></a><span class="co"># define model</span></span>
+<span id="cb444-10"><a href="alt-approaches.html#cb444-10" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> smf.glm(formula <span class="op">=</span> <span class="st">"promoted ~ sales + customer_rate"</span>, </span>
+<span id="cb444-11"><a href="alt-approaches.html#cb444-11" aria-hidden="true" tabindex="-1"></a>                data <span class="op">=</span> salespeople, </span>
+<span id="cb444-12"><a href="alt-approaches.html#cb444-12" aria-hidden="true" tabindex="-1"></a>                family <span class="op">=</span> sm.families.Binomial())</span>
+<span id="cb444-13"><a href="alt-approaches.html#cb444-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb444-14"><a href="alt-approaches.html#cb444-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb444-15"><a href="alt-approaches.html#cb444-15" aria-hidden="true" tabindex="-1"></a><span class="co"># fit model</span></span>
+<span id="cb444-16"><a href="alt-approaches.html#cb444-16" aria-hidden="true" tabindex="-1"></a>promotion_model <span class="op">=</span> model.fit()</span>
+<span id="cb444-17"><a href="alt-approaches.html#cb444-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb444-18"><a href="alt-approaches.html#cb444-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb444-19"><a href="alt-approaches.html#cb444-19" aria-hidden="true" tabindex="-1"></a><span class="co"># see results summary</span></span>
+<span id="cb444-20"><a href="alt-approaches.html#cb444-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(promotion_model.summary())</span></code></pre></div>
+<pre><code>##                  Generalized Linear Model Regression Results                  
+## ==============================================================================
+## Dep. Variable:               promoted   No. Observations:                  350
+## Model:                            GLM   Df Residuals:                      347
+## Model Family:                Binomial   Df Model:                            2
+## Link Function:                  logit   Scale:                          1.0000
+## Method:                          IRLS   Log-Likelihood:                -32.566
+## Date:                Mon, 26 Jul 2021   Deviance:                       65.131
+## Time:                        09:01:15   Pearson chi2:                     198.
+## No. Iterations:                     9                                         
+## Covariance Type:            nonrobust                                         
+## =================================================================================
+##                     coef    std err          z      P&gt;|z|      [0.025      0.975]
+## ---------------------------------------------------------------------------------
+## Intercept       -19.5177      3.347     -5.831      0.000     -26.078     -12.958
+## sales             0.0404      0.007      6.189      0.000       0.028       0.053
+## customer_rate    -1.1221      0.467     -2.403      0.016      -2.037      -0.207
+## =================================================================================</code></pre>
+</div>
+<div id="multinomial-logistic-regression" class="section level3" number="10.2.3">
+<h3>
+<span class="header-section-number">10.2.3</span> Multinomial logistic regression<a class="anchor" aria-label="anchor" href="#multinomial-logistic-regression"><i class="fas fa-link"></i></a>
+</h3>
+<p>Multinomial logistic regression is similarly available using the <code>statsmodels</code> formula API. As usual, care must be taken to ensure that the reference category is appropriately defined, dummy input variables need to be explicitly constructed, and a constant term must be added to ensure an intercept is calculated.</p>
+<div class="sourceCode" id="cb446"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb446-1"><a href="alt-approaches.html#cb446-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb446-2"><a href="alt-approaches.html#cb446-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb446-3"><a href="alt-approaches.html#cb446-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb446-4"><a href="alt-approaches.html#cb446-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load health insurance data</span></span>
+<span id="cb446-5"><a href="alt-approaches.html#cb446-5" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/health_insurance.csv"</span></span>
+<span id="cb446-6"><a href="alt-approaches.html#cb446-6" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="op">=</span> pd.read_csv(url)</span>
+<span id="cb446-7"><a href="alt-approaches.html#cb446-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb446-8"><a href="alt-approaches.html#cb446-8" aria-hidden="true" tabindex="-1"></a><span class="co"># convert product to categorical as an outcome variable</span></span>
+<span id="cb446-9"><a href="alt-approaches.html#cb446-9" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> pd.Categorical(health_insurance[<span class="st">'product'</span>])</span>
+<span id="cb446-10"><a href="alt-approaches.html#cb446-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb446-11"><a href="alt-approaches.html#cb446-11" aria-hidden="true" tabindex="-1"></a><span class="co"># create dummies for gender</span></span>
+<span id="cb446-12"><a href="alt-approaches.html#cb446-12" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> pd.get_dummies(health_insurance[<span class="st">'gender'</span>], drop_first <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb446-13"><a href="alt-approaches.html#cb446-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb446-14"><a href="alt-approaches.html#cb446-14" aria-hidden="true" tabindex="-1"></a><span class="co"># replace back into input variables </span></span>
+<span id="cb446-15"><a href="alt-approaches.html#cb446-15" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> health_insurance.drop([<span class="st">'product'</span>, <span class="st">'gender'</span>], axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb446-16"><a href="alt-approaches.html#cb446-16" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.concat([X1, X2], axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb446-17"><a href="alt-approaches.html#cb446-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb446-18"><a href="alt-approaches.html#cb446-18" aria-hidden="true" tabindex="-1"></a><span class="co"># add a constant term to ensure intercept is calculated</span></span>
+<span id="cb446-19"><a href="alt-approaches.html#cb446-19" aria-hidden="true" tabindex="-1"></a>Xc <span class="op">=</span> sm.add_constant(X)</span>
+<span id="cb446-20"><a href="alt-approaches.html#cb446-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb446-21"><a href="alt-approaches.html#cb446-21" aria-hidden="true" tabindex="-1"></a><span class="co"># define model</span></span>
+<span id="cb446-22"><a href="alt-approaches.html#cb446-22" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> sm.MNLogit(y, Xc)</span>
+<span id="cb446-23"><a href="alt-approaches.html#cb446-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb446-24"><a href="alt-approaches.html#cb446-24" aria-hidden="true" tabindex="-1"></a><span class="co"># fit model</span></span>
+<span id="cb446-25"><a href="alt-approaches.html#cb446-25" aria-hidden="true" tabindex="-1"></a>insurance_model <span class="op">=</span> model.fit()</span>
+<span id="cb446-26"><a href="alt-approaches.html#cb446-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb446-27"><a href="alt-approaches.html#cb446-27" aria-hidden="true" tabindex="-1"></a><span class="co"># see results summary</span></span>
+<span id="cb446-28"><a href="alt-approaches.html#cb446-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(insurance_model.summary())</span></code></pre></div>
+<pre><code>##                           MNLogit Regression Results                          
+## ==============================================================================
+## Dep. Variable:                      y   No. Observations:                 1453
+## Model:                        MNLogit   Df Residuals:                     1439
+## Method:                           MLE   Df Model:                           12
+## Date:                Mon, 26 Jul 2021   Pseudo R-squ.:                  0.5332
+## Time:                        09:01:17   Log-Likelihood:                -744.68
+## converged:                       True   LL-Null:                       -1595.3
+## Covariance Type:            nonrobust   LLR p-value:                     0.000
+## ==================================================================================
+##            y=B       coef    std err          z      P&gt;|z|      [0.025      0.975]
+## ----------------------------------------------------------------------------------
+## const             -4.6010      0.511     -9.012      0.000      -5.602      -3.600
+## Male              -2.3826      0.232    -10.251      0.000      -2.838      -1.927
+## Non-binary         0.2528      1.226      0.206      0.837      -2.151       2.656
+## age                0.2437      0.015     15.790      0.000       0.213       0.274
+## household         -0.9677      0.069    -13.938      0.000      -1.104      -0.832
+## position_level    -0.4153      0.089     -4.658      0.000      -0.590      -0.241
+## absent             0.0117      0.013      0.900      0.368      -0.014       0.037
+## ----------------------------------------------------------------------------------
+##            y=C       coef    std err          z      P&gt;|z|      [0.025      0.975]
+## ----------------------------------------------------------------------------------
+## const            -10.2261      0.620    -16.501      0.000     -11.441      -9.011
+## Male               0.0967      0.195      0.495      0.621      -0.286       0.480
+## Non-binary        -1.2698      2.036     -0.624      0.533      -5.261       2.721
+## age                0.2698      0.016     17.218      0.000       0.239       0.301
+## household          0.2043      0.050      4.119      0.000       0.107       0.302
+## position_level    -0.2136      0.082     -2.597      0.009      -0.375      -0.052
+## absent             0.0033      0.012      0.263      0.793      -0.021       0.028
+## ==================================================================================</code></pre>
+</div>
+<div id="structural-equation-models" class="section level3" number="10.2.4">
+<h3>
+<span class="header-section-number">10.2.4</span> Structural equation models<a class="anchor" aria-label="anchor" href="#structural-equation-models"><i class="fas fa-link"></i></a>
+</h3>
+<p>The <code>semopy</code> package is a specialized package for the implementation of Structural Equation Models in Python, and its implementation is very similar to the <code>lavaan</code> package in R. However, its reporting is not as intuitive compared to <code>lavaan</code>. A full tutorial is available <a href="https://semopy.com/tutorial.html">here</a>. Here is an example of how to run the same model as that studied in Section <a href="modeling-explicit-and-latent-hierarchy-in-data.html#struc-eq-model">8.2</a> using <code>semopy</code>.</p>
+<div class="sourceCode" id="cb448"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb448-1"><a href="alt-approaches.html#cb448-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb448-2"><a href="alt-approaches.html#cb448-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> semopy <span class="im">import</span> Model</span>
+<span id="cb448-3"><a href="alt-approaches.html#cb448-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb448-4"><a href="alt-approaches.html#cb448-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb448-5"><a href="alt-approaches.html#cb448-5" aria-hidden="true" tabindex="-1"></a><span class="co"># get data</span></span>
+<span id="cb448-6"><a href="alt-approaches.html#cb448-6" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/politics_survey.csv"</span></span>
+<span id="cb448-7"><a href="alt-approaches.html#cb448-7" aria-hidden="true" tabindex="-1"></a>politics_survey <span class="op">=</span> pd.read_csv(url)</span>
+<span id="cb448-8"><a href="alt-approaches.html#cb448-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb448-9"><a href="alt-approaches.html#cb448-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb448-10"><a href="alt-approaches.html#cb448-10" aria-hidden="true" tabindex="-1"></a><span class="co"># define full measurement and structural model</span></span>
+<span id="cb448-11"><a href="alt-approaches.html#cb448-11" aria-hidden="true" tabindex="-1"></a>measurement_model <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb448-12"><a href="alt-approaches.html#cb448-12" aria-hidden="true" tabindex="-1"></a><span class="st"># measurement model</span></span>
+<span id="cb448-13"><a href="alt-approaches.html#cb448-13" aria-hidden="true" tabindex="-1"></a><span class="st">Pol =~ Pol1 + Pol2</span></span>
+<span id="cb448-14"><a href="alt-approaches.html#cb448-14" aria-hidden="true" tabindex="-1"></a><span class="st">Hab =~ Hab1 + Hab2 + Hab3</span></span>
+<span id="cb448-15"><a href="alt-approaches.html#cb448-15" aria-hidden="true" tabindex="-1"></a><span class="st">Loc =~ Loc2 + Loc3</span></span>
+<span id="cb448-16"><a href="alt-approaches.html#cb448-16" aria-hidden="true" tabindex="-1"></a><span class="st">Env =~ Env1 + Env2</span></span>
+<span id="cb448-17"><a href="alt-approaches.html#cb448-17" aria-hidden="true" tabindex="-1"></a><span class="st">Int =~ Int1 + Int2</span></span>
+<span id="cb448-18"><a href="alt-approaches.html#cb448-18" aria-hidden="true" tabindex="-1"></a><span class="st">Pers =~ Pers2 + Pers3</span></span>
+<span id="cb448-19"><a href="alt-approaches.html#cb448-19" aria-hidden="true" tabindex="-1"></a><span class="st">Nat =~ Nat1 + Nat2</span></span>
+<span id="cb448-20"><a href="alt-approaches.html#cb448-20" aria-hidden="true" tabindex="-1"></a><span class="st">Eco =~ Eco1 + Eco2</span></span>
+<span id="cb448-21"><a href="alt-approaches.html#cb448-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb448-22"><a href="alt-approaches.html#cb448-22" aria-hidden="true" tabindex="-1"></a><span class="st"># structural model</span></span>
+<span id="cb448-23"><a href="alt-approaches.html#cb448-23" aria-hidden="true" tabindex="-1"></a><span class="st">Overall ~ Pol + Hab + Loc + Env + Int + Pers + Nat + Eco</span></span>
+<span id="cb448-24"><a href="alt-approaches.html#cb448-24" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb448-25"><a href="alt-approaches.html#cb448-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb448-26"><a href="alt-approaches.html#cb448-26" aria-hidden="true" tabindex="-1"></a>full_model <span class="op">=</span> Model(measurement_model)</span>
+<span id="cb448-27"><a href="alt-approaches.html#cb448-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb448-28"><a href="alt-approaches.html#cb448-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb448-29"><a href="alt-approaches.html#cb448-29" aria-hidden="true" tabindex="-1"></a><span class="co"># fit model to data and inspect</span></span>
+<span id="cb448-30"><a href="alt-approaches.html#cb448-30" aria-hidden="true" tabindex="-1"></a>full_model.fit(politics_survey)</span></code></pre></div>
+<p>Then to inspect the results:</p>
+<div class="sourceCode" id="cb449"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb449-1"><a href="alt-approaches.html#cb449-1" aria-hidden="true" tabindex="-1"></a><span class="co"># inspect the results of SEM (first few rows)</span></span>
+<span id="cb449-2"><a href="alt-approaches.html#cb449-2" aria-hidden="true" tabindex="-1"></a>full_model.inspect().head()</span></code></pre></div>
+<pre><code>##    lval op rval  Estimate   Std. Err  z-value p-value
+## 0  Pol1  ~  Pol  1.000000          -        -       -
+## 1  Pol2  ~  Pol  0.713719  0.0285052  25.0382       0
+## 2  Hab1  ~  Hab  1.000000          -        -       -
+## 3  Hab2  ~  Hab  1.183981  0.0306792  38.5923       0
+## 4  Hab3  ~  Hab  1.127639  0.0304292  37.0578       0</code></pre>
+</div>
+<div id="survival-analysis" class="section level3" number="10.2.5">
+<h3>
+<span class="header-section-number">10.2.5</span> Survival analysis<a class="anchor" aria-label="anchor" href="#survival-analysis"><i class="fas fa-link"></i></a>
+</h3>
+<p>The <code>lifelines</code> package in Python is designed to support survival analysis, with functions to calculate survival estimates, plot survival curves, perform Cox proportional hazard regression and check proportional hazard assumptions. A full tutorial is available <a href="https://lifelines.readthedocs.io/en/latest/index.html">here</a>.</p>
+<p>Here is an example of how to plot Kaplan-Meier survival curves in Python using our Chapter <a href="survival.html#survival">9</a> walkthrough example. The survival curves are displayed in Figure <a href="alt-approaches.html#fig:survival-python">10.1</a>.</p>
+<div class="sourceCode" id="cb451"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb451-1"><a href="alt-approaches.html#cb451-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb451-2"><a href="alt-approaches.html#cb451-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lifelines <span class="im">import</span> KaplanMeierFitter</span>
+<span id="cb451-3"><a href="alt-approaches.html#cb451-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
+<span id="cb451-4"><a href="alt-approaches.html#cb451-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb451-5"><a href="alt-approaches.html#cb451-5" aria-hidden="true" tabindex="-1"></a><span class="co"># get data</span></span>
+<span id="cb451-6"><a href="alt-approaches.html#cb451-6" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/job_retention.csv"</span></span>
+<span id="cb451-7"><a href="alt-approaches.html#cb451-7" aria-hidden="true" tabindex="-1"></a>job_retention <span class="op">=</span> pd.read_csv(url)</span>
+<span id="cb451-8"><a href="alt-approaches.html#cb451-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb451-9"><a href="alt-approaches.html#cb451-9" aria-hidden="true" tabindex="-1"></a><span class="co"># fit our data to Kaplan-Meier estimates</span></span>
+<span id="cb451-10"><a href="alt-approaches.html#cb451-10" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> job_retention[<span class="st">"month"</span>]</span>
+<span id="cb451-11"><a href="alt-approaches.html#cb451-11" aria-hidden="true" tabindex="-1"></a>E <span class="op">=</span> job_retention[<span class="st">"left"</span>]</span>
+<span id="cb451-12"><a href="alt-approaches.html#cb451-12" aria-hidden="true" tabindex="-1"></a>kmf <span class="op">=</span> KaplanMeierFitter()</span>
+<span id="cb451-13"><a href="alt-approaches.html#cb451-13" aria-hidden="true" tabindex="-1"></a>kmf.fit(T, event_observed <span class="op">=</span> E)</span>
+<span id="cb451-14"><a href="alt-approaches.html#cb451-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb451-15"><a href="alt-approaches.html#cb451-15" aria-hidden="true" tabindex="-1"></a><span class="co"># split into high and not high sentiment</span></span>
+<span id="cb451-16"><a href="alt-approaches.html#cb451-16" aria-hidden="true" tabindex="-1"></a>highsent <span class="op">=</span> (job_retention[<span class="st">"sentiment"</span>] <span class="op">&gt;=</span> <span class="dv">7</span>)</span>
+<span id="cb451-17"><a href="alt-approaches.html#cb451-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb451-18"><a href="alt-approaches.html#cb451-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb451-19"><a href="alt-approaches.html#cb451-19" aria-hidden="true" tabindex="-1"></a><span class="co"># set up plot</span></span>
+<span id="cb451-20"><a href="alt-approaches.html#cb451-20" aria-hidden="true" tabindex="-1"></a>survplot <span class="op">=</span> plt.subplot()</span>
+<span id="cb451-21"><a href="alt-approaches.html#cb451-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb451-22"><a href="alt-approaches.html#cb451-22" aria-hidden="true" tabindex="-1"></a><span class="co"># plot high sentiment survival function</span></span>
+<span id="cb451-23"><a href="alt-approaches.html#cb451-23" aria-hidden="true" tabindex="-1"></a>kmf.fit(T[highsent], event_observed <span class="op">=</span> E[highsent], </span>
+<span id="cb451-24"><a href="alt-approaches.html#cb451-24" aria-hidden="true" tabindex="-1"></a>label <span class="op">=</span> <span class="st">"High Sentiment"</span>)</span>
+<span id="cb451-25"><a href="alt-approaches.html#cb451-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb451-26"><a href="alt-approaches.html#cb451-26" aria-hidden="true" tabindex="-1"></a>kmf.plot_survival_function(ax <span class="op">=</span> survplot)</span>
+<span id="cb451-27"><a href="alt-approaches.html#cb451-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb451-28"><a href="alt-approaches.html#cb451-28" aria-hidden="true" tabindex="-1"></a><span class="co"># plot not high sentiment survival function</span></span>
+<span id="cb451-29"><a href="alt-approaches.html#cb451-29" aria-hidden="true" tabindex="-1"></a>kmf.fit(T[<span class="op">~</span>highsent], event_observed <span class="op">=</span> E[<span class="op">~</span>highsent], </span>
+<span id="cb451-30"><a href="alt-approaches.html#cb451-30" aria-hidden="true" tabindex="-1"></a>label <span class="op">=</span> <span class="st">"Not High Sentiment"</span>)</span>
+<span id="cb451-31"><a href="alt-approaches.html#cb451-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb451-32"><a href="alt-approaches.html#cb451-32" aria-hidden="true" tabindex="-1"></a>kmf.plot_survival_function(ax <span class="op">=</span> survplot)</span>
+<span id="cb451-33"><a href="alt-approaches.html#cb451-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb451-34"><a href="alt-approaches.html#cb451-34" aria-hidden="true" tabindex="-1"></a><span class="co"># show survival curves by sentiment category</span></span>
+<span id="cb451-35"><a href="alt-approaches.html#cb451-35" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:survival-python"></span>
+<img src="_main_files/figure-html/unnamed-chunk-82-1.png" alt="Survival curves by sentiment category in the job retention data" width="672"><p class="caption">
+Figure 10.1: Survival curves by sentiment category in the job retention data
+</p>
+</div>
+<p>And here is an example of how to fit a Cox Proportional Hazard model similarly to Section <a href="survival.html#coxphmodel">9.2</a><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;I am not aware of any way of running frailty models currently in Python.&lt;/p&gt;"><sup>44</sup></a>.</p>
+<div class="sourceCode" id="cb452"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb452-1"><a href="alt-approaches.html#cb452-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lifelines <span class="im">import</span> CoxPHFitter</span>
+<span id="cb452-2"><a href="alt-approaches.html#cb452-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb452-3"><a href="alt-approaches.html#cb452-3" aria-hidden="true" tabindex="-1"></a><span class="co"># fit Cox PH model to job_retention data</span></span>
+<span id="cb452-4"><a href="alt-approaches.html#cb452-4" aria-hidden="true" tabindex="-1"></a>cph <span class="op">=</span> CoxPHFitter()</span>
+<span id="cb452-5"><a href="alt-approaches.html#cb452-5" aria-hidden="true" tabindex="-1"></a>cph.fit(job_retention, duration_col <span class="op">=</span> <span class="st">'month'</span>, event_col <span class="op">=</span> <span class="st">'left'</span>, </span>
+<span id="cb452-6"><a href="alt-approaches.html#cb452-6" aria-hidden="true" tabindex="-1"></a>        formula <span class="op">=</span> <span class="st">"gender + field + level + sentiment"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb453"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb453-1"><a href="alt-approaches.html#cb453-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view results</span></span>
+<span id="cb453-2"><a href="alt-approaches.html#cb453-2" aria-hidden="true" tabindex="-1"></a>cph.print_summary()</span></code></pre></div>
+<pre><code>## &lt;lifelines.CoxPHFitter: fitted with 3770 total observations, 2416 right-censored observations&gt;
+##              duration col = 'month'
+##                 event col = 'left'
+##       baseline estimation = breslow
+##    number of observations = 3770
+## number of events observed = 1354
+##    partial log-likelihood = -10724.52
+##          time fit was run = 2021-07-26 09:01:25 UTC
+## 
+## ---
+##                              coef  exp(coef)   se(coef)   coef lower 95%   coef upper 95%  exp(coef) lower 95%  exp(coef) upper 95%
+## covariate                                                                                                                          
+## gender[T.M]                 -0.05       0.96       0.06            -0.16             0.07                 0.85                 1.07
+## field[T.Finance]             0.22       1.25       0.07             0.09             0.35                 1.10                 1.43
+## field[T.Health]              0.28       1.32       0.13             0.03             0.53                 1.03                 1.70
+## field[T.Law]                 0.11       1.11       0.15            -0.18             0.39                 0.84                 1.48
+## field[T.Public/Government]   0.11       1.12       0.09            -0.06             0.29                 0.94                 1.34
+## field[T.Sales/Marketing]     0.09       1.09       0.10            -0.11             0.29                 0.89                 1.33
+## level[T.Low]                 0.15       1.16       0.09            -0.03             0.32                 0.97                 1.38
+## level[T.Medium]              0.18       1.19       0.10            -0.02             0.38                 0.98                 1.46
+## sentiment                   -0.12       0.89       0.01            -0.14            -0.09                 0.87                 0.91
+## 
+##                                z      p   -log2(p)
+## covariate                                         
+## gender[T.M]                -0.77   0.44       1.19
+## field[T.Finance]            3.34 &lt;0.005      10.24
+## field[T.Health]             2.16   0.03       5.02
+## field[T.Law]                0.73   0.47       1.10
+## field[T.Public/Government]  1.29   0.20       2.35
+## field[T.Sales/Marketing]    0.86   0.39       1.36
+## level[T.Low]                1.65   0.10       3.32
+## level[T.Medium]             1.73   0.08       3.58
+## sentiment                  -8.41 &lt;0.005      54.49
+## ---
+## Concordance = 0.58
+## Partial AIC = 21467.04
+## log-likelihood ratio test = 89.18 on 9 df
+## -log2(p) of ll-ratio test = 48.58</code></pre>
+<p>Proportional Hazard assumptions can be checked using the <code>check_assumptions()</code> method<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Schoenfeld residual plots can be seen by setting &lt;code&gt;show_plots = True&lt;/code&gt; in the parameters.&lt;/p&gt;"><sup>45</sup></a>.</p>
+<div class="sourceCode" id="cb455"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb455-1"><a href="alt-approaches.html#cb455-1" aria-hidden="true" tabindex="-1"></a>cph.check_assumptions(job_retention, p_value_threshold <span class="op">=</span> <span class="fl">0.05</span>)</span></code></pre></div>
+<pre><code>## The ``p_value_threshold`` is set at 0.05. Even under the null hypothesis of no violations, some
+## covariates will be below the threshold by chance. This is compounded when there are many covariates.
+## Similarly, when there are lots of observations, even minor deviances from the proportional hazard
+## assumption will be flagged.
+## 
+## With that in mind, it's best to use a combination of statistical tests and visual tests to determine
+## the most serious violations. Produce visual plots using ``check_assumptions(..., show_plots=True)``
+## and looking for non-constant lines. See link [A] below for a full example.
+## 
+## &lt;lifelines.StatisticalResult: proportional_hazard_test&gt;
+##  null_distribution = chi squared
+## degrees_of_freedom = 1
+##              model = &lt;lifelines.CoxPHFitter: fitted with 3770 total observations, 2416 right-censored observations&gt;
+##          test_name = proportional_hazard_test
+## 
+## ---
+##                                  test_statistic    p  -log2(p)
+## field[T.Finance]           km              1.20 0.27      1.88
+##                            rank            1.09 0.30      1.76
+## field[T.Health]            km              4.27 0.04      4.69
+##                            rank            4.10 0.04      4.54
+## field[T.Law]               km              1.14 0.29      1.81
+##                            rank            0.85 0.36      1.49
+## field[T.Public/Government] km              1.92 0.17      2.59
+##                            rank            1.87 0.17      2.54
+## field[T.Sales/Marketing]   km              2.00 0.16      2.67
+##                            rank            2.22 0.14      2.88
+## gender[T.M]                km              0.41 0.52      0.94
+##                            rank            0.39 0.53      0.91
+## level[T.Low]               km              1.53 0.22      2.21
+##                            rank            1.52 0.22      2.20
+## level[T.Medium]            km              0.09 0.77      0.38
+##                            rank            0.13 0.72      0.47
+## sentiment                  km              2.78 0.10      3.39
+##                            rank            2.32 0.13      2.97
+## 
+## 
+## 1. Variable 'field[T.Health]' failed the non-proportional test: p-value is 0.0387.
+## 
+##    Advice: with so few unique values (only 2), you can include `strata=['field[T.Health]', ...]` in
+## the call in `.fit`. See documentation in link [E] below.
+## 
+## ---
+## [A]  https://lifelines.readthedocs.io/en/latest/jupyter_notebooks/Proportional%20hazard%20assumption.html
+## [B]  https://lifelines.readthedocs.io/en/latest/jupyter_notebooks/Proportional%20hazard%20assumption.html#Bin-variable-and-stratify-on-it
+## [C]  https://lifelines.readthedocs.io/en/latest/jupyter_notebooks/Proportional%20hazard%20assumption.html#Introduce-time-varying-covariates
+## [D]  https://lifelines.readthedocs.io/en/latest/jupyter_notebooks/Proportional%20hazard%20assumption.html#Modify-the-functional-form
+## [E]  https://lifelines.readthedocs.io/en/latest/jupyter_notebooks/Proportional%20hazard%20assumption.html#Stratification
+## 
+## []</code></pre>
+</div>
+<div id="other-model-variants" class="section level3" number="10.2.6">
+<h3>
+<span class="header-section-number">10.2.6</span> Other model variants<a class="anchor" aria-label="anchor" href="#other-model-variants"><i class="fas fa-link"></i></a>
+</h3>
+<p>Implementation of other model variants featured in earlier chapters becomes thinner in Python. However, of note are the following:</p>
+<ul>
+<li><p>Ordinal regression is not currently available in the release version of the <code>statsmodels</code> package but is available in the development version. The <code>mord</code> package offers an implementation of ordinal regression for predictive analytics purposes, but for inferential modeling users will need to wait for a release of <code>statsmodels</code> that contains ordinal regression methods or for immediate use they will need to install the development version from source.</p></li>
+<li><p>Mixed models only currently have an implementation for linear mixed modeling in <code>statsmodels</code>. Generalized linear mixed models equivalent to those found in the <code>lme4</code> R package are not yet available in Python.</p></li>
+</ul>
+</div>
+</div>
+<div id="inferential-statistical-modeling-in-julia" class="section level2" number="10.3">
+<h2>
+<span class="header-section-number">10.3</span> Inferential statistical modeling in Julia<a class="anchor" aria-label="anchor" href="#inferential-statistical-modeling-in-julia"><i class="fas fa-link"></i></a>
+</h2>
+<p>The <code>GLM</code> package in Julia offers functions for a variety of elementary regression models. This package contains an implementation of linear regression as well as binomial logistic regression.</p>
+<div id="ordinary-least-squares-ols-linear-regression-1" class="section level3" number="10.3.1">
+<h3>
+<span class="header-section-number">10.3.1</span> Ordinary Least Squares (OLS) linear regression<a class="anchor" aria-label="anchor" href="#ordinary-least-squares-ols-linear-regression-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>Here is how to run our OLS linear model on the <code>ugtests</code> data set from Chapter <a href="linear-reg-ols.html#linear-reg-ols">4</a>:</p>
+<div class="sourceCode" id="cb457"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb457-1"><a href="alt-approaches.html#cb457-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> DataFrames<span class="op">,</span> CSV<span class="op">,</span> GLM<span class="op">;</span></span>
+<span id="cb457-2"><a href="alt-approaches.html#cb457-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb457-3"><a href="alt-approaches.html#cb457-3" aria-hidden="true" tabindex="-1"></a><span class="co"># get data</span></span>
+<span id="cb457-4"><a href="alt-approaches.html#cb457-4" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/ugtests.csv"</span><span class="op">;</span></span>
+<span id="cb457-5"><a href="alt-approaches.html#cb457-5" aria-hidden="true" tabindex="-1"></a>ugtests <span class="op">=</span> CSV.<span class="cn">read</span>(download(url)<span class="op">,</span> DataFrame)<span class="op">;</span></span>
+<span id="cb457-6"><a href="alt-approaches.html#cb457-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb457-7"><a href="alt-approaches.html#cb457-7" aria-hidden="true" tabindex="-1"></a><span class="co"># run linear model</span></span>
+<span id="cb457-8"><a href="alt-approaches.html#cb457-8" aria-hidden="true" tabindex="-1"></a>ols_model <span class="op">=</span> lm(<span class="pp">@formula</span>(Final <span class="op">~</span> Yr1 <span class="op">+</span> Yr2 <span class="op">+</span> Yr3)<span class="op">,</span> ugtests)</span></code></pre></div>
+<pre><code>## StatsModels.TableRegressionModel{LinearModel{GLM.LmResp{Vector{Float64}}, GLM.DensePredChol{Float64, CholeskyPivoted{Float64, Matrix{Float64}}}}, Matrix{Float64}}
+## 
+## Final ~ 1 + Yr1 + Yr2 + Yr3
+## 
+## Coefficients:
+## ───────────────────────────────────────────────────────────────────────────
+##                   Coef.  Std. Error      t  Pr(&gt;|t|)   Lower 95%  Upper 95%
+## ───────────────────────────────────────────────────────────────────────────
+## (Intercept)  14.146       5.48006     2.58    0.0100   3.39187    24.9001
+## Yr1           0.0760262   0.0653816   1.16    0.2452  -0.0522794   0.204332
+## Yr2           0.431285    0.0325078  13.27    &lt;1e-36   0.367492    0.495079
+## Yr3           0.865681    0.0291375  29.71    &lt;1e-99   0.808501    0.922861
+## ───────────────────────────────────────────────────────────────────────────</code></pre>
+<p>Summary statistics such as the <span class="math inline">\(R^2\)</span> or adjusted <span class="math inline">\(R^2\)</span> can be obtained using appropriate functions:</p>
+<div class="sourceCode" id="cb459"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb459-1"><a href="alt-approaches.html#cb459-1" aria-hidden="true" tabindex="-1"></a><span class="co"># r-squared</span></span>
+<span id="cb459-2"><a href="alt-approaches.html#cb459-2" aria-hidden="true" tabindex="-1"></a>r2(ols_model)</span></code></pre></div>
+<pre><code>## 0.530327461953525</code></pre>
+<div class="sourceCode" id="cb461"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb461-1"><a href="alt-approaches.html#cb461-1" aria-hidden="true" tabindex="-1"></a><span class="co"># adjusted r-squared</span></span>
+<span id="cb461-2"><a href="alt-approaches.html#cb461-2" aria-hidden="true" tabindex="-1"></a>adjr2(ols_model)</span></code></pre></div>
+<pre><code>## 0.5288763624538964</code></pre>
+</div>
+<div id="binomial-logistic-regression-1" class="section level3" number="10.3.2">
+<h3>
+<span class="header-section-number">10.3.2</span> Binomial logistic regression<a class="anchor" aria-label="anchor" href="#binomial-logistic-regression-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>Here is how to run our binomial logistic regression on the <code>salespeople</code> data set from Chapter <a href="bin-log-reg.html#bin-log-reg">5</a>. Note that categorical inputs will need to be explicitly converted before running the model.</p>
+<div class="sourceCode" id="cb463"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb463-1"><a href="alt-approaches.html#cb463-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> DataFrames<span class="op">,</span> CSV<span class="op">,</span> GLM<span class="op">,</span> Missings<span class="op">,</span> CategoricalArrays<span class="op">;</span></span>
+<span id="cb463-2"><a href="alt-approaches.html#cb463-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb463-3"><a href="alt-approaches.html#cb463-3" aria-hidden="true" tabindex="-1"></a><span class="co"># get salespeople data</span></span>
+<span id="cb463-4"><a href="alt-approaches.html#cb463-4" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/salespeople.csv"</span><span class="op">;</span></span>
+<span id="cb463-5"><a href="alt-approaches.html#cb463-5" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> CSV.<span class="cn">read</span>(download(url)<span class="op">,</span> DataFrame<span class="op">,</span> missingstrings<span class="op">=</span>[<span class="st">"NA"</span>])<span class="op">;</span></span>
+<span id="cb463-6"><a href="alt-approaches.html#cb463-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb463-7"><a href="alt-approaches.html#cb463-7" aria-hidden="true" tabindex="-1"></a><span class="co"># remove missing value rows from dataset</span></span>
+<span id="cb463-8"><a href="alt-approaches.html#cb463-8" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> salespeople[completecases(salespeople)<span class="op">,</span> <span class="op">:</span>]<span class="op">;</span></span>
+<span id="cb463-9"><a href="alt-approaches.html#cb463-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb463-10"><a href="alt-approaches.html#cb463-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ensure no missing data structures</span></span>
+<span id="cb463-11"><a href="alt-approaches.html#cb463-11" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> mapcols(col <span class="op">-&gt;</span> disallowmissing(col)<span class="op">,</span> salespeople)<span class="op">;</span></span>
+<span id="cb463-12"><a href="alt-approaches.html#cb463-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb463-13"><a href="alt-approaches.html#cb463-13" aria-hidden="true" tabindex="-1"></a><span class="co"># map categorical input columns</span></span>
+<span id="cb463-14"><a href="alt-approaches.html#cb463-14" aria-hidden="true" tabindex="-1"></a>salespeople.performance <span class="op">=</span> CategoricalArray(salespeople.performance)<span class="op">;</span></span>
+<span id="cb463-15"><a href="alt-approaches.html#cb463-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb463-16"><a href="alt-approaches.html#cb463-16" aria-hidden="true" tabindex="-1"></a><span class="co"># run binomial logistic regression model</span></span>
+<span id="cb463-17"><a href="alt-approaches.html#cb463-17" aria-hidden="true" tabindex="-1"></a>promotion_model <span class="op">=</span> glm(<span class="pp">@formula</span>(promoted <span class="op">~</span> sales <span class="op">+</span> customer_rate <span class="op">+</span> performance)<span class="op">,</span> salespeople<span class="op">,</span> Binomial()<span class="op">,</span> LogitLink())</span></code></pre></div>
+<pre><code>## StatsModels.TableRegressionModel{GeneralizedLinearModel{GLM.GlmResp{Vector{Float64}, Binomial{Float64}, LogitLink}, GLM.DensePredChol{Float64, Cholesky{Float64, Matrix{Float64}}}}, Matrix{Float64}}
+## 
+## promoted ~ 1 + sales + customer_rate + performance
+## 
+## Coefficients:
+## ──────────────────────────────────────────────────────────────────────────────────
+##                       Coef.  Std. Error      z  Pr(&gt;|z|)    Lower 95%    Upper 95%
+## ──────────────────────────────────────────────────────────────────────────────────
+## (Intercept)     -19.8589     3.44408     -5.77    &lt;1e-08  -26.6092     -13.1087
+## sales             0.0401242  0.00657643   6.10    &lt;1e-08    0.0272347    0.0530138
+## customer_rate    -1.11213    0.482682    -2.30    0.0212   -2.05817     -0.166093
+## performance: 2    0.263      1.02198      0.26    0.7969   -1.74004      2.26604
+## performance: 3    0.684955   0.982167     0.70    0.4856   -1.24006      2.60997
+## performance: 4    0.734493   1.07196      0.69    0.4932   -1.36652      2.8355
+## ──────────────────────────────────────────────────────────────────────────────────</code></pre>
+<p>The AIC, log likelihood and other summary statistics of the model can be obtained using the appropriate functions. For example:</p>
+<div class="sourceCode" id="cb465"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb465-1"><a href="alt-approaches.html#cb465-1" aria-hidden="true" tabindex="-1"></a><span class="co"># AIC</span></span>
+<span id="cb465-2"><a href="alt-approaches.html#cb465-2" aria-hidden="true" tabindex="-1"></a>aic(promotion_model)</span></code></pre></div>
+<pre><code>## 76.3743282275113</code></pre>
+<div class="sourceCode" id="cb467"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb467-1"><a href="alt-approaches.html#cb467-1" aria-hidden="true" tabindex="-1"></a><span class="co"># log likelihood</span></span>
+<span id="cb467-2"><a href="alt-approaches.html#cb467-2" aria-hidden="true" tabindex="-1"></a>loglikelihood(promotion_model)</span></code></pre></div>
+<pre><code>## -32.18716411375565</code></pre>
+</div>
+<div id="multinomial-logistic-regression-1" class="section level3" number="10.3.3">
+<h3>
+<span class="header-section-number">10.3.3</span> Multinomial logistic regression<a class="anchor" aria-label="anchor" href="#multinomial-logistic-regression-1"><i class="fas fa-link"></i></a>
+</h3>
+<p>The <code>Econometrics</code> package provides a convenient function for a multinomial logistic regression model, where the levels of the outcome variable can be set as an argument.</p>
+<div class="sourceCode" id="cb469"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb469-1"><a href="alt-approaches.html#cb469-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> DataFrames<span class="op">,</span> CSV<span class="op">,</span> Econometrics<span class="op">,</span> CategoricalArrays<span class="op">;</span></span>
+<span id="cb469-2"><a href="alt-approaches.html#cb469-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb469-3"><a href="alt-approaches.html#cb469-3" aria-hidden="true" tabindex="-1"></a><span class="co"># get health_insurance data</span></span>
+<span id="cb469-4"><a href="alt-approaches.html#cb469-4" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/health_insurance.csv"</span><span class="op">;</span></span>
+<span id="cb469-5"><a href="alt-approaches.html#cb469-5" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="op">=</span> CSV.<span class="cn">read</span>(download(url)<span class="op">,</span> DataFrame<span class="op">,</span> missingstrings<span class="op">=</span>[<span class="st">"NA"</span>])<span class="op">;</span></span>
+<span id="cb469-6"><a href="alt-approaches.html#cb469-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb469-7"><a href="alt-approaches.html#cb469-7" aria-hidden="true" tabindex="-1"></a><span class="co"># map gender and product to categorical</span></span>
+<span id="cb469-8"><a href="alt-approaches.html#cb469-8" aria-hidden="true" tabindex="-1"></a>health_insurance.gender <span class="op">=</span> CategoricalArray(health_insurance.gender)<span class="op">;</span></span>
+<span id="cb469-9"><a href="alt-approaches.html#cb469-9" aria-hidden="true" tabindex="-1"></a>health_insurance.product <span class="op">=</span> CategoricalArray(health_insurance.product)<span class="op">;</span></span>
+<span id="cb469-10"><a href="alt-approaches.html#cb469-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb469-11"><a href="alt-approaches.html#cb469-11" aria-hidden="true" tabindex="-1"></a><span class="co"># fit model defining reference level</span></span>
+<span id="cb469-12"><a href="alt-approaches.html#cb469-12" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> fit(EconometricModel<span class="op">,</span> </span>
+<span id="cb469-13"><a href="alt-approaches.html#cb469-13" aria-hidden="true" tabindex="-1"></a>            <span class="pp">@formula</span>(product <span class="op">~</span> age <span class="op">+</span> household <span class="op">+</span> position_level <span class="op">+</span> gender <span class="op">+</span> absent)<span class="op">,</span></span>
+<span id="cb469-14"><a href="alt-approaches.html#cb469-14" aria-hidden="true" tabindex="-1"></a>            health_insurance<span class="op">,</span></span>
+<span id="cb469-15"><a href="alt-approaches.html#cb469-15" aria-hidden="true" tabindex="-1"></a>            contrasts <span class="op">=</span> <span class="dt">Dict</span>(<span class="op">:</span>product <span class="op">=&gt;</span> DummyCoding(base <span class="op">=</span> <span class="st">"A"</span>)))</span></code></pre></div>
+<pre><code>## Probability Model for Nominal Response
+## Categories: A, B, C
+## Number of observations: 1453
+## Null Loglikelihood: -1595.27
+## Loglikelihood: -744.68
+## R-squared: 0.5332
+## LR Test: 1701.18 ∼ χ²(12) ⟹ Pr &gt; χ² = 0.0000
+## Formula: product ~ 1 + age + household + position_level + gender + absent
+## ───────────────────────────────────────────────────────────────────────────────────────────────────────
+##                                         PE         SE        t-value  Pr &gt; |t|        2.50%      97.50%
+## ───────────────────────────────────────────────────────────────────────────────────────────────────────
+## product: B ~ (Intercept)          -4.60097     0.510551    -9.01179     &lt;1e-18   -5.60248    -3.59947
+## product: B ~ age                   0.243662    0.0154313   15.7902      &lt;1e-51    0.213392    0.273933
+## product: B ~ household            -0.967711    0.06943    -13.9379      &lt;1e-40   -1.10391    -0.831516
+## product: B ~ position_level       -0.415304    0.0891671   -4.65759     &lt;1e-05   -0.590215   -0.240392
+## product: B ~ gender: Male         -2.38258     0.232425   -10.251       &lt;1e-23   -2.8385     -1.92665
+## product: B ~ gender: Non-binary    0.252837    1.22625      0.206186    0.8367   -2.1526      2.65827
+## product: B ~ absent                0.0116769   0.0129814    0.899512    0.3685   -0.0137875   0.0371413
+## product: C ~ (Intercept)         -10.2261      0.619736   -16.5007      &lt;1e-55  -11.4418     -9.01041
+## product: C ~ age                   0.269812    0.0156702   17.2182      &lt;1e-59    0.239073    0.300551
+## product: C ~ household             0.204347    0.0496062    4.11938     &lt;1e-04    0.107039    0.301655
+## product: C ~ position_level       -0.213592    0.0822607   -2.59652     0.0095   -0.374955   -0.052228
+## product: C ~ gender: Male          0.0967029   0.195435     0.494809    0.6208   -0.286664    0.48007
+## product: C ~ gender: Non-binary   -1.26982     2.03625     -0.623608    0.5330   -5.26416     2.72452
+## product: C ~ absent                0.00326628  0.0124181    0.263026    0.7926   -0.0210932   0.0276258
+## ───────────────────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+<div id="proportional-odds-logistic-regression" class="section level3" number="10.3.4">
+<h3>
+<span class="header-section-number">10.3.4</span> Proportional odds logistic regression<a class="anchor" aria-label="anchor" href="#proportional-odds-logistic-regression"><i class="fas fa-link"></i></a>
+</h3>
+<p>The <code>Econometrics</code> package also provides a convenient function for proportional odds logistic regression.</p>
+<div class="sourceCode" id="cb471"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb471-1"><a href="alt-approaches.html#cb471-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> DataFrames<span class="op">,</span> CSV<span class="op">,</span> Econometrics<span class="op">,</span> CategoricalArrays<span class="op">;</span></span>
+<span id="cb471-2"><a href="alt-approaches.html#cb471-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb471-3"><a href="alt-approaches.html#cb471-3" aria-hidden="true" tabindex="-1"></a><span class="co"># get soccer data</span></span>
+<span id="cb471-4"><a href="alt-approaches.html#cb471-4" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/soccer.csv"</span><span class="op">;</span></span>
+<span id="cb471-5"><a href="alt-approaches.html#cb471-5" aria-hidden="true" tabindex="-1"></a>soccer <span class="op">=</span> CSV.<span class="cn">read</span>(download(url)<span class="op">,</span> DataFrame<span class="op">,</span> missingstrings<span class="op">=</span>[<span class="st">"NA"</span>])<span class="op">;</span></span>
+<span id="cb471-6"><a href="alt-approaches.html#cb471-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb471-7"><a href="alt-approaches.html#cb471-7" aria-hidden="true" tabindex="-1"></a><span class="co"># map columns not starting with "n" to categorical</span></span>
+<span id="cb471-8"><a href="alt-approaches.html#cb471-8" aria-hidden="true" tabindex="-1"></a>transform<span class="op">!</span>(soccer<span class="op">,</span> names(soccer<span class="op">,</span> <span class="st">r"^</span><span class="ch">(?</span><span class="st">!n</span><span class="ch">)</span><span class="st">"</span>) .<span class="op">=&gt;</span> CategoricalArray<span class="op">,</span> renamecols <span class="op">=</span> <span class="ex">false</span>)<span class="op">;</span></span>
+<span id="cb471-9"><a href="alt-approaches.html#cb471-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb471-10"><a href="alt-approaches.html#cb471-10" aria-hidden="true" tabindex="-1"></a><span class="co"># map discipline column to ordinal</span></span>
+<span id="cb471-11"><a href="alt-approaches.html#cb471-11" aria-hidden="true" tabindex="-1"></a>soccer.discipline <span class="op">=</span> levels<span class="op">!</span>(categorical(soccer.discipline<span class="op">,</span> ordered <span class="op">=</span> <span class="ex">true</span>)<span class="op">,</span> [<span class="st">"None"</span><span class="op">,</span> <span class="st">"Yellow"</span><span class="op">,</span> <span class="st">"Red"</span>])<span class="op">;</span></span>
+<span id="cb471-12"><a href="alt-approaches.html#cb471-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb471-13"><a href="alt-approaches.html#cb471-13" aria-hidden="true" tabindex="-1"></a><span class="co"># run proportional odds model</span></span>
+<span id="cb471-14"><a href="alt-approaches.html#cb471-14" aria-hidden="true" tabindex="-1"></a>soccer_model <span class="op">=</span> fit(EconometricModel<span class="op">,</span></span>
+<span id="cb471-15"><a href="alt-approaches.html#cb471-15" aria-hidden="true" tabindex="-1"></a>                   <span class="pp">@formula</span>(discipline <span class="op">~</span> n_yellow_25 <span class="op">+</span> n_red_25 <span class="op">+</span> position <span class="op">+</span> result <span class="op">+</span> country <span class="op">+</span> level)<span class="op">,</span></span>
+<span id="cb471-16"><a href="alt-approaches.html#cb471-16" aria-hidden="true" tabindex="-1"></a>                   soccer)</span></code></pre></div>
+<pre><code>## Probability Model for Ordinal Response
+## Categories: None &lt; Yellow &lt; Red
+## Number of observations: 2291
+## Null Loglikelihood: -1915.63
+## Loglikelihood: -1722.27
+## R-squared: 0.1009
+## LR Test: 386.73 ∼ χ²(8) ⟹ Pr &gt; χ² = 0.0000
+## Formula: discipline ~ n_yellow_25 + n_red_25 + position + result + country + level
+## ─────────────────────────────────────────────────────────────────────────────────────────────
+##                                  PE         SE       t-value  Pr &gt; |t|       2.50%     97.50%
+## ─────────────────────────────────────────────────────────────────────────────────────────────
+## n_yellow_25                  0.32236    0.0330776   9.74557     &lt;1e-21   0.257495    0.387226
+## n_red_25                     0.383243   0.0405051   9.4616      &lt;1e-20   0.303813    0.462674
+## position: M                  0.196847   0.116487    1.68986     0.0912  -0.0315846   0.425278
+## position: S                 -0.685337   0.150112   -4.56551     &lt;1e-05  -0.979707   -0.390967
+## result: L                    0.483032   0.111951    4.31466     &lt;1e-04   0.263495    0.702569
+## result: W                   -0.739473   0.121293   -6.09658     &lt;1e-08  -0.977329   -0.501617
+## country: Germany             0.132972   0.0935995   1.42065     0.1556  -0.0505771   0.316521
+## level: 2                     0.0909663  0.0935472   0.972411    0.3309  -0.09248     0.274413
+## (Intercept): None | Yellow   2.50851    0.191826   13.077       &lt;1e-37   2.13234     2.88468
+## (Intercept): Yellow | Red    3.92572    0.205714   19.0834      &lt;1e-74   3.52232     4.32913
+## ─────────────────────────────────────────────────────────────────────────────────────────────</code></pre>
+<p>Note that the <span class="math inline">\(R^2\)</span> results presented correspond to the McFadden variant of the pseudo-<span class="math inline">\(R^2\)</span>, although other variants can be obtained by specifying them in the appropriate function.</p>
+<div class="sourceCode" id="cb473"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb473-1"><a href="alt-approaches.html#cb473-1" aria-hidden="true" tabindex="-1"></a>r2(soccer_model<span class="op">,</span> <span class="op">:</span>Nagelkerke)</span></code></pre></div>
+<pre><code>## 0.19124446229501849</code></pre>
+</div>
+<div id="mixed-models" class="section level3" number="10.3.5">
+<h3>
+<span class="header-section-number">10.3.5</span> Mixed models<a class="anchor" aria-label="anchor" href="#mixed-models"><i class="fas fa-link"></i></a>
+</h3>
+<p>The <code>MixedModels</code> package allows for the construction of both linear mixed models and mixed GLMs. Here is an approach to our mixed model on speed dating from Section <a href="modeling-explicit-and-latent-hierarchy-in-data.html#mixed">8.1</a>:</p>
+<div class="sourceCode" id="cb475"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb475-1"><a href="alt-approaches.html#cb475-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> DataFrames<span class="op">,</span> CSV<span class="op">,</span> MixedModels<span class="op">,</span> CategoricalArrays<span class="op">;</span></span>
+<span id="cb475-2"><a href="alt-approaches.html#cb475-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb475-3"><a href="alt-approaches.html#cb475-3" aria-hidden="true" tabindex="-1"></a><span class="co"># get speed_dating data</span></span>
+<span id="cb475-4"><a href="alt-approaches.html#cb475-4" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/speed_dating.csv"</span><span class="op">;</span></span>
+<span id="cb475-5"><a href="alt-approaches.html#cb475-5" aria-hidden="true" tabindex="-1"></a>speed_dating <span class="op">=</span> CSV.<span class="cn">read</span>(download(url)<span class="op">,</span> DataFrame<span class="op">,</span> missingstrings<span class="op">=</span>[<span class="st">"NA"</span>])<span class="op">;</span></span>
+<span id="cb475-6"><a href="alt-approaches.html#cb475-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb475-7"><a href="alt-approaches.html#cb475-7" aria-hidden="true" tabindex="-1"></a><span class="co"># make iid categorical</span></span>
+<span id="cb475-8"><a href="alt-approaches.html#cb475-8" aria-hidden="true" tabindex="-1"></a>speed_dating.iid <span class="op">=</span> CategoricalArray(speed_dating.iid)<span class="op">;</span></span>
+<span id="cb475-9"><a href="alt-approaches.html#cb475-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb475-10"><a href="alt-approaches.html#cb475-10" aria-hidden="true" tabindex="-1"></a><span class="co"># run mixed GLM</span></span>
+<span id="cb475-11"><a href="alt-approaches.html#cb475-11" aria-hidden="true" tabindex="-1"></a>dating_model <span class="op">=</span> fit(MixedModel<span class="op">,</span> <span class="pp">@formula</span>(dec <span class="op">~</span> agediff <span class="op">+</span> samerace <span class="op">+</span> attr <span class="op">+</span> intel <span class="op">+</span> prob <span class="op">+</span> (<span class="fl">1</span><span class="op">|</span>iid))<span class="op">,</span></span>
+<span id="cb475-12"><a href="alt-approaches.html#cb475-12" aria-hidden="true" tabindex="-1"></a>                   speed_dating<span class="op">,</span> Binomial()<span class="op">,</span> LogitLink())</span></code></pre></div>
+<pre><code>## Generalized Linear Mixed Model fit by maximum likelihood (nAGQ = 1)
+##   dec ~ 1 + agediff + samerace + attr + intel + prob + (1 | iid)
+##   Distribution: Bernoulli{Float64}
+##   Link: LogitLink()
+## 
+## 
+##    logLik    deviance     AIC       AICc        BIC    
+##  -3203.2519  6406.5038  6420.5038  6420.5182  6469.2270
+## Variance components:
+##        Column   VarianceStd.Dev.
+## iid (Intercept)  5.13935 2.26701
+## 
+##  Number of obs: 7789; levels of grouping factors: 541
+## 
+## Fixed-effects parameters:
+## ──────────────────────────────────────────────────────
+##                    Coef.  Std. Error       z  Pr(&gt;|z|)
+## ──────────────────────────────────────────────────────
+## (Intercept)  -12.7706      0.369743   -34.54    &lt;1e-99
+## agediff       -0.0355554   0.0137893   -2.58    0.0099
+## samerace       0.20165     0.0800526    2.52    0.0118
+## attr           1.0782      0.030779    35.03    &lt;1e-99
+## intel          0.299976    0.0333542    8.99    &lt;1e-18
+## prob           0.620459    0.0267208   23.22    &lt;1e-99
+## ──────────────────────────────────────────────────────</code></pre>
+
+</div>
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="survival.html"><span class="header-section-number">9</span> Survival Analysis for Modeling Singular Events Over Time</a></div>
+<div class="next"><a href="power-tests.html"><span class="header-section-number">11</span> Power Analysis to Estimate Required Sample Sizes for Modeling</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#alt-approaches"><span class="header-section-number">10</span> Alternative Technical Approaches in R, Python and Julia</a></li>
+<li>
+<a class="nav-link" href="#tidier-modeling-approaches-in-r"><span class="header-section-number">10.1</span> ‘Tidier’ modeling approaches in R</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#the-broom-package"><span class="header-section-number">10.1.1</span> The broom package</a></li>
+<li><a class="nav-link" href="#the-parsnip-package"><span class="header-section-number">10.1.2</span> The parsnip package</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#inferential-statistical-modeling-in-python"><span class="header-section-number">10.2</span> Inferential statistical modeling in Python</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#ordinary-least-squares-ols-linear-regression"><span class="header-section-number">10.2.1</span> Ordinary Least Squares (OLS) linear regression</a></li>
+<li><a class="nav-link" href="#binomial-logistic-regression"><span class="header-section-number">10.2.2</span> Binomial logistic regression</a></li>
+<li><a class="nav-link" href="#multinomial-logistic-regression"><span class="header-section-number">10.2.3</span> Multinomial logistic regression</a></li>
+<li><a class="nav-link" href="#structural-equation-models"><span class="header-section-number">10.2.4</span> Structural equation models</a></li>
+<li><a class="nav-link" href="#survival-analysis"><span class="header-section-number">10.2.5</span> Survival analysis</a></li>
+<li><a class="nav-link" href="#other-model-variants"><span class="header-section-number">10.2.6</span> Other model variants</a></li>
+</ul>
+</li>
+<li>
+<a class="nav-link" href="#inferential-statistical-modeling-in-julia"><span class="header-section-number">10.3</span> Inferential statistical modeling in Julia</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#ordinary-least-squares-ols-linear-regression-1"><span class="header-section-number">10.3.1</span> Ordinary Least Squares (OLS) linear regression</a></li>
+<li><a class="nav-link" href="#binomial-logistic-regression-1"><span class="header-section-number">10.3.2</span> Binomial logistic regression</a></li>
+<li><a class="nav-link" href="#multinomial-logistic-regression-1"><span class="header-section-number">10.3.3</span> Multinomial logistic regression</a></li>
+<li><a class="nav-link" href="#proportional-odds-logistic-regression"><span class="header-section-number">10.3.4</span> Proportional odds logistic regression</a></li>
+<li><a class="nav-link" href="#mixed-models"><span class="header-section-number">10.3.5</span> Mixed models</a></li>
+</ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/keithmcnulty/peopleanalytics-regression-book/blob/master/r/10-tidy_modeling.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/keithmcnulty/peopleanalytics-regression-book/edit/master/r/10-tidy_modeling.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Handbook of Regression Modeling in People Analytics</strong>: With Examples in R, Python and Julia" was written by Keith McNulty. </p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

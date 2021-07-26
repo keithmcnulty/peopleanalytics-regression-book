@@ -1,0 +1,11 @@
+# Solutions to Exercises {-}
+
+It is not my intention to publish a comprehensive set of solutions to the exercises in this book.  Many of the exercises can be approached in different ways and I think it is important that readers apply their learning without being constrained to an example solution.  
+
+However, I have made a place available where readers can contribute their solutions to exercises for the benefit of other readers.  If you are interested in seeing submitted solutions, or requesting or submitting a solution yourself, please visit   [https://solutions.peopleanalytics-regression-book.org](https://solutions.peopleanalytics-regression-book.org). 
+
+I encourage you to contibute your learnings and expertise by considering submitting a solution to a discussion question or data exercise.  
+
+Happy modeling!
+
+

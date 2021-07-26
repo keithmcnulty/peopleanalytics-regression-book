@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>9 Survival Analysis for Modeling Singular Events Over Time | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
+  <meta name="description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="generator" content="bookdown 0.22.15 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="9 Survival Analysis for Modeling Singular Events Over Time | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://peopleanalytics-regression-book.org" />
+  <meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png" />
+  <meta property="og:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="github-repo" content="keithmcnulty/peopleanalytics-regression-book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="9 Survival Analysis for Modeling Singular Events Over Time | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
+  <meta name="twitter:site" content="@dr_keithmcnulty" />
+  <meta name="twitter:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png" />
+
+<meta name="author" content="Keith McNulty" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="modeling-explicit-and-latent-hierarchy-in-data.html"/>
+<link rel="next" href="alt-approaches.html"/>
+<script src="libs/header-attrs-2.9.5/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python"/>
+<meta name="citation_author" content="Keith McNulty"/>
+<meta name="citation_publication_date" content="2021"/>
+<meta name="citation_isbn" content="9781003194156"/>
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-N7JZGMVRZK');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Handbook of Regression Modeling in People Analytics</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#notes-on-data-used-in-this-book"><i class="fa fa-check"></i>Notes on data used in this book</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="foreword-by-alexis-fink.html"><a href="foreword-by-alexis-fink.html"><i class="fa fa-check"></i>Foreword by Alexis Fink</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="inf-model.html"><a href="inf-model.html"><i class="fa fa-check"></i><b>1</b> The Importance of Regression in People Analytics</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="inf-model.html"><a href="inf-model.html#why-is-regression-modeling-so-important-in-people-analytics"><i class="fa fa-check"></i><b>1.1</b> Why is regression modeling so important in people analytics?</a></li>
+<li class="chapter" data-level="1.2" data-path="inf-model.html"><a href="inf-model.html#theory-modeling"><i class="fa fa-check"></i><b>1.2</b> What do we mean by ‘modeling’‍?</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="inf-model.html"><a href="inf-model.html#the-theory-of-inferential-modeling"><i class="fa fa-check"></i><b>1.2.1</b> The theory of inferential modeling</a></li>
+<li class="chapter" data-level="1.2.2" data-path="inf-model.html"><a href="inf-model.html#the-process-of-inferential-modeling"><i class="fa fa-check"></i><b>1.2.2</b> The process of inferential modeling</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="inf-model.html"><a href="inf-model.html#the-structure-system-and-organization-of-this-book"><i class="fa fa-check"></i><b>1.3</b> The structure, system and organization of this book</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html"><i class="fa fa-check"></i><b>2</b> The Basics of the R Programming Language</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#what-is-r"><i class="fa fa-check"></i><b>2.1</b> What is R?</a></li>
+<li class="chapter" data-level="2.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#how-to-start-using-r"><i class="fa fa-check"></i><b>2.2</b> How to start using R</a></li>
+<li class="chapter" data-level="2.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-in-r"><i class="fa fa-check"></i><b>2.3</b> Data in R</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-types"><i class="fa fa-check"></i><b>2.3.1</b> Data types</a></li>
+<li class="chapter" data-level="2.3.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#homogeneous-data-structures"><i class="fa fa-check"></i><b>2.3.2</b> Homogeneous data structures</a></li>
+<li class="chapter" data-level="2.3.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#heterogeneous-data-structures"><i class="fa fa-check"></i><b>2.3.3</b> Heterogeneous data structures</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#working-with-dataframes"><i class="fa fa-check"></i><b>2.4</b> Working with dataframes</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#loading-and-tidying-data-in-dataframes"><i class="fa fa-check"></i><b>2.4.1</b> Loading and tidying data in dataframes</a></li>
+<li class="chapter" data-level="2.4.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#manipulating-dataframes"><i class="fa fa-check"></i><b>2.4.2</b> Manipulating dataframes</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#functions-packages-and-libraries"><i class="fa fa-check"></i><b>2.5</b> Functions, packages and libraries</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#using-functions"><i class="fa fa-check"></i><b>2.5.1</b> Using functions</a></li>
+<li class="chapter" data-level="2.5.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#help-with-functions"><i class="fa fa-check"></i><b>2.5.2</b> Help with functions</a></li>
+<li class="chapter" data-level="2.5.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#writing-your-own-functions"><i class="fa fa-check"></i><b>2.5.3</b> Writing your own functions</a></li>
+<li class="chapter" data-level="2.5.4" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#installing-packages"><i class="fa fa-check"></i><b>2.5.4</b> Installing packages</a></li>
+<li class="chapter" data-level="2.5.5" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#using-packages"><i class="fa fa-check"></i><b>2.5.5</b> Using packages</a></li>
+<li class="chapter" data-level="2.5.6" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#the-pipe-operator"><i class="fa fa-check"></i><b>2.5.6</b> The pipe operator</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#errors-warnings-and-messages"><i class="fa fa-check"></i><b>2.6</b> Errors, warnings and messages</a></li>
+<li class="chapter" data-level="2.7" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#plotting-and-graphing"><i class="fa fa-check"></i><b>2.7</b> Plotting and graphing</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#plotting-in-base-r"><i class="fa fa-check"></i><b>2.7.1</b> Plotting in base R</a></li>
+<li class="chapter" data-level="2.7.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#specialist-plotting-and-graphing-packages"><i class="fa fa-check"></i><b>2.7.2</b> Specialist plotting and graphing packages</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#documenting-your-work-using-r-markdown"><i class="fa fa-check"></i><b>2.8</b> Documenting your work using R Markdown</a></li>
+<li class="chapter" data-level="2.9" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#learning-exercises"><i class="fa fa-check"></i><b>2.9</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="2.9.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#discussion-questions"><i class="fa fa-check"></i><b>2.9.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="2.9.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-exercises"><i class="fa fa-check"></i><b>2.9.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="found-stats.html"><a href="found-stats.html"><i class="fa fa-check"></i><b>3</b> Statistics Foundations</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="found-stats.html"><a href="found-stats.html#elementary-descriptive-statistics-of-populations-and-samples"><i class="fa fa-check"></i><b>3.1</b> Elementary descriptive statistics of populations and samples</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="found-stats.html"><a href="found-stats.html#mean-var-sd"><i class="fa fa-check"></i><b>3.1.1</b> Mean, variance and standard deviation</a></li>
+<li class="chapter" data-level="3.1.2" data-path="found-stats.html"><a href="found-stats.html#covariance-and-correlation"><i class="fa fa-check"></i><b>3.1.2</b> Covariance and correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="found-stats.html"><a href="found-stats.html#distribution-of-random-variables"><i class="fa fa-check"></i><b>3.2</b> Distribution of random variables</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="found-stats.html"><a href="found-stats.html#sampling-of-random-variables"><i class="fa fa-check"></i><b>3.2.1</b> Sampling of random variables</a></li>
+<li class="chapter" data-level="3.2.2" data-path="found-stats.html"><a href="found-stats.html#standard-errors-the-t-distribution-and-confidence-intervals"><i class="fa fa-check"></i><b>3.2.2</b> Standard errors, the <span class="math inline">\(t\)</span>-distribution and confidence intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="found-stats.html"><a href="found-stats.html#hyp-tests"><i class="fa fa-check"></i><b>3.3</b> Hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="found-stats.html"><a href="found-stats.html#means-sig"><i class="fa fa-check"></i><b>3.3.1</b> Testing for a difference in means (Welch’s <span class="math inline">\(t\)</span>-test)</a></li>
+<li class="chapter" data-level="3.3.2" data-path="found-stats.html"><a href="found-stats.html#t-test-cor"><i class="fa fa-check"></i><b>3.3.2</b> Testing for a non-zero correlation between two variables (<span class="math inline">\(t\)</span>-test for correlation)</a></li>
+<li class="chapter" data-level="3.3.3" data-path="found-stats.html"><a href="found-stats.html#testing-for-a-difference-in-frequency-distribution-between-different-categories-in-a-data-set-chi-square-test"><i class="fa fa-check"></i><b>3.3.3</b> Testing for a difference in frequency distribution between different categories in a data set (Chi-square test)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="found-stats.html"><a href="found-stats.html#foundational-statistics-in-python"><i class="fa fa-check"></i><b>3.4</b> Foundational statistics in Python</a></li>
+<li class="chapter" data-level="3.5" data-path="found-stats.html"><a href="found-stats.html#foundational-statistics-in-julia"><i class="fa fa-check"></i><b>3.5</b> Foundational statistics in Julia</a></li>
+<li class="chapter" data-level="3.6" data-path="found-stats.html"><a href="found-stats.html#learning-exercises-1"><i class="fa fa-check"></i><b>3.6</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="found-stats.html"><a href="found-stats.html#discussion-questions-1"><i class="fa fa-check"></i><b>3.6.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="3.6.2" data-path="found-stats.html"><a href="found-stats.html#data-exercises-1"><i class="fa fa-check"></i><b>3.6.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html"><i class="fa fa-check"></i><b>4</b> Linear Regression for Continuous Outcomes</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#when-ols"><i class="fa fa-check"></i><b>4.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#origins-ols"><i class="fa fa-check"></i><b>4.1.1</b> Origins and intuition of linear regression</a></li>
+<li class="chapter" data-level="4.1.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#use-cases-ols"><i class="fa fa-check"></i><b>4.1.2</b> Use cases for linear regression</a></li>
+<li class="chapter" data-level="4.1.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#walkthrough-ols"><i class="fa fa-check"></i><b>4.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#simple-ols"><i class="fa fa-check"></i><b>4.2</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#linear-single"><i class="fa fa-check"></i><b>4.2.1</b> Linear relationship between a single input and an outcome</a></li>
+<li class="chapter" data-level="4.2.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#minimising-error-ols"><i class="fa fa-check"></i><b>4.2.2</b> Minimising the error</a></li>
+<li class="chapter" data-level="4.2.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#best-fit-simple-ols"><i class="fa fa-check"></i><b>4.2.3</b> Determining the best fit</a></li>
+<li class="chapter" data-level="4.2.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#measuring-the-fit-of-the-model"><i class="fa fa-check"></i><b>4.2.4</b> Measuring the fit of the model</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#multiple-linear-regression"><i class="fa fa-check"></i><b>4.3</b> Multiple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#running-a-multiple-linear-regression-model-and-interpreting-its-coefficients"><i class="fa fa-check"></i><b>4.3.1</b> Running a multiple linear regression model and interpreting its coefficients</a></li>
+<li class="chapter" data-level="4.3.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#coefficient-confidence"><i class="fa fa-check"></i><b>4.3.2</b> Coefficient confidence</a></li>
+<li class="chapter" data-level="4.3.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#lin-good-fit"><i class="fa fa-check"></i><b>4.3.3</b> Model ‘goodness-of-fit’</a></li>
+<li class="chapter" data-level="4.3.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#making-predictions-from-your-model"><i class="fa fa-check"></i><b>4.3.4</b> Making predictions from your model</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#managing-inputs-in-linear-regression"><i class="fa fa-check"></i><b>4.4</b> Managing inputs in linear regression</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#relevance-of-input-variables"><i class="fa fa-check"></i><b>4.4.1</b> Relevance of input variables</a></li>
+<li class="chapter" data-level="4.4.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#sparseness-missingness-of-data"><i class="fa fa-check"></i><b>4.4.2</b> Sparseness (‘missingness’) of data</a></li>
+<li class="chapter" data-level="4.4.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#transforming-categorical-inputs-to-dummy-variables"><i class="fa fa-check"></i><b>4.4.3</b> Transforming categorical inputs to dummy variables</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#testing-your-model-assumptions"><i class="fa fa-check"></i><b>4.5</b> Testing your model assumptions</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#assumption-of-linearity-and-additivity"><i class="fa fa-check"></i><b>4.5.1</b> Assumption of linearity and additivity</a></li>
+<li class="chapter" data-level="4.5.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#lin-reg-const-var"><i class="fa fa-check"></i><b>4.5.2</b> Assumption of constant error variance</a></li>
+<li class="chapter" data-level="4.5.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#norm-dist-assum"><i class="fa fa-check"></i><b>4.5.3</b> Assumption of normally distributed errors</a></li>
+<li class="chapter" data-level="4.5.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#collinearity"><i class="fa fa-check"></i><b>4.5.4</b> Avoiding high collinearity and multicollinearity between input variables</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#extending-multiple-linear-regression"><i class="fa fa-check"></i><b>4.6</b> Extending multiple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#interactions-between-input-variables"><i class="fa fa-check"></i><b>4.6.1</b> Interactions between input variables</a></li>
+<li class="chapter" data-level="4.6.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#quadratic-and-higher-order-polynomial-terms"><i class="fa fa-check"></i><b>4.6.2</b> Quadratic and higher-order polynomial terms</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#learning-exercises-2"><i class="fa fa-check"></i><b>4.7</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="4.7.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#discussion-questions-2"><i class="fa fa-check"></i><b>4.7.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="4.7.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#data-exercises-2"><i class="fa fa-check"></i><b>4.7.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="bin-log-reg.html"><a href="bin-log-reg.html"><i class="fa fa-check"></i><b>5</b> Binomial Logistic Regression for Binary Outcomes</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#when-to-use-it"><i class="fa fa-check"></i><b>5.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#logistic-origins"><i class="fa fa-check"></i><b>5.1.1</b> Origins and intuition of binomial logistic regression</a></li>
+<li class="chapter" data-level="5.1.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#use-cases-for-binomial-logistic-regression"><i class="fa fa-check"></i><b>5.1.2</b> Use cases for binomial logistic regression</a></li>
+<li class="chapter" data-level="5.1.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#walkthrough-logit"><i class="fa fa-check"></i><b>5.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#mod-prob"><i class="fa fa-check"></i><b>5.2</b> Modeling probabilistic outcomes using a logistic function</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#deriving-the-concept-of-log-odds"><i class="fa fa-check"></i><b>5.2.1</b> Deriving the concept of log odds</a></li>
+<li class="chapter" data-level="5.2.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#modeling-the-log-odds-and-interpreting-the-coefficients"><i class="fa fa-check"></i><b>5.2.2</b> Modeling the log odds and interpreting the coefficients</a></li>
+<li class="chapter" data-level="5.2.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#odds-versus-probability"><i class="fa fa-check"></i><b>5.2.3</b> Odds versus probability</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#running-a-multivariate-binomial-logistic-regression-model"><i class="fa fa-check"></i><b>5.3</b> Running a multivariate binomial logistic regression model</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#running-and-interpreting-a-multivariate-binomial-logistic-regression-model"><i class="fa fa-check"></i><b>5.3.1</b> Running and interpreting a multivariate binomial logistic regression model</a></li>
+<li class="chapter" data-level="5.3.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#logistic-gof"><i class="fa fa-check"></i><b>5.3.2</b> Understanding the fit and goodness-of-fit of a binomial logistic regression model</a></li>
+<li class="chapter" data-level="5.3.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#model-parsimony"><i class="fa fa-check"></i><b>5.3.3</b> Model parsimony</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="bin-log-reg.html"><a href="bin-log-reg.html#other-considerations-in-binomial-logistic-regression"><i class="fa fa-check"></i><b>5.4</b> Other considerations in binomial logistic regression</a></li>
+<li class="chapter" data-level="5.5" data-path="bin-log-reg.html"><a href="bin-log-reg.html#learning-exercises-3"><i class="fa fa-check"></i><b>5.5</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#discussion-questions-3"><i class="fa fa-check"></i><b>5.5.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="5.5.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#data-exercises-3"><i class="fa fa-check"></i><b>5.5.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html"><i class="fa fa-check"></i><b>6</b> Multinomial Logistic Regression for Nominal Category Outcomes</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#when-to-use-it-1"><i class="fa fa-check"></i><b>6.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#intuition-for-multinomial-logistic-regression"><i class="fa fa-check"></i><b>6.1.1</b> Intuition for multinomial logistic regression</a></li>
+<li class="chapter" data-level="6.1.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#use-cases-for-multinomial-logistic-regression"><i class="fa fa-check"></i><b>6.1.2</b> Use cases for multinomial logistic regression</a></li>
+<li class="chapter" data-level="6.1.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#walkthrough-example"><i class="fa fa-check"></i><b>6.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#stratified"><i class="fa fa-check"></i><b>6.2</b> Running stratified binomial models</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#modeling-the-choice-of-product-a-versus-other-products"><i class="fa fa-check"></i><b>6.2.1</b> Modeling the choice of Product A versus other products</a></li>
+<li class="chapter" data-level="6.2.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#modeling-other-choices"><i class="fa fa-check"></i><b>6.2.2</b> Modeling other choices</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#running-a-multinomial-regression-model"><i class="fa fa-check"></i><b>6.3</b> Running a multinomial regression model</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#def-ref"><i class="fa fa-check"></i><b>6.3.1</b> Defining a reference level and running the model</a></li>
+<li class="chapter" data-level="6.3.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#interpreting-the-model"><i class="fa fa-check"></i><b>6.3.2</b> Interpreting the model</a></li>
+<li class="chapter" data-level="6.3.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#changing-ref"><i class="fa fa-check"></i><b>6.3.3</b> Changing the reference</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#model-simplification-fit-and-goodness-of-fit-for-multinomial-logistic-regression-models"><i class="fa fa-check"></i><b>6.4</b> Model simplification, fit and goodness-of-fit for multinomial logistic regression models</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#elim"><i class="fa fa-check"></i><b>6.4.1</b> Gradual safe elimination of variables</a></li>
+<li class="chapter" data-level="6.4.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#model-fit-and-goodness-of-fit"><i class="fa fa-check"></i><b>6.4.2</b> Model fit and goodness-of-fit</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#learning-exercises-4"><i class="fa fa-check"></i><b>6.5</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#discussion-questions-4"><i class="fa fa-check"></i><b>6.5.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="6.5.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#data-exercises-4"><i class="fa fa-check"></i><b>6.5.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ord-reg.html"><a href="ord-reg.html"><i class="fa fa-check"></i><b>7</b> Proportional Odds Logistic Regression for Ordered Category Outcomes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="ord-reg.html"><a href="ord-reg.html#when-to-use-it-2"><i class="fa fa-check"></i><b>7.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="ord-reg.html"><a href="ord-reg.html#ord-intuit"><i class="fa fa-check"></i><b>7.1.1</b> Intuition for proportional odds logistic regression</a></li>
+<li class="chapter" data-level="7.1.2" data-path="ord-reg.html"><a href="ord-reg.html#use-cases-for-proportional-odds-logistic-regression"><i class="fa fa-check"></i><b>7.1.2</b> Use cases for proportional odds logistic regression</a></li>
+<li class="chapter" data-level="7.1.3" data-path="ord-reg.html"><a href="ord-reg.html#ord-walkthrough"><i class="fa fa-check"></i><b>7.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="ord-reg.html"><a href="ord-reg.html#modeling-ordinal-outcomes-under-the-assumption-of-proportional-odds"><i class="fa fa-check"></i><b>7.2</b> Modeling ordinal outcomes under the assumption of proportional odds</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="ord-reg.html"><a href="ord-reg.html#mod-lin-reg"><i class="fa fa-check"></i><b>7.2.1</b> Using a latent continuous outcome variable to derive a proportional odds model</a></li>
+<li class="chapter" data-level="7.2.2" data-path="ord-reg.html"><a href="ord-reg.html#running-a-proportional-odds-logistic-regression-model"><i class="fa fa-check"></i><b>7.2.2</b> Running a proportional odds logistic regression model</a></li>
+<li class="chapter" data-level="7.2.3" data-path="ord-reg.html"><a href="ord-reg.html#calculating-the-likelihood-of-an-observation-being-in-a-specific-ordinal-category"><i class="fa fa-check"></i><b>7.2.3</b> Calculating the likelihood of an observation being in a specific ordinal category</a></li>
+<li class="chapter" data-level="7.2.4" data-path="ord-reg.html"><a href="ord-reg.html#model-diagnostics"><i class="fa fa-check"></i><b>7.2.4</b> Model diagnostics</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="ord-reg.html"><a href="ord-reg.html#testing-the-proportional-odds-assumption"><i class="fa fa-check"></i><b>7.3</b> Testing the proportional odds assumption</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="ord-reg.html"><a href="ord-reg.html#sighting-the-coefficients-of-stratified-binomial-models"><i class="fa fa-check"></i><b>7.3.1</b> Sighting the coefficients of stratified binomial models</a></li>
+<li class="chapter" data-level="7.3.2" data-path="ord-reg.html"><a href="ord-reg.html#wald"><i class="fa fa-check"></i><b>7.3.2</b> The Brant-Wald test</a></li>
+<li class="chapter" data-level="7.3.3" data-path="ord-reg.html"><a href="ord-reg.html#alternatives-to-proportional-odds-models"><i class="fa fa-check"></i><b>7.3.3</b> Alternatives to proportional odds models</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="ord-reg.html"><a href="ord-reg.html#learning-exercises-5"><i class="fa fa-check"></i><b>7.4</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="ord-reg.html"><a href="ord-reg.html#discussion-questions-5"><i class="fa fa-check"></i><b>7.4.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="7.4.2" data-path="ord-reg.html"><a href="ord-reg.html#data-exercises-5"><i class="fa fa-check"></i><b>7.4.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html"><i class="fa fa-check"></i><b>8</b> Modeling Explicit and Latent Hierarchy in Data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#mixed"><i class="fa fa-check"></i><b>8.1</b> Mixed models for explicit hierarchy in data</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#fixed-and-random-effects"><i class="fa fa-check"></i><b>8.1.1</b> Fixed and random effects</a></li>
+<li class="chapter" data-level="8.1.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-a-mixed-model"><i class="fa fa-check"></i><b>8.1.2</b> Running a mixed model</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#struc-eq-model"><i class="fa fa-check"></i><b>8.2</b> Structural equation models for latent hierarchy in data</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-and-assessing-the-measurement-model"><i class="fa fa-check"></i><b>8.2.1</b> Running and assessing the measurement model</a></li>
+<li class="chapter" data-level="8.2.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-and-interpreting-the-structural-model"><i class="fa fa-check"></i><b>8.2.2</b> Running and interpreting the structural model</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#learning-exercises-6"><i class="fa fa-check"></i><b>8.3</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#discussion-questions-6"><i class="fa fa-check"></i><b>8.3.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="8.3.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#data-exercises-6"><i class="fa fa-check"></i><b>8.3.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="survival.html"><a href="survival.html"><i class="fa fa-check"></i><b>9</b> Survival Analysis for Modeling Singular Events Over Time</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="survival.html"><a href="survival.html#tracking-and-illustrating-survival-rates-over-the-study-period"><i class="fa fa-check"></i><b>9.1</b> Tracking and illustrating survival rates over the study period</a></li>
+<li class="chapter" data-level="9.2" data-path="survival.html"><a href="survival.html#coxphmodel"><i class="fa fa-check"></i><b>9.2</b> Cox proportional hazard regression models</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="survival.html"><a href="survival.html#running-a-cox-proportional-hazard-regression-model"><i class="fa fa-check"></i><b>9.2.1</b> Running a Cox proportional hazard regression model</a></li>
+<li class="chapter" data-level="9.2.2" data-path="survival.html"><a href="survival.html#checking-the-proportional-hazard-assumption"><i class="fa fa-check"></i><b>9.2.2</b> Checking the proportional hazard assumption</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="survival.html"><a href="survival.html#frailty-models"><i class="fa fa-check"></i><b>9.3</b> Frailty models</a></li>
+<li class="chapter" data-level="9.4" data-path="survival.html"><a href="survival.html#learning-exercises-7"><i class="fa fa-check"></i><b>9.4</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="survival.html"><a href="survival.html#discussion-questions-7"><i class="fa fa-check"></i><b>9.4.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="9.4.2" data-path="survival.html"><a href="survival.html#data-exercises-7"><i class="fa fa-check"></i><b>9.4.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="alt-approaches.html"><a href="alt-approaches.html"><i class="fa fa-check"></i><b>10</b> Alternative Technical Approaches in R, Python and Julia</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="alt-approaches.html"><a href="alt-approaches.html#tidier-modeling-approaches-in-r"><i class="fa fa-check"></i><b>10.1</b> ‘Tidier’ modeling approaches in R</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="alt-approaches.html"><a href="alt-approaches.html#the-broom-package"><i class="fa fa-check"></i><b>10.1.1</b> The <code>broom</code> package</a></li>
+<li class="chapter" data-level="10.1.2" data-path="alt-approaches.html"><a href="alt-approaches.html#the-parsnip-package"><i class="fa fa-check"></i><b>10.1.2</b> The <code>parsnip</code> package</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="alt-approaches.html"><a href="alt-approaches.html#inferential-statistical-modeling-in-python"><i class="fa fa-check"></i><b>10.2</b> Inferential statistical modeling in Python</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="alt-approaches.html"><a href="alt-approaches.html#ordinary-least-squares-ols-linear-regression"><i class="fa fa-check"></i><b>10.2.1</b> Ordinary Least Squares (OLS) linear regression</a></li>
+<li class="chapter" data-level="10.2.2" data-path="alt-approaches.html"><a href="alt-approaches.html#binomial-logistic-regression"><i class="fa fa-check"></i><b>10.2.2</b> Binomial logistic regression</a></li>
+<li class="chapter" data-level="10.2.3" data-path="alt-approaches.html"><a href="alt-approaches.html#multinomial-logistic-regression"><i class="fa fa-check"></i><b>10.2.3</b> Multinomial logistic regression</a></li>
+<li class="chapter" data-level="10.2.4" data-path="alt-approaches.html"><a href="alt-approaches.html#structural-equation-models"><i class="fa fa-check"></i><b>10.2.4</b> Structural equation models</a></li>
+<li class="chapter" data-level="10.2.5" data-path="alt-approaches.html"><a href="alt-approaches.html#survival-analysis"><i class="fa fa-check"></i><b>10.2.5</b> Survival analysis</a></li>
+<li class="chapter" data-level="10.2.6" data-path="alt-approaches.html"><a href="alt-approaches.html#other-model-variants"><i class="fa fa-check"></i><b>10.2.6</b> Other model variants</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="alt-approaches.html"><a href="alt-approaches.html#inferential-statistical-modeling-in-julia"><i class="fa fa-check"></i><b>10.3</b> Inferential statistical modeling in Julia</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="alt-approaches.html"><a href="alt-approaches.html#ordinary-least-squares-ols-linear-regression-1"><i class="fa fa-check"></i><b>10.3.1</b> Ordinary Least Squares (OLS) linear regression</a></li>
+<li class="chapter" data-level="10.3.2" data-path="alt-approaches.html"><a href="alt-approaches.html#binomial-logistic-regression-1"><i class="fa fa-check"></i><b>10.3.2</b> Binomial logistic regression</a></li>
+<li class="chapter" data-level="10.3.3" data-path="alt-approaches.html"><a href="alt-approaches.html#multinomial-logistic-regression-1"><i class="fa fa-check"></i><b>10.3.3</b> Multinomial logistic regression</a></li>
+<li class="chapter" data-level="10.3.4" data-path="alt-approaches.html"><a href="alt-approaches.html#proportional-odds-logistic-regression"><i class="fa fa-check"></i><b>10.3.4</b> Proportional odds logistic regression</a></li>
+<li class="chapter" data-level="10.3.5" data-path="alt-approaches.html"><a href="alt-approaches.html#mixed-models"><i class="fa fa-check"></i><b>10.3.5</b> Mixed models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="power-tests.html"><a href="power-tests.html"><i class="fa fa-check"></i><b>11</b> Power Analysis to Estimate Required Sample Sizes for Modeling</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="power-tests.html"><a href="power-tests.html#errors-effect-sizes-and-statistical-power"><i class="fa fa-check"></i><b>11.1</b> Errors, effect sizes and statistical power</a></li>
+<li class="chapter" data-level="11.2" data-path="power-tests.html"><a href="power-tests.html#simple-stats"><i class="fa fa-check"></i><b>11.2</b> Power analysis for simple hypothesis tests</a></li>
+<li class="chapter" data-level="11.3" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-linear-regression-models"><i class="fa fa-check"></i><b>11.3</b> Power analysis for linear regression models</a></li>
+<li class="chapter" data-level="11.4" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-log-likelihood-regression-models"><i class="fa fa-check"></i><b>11.4</b> Power analysis for log-likelihood regression models</a></li>
+<li class="chapter" data-level="11.5" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-hierarchical-regression-models"><i class="fa fa-check"></i><b>11.5</b> Power analysis for hierarchical regression models</a></li>
+<li class="chapter" data-level="11.6" data-path="power-tests.html"><a href="power-tests.html#power-analysis-using-python"><i class="fa fa-check"></i><b>11.6</b> Power analysis using Python</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="solutions-to-exercises.html"><a href="solutions-to-exercises.html"><i class="fa fa-check"></i>Solutions to Exercises</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Handbook of Regression Modeling in People Analytics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="survival" class="section level1" number="9">
+<h1><span class="header-section-number">9</span> Survival Analysis for Modeling Singular Events Over Time</h1>
+<p>In previous chapters, the outcomes we have been modeling have or have not occurred at a particular point in time following when the input variables were measured. For example, in Chapter <a href="linear-reg-ols.html#linear-reg-ols">4</a> input variables were measured in the first three years of an education program and the outcome was measured at the end of the fourth year. In many situations, the outcome we are interested in is a singular event that can occur at any time following when the input variables were measured, can occur at a different time for different individuals, and once it has occurred it cannot reoccur or repeat. In medical studies, death can occur or the onset of a disease can be diagnosed at any time during the study period. In employment contexts, an attrition event can occur at various times throughout the year.</p>
+<p>An obvious and simple way to deal with this would be to simply agree to look at a specific point in time and measure whether or not the event had occurred at that point, for example, ‘How many employees had left at the three-year point?’ Such an approach allows us to use standard generic regression models like those studied in previous chapters. But this approach has limitations.</p>
+<p>Firstly, we are only able to infer conclusions about the likelihood of the event having occurred as at the end of the period of study. We cannot make inferences about the likelihood of the event throughout the period of study. Being able to say that attrition is twice as likely for certain types of individuals <em>at any time throughout the three years</em> is more powerful than merely saying that attrition is twice as likely at the three-year point.</p>
+<p>Secondly, our sample size is constrained by the state of our data at the end of the period of study. Therefore if we lose track of an individual after two years and six months, that observation needs to be dropped from our data set if we are focused only on the three-year point. Wherever possible, loss of data is something a statistician will want to avoid as it affects the accuracy and statistical power of inferences, and also means research effort was wasted.</p>
+<p><em>Survival analysis</em> is a general term for the modeling of a time-associated binary non-repeated outcome, usually involving an understanding of the comparative risk of that outcome between two or more different groups of interest. There are two common components in an elementary survival analysis, as follows:</p>
+<ul>
+<li>A graphical representation of the future outcome risk of the different groups over time, using <em>survival curves</em> based on Kaplan-Meier estimates of survival rate. This is usually an effective way to establish <em>prima facie</em> relevance of a certain input variable to the survival outcome and is a very effective visual way of communicating the relevance of the input variable to non-statisticians.</li>
+<li>A <em>Cox proportional hazard</em> regression model to establish statistical significance of input variables and to estimate the effect of each input variable on the comparative risk of the outcome throughout the study period.</li>
+</ul>
+<p>Those seeking a more in depth treatment of survival analysis should consult texts on its use in medical/clinical contexts, and a recommended source is <span class="citation"><a href="#ref-collett" role="doc-biblioref">Collett</a> (<a href="#ref-collett" role="doc-biblioref">2015</a>)</span>. In this chapter we will use a walkthrough example to illustrate a typical use of survival analysis in a people analytics context.</p>
+<p>The <code>job_retention</code> data set shows the results of a study of around 3,800 individuals employed in various fields of employment over a one-year period. At the beginning of the study, the individuals were asked to rate their sentiment towards their job. These individuals were then followed up monthly for a year to determine if they were still working in the same job or had left their job for a substantially different job. If an individual was not successfully followed up in a given month, they were no longer followed up for the remainder of the study period.</p>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="survival.html#cb404-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, get job_retention data</span></span>
+<span id="cb404-2"><a href="survival.html#cb404-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/job_retention.csv&quot;</span></span>
+<span id="cb404-3"><a href="survival.html#cb404-3" aria-hidden="true" tabindex="-1"></a>job_retention <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb404-4"><a href="survival.html#cb404-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(job_retention)</span></code></pre></div>
+<pre><code>##   gender                  field  level sentiment intention left month
+## 1      M      Public/Government   High         3         8    1     1
+## 2      F                Finance    Low         8         4    0    12
+## 3      M Education and Training Medium         7         7    1     5
+## 4      M                Finance    Low         8         4    0    12
+## 5      M                Finance   High         7         6    1     1
+## 6      F                 Health Medium         6        10    1     2</code></pre>
+<p>For this walkthrough example, the particular fields we are interested in are:</p>
+<ul>
+<li><code>gender</code>: The gender of the individual studied</li>
+<li><code>field</code>: The field of employment that they worked in at the beginning of the study</li>
+<li><code>level</code>: The level of the position in their organization at the beginning of the study—<code>Low</code>, <code>Medium</code> or <code>High</code></li>
+<li><code>sentiment</code>: The sentiment score reported on a scale of 1 to 10 at the beginning of the study, with 1 indicating extremely negative sentiment and 10 indicating extremely positive sentiment</li>
+<li><code>left</code>: A binary variable indicating whether or not the individual had left their job as at the last follow-up</li>
+<li><code>month</code>: The month of the last follow-up</li>
+</ul>
+<div id="tracking-and-illustrating-survival-rates-over-the-study-period" class="section level2" number="9.1">
+<h2><span class="header-section-number">9.1</span> Tracking and illustrating survival rates over the study period</h2>
+<p>In our example, we are defining ‘survival’ as ‘remaining in substantially the same job’‍. We can regard the starting point as month 0, and we are following up in each of months 1 through 12. For a given month <span class="math inline">\(i\)</span>, we can define a survival rate <span class="math inline">\(S_i\)</span> as follows</p>
+<p><span class="math display">\[
+S_i = S_{i - 1}(1 - \frac{l_i}{n_i})
+\]</span>
+where <span class="math inline">\(l_i\)</span> is the number reported as left in month <span class="math inline">\(i\)</span>, and <span class="math inline">\(n_i\)</span> is the number still in substantially the same job after month <span class="math inline">\(i - 1\)</span>, with <span class="math inline">\(S_0 = 1\)</span>.</p>
+<p>The <code>survival</code> package in R allows easy construction of survival rates on data in a similar format to that in our <code>job_retention</code> data set. A survival object is created using the <code>Surv()</code> function to track the survival rate at each time period.</p>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="survival.html#cb406-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb406-2"><a href="survival.html#cb406-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb406-3"><a href="survival.html#cb406-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create survival object with event as &#39;left&#39; and time as &#39;month&#39;</span></span>
+<span id="cb406-4"><a href="survival.html#cb406-4" aria-hidden="true" tabindex="-1"></a>retention <span class="ot">&lt;-</span> <span class="fu">Surv</span>(<span class="at">event =</span> job_retention<span class="sc">$</span>left, </span>
+<span id="cb406-5"><a href="survival.html#cb406-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">time =</span> job_retention<span class="sc">$</span>month)</span>
+<span id="cb406-6"><a href="survival.html#cb406-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb406-7"><a href="survival.html#cb406-7" aria-hidden="true" tabindex="-1"></a><span class="co"># view unique values of retention</span></span>
+<span id="cb406-8"><a href="survival.html#cb406-8" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(retention)</span></code></pre></div>
+<pre><code>##  [1]  1  12+  5   2   3   6   8   4   8+  4+ 11  10   9   7+  5+  3+  7   9+ 11+ 12  10+  6+  2+  1+</code></pre>
+<p>We can see that our survival object records the month at which the individual had left their job if they are recorded as having done so in the data set. If not, the object records the last month at which there was a record of the individual, appended with a ‘+’ to indicate that this was the last record available.</p>
+<p>The <code>survfit()</code> function allows us to calculate <em>Kaplan-Meier estimates</em> of survival for different groups in the data so that we can compare them. We can do this using our usual formula notation but using a survival object as the outcome. Let’s take a look at survival by gender.</p>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="survival.html#cb408-1" aria-hidden="true" tabindex="-1"></a><span class="co"># kaplan-meier estimates of survival by gender</span></span>
+<span id="cb408-2"><a href="survival.html#cb408-2" aria-hidden="true" tabindex="-1"></a>kmestimate_gender <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">survfit</span>(</span>
+<span id="cb408-3"><a href="survival.html#cb408-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> gender, </span>
+<span id="cb408-4"><a href="survival.html#cb408-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> job_retention</span>
+<span id="cb408-5"><a href="survival.html#cb408-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb408-6"><a href="survival.html#cb408-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb408-7"><a href="survival.html#cb408-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(kmestimate_gender)</span></code></pre></div>
+<pre><code>## Call: survfit(formula = Surv(event = left, time = month) ~ gender, 
+##     data = job_retention)
+## 
+##                 gender=F 
+##  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+##     1   1167       7    0.994 0.00226        0.990        0.998
+##     2   1140      24    0.973 0.00477        0.964        0.982
+##     3   1102      45    0.933 0.00739        0.919        0.948
+##     4   1044      45    0.893 0.00919        0.875        0.911
+##     5    987      30    0.866 0.01016        0.846        0.886
+##     6    940      51    0.819 0.01154        0.797        0.842
+##     7    882      43    0.779 0.01248        0.755        0.804
+##     8    830      47    0.735 0.01333        0.709        0.762
+##     9    770      40    0.697 0.01394        0.670        0.725
+##    10    718      21    0.676 0.01422        0.649        0.705
+##    11    687      57    0.620 0.01486        0.592        0.650
+##    12    621      17    0.603 0.01501        0.575        0.633
+## 
+##                 gender=M 
+##  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+##     1   2603      17    0.993 0.00158        0.990        0.997
+##     2   2559      66    0.968 0.00347        0.961        0.975
+##     3   2473     100    0.929 0.00508        0.919        0.939
+##     4   2360      86    0.895 0.00607        0.883        0.907
+##     5   2253      56    0.873 0.00660        0.860        0.886
+##     6   2171     120    0.824 0.00756        0.810        0.839
+##     7   2029      85    0.790 0.00812        0.774        0.806
+##     8   1916     114    0.743 0.00875        0.726        0.760
+##     9   1782      96    0.703 0.00918        0.685        0.721
+##    10   1661      50    0.682 0.00938        0.664        0.700
+##    11   1590     101    0.638 0.00972        0.620        0.658
+##    12   1460      36    0.623 0.00983        0.604        0.642</code></pre>
+<p>We can see that the <code>n.risk</code>, <code>n.event</code> and <code>survival</code> columns for each group correspond to the <span class="math inline">\(n_i\)</span>, <span class="math inline">\(l_i\)</span> and <span class="math inline">\(S_i\)</span> in our formula above and that the confidence intervals for each survival rate are given. This can be very useful if we wish to illustrate a likely effect of a given input variable on survival likelihood.</p>
+<p>Let’s imagine that we wish to determine if the sentiment of the individual had an impact on survival likelihood. We can divide our population into two (or more) groups based on their sentiment and compare their survival rates.</p>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="survival.html#cb410-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new field to define high sentiment (&gt;= 7)</span></span>
+<span id="cb410-2"><a href="survival.html#cb410-2" aria-hidden="true" tabindex="-1"></a>job_retention<span class="sc">$</span>sentiment_category <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
+<span id="cb410-3"><a href="survival.html#cb410-3" aria-hidden="true" tabindex="-1"></a>  job_retention<span class="sc">$</span>sentiment <span class="sc">&gt;=</span> <span class="dv">7</span>, </span>
+<span id="cb410-4"><a href="survival.html#cb410-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;High&quot;</span>, </span>
+<span id="cb410-5"><a href="survival.html#cb410-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Not High&quot;</span></span>
+<span id="cb410-6"><a href="survival.html#cb410-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb410-7"><a href="survival.html#cb410-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb410-8"><a href="survival.html#cb410-8" aria-hidden="true" tabindex="-1"></a><span class="co"># generate survival rates by sentiment category</span></span>
+<span id="cb410-9"><a href="survival.html#cb410-9" aria-hidden="true" tabindex="-1"></a>kmestimate_sentimentcat <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">survfit</span>(</span>
+<span id="cb410-10"><a href="survival.html#cb410-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> sentiment_category,</span>
+<span id="cb410-11"><a href="survival.html#cb410-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> job_retention</span>
+<span id="cb410-12"><a href="survival.html#cb410-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb410-13"><a href="survival.html#cb410-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb410-14"><a href="survival.html#cb410-14" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(kmestimate_sentimentcat)</span></code></pre></div>
+<pre><code>## Call: survfit(formula = Surv(event = left, time = month) ~ sentiment_category, 
+##     data = job_retention)
+## 
+##                 sentiment_category=High 
+##  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+##     1   3225      15    0.995 0.00120        0.993        0.998
+##     2   3167      62    0.976 0.00272        0.971        0.981
+##     3   3075     120    0.938 0.00429        0.929        0.946
+##     4   2932     102    0.905 0.00522        0.895        0.915
+##     5   2802      65    0.884 0.00571        0.873        0.895
+##     6   2700     144    0.837 0.00662        0.824        0.850
+##     7   2532     110    0.801 0.00718        0.787        0.815
+##     8   2389     140    0.754 0.00778        0.739        0.769
+##     9   2222     112    0.716 0.00818        0.700        0.732
+##    10   2077      56    0.696 0.00835        0.680        0.713
+##    11   1994     134    0.650 0.00871        0.633        0.667
+##    12   1827      45    0.634 0.00882        0.617        0.651
+## 
+##                 sentiment_category=Not High 
+##  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+##     1    545       9    0.983 0.00546        0.973        0.994
+##     2    532      28    0.932 0.01084        0.911        0.953
+##     3    500      25    0.885 0.01373        0.859        0.912
+##     4    472      29    0.831 0.01618        0.800        0.863
+##     5    438      21    0.791 0.01758        0.757        0.826
+##     6    411      27    0.739 0.01906        0.703        0.777
+##     7    379      18    0.704 0.01987        0.666        0.744
+##     8    357      21    0.662 0.02065        0.623        0.704
+##     9    330      24    0.614 0.02136        0.574        0.658
+##    10    302      15    0.584 0.02171        0.543        0.628
+##    11    283      24    0.534 0.02209        0.493        0.579
+##    12    254       8    0.517 0.02218        0.476        0.563</code></pre>
+<p>We can see that survival seems to consistently trend higher for those with high sentiment towards their jobs. The <code>ggsurvplot()</code> function in the <code>survminer</code> package can visualize this neatly and also provide additional statistical information on the differences between the groups, as shown in Figure <a href="survival.html#fig:survivalplot">9.1</a>.</p>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="survival.html#cb412-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survminer)</span>
+<span id="cb412-2"><a href="survival.html#cb412-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb412-3"><a href="survival.html#cb412-3" aria-hidden="true" tabindex="-1"></a><span class="co"># show survival curves with p-value estimate and confidence intervals</span></span>
+<span id="cb412-4"><a href="survival.html#cb412-4" aria-hidden="true" tabindex="-1"></a>survminer<span class="sc">::</span><span class="fu">ggsurvplot</span>(</span>
+<span id="cb412-5"><a href="survival.html#cb412-5" aria-hidden="true" tabindex="-1"></a>  kmestimate_sentimentcat,</span>
+<span id="cb412-6"><a href="survival.html#cb412-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pval =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb412-7"><a href="survival.html#cb412-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">conf.int =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb412-8"><a href="survival.html#cb412-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>),</span>
+<span id="cb412-9"><a href="survival.html#cb412-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">linetype =</span> <span class="fu">c</span>(<span class="st">&quot;solid&quot;</span>, <span class="st">&quot;dashed&quot;</span>),</span>
+<span id="cb412-10"><a href="survival.html#cb412-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;Month&quot;</span>,</span>
+<span id="cb412-11"><a href="survival.html#cb412-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">&quot;Retention Rate&quot;</span></span>
+<span id="cb412-12"><a href="survival.html#cb412-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:survivalplot"></span>
+<img src="_main_files/figure-html/survivalplot-1.png" alt="Survival curves by sentiment category in the `job_retention` data" width="672" />
+<p class="caption">
+Figure 9.1: Survival curves by sentiment category in the <code>job_retention</code> data
+</p>
+</div>
+<p>This confirms that the survival difference between the two sentiment groups is statistically significant and provides a highly intuitive visualization of the effect of sentiment on retention throughout the period of study.</p>
+</div>
+<div id="coxphmodel" class="section level2" number="9.2">
+<h2><span class="header-section-number">9.2</span> Cox proportional hazard regression models</h2>
+<p>Let’s imagine that we have a survival outcome that we are modeling for a population over a time <span class="math inline">\(t\)</span>, and we are interested in how a set of input variables <span class="math inline">\(x_1, x_2, \dots, x_p\)</span> influences that survival outcome. Given that our survival outcome is a binary variable, we can model survival at any time <span class="math inline">\(t\)</span> as a binary logistic regression. We define <span class="math inline">\(h(t)\)</span> as the proportion who have not survived at time <span class="math inline">\(t\)</span>, called the <em>hazard function</em>, and based on our work in Chapter <a href="bin-log-reg.html#bin-log-reg">5</a>:</p>
+<p><span class="math display">\[
+h(t) = h_0(t)e^{\beta_1x_1 + \beta_2x_2 + \dots + \beta_px_p}
+\]</span>
+where <span class="math inline">\(h_0(t)\)</span> is a base or intercept hazard at time <span class="math inline">\(t\)</span>, and <span class="math inline">\(\beta_i\)</span> is the coefficient associated with <span class="math inline">\(x_i\)</span> .</p>
+<p>Now let’s imagine we are comparing the hazard for two different individuals <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> from our population. We make an assumption that our hazard curves <span class="math inline">\(h^A(t)\)</span> for individual <span class="math inline">\(A\)</span> and <span class="math inline">\(h^B(t)\)</span> for individual <span class="math inline">\(B\)</span> are always proportional to each other and never cross—this is called the <em>proportional hazard assumption</em>. Under this assumption, we can conclude that</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{h^B(t)}{h^A(t)} &amp;= \frac{h_0(t)e^{\beta_1x_1^B + \beta_2x_2^B + \dots + \beta_px_p^B}}{h_0(t)e^{\beta_1x_1^A + \beta_2x_2^A + \dots + \beta_px_p^A}} \\
+&amp;= e^{\beta_1(x_1^B-x_1^A) + \beta_2(x_2^B-x_2^A) + \dots \beta_p(x_p^B-x_p^A)}
+\end{aligned}
+\]</span></p>
+<p>Note that there is no <span class="math inline">\(t\)</span> in our final equation. The important observation here is that the hazard for person B relative to person A is <em>constant and independent of time</em>. This allows us to take a complicating factor out of our model. It means we can model the effect of input variables on the hazard without needing to account for changes over times, making this model very similar in interpretation to a standard binomial regression model.</p>
+<div id="running-a-cox-proportional-hazard-regression-model" class="section level3" number="9.2.1">
+<h3><span class="header-section-number">9.2.1</span> Running a Cox proportional hazard regression model</h3>
+<p>A Cox proportional hazard model can be run using the <code>coxph()</code> function in the <code>survival</code> package, with the outcome as a survival object. Let’s model our survival against the input variables <code>gender</code>, <code>field</code>, <code>level</code> and <code>sentiment</code>.</p>
+<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="survival.html#cb413-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run cox model against survival outcome</span></span>
+<span id="cb413-2"><a href="survival.html#cb413-2" aria-hidden="true" tabindex="-1"></a>cox_model <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">coxph</span>(</span>
+<span id="cb413-3"><a href="survival.html#cb413-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> gender <span class="sc">+</span> </span>
+<span id="cb413-4"><a href="survival.html#cb413-4" aria-hidden="true" tabindex="-1"></a>    field <span class="sc">+</span> level <span class="sc">+</span> sentiment,</span>
+<span id="cb413-5"><a href="survival.html#cb413-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> job_retention</span>
+<span id="cb413-6"><a href="survival.html#cb413-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb413-7"><a href="survival.html#cb413-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb413-8"><a href="survival.html#cb413-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cox_model)</span></code></pre></div>
+<pre><code>## Call:
+## survival::coxph(formula = Surv(event = left, time = month) ~ 
+##     gender + field + level + sentiment, data = job_retention)
+## 
+##   n= 3770, number of events= 1354 
+## 
+##                            coef exp(coef) se(coef)      z Pr(&gt;|z|)    
+## genderM                -0.04548   0.95553  0.05886 -0.773 0.439647    
+## fieldFinance            0.22334   1.25025  0.06681  3.343 0.000829 ***
+## fieldHealth             0.27830   1.32089  0.12890  2.159 0.030849 *  
+## fieldLaw                0.10532   1.11107  0.14515  0.726 0.468086    
+## fieldPublic/Government  0.11499   1.12186  0.08899  1.292 0.196277    
+## fieldSales/Marketing    0.08776   1.09173  0.10211  0.859 0.390082    
+## levelLow                0.14813   1.15967  0.09000  1.646 0.099799 .  
+## levelMedium             0.17666   1.19323  0.10203  1.732 0.083362 .  
+## sentiment              -0.11756   0.88909  0.01397 -8.415  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+##                        exp(coef) exp(-coef) lower .95 upper .95
+## genderM                   0.9555     1.0465    0.8514    1.0724
+## fieldFinance              1.2502     0.7998    1.0968    1.4252
+## fieldHealth               1.3209     0.7571    1.0260    1.7005
+## fieldLaw                  1.1111     0.9000    0.8360    1.4767
+## fieldPublic/Government    1.1219     0.8914    0.9423    1.3356
+## fieldSales/Marketing      1.0917     0.9160    0.8937    1.3336
+## levelLow                  1.1597     0.8623    0.9721    1.3834
+## levelMedium               1.1932     0.8381    0.9770    1.4574
+## sentiment                 0.8891     1.1248    0.8651    0.9138
+## 
+## Concordance= 0.578  (se = 0.008 )
+## Likelihood ratio test= 89.18  on 9 df,   p=2e-15
+## Wald test            = 94.95  on 9 df,   p=&lt;2e-16
+## Score (logrank) test = 95.31  on 9 df,   p=&lt;2e-16</code></pre>
+<p>The model returns the following<a href="#fn40" class="footnote-ref" id="fnref40"><sup>40</sup></a></p>
+<ul>
+<li><p>Coefficients for each input variable and their p-values. Here we can conclude that working in Finance or Health is associated with a significantly greater likelihood of leaving over the period studied, and that higher sentiment is associated with a significantly lower likelihood of leaving.</p></li>
+<li><p>Relative odds ratios associated with each input variable. For example, a single extra point in sentiment reduces the odds of leaving by ~11%. A single less point increases the odds of leaving by ~12%. Confidence intervals for the coefficients are also provided.</p></li>
+<li><p>Three statistical tests on the null hypothesis that the coefficients are zero. This null hypothesis is rejected by all three tests which can be interpreted as meaning that the model is significant.</p></li>
+</ul>
+<p>Importantly, as well as statistically validating that sentiment has a significant effect on retention, our Cox model has allowed us to control for possible mediating variables. We can now say that sentiment has a significant effect on retention even for individuals of the same gender, in the same field and at the same level.</p>
+</div>
+<div id="checking-the-proportional-hazard-assumption" class="section level3" number="9.2.2">
+<h3><span class="header-section-number">9.2.2</span> Checking the proportional hazard assumption</h3>
+<p>Note that we mentioned in the previous section a critical assumption for our Cox proportional hazard model to be valid, called the proportional hazard assumption. As always, it is important to check this assumption before finalizing any inferences or conclusions from your model.</p>
+<p>The most popular test of this assumption uses a residual known as a <em>Schoenfeld residual</em>, which would be expected to be independent of time if the proportional hazard assumption holds. The <code>cox.zph()</code> function in the <code>survival</code> package runs a statistical test on the null hypothesis that the Schoenfeld residuals are independent of time. The test is conducted on every input variable and on the model as a whole, and a significant result would reject the proportional hazard assumption.</p>
+<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="survival.html#cb415-1" aria-hidden="true" tabindex="-1"></a>(ph_check <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">cox.zph</span>(cox_model))</span></code></pre></div>
+<pre><code>##            chisq df    p
+## gender     0.726  1 0.39
+## field      6.656  5 0.25
+## level      2.135  2 0.34
+## sentiment  1.828  1 0.18
+## GLOBAL    11.156  9 0.27</code></pre>
+<p>In our case, we can confirm that the proportional hazard assumption is not rejected. The <code>ggcoxzph()</code> function in the <code>survminer</code> package takes the result of the <code>cox.zph()</code> check and allows a graphical check by plotting the residuals against time, as seen in Figure <a href="survival.html#fig:schoenfeld">9.2</a>.</p>
+<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb417-1"><a href="survival.html#cb417-1" aria-hidden="true" tabindex="-1"></a>survminer<span class="sc">::</span><span class="fu">ggcoxzph</span>(ph_check, </span>
+<span id="cb417-2"><a href="survival.html#cb417-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">font.main =</span> <span class="dv">10</span>, </span>
+<span id="cb417-3"><a href="survival.html#cb417-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">font.x =</span> <span class="dv">10</span>, </span>
+<span id="cb417-4"><a href="survival.html#cb417-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">font.y =</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:schoenfeld"></span>
+<img src="_main_files/figure-html/schoenfeld-1.png" alt="Schoenfeld test on proportional hazard assumption for `cox_model`" width="672" />
+<p class="caption">
+Figure 9.2: Schoenfeld test on proportional hazard assumption for <code>cox_model</code>
+</p>
+</div>
+</div>
+</div>
+<div id="frailty-models" class="section level2" number="9.3">
+<h2><span class="header-section-number">9.3</span> Frailty models</h2>
+<p>We noticed in our example in the previous section that certain fields of employment appeared to have a significant effect on the attrition hazard. It is therefore possible that different fields of employment have different base hazard functions, and we may wish to take this into account in determining if input variables have a significant relationship with attrition. This is analogous to a mixed model which we looked at in Section <a href="modeling-explicit-and-latent-hierarchy-in-data.html#mixed">8.1</a>.</p>
+<p>In this case we would apply a random intercept effect to the base hazard function <span class="math inline">\(h_0(t)\)</span> according to the field of employment of an individual, in order to take this into account in our modeling. This kind of model is called a <em>frailty model</em>, taken from the clinical context, where different groups of patients may have different frailties (background risks of death).</p>
+<p>There are many variants of how frailty models are run in the clinical context (see <span class="citation"><a href="#ref-collett" role="doc-biblioref">Collett</a> (<a href="#ref-collett" role="doc-biblioref">2015</a>)</span> for an excellent exposition of these), but the main application of a frailty model in people analytics would be to adapt a Cox proportional hazard model to take into account different background risks of the hazard event occurring among different groups in the data. This is called a <em>shared frailty model</em>. The <code>frailtypack</code> R package allows various frailty models to be run with relative ease. This is how we would run a shared frailty model on our <code>job_retention</code> data to take account of the different background attrition risk for the different fields of employment.</p>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="survival.html#cb418-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(frailtypack)</span>
+<span id="cb418-2"><a href="survival.html#cb418-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb418-3"><a href="survival.html#cb418-3" aria-hidden="true" tabindex="-1"></a>(frailty_model <span class="ot">&lt;-</span> frailtypack<span class="sc">::</span><span class="fu">frailtyPenal</span>(</span>
+<span id="cb418-4"><a href="survival.html#cb418-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> gender <span class="sc">+</span> </span>
+<span id="cb418-5"><a href="survival.html#cb418-5" aria-hidden="true" tabindex="-1"></a>    level <span class="sc">+</span> sentiment <span class="sc">+</span> <span class="fu">cluster</span>(field),</span>
+<span id="cb418-6"><a href="survival.html#cb418-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> job_retention,</span>
+<span id="cb418-7"><a href="survival.html#cb418-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.knots =</span> <span class="dv">12</span>, </span>
+<span id="cb418-8"><a href="survival.html#cb418-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">kappa =</span> <span class="dv">10000</span></span>
+<span id="cb418-9"><a href="survival.html#cb418-9" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
+<pre><code>## 
+## Be patient. The program is computing ... 
+## The program took 1.21 seconds</code></pre>
+<pre><code>## Call:
+## frailtypack::frailtyPenal(formula = Surv(event = left, time = month) ~ 
+##     gender + level + sentiment + cluster(field), data = job_retention, 
+##     n.knots = 12, kappa = 10000)
+## 
+## 
+##   Shared Gamma Frailty model parameter estimates  
+##   using a Penalized Likelihood on the hazard function 
+## 
+##                  coef exp(coef) SE coef (H) SE coef (HIH)         z          p
+## genderM     -0.029531  0.970901   0.0591820     0.0591820 -0.498986 6.1779e-01
+## levelLow     0.198548  1.219630   0.0917396     0.0917396  2.164255 3.0445e-02
+## levelMedium  0.223266  1.250154   0.1035510     0.1035510  2.156101 3.1076e-02
+## sentiment   -0.108262  0.897392   0.0141325     0.0141325 -7.660518 1.8541e-14
+## 
+##         chisq df global p
+## level 5.28624  2   0.0711
+## 
+##     Frailty parameter, Theta: 48.3209 (SE (H): 25.5895 ) p = 0.029492 
+##  
+##       penalized marginal log-likelihood = -5510.36
+##       Convergence criteria: 
+##       parameters = 3.05e-05 likelihood = 4.91e-06 gradient = 1.55e-09 
+## 
+##       LCV = the approximate likelihood cross-validation criterion
+##             in the semi parametrical case     = 1.46587 
+## 
+##       n= 3770
+##       n events= 1354  n groups= 6
+##       number of iterations:  18 
+## 
+##       Exact number of knots used:  12 
+##       Value of the smoothing parameter:  10000, DoF:  6.31</code></pre>
+<p>We can see that the frailty parameter is significant, indicating that there is sufficient difference in the background attrition risk to justify the application of a random hazard effect. We also see that the level of employment now becomes more significant in addition to sentiment, with Low and Medium level employees more likely to leave compared to High level employees.</p>
+<p>The <code>frailtyPenal()</code> function can also be a useful way to observe the different baseline survivals for groups in the data. For example, a simple stratified Cox proportional hazard model based on sentiment category can be constructed<a href="#fn41" class="footnote-ref" id="fnref41"><sup>41</sup></a>.</p>
+<div class="sourceCode" id="cb421"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb421-1"><a href="survival.html#cb421-1" aria-hidden="true" tabindex="-1"></a>stratified_base <span class="ot">&lt;-</span> frailtypack<span class="sc">::</span><span class="fu">frailtyPenal</span>(</span>
+<span id="cb421-2"><a href="survival.html#cb421-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> </span>
+<span id="cb421-3"><a href="survival.html#cb421-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">strata</span>(sentiment_category),</span>
+<span id="cb421-4"><a href="survival.html#cb421-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> job_retention,</span>
+<span id="cb421-5"><a href="survival.html#cb421-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.knots =</span> <span class="dv">12</span>,</span>
+<span id="cb421-6"><a href="survival.html#cb421-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">kappa =</span> <span class="fu">rep</span>(<span class="dv">10000</span>, <span class="dv">2</span>)</span>
+<span id="cb421-7"><a href="survival.html#cb421-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>This can then be plotted to observe how baseline retention differs by group, as in Figure <a href="survival.html#fig:stratified">9.3</a><a href="#fn42" class="footnote-ref" id="fnref42"><sup>42</sup></a>.</p>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb422-1"><a href="survival.html#cb422-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(stratified_base, <span class="at">type.plot =</span> <span class="st">&quot;Survival&quot;</span>, </span>
+<span id="cb422-2"><a href="survival.html#cb422-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">pos.legend =</span> <span class="st">&quot;topright&quot;</span>, <span class="at">Xlab =</span> <span class="st">&quot;Month&quot;</span>,</span>
+<span id="cb422-3"><a href="survival.html#cb422-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">Ylab =</span> <span class="st">&quot;Baseline retention rate&quot;</span>,</span>
+<span id="cb422-4"><a href="survival.html#cb422-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">color =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:stratified"></span>
+<img src="_main_files/figure-html/stratified-1.png" alt="Baseline retention curves for the two sentiment categories in the `job_retention` data set" width="672" />
+<p class="caption">
+Figure 9.3: Baseline retention curves for the two sentiment categories in the <code>job_retention</code> data set
+</p>
+</div>
+</div>
+<div id="learning-exercises-7" class="section level2" number="9.4">
+<h2><span class="header-section-number">9.4</span> Learning exercises</h2>
+<div id="discussion-questions-7" class="section level3" number="9.4.1">
+<h3><span class="header-section-number">9.4.1</span> Discussion questions</h3>
+<ol style="list-style-type: decimal">
+<li>Describe some of the reasons why a survival analysis is a useful tool for analyzing data where outcome events happen at different times.</li>
+<li>Describe the Kaplan-Meier survival estimate and how it is calculated.</li>
+<li>What are some common uses for survival curves in practice?</li>
+<li>Why is it important to run a Cox proportional hazard model in addition to calculating survival estimates when trying to understand the effect of a given variable on survival?</li>
+<li>Describe the assumption that underlies a Cox proportional hazard model and how this assumption can be checked.</li>
+<li>What is a frailty model, and why might it be useful in the context of survival analysis?</li>
+</ol>
+</div>
+<div id="data-exercises-7" class="section level3" number="9.4.2">
+<h3><span class="header-section-number">9.4.2</span> Data exercises</h3>
+<p>For these exercises, use the same <code>job_retention</code> data set as in the walkthrough example for this chapter, which can be loaded via the <code>peopleanalyticsdata</code> package or downloaded from the internet<a href="#fn43" class="footnote-ref" id="fnref43"><sup>43</sup></a>. The <code>intention</code> field represents a score of 1 to 10 on the individual’s intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention. This response was recorded at the beginning of the study period.</p>
+<ol style="list-style-type: decimal">
+<li>Create three categories of <code>intention</code> as follows: High (score of 7 or higher), Moderate (score of 4–6), Low (score of 3 or less)</li>
+<li>Calculate Kaplan-Meier survival estimates for the three categories and visualize these using survival curves.</li>
+<li>Determine the effect of <code>intention</code> on retention using a Cox proportional hazard model, controlling for <code>gender</code>, <code>field</code> and <code>level</code>.</li>
+<li>Perform an appropriate check that the proportional hazard assumption holds for your model.</li>
+<li>Run a similar model, but this time include the <code>sentiment</code> input variable. How would you interpret the results?</li>
+<li>Experiment with running a frailty model to take into account the different background attrition risk by field of employment.</li>
+</ol>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-collett" class="csl-entry">
+Collett, David. 2015. <em>Modelling Survival Data in Medical Research</em>.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="40">
+<li id="fn40"><p>The concordance measure returned is a measure of how well the model can predict in any given pair who will survive longer and is valuable in a number of medical research contexts.<a href="survival.html#fnref40" class="footnote-back">↩︎</a></p></li>
+<li id="fn41"><p>Note there needs to be a <code>kappa</code> for each level of the stratification.<a href="survival.html#fnref41" class="footnote-back">↩︎</a></p></li>
+<li id="fn42"><p>This is another route to calculating survival curves similar to Figure <a href="survival.html#fig:survivalplot">9.1</a>.<a href="survival.html#fnref42" class="footnote-back">↩︎</a></p></li>
+<li id="fn43"><p><a href="http://peopleanalytics-regression-book.org/data/job_retention.csv" class="uri">http://peopleanalytics-regression-book.org/data/job_retention.csv</a><a href="survival.html#fnref43" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="modeling-explicit-and-latent-hierarchy-in-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="alt-approaches.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

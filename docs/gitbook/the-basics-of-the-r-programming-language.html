@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 The Basics of the R Programming Language | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
+  <meta name="description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="generator" content="bookdown 0.22.15 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 The Basics of the R Programming Language | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://peopleanalytics-regression-book.org" />
+  <meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png" />
+  <meta property="og:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="github-repo" content="keithmcnulty/peopleanalytics-regression-book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 The Basics of the R Programming Language | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
+  <meta name="twitter:site" content="@dr_keithmcnulty" />
+  <meta name="twitter:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png" />
+
+<meta name="author" content="Keith McNulty" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="inf-model.html"/>
+<link rel="next" href="found-stats.html"/>
+<script src="libs/header-attrs-2.9.5/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python"/>
+<meta name="citation_author" content="Keith McNulty"/>
+<meta name="citation_publication_date" content="2021"/>
+<meta name="citation_isbn" content="9781003194156"/>
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-N7JZGMVRZK');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Handbook of Regression Modeling in People Analytics</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#notes-on-data-used-in-this-book"><i class="fa fa-check"></i>Notes on data used in this book</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="foreword-by-alexis-fink.html"><a href="foreword-by-alexis-fink.html"><i class="fa fa-check"></i>Foreword by Alexis Fink</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="inf-model.html"><a href="inf-model.html"><i class="fa fa-check"></i><b>1</b> The Importance of Regression in People Analytics</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="inf-model.html"><a href="inf-model.html#why-is-regression-modeling-so-important-in-people-analytics"><i class="fa fa-check"></i><b>1.1</b> Why is regression modeling so important in people analytics?</a></li>
+<li class="chapter" data-level="1.2" data-path="inf-model.html"><a href="inf-model.html#theory-modeling"><i class="fa fa-check"></i><b>1.2</b> What do we mean by ‘modeling’‍?</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="inf-model.html"><a href="inf-model.html#the-theory-of-inferential-modeling"><i class="fa fa-check"></i><b>1.2.1</b> The theory of inferential modeling</a></li>
+<li class="chapter" data-level="1.2.2" data-path="inf-model.html"><a href="inf-model.html#the-process-of-inferential-modeling"><i class="fa fa-check"></i><b>1.2.2</b> The process of inferential modeling</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="inf-model.html"><a href="inf-model.html#the-structure-system-and-organization-of-this-book"><i class="fa fa-check"></i><b>1.3</b> The structure, system and organization of this book</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html"><i class="fa fa-check"></i><b>2</b> The Basics of the R Programming Language</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#what-is-r"><i class="fa fa-check"></i><b>2.1</b> What is R?</a></li>
+<li class="chapter" data-level="2.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#how-to-start-using-r"><i class="fa fa-check"></i><b>2.2</b> How to start using R</a></li>
+<li class="chapter" data-level="2.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-in-r"><i class="fa fa-check"></i><b>2.3</b> Data in R</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-types"><i class="fa fa-check"></i><b>2.3.1</b> Data types</a></li>
+<li class="chapter" data-level="2.3.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#homogeneous-data-structures"><i class="fa fa-check"></i><b>2.3.2</b> Homogeneous data structures</a></li>
+<li class="chapter" data-level="2.3.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#heterogeneous-data-structures"><i class="fa fa-check"></i><b>2.3.3</b> Heterogeneous data structures</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#working-with-dataframes"><i class="fa fa-check"></i><b>2.4</b> Working with dataframes</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#loading-and-tidying-data-in-dataframes"><i class="fa fa-check"></i><b>2.4.1</b> Loading and tidying data in dataframes</a></li>
+<li class="chapter" data-level="2.4.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#manipulating-dataframes"><i class="fa fa-check"></i><b>2.4.2</b> Manipulating dataframes</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#functions-packages-and-libraries"><i class="fa fa-check"></i><b>2.5</b> Functions, packages and libraries</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#using-functions"><i class="fa fa-check"></i><b>2.5.1</b> Using functions</a></li>
+<li class="chapter" data-level="2.5.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#help-with-functions"><i class="fa fa-check"></i><b>2.5.2</b> Help with functions</a></li>
+<li class="chapter" data-level="2.5.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#writing-your-own-functions"><i class="fa fa-check"></i><b>2.5.3</b> Writing your own functions</a></li>
+<li class="chapter" data-level="2.5.4" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#installing-packages"><i class="fa fa-check"></i><b>2.5.4</b> Installing packages</a></li>
+<li class="chapter" data-level="2.5.5" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#using-packages"><i class="fa fa-check"></i><b>2.5.5</b> Using packages</a></li>
+<li class="chapter" data-level="2.5.6" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#the-pipe-operator"><i class="fa fa-check"></i><b>2.5.6</b> The pipe operator</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#errors-warnings-and-messages"><i class="fa fa-check"></i><b>2.6</b> Errors, warnings and messages</a></li>
+<li class="chapter" data-level="2.7" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#plotting-and-graphing"><i class="fa fa-check"></i><b>2.7</b> Plotting and graphing</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#plotting-in-base-r"><i class="fa fa-check"></i><b>2.7.1</b> Plotting in base R</a></li>
+<li class="chapter" data-level="2.7.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#specialist-plotting-and-graphing-packages"><i class="fa fa-check"></i><b>2.7.2</b> Specialist plotting and graphing packages</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#documenting-your-work-using-r-markdown"><i class="fa fa-check"></i><b>2.8</b> Documenting your work using R Markdown</a></li>
+<li class="chapter" data-level="2.9" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#learning-exercises"><i class="fa fa-check"></i><b>2.9</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="2.9.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#discussion-questions"><i class="fa fa-check"></i><b>2.9.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="2.9.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-exercises"><i class="fa fa-check"></i><b>2.9.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="found-stats.html"><a href="found-stats.html"><i class="fa fa-check"></i><b>3</b> Statistics Foundations</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="found-stats.html"><a href="found-stats.html#elementary-descriptive-statistics-of-populations-and-samples"><i class="fa fa-check"></i><b>3.1</b> Elementary descriptive statistics of populations and samples</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="found-stats.html"><a href="found-stats.html#mean-var-sd"><i class="fa fa-check"></i><b>3.1.1</b> Mean, variance and standard deviation</a></li>
+<li class="chapter" data-level="3.1.2" data-path="found-stats.html"><a href="found-stats.html#covariance-and-correlation"><i class="fa fa-check"></i><b>3.1.2</b> Covariance and correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="found-stats.html"><a href="found-stats.html#distribution-of-random-variables"><i class="fa fa-check"></i><b>3.2</b> Distribution of random variables</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="found-stats.html"><a href="found-stats.html#sampling-of-random-variables"><i class="fa fa-check"></i><b>3.2.1</b> Sampling of random variables</a></li>
+<li class="chapter" data-level="3.2.2" data-path="found-stats.html"><a href="found-stats.html#standard-errors-the-t-distribution-and-confidence-intervals"><i class="fa fa-check"></i><b>3.2.2</b> Standard errors, the <span class="math inline">\(t\)</span>-distribution and confidence intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="found-stats.html"><a href="found-stats.html#hyp-tests"><i class="fa fa-check"></i><b>3.3</b> Hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="found-stats.html"><a href="found-stats.html#means-sig"><i class="fa fa-check"></i><b>3.3.1</b> Testing for a difference in means (Welch’s <span class="math inline">\(t\)</span>-test)</a></li>
+<li class="chapter" data-level="3.3.2" data-path="found-stats.html"><a href="found-stats.html#t-test-cor"><i class="fa fa-check"></i><b>3.3.2</b> Testing for a non-zero correlation between two variables (<span class="math inline">\(t\)</span>-test for correlation)</a></li>
+<li class="chapter" data-level="3.3.3" data-path="found-stats.html"><a href="found-stats.html#testing-for-a-difference-in-frequency-distribution-between-different-categories-in-a-data-set-chi-square-test"><i class="fa fa-check"></i><b>3.3.3</b> Testing for a difference in frequency distribution between different categories in a data set (Chi-square test)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="found-stats.html"><a href="found-stats.html#foundational-statistics-in-python"><i class="fa fa-check"></i><b>3.4</b> Foundational statistics in Python</a></li>
+<li class="chapter" data-level="3.5" data-path="found-stats.html"><a href="found-stats.html#foundational-statistics-in-julia"><i class="fa fa-check"></i><b>3.5</b> Foundational statistics in Julia</a></li>
+<li class="chapter" data-level="3.6" data-path="found-stats.html"><a href="found-stats.html#learning-exercises-1"><i class="fa fa-check"></i><b>3.6</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="found-stats.html"><a href="found-stats.html#discussion-questions-1"><i class="fa fa-check"></i><b>3.6.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="3.6.2" data-path="found-stats.html"><a href="found-stats.html#data-exercises-1"><i class="fa fa-check"></i><b>3.6.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html"><i class="fa fa-check"></i><b>4</b> Linear Regression for Continuous Outcomes</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#when-ols"><i class="fa fa-check"></i><b>4.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#origins-ols"><i class="fa fa-check"></i><b>4.1.1</b> Origins and intuition of linear regression</a></li>
+<li class="chapter" data-level="4.1.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#use-cases-ols"><i class="fa fa-check"></i><b>4.1.2</b> Use cases for linear regression</a></li>
+<li class="chapter" data-level="4.1.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#walkthrough-ols"><i class="fa fa-check"></i><b>4.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#simple-ols"><i class="fa fa-check"></i><b>4.2</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#linear-single"><i class="fa fa-check"></i><b>4.2.1</b> Linear relationship between a single input and an outcome</a></li>
+<li class="chapter" data-level="4.2.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#minimising-error-ols"><i class="fa fa-check"></i><b>4.2.2</b> Minimising the error</a></li>
+<li class="chapter" data-level="4.2.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#best-fit-simple-ols"><i class="fa fa-check"></i><b>4.2.3</b> Determining the best fit</a></li>
+<li class="chapter" data-level="4.2.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#measuring-the-fit-of-the-model"><i class="fa fa-check"></i><b>4.2.4</b> Measuring the fit of the model</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#multiple-linear-regression"><i class="fa fa-check"></i><b>4.3</b> Multiple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#running-a-multiple-linear-regression-model-and-interpreting-its-coefficients"><i class="fa fa-check"></i><b>4.3.1</b> Running a multiple linear regression model and interpreting its coefficients</a></li>
+<li class="chapter" data-level="4.3.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#coefficient-confidence"><i class="fa fa-check"></i><b>4.3.2</b> Coefficient confidence</a></li>
+<li class="chapter" data-level="4.3.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#lin-good-fit"><i class="fa fa-check"></i><b>4.3.3</b> Model ‘goodness-of-fit’</a></li>
+<li class="chapter" data-level="4.3.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#making-predictions-from-your-model"><i class="fa fa-check"></i><b>4.3.4</b> Making predictions from your model</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#managing-inputs-in-linear-regression"><i class="fa fa-check"></i><b>4.4</b> Managing inputs in linear regression</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#relevance-of-input-variables"><i class="fa fa-check"></i><b>4.4.1</b> Relevance of input variables</a></li>
+<li class="chapter" data-level="4.4.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#sparseness-missingness-of-data"><i class="fa fa-check"></i><b>4.4.2</b> Sparseness (‘missingness’) of data</a></li>
+<li class="chapter" data-level="4.4.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#transforming-categorical-inputs-to-dummy-variables"><i class="fa fa-check"></i><b>4.4.3</b> Transforming categorical inputs to dummy variables</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#testing-your-model-assumptions"><i class="fa fa-check"></i><b>4.5</b> Testing your model assumptions</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#assumption-of-linearity-and-additivity"><i class="fa fa-check"></i><b>4.5.1</b> Assumption of linearity and additivity</a></li>
+<li class="chapter" data-level="4.5.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#lin-reg-const-var"><i class="fa fa-check"></i><b>4.5.2</b> Assumption of constant error variance</a></li>
+<li class="chapter" data-level="4.5.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#norm-dist-assum"><i class="fa fa-check"></i><b>4.5.3</b> Assumption of normally distributed errors</a></li>
+<li class="chapter" data-level="4.5.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#collinearity"><i class="fa fa-check"></i><b>4.5.4</b> Avoiding high collinearity and multicollinearity between input variables</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#extending-multiple-linear-regression"><i class="fa fa-check"></i><b>4.6</b> Extending multiple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#interactions-between-input-variables"><i class="fa fa-check"></i><b>4.6.1</b> Interactions between input variables</a></li>
+<li class="chapter" data-level="4.6.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#quadratic-and-higher-order-polynomial-terms"><i class="fa fa-check"></i><b>4.6.2</b> Quadratic and higher-order polynomial terms</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#learning-exercises-2"><i class="fa fa-check"></i><b>4.7</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="4.7.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#discussion-questions-2"><i class="fa fa-check"></i><b>4.7.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="4.7.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#data-exercises-2"><i class="fa fa-check"></i><b>4.7.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="bin-log-reg.html"><a href="bin-log-reg.html"><i class="fa fa-check"></i><b>5</b> Binomial Logistic Regression for Binary Outcomes</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#when-to-use-it"><i class="fa fa-check"></i><b>5.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#logistic-origins"><i class="fa fa-check"></i><b>5.1.1</b> Origins and intuition of binomial logistic regression</a></li>
+<li class="chapter" data-level="5.1.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#use-cases-for-binomial-logistic-regression"><i class="fa fa-check"></i><b>5.1.2</b> Use cases for binomial logistic regression</a></li>
+<li class="chapter" data-level="5.1.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#walkthrough-logit"><i class="fa fa-check"></i><b>5.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#mod-prob"><i class="fa fa-check"></i><b>5.2</b> Modeling probabilistic outcomes using a logistic function</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#deriving-the-concept-of-log-odds"><i class="fa fa-check"></i><b>5.2.1</b> Deriving the concept of log odds</a></li>
+<li class="chapter" data-level="5.2.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#modeling-the-log-odds-and-interpreting-the-coefficients"><i class="fa fa-check"></i><b>5.2.2</b> Modeling the log odds and interpreting the coefficients</a></li>
+<li class="chapter" data-level="5.2.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#odds-versus-probability"><i class="fa fa-check"></i><b>5.2.3</b> Odds versus probability</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#running-a-multivariate-binomial-logistic-regression-model"><i class="fa fa-check"></i><b>5.3</b> Running a multivariate binomial logistic regression model</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#running-and-interpreting-a-multivariate-binomial-logistic-regression-model"><i class="fa fa-check"></i><b>5.3.1</b> Running and interpreting a multivariate binomial logistic regression model</a></li>
+<li class="chapter" data-level="5.3.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#logistic-gof"><i class="fa fa-check"></i><b>5.3.2</b> Understanding the fit and goodness-of-fit of a binomial logistic regression model</a></li>
+<li class="chapter" data-level="5.3.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#model-parsimony"><i class="fa fa-check"></i><b>5.3.3</b> Model parsimony</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="bin-log-reg.html"><a href="bin-log-reg.html#other-considerations-in-binomial-logistic-regression"><i class="fa fa-check"></i><b>5.4</b> Other considerations in binomial logistic regression</a></li>
+<li class="chapter" data-level="5.5" data-path="bin-log-reg.html"><a href="bin-log-reg.html#learning-exercises-3"><i class="fa fa-check"></i><b>5.5</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#discussion-questions-3"><i class="fa fa-check"></i><b>5.5.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="5.5.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#data-exercises-3"><i class="fa fa-check"></i><b>5.5.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html"><i class="fa fa-check"></i><b>6</b> Multinomial Logistic Regression for Nominal Category Outcomes</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#when-to-use-it-1"><i class="fa fa-check"></i><b>6.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#intuition-for-multinomial-logistic-regression"><i class="fa fa-check"></i><b>6.1.1</b> Intuition for multinomial logistic regression</a></li>
+<li class="chapter" data-level="6.1.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#use-cases-for-multinomial-logistic-regression"><i class="fa fa-check"></i><b>6.1.2</b> Use cases for multinomial logistic regression</a></li>
+<li class="chapter" data-level="6.1.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#walkthrough-example"><i class="fa fa-check"></i><b>6.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#stratified"><i class="fa fa-check"></i><b>6.2</b> Running stratified binomial models</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#modeling-the-choice-of-product-a-versus-other-products"><i class="fa fa-check"></i><b>6.2.1</b> Modeling the choice of Product A versus other products</a></li>
+<li class="chapter" data-level="6.2.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#modeling-other-choices"><i class="fa fa-check"></i><b>6.2.2</b> Modeling other choices</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#running-a-multinomial-regression-model"><i class="fa fa-check"></i><b>6.3</b> Running a multinomial regression model</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#def-ref"><i class="fa fa-check"></i><b>6.3.1</b> Defining a reference level and running the model</a></li>
+<li class="chapter" data-level="6.3.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#interpreting-the-model"><i class="fa fa-check"></i><b>6.3.2</b> Interpreting the model</a></li>
+<li class="chapter" data-level="6.3.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#changing-ref"><i class="fa fa-check"></i><b>6.3.3</b> Changing the reference</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#model-simplification-fit-and-goodness-of-fit-for-multinomial-logistic-regression-models"><i class="fa fa-check"></i><b>6.4</b> Model simplification, fit and goodness-of-fit for multinomial logistic regression models</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#elim"><i class="fa fa-check"></i><b>6.4.1</b> Gradual safe elimination of variables</a></li>
+<li class="chapter" data-level="6.4.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#model-fit-and-goodness-of-fit"><i class="fa fa-check"></i><b>6.4.2</b> Model fit and goodness-of-fit</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#learning-exercises-4"><i class="fa fa-check"></i><b>6.5</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#discussion-questions-4"><i class="fa fa-check"></i><b>6.5.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="6.5.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#data-exercises-4"><i class="fa fa-check"></i><b>6.5.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ord-reg.html"><a href="ord-reg.html"><i class="fa fa-check"></i><b>7</b> Proportional Odds Logistic Regression for Ordered Category Outcomes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="ord-reg.html"><a href="ord-reg.html#when-to-use-it-2"><i class="fa fa-check"></i><b>7.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="ord-reg.html"><a href="ord-reg.html#ord-intuit"><i class="fa fa-check"></i><b>7.1.1</b> Intuition for proportional odds logistic regression</a></li>
+<li class="chapter" data-level="7.1.2" data-path="ord-reg.html"><a href="ord-reg.html#use-cases-for-proportional-odds-logistic-regression"><i class="fa fa-check"></i><b>7.1.2</b> Use cases for proportional odds logistic regression</a></li>
+<li class="chapter" data-level="7.1.3" data-path="ord-reg.html"><a href="ord-reg.html#ord-walkthrough"><i class="fa fa-check"></i><b>7.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="ord-reg.html"><a href="ord-reg.html#modeling-ordinal-outcomes-under-the-assumption-of-proportional-odds"><i class="fa fa-check"></i><b>7.2</b> Modeling ordinal outcomes under the assumption of proportional odds</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="ord-reg.html"><a href="ord-reg.html#mod-lin-reg"><i class="fa fa-check"></i><b>7.2.1</b> Using a latent continuous outcome variable to derive a proportional odds model</a></li>
+<li class="chapter" data-level="7.2.2" data-path="ord-reg.html"><a href="ord-reg.html#running-a-proportional-odds-logistic-regression-model"><i class="fa fa-check"></i><b>7.2.2</b> Running a proportional odds logistic regression model</a></li>
+<li class="chapter" data-level="7.2.3" data-path="ord-reg.html"><a href="ord-reg.html#calculating-the-likelihood-of-an-observation-being-in-a-specific-ordinal-category"><i class="fa fa-check"></i><b>7.2.3</b> Calculating the likelihood of an observation being in a specific ordinal category</a></li>
+<li class="chapter" data-level="7.2.4" data-path="ord-reg.html"><a href="ord-reg.html#model-diagnostics"><i class="fa fa-check"></i><b>7.2.4</b> Model diagnostics</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="ord-reg.html"><a href="ord-reg.html#testing-the-proportional-odds-assumption"><i class="fa fa-check"></i><b>7.3</b> Testing the proportional odds assumption</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="ord-reg.html"><a href="ord-reg.html#sighting-the-coefficients-of-stratified-binomial-models"><i class="fa fa-check"></i><b>7.3.1</b> Sighting the coefficients of stratified binomial models</a></li>
+<li class="chapter" data-level="7.3.2" data-path="ord-reg.html"><a href="ord-reg.html#wald"><i class="fa fa-check"></i><b>7.3.2</b> The Brant-Wald test</a></li>
+<li class="chapter" data-level="7.3.3" data-path="ord-reg.html"><a href="ord-reg.html#alternatives-to-proportional-odds-models"><i class="fa fa-check"></i><b>7.3.3</b> Alternatives to proportional odds models</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="ord-reg.html"><a href="ord-reg.html#learning-exercises-5"><i class="fa fa-check"></i><b>7.4</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="ord-reg.html"><a href="ord-reg.html#discussion-questions-5"><i class="fa fa-check"></i><b>7.4.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="7.4.2" data-path="ord-reg.html"><a href="ord-reg.html#data-exercises-5"><i class="fa fa-check"></i><b>7.4.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html"><i class="fa fa-check"></i><b>8</b> Modeling Explicit and Latent Hierarchy in Data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#mixed"><i class="fa fa-check"></i><b>8.1</b> Mixed models for explicit hierarchy in data</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#fixed-and-random-effects"><i class="fa fa-check"></i><b>8.1.1</b> Fixed and random effects</a></li>
+<li class="chapter" data-level="8.1.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-a-mixed-model"><i class="fa fa-check"></i><b>8.1.2</b> Running a mixed model</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#struc-eq-model"><i class="fa fa-check"></i><b>8.2</b> Structural equation models for latent hierarchy in data</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-and-assessing-the-measurement-model"><i class="fa fa-check"></i><b>8.2.1</b> Running and assessing the measurement model</a></li>
+<li class="chapter" data-level="8.2.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-and-interpreting-the-structural-model"><i class="fa fa-check"></i><b>8.2.2</b> Running and interpreting the structural model</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#learning-exercises-6"><i class="fa fa-check"></i><b>8.3</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#discussion-questions-6"><i class="fa fa-check"></i><b>8.3.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="8.3.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#data-exercises-6"><i class="fa fa-check"></i><b>8.3.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="survival.html"><a href="survival.html"><i class="fa fa-check"></i><b>9</b> Survival Analysis for Modeling Singular Events Over Time</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="survival.html"><a href="survival.html#tracking-and-illustrating-survival-rates-over-the-study-period"><i class="fa fa-check"></i><b>9.1</b> Tracking and illustrating survival rates over the study period</a></li>
+<li class="chapter" data-level="9.2" data-path="survival.html"><a href="survival.html#coxphmodel"><i class="fa fa-check"></i><b>9.2</b> Cox proportional hazard regression models</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="survival.html"><a href="survival.html#running-a-cox-proportional-hazard-regression-model"><i class="fa fa-check"></i><b>9.2.1</b> Running a Cox proportional hazard regression model</a></li>
+<li class="chapter" data-level="9.2.2" data-path="survival.html"><a href="survival.html#checking-the-proportional-hazard-assumption"><i class="fa fa-check"></i><b>9.2.2</b> Checking the proportional hazard assumption</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="survival.html"><a href="survival.html#frailty-models"><i class="fa fa-check"></i><b>9.3</b> Frailty models</a></li>
+<li class="chapter" data-level="9.4" data-path="survival.html"><a href="survival.html#learning-exercises-7"><i class="fa fa-check"></i><b>9.4</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="survival.html"><a href="survival.html#discussion-questions-7"><i class="fa fa-check"></i><b>9.4.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="9.4.2" data-path="survival.html"><a href="survival.html#data-exercises-7"><i class="fa fa-check"></i><b>9.4.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="alt-approaches.html"><a href="alt-approaches.html"><i class="fa fa-check"></i><b>10</b> Alternative Technical Approaches in R, Python and Julia</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="alt-approaches.html"><a href="alt-approaches.html#tidier-modeling-approaches-in-r"><i class="fa fa-check"></i><b>10.1</b> ‘Tidier’ modeling approaches in R</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="alt-approaches.html"><a href="alt-approaches.html#the-broom-package"><i class="fa fa-check"></i><b>10.1.1</b> The <code>broom</code> package</a></li>
+<li class="chapter" data-level="10.1.2" data-path="alt-approaches.html"><a href="alt-approaches.html#the-parsnip-package"><i class="fa fa-check"></i><b>10.1.2</b> The <code>parsnip</code> package</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="alt-approaches.html"><a href="alt-approaches.html#inferential-statistical-modeling-in-python"><i class="fa fa-check"></i><b>10.2</b> Inferential statistical modeling in Python</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="alt-approaches.html"><a href="alt-approaches.html#ordinary-least-squares-ols-linear-regression"><i class="fa fa-check"></i><b>10.2.1</b> Ordinary Least Squares (OLS) linear regression</a></li>
+<li class="chapter" data-level="10.2.2" data-path="alt-approaches.html"><a href="alt-approaches.html#binomial-logistic-regression"><i class="fa fa-check"></i><b>10.2.2</b> Binomial logistic regression</a></li>
+<li class="chapter" data-level="10.2.3" data-path="alt-approaches.html"><a href="alt-approaches.html#multinomial-logistic-regression"><i class="fa fa-check"></i><b>10.2.3</b> Multinomial logistic regression</a></li>
+<li class="chapter" data-level="10.2.4" data-path="alt-approaches.html"><a href="alt-approaches.html#structural-equation-models"><i class="fa fa-check"></i><b>10.2.4</b> Structural equation models</a></li>
+<li class="chapter" data-level="10.2.5" data-path="alt-approaches.html"><a href="alt-approaches.html#survival-analysis"><i class="fa fa-check"></i><b>10.2.5</b> Survival analysis</a></li>
+<li class="chapter" data-level="10.2.6" data-path="alt-approaches.html"><a href="alt-approaches.html#other-model-variants"><i class="fa fa-check"></i><b>10.2.6</b> Other model variants</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="alt-approaches.html"><a href="alt-approaches.html#inferential-statistical-modeling-in-julia"><i class="fa fa-check"></i><b>10.3</b> Inferential statistical modeling in Julia</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="alt-approaches.html"><a href="alt-approaches.html#ordinary-least-squares-ols-linear-regression-1"><i class="fa fa-check"></i><b>10.3.1</b> Ordinary Least Squares (OLS) linear regression</a></li>
+<li class="chapter" data-level="10.3.2" data-path="alt-approaches.html"><a href="alt-approaches.html#binomial-logistic-regression-1"><i class="fa fa-check"></i><b>10.3.2</b> Binomial logistic regression</a></li>
+<li class="chapter" data-level="10.3.3" data-path="alt-approaches.html"><a href="alt-approaches.html#multinomial-logistic-regression-1"><i class="fa fa-check"></i><b>10.3.3</b> Multinomial logistic regression</a></li>
+<li class="chapter" data-level="10.3.4" data-path="alt-approaches.html"><a href="alt-approaches.html#proportional-odds-logistic-regression"><i class="fa fa-check"></i><b>10.3.4</b> Proportional odds logistic regression</a></li>
+<li class="chapter" data-level="10.3.5" data-path="alt-approaches.html"><a href="alt-approaches.html#mixed-models"><i class="fa fa-check"></i><b>10.3.5</b> Mixed models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="power-tests.html"><a href="power-tests.html"><i class="fa fa-check"></i><b>11</b> Power Analysis to Estimate Required Sample Sizes for Modeling</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="power-tests.html"><a href="power-tests.html#errors-effect-sizes-and-statistical-power"><i class="fa fa-check"></i><b>11.1</b> Errors, effect sizes and statistical power</a></li>
+<li class="chapter" data-level="11.2" data-path="power-tests.html"><a href="power-tests.html#simple-stats"><i class="fa fa-check"></i><b>11.2</b> Power analysis for simple hypothesis tests</a></li>
+<li class="chapter" data-level="11.3" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-linear-regression-models"><i class="fa fa-check"></i><b>11.3</b> Power analysis for linear regression models</a></li>
+<li class="chapter" data-level="11.4" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-log-likelihood-regression-models"><i class="fa fa-check"></i><b>11.4</b> Power analysis for log-likelihood regression models</a></li>
+<li class="chapter" data-level="11.5" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-hierarchical-regression-models"><i class="fa fa-check"></i><b>11.5</b> Power analysis for hierarchical regression models</a></li>
+<li class="chapter" data-level="11.6" data-path="power-tests.html"><a href="power-tests.html#power-analysis-using-python"><i class="fa fa-check"></i><b>11.6</b> Power analysis using Python</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="solutions-to-exercises.html"><a href="solutions-to-exercises.html"><i class="fa fa-check"></i>Solutions to Exercises</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Handbook of Regression Modeling in People Analytics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="the-basics-of-the-r-programming-language" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> The Basics of the R Programming Language</h1>
+<p>Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis. Sample implementations in Python are also provided at various points in the book, as well as implementations in Julia for those who are keen on this newer and up-and-coming language. I have made efforts to keep the code as simple as possible, and I have tried to avoid the use of too many external packages. For the most part, readers should see (especially in the earlier chapters) that code blocks are short and simple, relying wherever possible on base R functionality. No doubt there are neater and more effective ways to code some of the material in this book using a wide array of R packages—and some of these are illustrated in Chapter <a href="alt-approaches.html#alt-approaches">10</a>—but my priority has been to keep the code simple, consistent and easily reproducible.</p>
+<p>For those who wish to follow the method and theory without the implementations in this book, there is no need to read this chapter. However, the style of this book is to use implementation to illustrate theory and practice, and so tolerance of many code blocks will be necessary as you read onward.</p>
+<p>For those who wish to simply replicate the models as quickly as possible, they will be able to avail of the code block copying feature, which appears whenever you scroll over an input code block. Assuming all the required external packages have been installed, these code blocks should all be transportable and immediately usable. For those who are extra-inquisitive and want to explore how I constructed graphics used for illustration (for which code is usually not displayed), the best place to go is the <a href="https://github.com/keithmcnulty/peopleanalytics-regression-book">Github repository</a> for this book.</p>
+<p>This chapter is for those who wish to learn the methods in this book but do not know how to use R. However, it is not intended to be a full tutorial on R. There are many more qualified individuals and existing resources that would better serve that purpose—in particular I recommend <span class="citation"><a href="#ref-wickham" role="doc-biblioref">Wickham and Grolemund</a> (<a href="#ref-wickham" role="doc-biblioref">2016</a>)</span>. It is recommended that you consult these resources and become comfortable with the basics of R before proceeding into the later chapters of this book. However, acknowledging that many will want to dive in sooner rather than later, this chapter covers the absolute basics of R that will allow the uninitiated reader to proceed with at least some orientation.</p>
+<div id="what-is-r" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> What is R?</h2>
+<p>R is a programming language that was originally developed by and for statisticians, but in recent years its capabilities and the environments in which it is used have expanded greatly, with extensive use nowadays in academia and the public and private sectors. There are many advantages to using a programming language like R. Here are some:</p>
+<ol style="list-style-type: decimal">
+<li>It is completely free and open source.</li>
+<li>It is faster and more efficient with memory than popular graphical user interface analytics tools.</li>
+<li>It facilitates easier replication of analysis from person to person compared with many alternatives.</li>
+<li>It has a large and growing global community of active users.</li>
+<li>It has a large and rapidly growing universe of packages, which are all free and which provide the ability to do an extremely wide range of general and highly specialized tasks, statistical and otherwise.</li>
+</ol>
+<p>There is often heated debate about which tools are better for doing non-trivial statistical analysis. I personally find that R provides the widest array of resources for those interested in inferential modeling, while Python has a more well-developed toolkit for predictive modeling and machine learning. Since the primary focus of this book is inferential modeling, the in-depth walkthroughs are coded in R.</p>
+</div>
+<div id="how-to-start-using-r" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> How to start using R</h2>
+<p>Just like most programming languages, R itself is an interpreter which receives input and returns output. It is not very easy to use without an IDE. An IDE is an <em>Integrated Development Environment</em>, which is a convenient user interface allowing an R programmer to do all their main tasks including writing and running R code, saving files, viewing data and plots, integrating code into documents and many other things. By far the most popular IDE for R is RStudio. An example of what the RStudio IDE looks like can be seen in Figure <a href="the-basics-of-the-r-programming-language.html#fig:rstudio-ide">2.1</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rstudio-ide"></span>
+<img src="www/R/rstudio-windows.png" alt="The RStudio IDE" width="474" />
+<p class="caption">
+Figure 2.1: The RStudio IDE
+</p>
+</div>
+<p>To start using R, follow these steps:</p>
+<ol style="list-style-type: decimal">
+<li>Download and install the latest version of R from <a href="https://www.r-project.org/" class="uri">https://www.r-project.org/</a>. Ensure that the version suits your operating system.</li>
+<li>Download the latest version of the RStudio IDE from <a href="https://rstudio.com/products/rstudio/" class="uri">https://rstudio.com/products/rstudio/</a> and view the video on that page to familiarize yourself with its features.<br />
+</li>
+<li>Open RStudio and play around.</li>
+</ol>
+<p>The initial stages of using R can be challenging, mostly due to the need to become familiar with how R understands, stores and processes data. Extensive trial and error is a learning necessity. Perseverance is important in these early stages, as well as an openness to seek help from others either in person or via online forums.</p>
+</div>
+<div id="data-in-r" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Data in R</h2>
+<p>As you start to do tasks involving data in R, you will generally want to store the things you create so that you can refer to them later. Simply calculating something does not store it in R. For example, a simple calculation like this can be performed easily:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="the-basics-of-the-r-programming-language.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">+</span> <span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<p>However, as soon as the calculation is complete, it is forgotten by R because the result hasn’t been assigned anywhere. To store something in your R session, you will assign it a name using the <code>&lt;-</code> operator. So I can assign my previous calculation to an object called <code>my_sum</code>, and this allows me to access the value at any time.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="the-basics-of-the-r-programming-language.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># store the result</span></span>
+<span id="cb5-2"><a href="the-basics-of-the-r-programming-language.html#cb5-2" aria-hidden="true" tabindex="-1"></a>my_sum <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">+</span> <span class="dv">3</span></span>
+<span id="cb5-3"><a href="the-basics-of-the-r-programming-language.html#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="the-basics-of-the-r-programming-language.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># now I can work with it</span></span>
+<span id="cb5-5"><a href="the-basics-of-the-r-programming-language.html#cb5-5" aria-hidden="true" tabindex="-1"></a>my_sum <span class="sc">+</span> <span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] 9</code></pre>
+<p>You will see above that you can comment your code by simply adding a <code>#</code> to the start of a line to ensure that the line is ignored by the interpreter.</p>
+<p>Note that assignment to an object does not result in the value being displayed. To display the value, the name of the object must be typed, the <code>print()</code> command used or the command should be wrapped in parentheses.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="the-basics-of-the-r-programming-language.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># show me the value of my_sum</span></span>
+<span id="cb7-2"><a href="the-basics-of-the-r-programming-language.html#cb7-2" aria-hidden="true" tabindex="-1"></a>my_sum</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="the-basics-of-the-r-programming-language.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># assign my_sum + 3 to new_sum and show its value</span></span>
+<span id="cb9-2"><a href="the-basics-of-the-r-programming-language.html#cb9-2" aria-hidden="true" tabindex="-1"></a>(new_sum <span class="ot">&lt;-</span> my_sum <span class="sc">+</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 9</code></pre>
+<div id="data-types" class="section level3" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Data types</h3>
+<p>All data in R has an associated type, to reflect the wide range of data that R is able to work with. The <code>typeof()</code> function can be used to see the type of a single scalar value. Let’s look at the most common scalar data types.</p>
+<p><strong>Numeric data</strong> can be in integer form or double (decimal) form.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="the-basics-of-the-r-programming-language.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># integers can be signified by adding an &#39;L&#39; to the end</span></span>
+<span id="cb11-2"><a href="the-basics-of-the-r-programming-language.html#cb11-2" aria-hidden="true" tabindex="-1"></a>my_integer <span class="ot">&lt;-</span> 1L  </span>
+<span id="cb11-3"><a href="the-basics-of-the-r-programming-language.html#cb11-3" aria-hidden="true" tabindex="-1"></a>my_double <span class="ot">&lt;-</span> <span class="fl">6.38</span></span>
+<span id="cb11-4"><a href="the-basics-of-the-r-programming-language.html#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="the-basics-of-the-r-programming-language.html#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(my_integer)</span></code></pre></div>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="the-basics-of-the-r-programming-language.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(my_double)</span></code></pre></div>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<p><strong>Character data</strong> is text data surrounded by single or double quotes.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="the-basics-of-the-r-programming-language.html#cb15-1" aria-hidden="true" tabindex="-1"></a>my_character <span class="ot">&lt;-</span> <span class="st">&quot;THIS IS TEXT&quot;</span></span>
+<span id="cb15-2"><a href="the-basics-of-the-r-programming-language.html#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(my_character)</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<p><strong>Logical data</strong> takes the form <code>TRUE</code> or <code>FALSE</code>.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="the-basics-of-the-r-programming-language.html#cb17-1" aria-hidden="true" tabindex="-1"></a>my_logical <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb17-2"><a href="the-basics-of-the-r-programming-language.html#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(my_logical)</span></code></pre></div>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+</div>
+<div id="homogeneous-data-structures" class="section level3" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Homogeneous data structures</h3>
+<p><strong>Vectors</strong> are one-dimensional structures containing data of the same type and are notated by using <code>c()</code>. The type of the vector can also be viewed using the <code>typeof()</code> function, but the <code>str()</code> function can be used to display both the contents of the vector and its type.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="the-basics-of-the-r-programming-language.html#cb19-1" aria-hidden="true" tabindex="-1"></a>my_double_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.3</span>, <span class="fl">6.8</span>, <span class="fl">4.5</span>, <span class="dv">65</span>, <span class="dv">6</span>)</span>
+<span id="cb19-2"><a href="the-basics-of-the-r-programming-language.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(my_double_vector)</span></code></pre></div>
+<pre><code>##  num [1:5] 2.3 6.8 4.5 65 6</code></pre>
+<p>Categorical data—which takes only a finite number of possible values—can be stored as a factor vector to make it easier to perform grouping and manipulation.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="the-basics-of-the-r-programming-language.html#cb21-1" aria-hidden="true" tabindex="-1"></a>categories <span class="ot">&lt;-</span> <span class="fu">factor</span>(</span>
+<span id="cb21-2"><a href="the-basics-of-the-r-programming-language.html#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;A&quot;</span>, <span class="st">&quot;C&quot;</span>)</span>
+<span id="cb21-3"><a href="the-basics-of-the-r-programming-language.html#cb21-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-4"><a href="the-basics-of-the-r-programming-language.html#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="the-basics-of-the-r-programming-language.html#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(categories)</span></code></pre></div>
+<pre><code>##  Factor w/ 3 levels &quot;A&quot;,&quot;B&quot;,&quot;C&quot;: 1 2 3 1 3</code></pre>
+<p>If needed, the factors can be given order.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="the-basics-of-the-r-programming-language.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># character vector </span></span>
+<span id="cb23-2"><a href="the-basics-of-the-r-programming-language.html#cb23-2" aria-hidden="true" tabindex="-1"></a>ranking <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Medium&quot;</span>, <span class="st">&quot;High&quot;</span>, <span class="st">&quot;Low&quot;</span>)</span>
+<span id="cb23-3"><a href="the-basics-of-the-r-programming-language.html#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(ranking)</span></code></pre></div>
+<pre><code>##  chr [1:3] &quot;Medium&quot; &quot;High&quot; &quot;Low&quot;</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="the-basics-of-the-r-programming-language.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># turn it into an ordered factor</span></span>
+<span id="cb25-2"><a href="the-basics-of-the-r-programming-language.html#cb25-2" aria-hidden="true" tabindex="-1"></a>ranking_factors <span class="ot">&lt;-</span> <span class="fu">ordered</span>(</span>
+<span id="cb25-3"><a href="the-basics-of-the-r-programming-language.html#cb25-3" aria-hidden="true" tabindex="-1"></a>  ranking, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Low&quot;</span>, <span class="st">&quot;Medium&quot;</span>, <span class="st">&quot;High&quot;</span>)</span>
+<span id="cb25-4"><a href="the-basics-of-the-r-programming-language.html#cb25-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-5"><a href="the-basics-of-the-r-programming-language.html#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="the-basics-of-the-r-programming-language.html#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(ranking_factors)</span></code></pre></div>
+<pre><code>##  Ord.factor w/ 3 levels &quot;Low&quot;&lt;&quot;Medium&quot;&lt;..: 2 3 1</code></pre>
+<p>The number of elements in a vector can be seen using the <code>length()</code> function.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="the-basics-of-the-r-programming-language.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(categories)</span></code></pre></div>
+<pre><code>## [1] 5</code></pre>
+<p>Simple numeric sequence vectors can be created using shorthand notation.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="the-basics-of-the-r-programming-language.html#cb29-1" aria-hidden="true" tabindex="-1"></a>(my_sequence <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<p>If you try to mix data types inside a vector, it will usually result in <em>type coercion</em>, where one or more of the types are forced into a different type to ensure homogeneity. Often this means the vector will become a character vector.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="the-basics-of-the-r-programming-language.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># numeric sequence vector</span></span>
+<span id="cb31-2"><a href="the-basics-of-the-r-programming-language.html#cb31-2" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
+<span id="cb31-3"><a href="the-basics-of-the-r-programming-language.html#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(vec)</span></code></pre></div>
+<pre><code>##  int [1:5] 1 2 3 4 5</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="the-basics-of-the-r-programming-language.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new vector containing vec and the character &quot;hello&quot;</span></span>
+<span id="cb33-2"><a href="the-basics-of-the-r-programming-language.html#cb33-2" aria-hidden="true" tabindex="-1"></a>new_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(vec, <span class="st">&quot;hello&quot;</span>)</span>
+<span id="cb33-3"><a href="the-basics-of-the-r-programming-language.html#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="the-basics-of-the-r-programming-language.html#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># numeric values have been coerced into their character equivalents</span></span>
+<span id="cb33-5"><a href="the-basics-of-the-r-programming-language.html#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(new_vec)</span></code></pre></div>
+<pre><code>##  chr [1:6] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;5&quot; &quot;hello&quot;</code></pre>
+<p>But sometimes logical or factor types will be coerced to numeric.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="the-basics-of-the-r-programming-language.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># attempt a mixed logical and numeric</span></span>
+<span id="cb35-2"><a href="the-basics-of-the-r-programming-language.html#cb35-2" aria-hidden="true" tabindex="-1"></a>mix <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="dv">6</span>)</span>
+<span id="cb35-3"><a href="the-basics-of-the-r-programming-language.html#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="the-basics-of-the-r-programming-language.html#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># logical has been converted to binary numeric (TRUE = 1)</span></span>
+<span id="cb35-5"><a href="the-basics-of-the-r-programming-language.html#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mix)</span></code></pre></div>
+<pre><code>##  num [1:2] 1 6</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="the-basics-of-the-r-programming-language.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># try to add a numeric to our previous categories factor vector</span></span>
+<span id="cb37-2"><a href="the-basics-of-the-r-programming-language.html#cb37-2" aria-hidden="true" tabindex="-1"></a>new_categories <span class="ot">&lt;-</span> <span class="fu">c</span>(categories, <span class="dv">1</span>)</span>
+<span id="cb37-3"><a href="the-basics-of-the-r-programming-language.html#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="the-basics-of-the-r-programming-language.html#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># categories have been coerced to background integer representations</span></span>
+<span id="cb37-5"><a href="the-basics-of-the-r-programming-language.html#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(new_categories)</span></code></pre></div>
+<pre><code>##  num [1:6] 1 2 3 1 3 1</code></pre>
+<p><strong>Matrices</strong> are two-dimensional data structures of the same type and are built from a vector by defining the number of rows and columns. Data is read into the matrix down the columns, starting left and moving right. Matrices are rarely used for non-numeric data types.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="the-basics-of-the-r-programming-language.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a 2x2 matrix with the first four integers</span></span>
+<span id="cb39-2"><a href="the-basics-of-the-r-programming-language.html#cb39-2" aria-hidden="true" tabindex="-1"></a>(m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>))</span></code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4</code></pre>
+<p><strong>Arrays</strong> are n-dimensional data structures with the same data type and are not used extensively by most R users.</p>
+</div>
+<div id="heterogeneous-data-structures" class="section level3" number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> Heterogeneous data structures</h3>
+<p><strong>Lists</strong> are one-dimensional data structures that can take data of any type.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="the-basics-of-the-r-programming-language.html#cb41-1" aria-hidden="true" tabindex="-1"></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">6</span>, <span class="cn">TRUE</span>, <span class="st">&quot;hello&quot;</span>)</span>
+<span id="cb41-2"><a href="the-basics-of-the-r-programming-language.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(my_list)</span></code></pre></div>
+<pre><code>## List of 3
+##  $ : num 6
+##  $ : logi TRUE
+##  $ : chr &quot;hello&quot;</code></pre>
+<p>List elements can be any data type and any dimension. Each element can be given a name.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="the-basics-of-the-r-programming-language.html#cb43-1" aria-hidden="true" tabindex="-1"></a>new_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb43-2"><a href="the-basics-of-the-r-programming-language.html#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">scalar =</span> <span class="dv">6</span>, </span>
+<span id="cb43-3"><a href="the-basics-of-the-r-programming-language.html#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">vector =</span> <span class="fu">c</span>(<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;Goodbye&quot;</span>), </span>
+<span id="cb43-4"><a href="the-basics-of-the-r-programming-language.html#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">matrix =</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb43-5"><a href="the-basics-of-the-r-programming-language.html#cb43-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb43-6"><a href="the-basics-of-the-r-programming-language.html#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-7"><a href="the-basics-of-the-r-programming-language.html#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(new_list)</span></code></pre></div>
+<pre><code>## List of 3
+##  $ scalar: num 6
+##  $ vector: chr [1:2] &quot;Hello&quot; &quot;Goodbye&quot;
+##  $ matrix: int [1:2, 1:2] 1 2 3 4</code></pre>
+<p>Named list elements can be accessed by using <code>$</code>.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="the-basics-of-the-r-programming-language.html#cb45-1" aria-hidden="true" tabindex="-1"></a>new_list<span class="sc">$</span>matrix</span></code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4</code></pre>
+<p><strong>Dataframes</strong> are the most used data structure in R; they are effectively a named list of vectors of the same length, with each vector as a column. As such, a dataframe is very similar in nature to a typical database table or spreadsheet.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="the-basics-of-the-r-programming-language.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># two vectors of different types but same length</span></span>
+<span id="cb47-2"><a href="the-basics-of-the-r-programming-language.html#cb47-2" aria-hidden="true" tabindex="-1"></a>names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;John&quot;</span>, <span class="st">&quot;Ayesha&quot;</span>)</span>
+<span id="cb47-3"><a href="the-basics-of-the-r-programming-language.html#cb47-3" aria-hidden="true" tabindex="-1"></a>ages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">31</span>, <span class="dv">24</span>)</span>
+<span id="cb47-4"><a href="the-basics-of-the-r-programming-language.html#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="the-basics-of-the-r-programming-language.html#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="co"># create a dataframe</span></span>
+<span id="cb47-6"><a href="the-basics-of-the-r-programming-language.html#cb47-6" aria-hidden="true" tabindex="-1"></a>(df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(names, ages))</span></code></pre></div>
+<pre><code>##    names ages
+## 1   John   31
+## 2 Ayesha   24</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="the-basics-of-the-r-programming-language.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get types of columns</span></span>
+<span id="cb49-2"><a href="the-basics-of-the-r-programming-language.html#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(df)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    2 obs. of  2 variables:
+##  $ names: chr  &quot;John&quot; &quot;Ayesha&quot;
+##  $ ages : num  31 24</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="the-basics-of-the-r-programming-language.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get dimensions of df</span></span>
+<span id="cb51-2"><a href="the-basics-of-the-r-programming-language.html#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(df)</span></code></pre></div>
+<pre><code>## [1] 2 2</code></pre>
+</div>
+</div>
+<div id="working-with-dataframes" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Working with dataframes</h2>
+<p>The dataframe is the most common data structure used by analysts in R, due to its similarity to data tables found in databases and spreadsheets. We will work almost entirely with dataframes in this book, so let’s get to know them.</p>
+<div id="loading-and-tidying-data-in-dataframes" class="section level3" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Loading and tidying data in dataframes</h3>
+<p>To work with data in R, you usually need to pull it in from an outside source into a dataframe<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>. R facilitates numerous ways of importing data from simple <code>.csv</code> files, from Excel files, from online sources or from databases. Let’s load a data set that we will use later—the <code>salespeople</code> data set, which contains some information on the sales, average customer ratings and performance ratings of salespeople. The <code>read.csv()</code> function can accept a URL address of the file if it is online.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="the-basics-of-the-r-programming-language.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># url of data set </span></span>
+<span id="cb53-2"><a href="the-basics-of-the-r-programming-language.html#cb53-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/salespeople.csv&quot;</span></span>
+<span id="cb53-3"><a href="the-basics-of-the-r-programming-language.html#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="the-basics-of-the-r-programming-language.html#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load the data set and store it as a dataframe called salespeople</span></span>
+<span id="cb53-5"><a href="the-basics-of-the-r-programming-language.html#cb53-5" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code></pre></div>
+<p>We might not want to display this entire data set before knowing how big it is. We can view the dimensions, and if it is too big to display, we can use the <code>head()</code> function to display just the first few rows.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="the-basics-of-the-r-programming-language.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(salespeople)</span></code></pre></div>
+<pre><code>## [1] 351   4</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="the-basics-of-the-r-programming-language.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># hundreds of rows, so view first few</span></span>
+<span id="cb56-2"><a href="the-basics-of-the-r-programming-language.html#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(salespeople)</span></code></pre></div>
+<pre><code>##   promoted sales customer_rate performance
+## 1        0   594          3.94           2
+## 2        0   446          4.06           3
+## 3        1   674          3.83           4
+## 4        0   525          3.62           2
+## 5        1   657          4.40           3
+## 6        1   918          4.54           2</code></pre>
+<p>We can view a specific column by using <code>$</code>, and we can use square brackets to view a specific entry. For example if we wanted to see the 6th entry of the <code>sales</code> column:</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="the-basics-of-the-r-programming-language.html#cb58-1" aria-hidden="true" tabindex="-1"></a>salespeople<span class="sc">$</span>sales[<span class="dv">6</span>]</span></code></pre></div>
+<pre><code>## [1] 918</code></pre>
+<p>Alternatively, we can use a <code>[row, column]</code> index to get a specific entry in the dataframe.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="the-basics-of-the-r-programming-language.html#cb60-1" aria-hidden="true" tabindex="-1"></a>salespeople[<span class="dv">34</span>, <span class="dv">4</span>]</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>We can take a look at the data types using <code>str()</code>.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="the-basics-of-the-r-programming-language.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(salespeople)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    351 obs. of  4 variables:
+##  $ promoted     : int  0 0 1 0 1 1 0 0 0 0 ...
+##  $ sales        : int  594 446 674 525 657 918 318 364 342 387 ...
+##  $ customer_rate: num  3.94 4.06 3.83 3.62 4.4 4.54 3.09 4.89 3.74 3 ...
+##  $ performance  : int  2 3 4 2 3 2 3 1 3 3 ...</code></pre>
+<p>We can also see a statistical summary of each column using <code>summary()</code>, which tells us various statistics depending on the type of the column.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="the-basics-of-the-r-programming-language.html#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(salespeople)</span></code></pre></div>
+<pre><code>##     promoted          sales       customer_rate    performance 
+##  Min.   :0.0000   Min.   :151.0   Min.   :1.000   Min.   :1.0  
+##  1st Qu.:0.0000   1st Qu.:389.2   1st Qu.:3.000   1st Qu.:2.0  
+##  Median :0.0000   Median :475.0   Median :3.620   Median :3.0  
+##  Mean   :0.3219   Mean   :527.0   Mean   :3.608   Mean   :2.5  
+##  3rd Qu.:1.0000   3rd Qu.:667.2   3rd Qu.:4.290   3rd Qu.:3.0  
+##  Max.   :1.0000   Max.   :945.0   Max.   :5.000   Max.   :4.0  
+##                   NA&#39;s   :1       NA&#39;s   :1       NA&#39;s   :1</code></pre>
+<p>Note that there is missing data in this dataframe, indicated by <code>NA</code>s in the summary. Missing data is identified by a special <code>NA</code> value in R. This should not be confused with <code>"NA"</code>, which is simply a character string. The function <code>is.na()</code> will look at all values in a vector or dataframe and return <code>TRUE</code> or <code>FALSE</code> based on whether they are <code>NA</code> or not. By adding these up using the <code>sum()</code> function, it will take <code>TRUE</code> as 1 and <code>FALSE</code> as 0, which effectively provides a count of missing data.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="the-basics-of-the-r-programming-language.html#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(salespeople))</span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<p>This is a small number of <code>NA</code>s given the dimensions of our data set and we might want to remove the rows of data that contain NAs. The easiest way is to use the <code>complete.cases()</code> function, which identifies the rows that have no <code>NA</code>s, and then we can select those rows from the dataframe based on that condition. Note that you can overwrite objects with the same name in R.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="the-basics-of-the-r-programming-language.html#cb68-1" aria-hidden="true" tabindex="-1"></a>salespeople <span class="ot">&lt;-</span> salespeople[<span class="fu">complete.cases</span>(salespeople), ]</span>
+<span id="cb68-2"><a href="the-basics-of-the-r-programming-language.html#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-3"><a href="the-basics-of-the-r-programming-language.html#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="co"># confirm no NAs</span></span>
+<span id="cb68-4"><a href="the-basics-of-the-r-programming-language.html#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(salespeople))</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<p>We can see the unique values of a vector or column using the <code>unique()</code> function.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="the-basics-of-the-r-programming-language.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(salespeople<span class="sc">$</span>performance)</span></code></pre></div>
+<pre><code>## [1] 2 3 4 1</code></pre>
+<p>If we need to change the type of a column in a dataframe, we can use the <code>as.numeric()</code>, <code>as.character()</code>, <code>as.logical()</code> or <code>as.factor()</code> functions. For example, given that there are only four unique values for the <code>performance</code> column, we may want to convert it to a factor.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="the-basics-of-the-r-programming-language.html#cb72-1" aria-hidden="true" tabindex="-1"></a>salespeople<span class="sc">$</span>performance <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(salespeople<span class="sc">$</span>performance)</span>
+<span id="cb72-2"><a href="the-basics-of-the-r-programming-language.html#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(salespeople)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    350 obs. of  4 variables:
+##  $ promoted     : int  0 0 1 0 1 1 0 0 0 0 ...
+##  $ sales        : int  594 446 674 525 657 918 318 364 342 387 ...
+##  $ customer_rate: num  3.94 4.06 3.83 3.62 4.4 4.54 3.09 4.89 3.74 3 ...
+##  $ performance  : Factor w/ 4 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;: 2 3 4 2 3 2 3 1 3 3 ...</code></pre>
+</div>
+<div id="manipulating-dataframes" class="section level3" number="2.4.2">
+<h3><span class="header-section-number">2.4.2</span> Manipulating dataframes</h3>
+<p>Dataframes can be subsetted to contain only rows that satisfy specific conditions.</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="the-basics-of-the-r-programming-language.html#cb74-1" aria-hidden="true" tabindex="-1"></a>(sales_720 <span class="ot">&lt;-</span> <span class="fu">subset</span>(salespeople, <span class="at">subset =</span> sales <span class="sc">==</span> <span class="dv">720</span>))</span></code></pre></div>
+<pre><code>##     promoted sales customer_rate performance
+## 290        1   720          3.76           3</code></pre>
+<p>Note the use of <code>==</code>, which is used in many programming languages, to test for precise equality. Similarly we can select columns based on inequalities (<code>&gt;</code> for ‘greater than’‍, <code>&lt;</code> for ‘less than’‍, <code>&gt;=</code> for ‘greater than or equal to’‍, <code>&lt;=</code> for ‘less than or equal to’‍, or <code>!=</code> for ‘not equal to’). For example:</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="the-basics-of-the-r-programming-language.html#cb76-1" aria-hidden="true" tabindex="-1"></a>high_sales <span class="ot">&lt;-</span> <span class="fu">subset</span>(salespeople, <span class="at">subset =</span> sales <span class="sc">&gt;=</span> <span class="dv">700</span>)</span>
+<span id="cb76-2"><a href="the-basics-of-the-r-programming-language.html#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(high_sales)</span></code></pre></div>
+<pre><code>##    promoted sales customer_rate performance
+## 6         1   918          4.54           2
+## 12        1   716          3.16           3
+## 20        1   937          5.00           2
+## 21        1   702          3.53           4
+## 25        1   819          4.45           2
+## 26        1   736          3.94           4</code></pre>
+<p>To select specific columns use the <code>select</code> argument.</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="the-basics-of-the-r-programming-language.html#cb78-1" aria-hidden="true" tabindex="-1"></a>salespeople_sales_perf <span class="ot">&lt;-</span> <span class="fu">subset</span>(salespeople, </span>
+<span id="cb78-2"><a href="the-basics-of-the-r-programming-language.html#cb78-2" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">select =</span> <span class="fu">c</span>(<span class="st">&quot;sales&quot;</span>, <span class="st">&quot;performance&quot;</span>))</span>
+<span id="cb78-3"><a href="the-basics-of-the-r-programming-language.html#cb78-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(salespeople_sales_perf)</span></code></pre></div>
+<pre><code>##   sales performance
+## 1   594           2
+## 2   446           3
+## 3   674           4
+## 4   525           2
+## 5   657           3
+## 6   918           2</code></pre>
+<p>Two dataframes with the same column names can be combined by their rows.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="the-basics-of-the-r-programming-language.html#cb80-1" aria-hidden="true" tabindex="-1"></a>low_sales <span class="ot">&lt;-</span> <span class="fu">subset</span>(salespeople, <span class="at">subset =</span> sales <span class="sc">&lt;</span> <span class="dv">400</span>)</span>
+<span id="cb80-2"><a href="the-basics-of-the-r-programming-language.html#cb80-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-3"><a href="the-basics-of-the-r-programming-language.html#cb80-3" aria-hidden="true" tabindex="-1"></a><span class="co"># bind the rows of low_sales and high_sales together</span></span>
+<span id="cb80-4"><a href="the-basics-of-the-r-programming-language.html#cb80-4" aria-hidden="true" tabindex="-1"></a>low_and_high_sales <span class="ot">=</span> <span class="fu">rbind</span>(low_sales, high_sales)</span>
+<span id="cb80-5"><a href="the-basics-of-the-r-programming-language.html#cb80-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(low_and_high_sales)</span></code></pre></div>
+<pre><code>##    promoted sales customer_rate performance
+## 7         0   318          3.09           3
+## 8         0   364          4.89           1
+## 9         0   342          3.74           3
+## 10        0   387          3.00           3
+## 15        0   344          3.02           2
+## 16        0   372          3.87           3</code></pre>
+<p>Two dataframes with different column names can be combined by their columns.</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="the-basics-of-the-r-programming-language.html#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="co"># two dataframes with two columns each</span></span>
+<span id="cb82-2"><a href="the-basics-of-the-r-programming-language.html#cb82-2" aria-hidden="true" tabindex="-1"></a>sales_perf <span class="ot">&lt;-</span> <span class="fu">subset</span>(salespeople, </span>
+<span id="cb82-3"><a href="the-basics-of-the-r-programming-language.html#cb82-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">select =</span> <span class="fu">c</span>(<span class="st">&quot;sales&quot;</span>, <span class="st">&quot;performance&quot;</span>))</span>
+<span id="cb82-4"><a href="the-basics-of-the-r-programming-language.html#cb82-4" aria-hidden="true" tabindex="-1"></a>prom_custrate <span class="ot">&lt;-</span> <span class="fu">subset</span>(salespeople, </span>
+<span id="cb82-5"><a href="the-basics-of-the-r-programming-language.html#cb82-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">select =</span> <span class="fu">c</span>(<span class="st">&quot;promoted&quot;</span>, <span class="st">&quot;customer_rate&quot;</span>))</span>
+<span id="cb82-6"><a href="the-basics-of-the-r-programming-language.html#cb82-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-7"><a href="the-basics-of-the-r-programming-language.html#cb82-7" aria-hidden="true" tabindex="-1"></a><span class="co"># bind the columns to create a dataframe with four columns</span></span>
+<span id="cb82-8"><a href="the-basics-of-the-r-programming-language.html#cb82-8" aria-hidden="true" tabindex="-1"></a>full_df <span class="ot">&lt;-</span> <span class="fu">cbind</span>(sales_perf, prom_custrate)</span>
+<span id="cb82-9"><a href="the-basics-of-the-r-programming-language.html#cb82-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(full_df)</span></code></pre></div>
+<pre><code>##   sales performance promoted customer_rate
+## 1   594           2        0          3.94
+## 2   446           3        0          4.06
+## 3   674           4        1          3.83
+## 4   525           2        0          3.62
+## 5   657           3        1          4.40
+## 6   918           2        1          4.54</code></pre>
+</div>
+</div>
+<div id="functions-packages-and-libraries" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Functions, packages and libraries</h2>
+<p>In the code so far we have used a variety of functions. For example <code>head()</code>, <code>subset()</code>, <code>rbind()</code>. Functions are operations that take certain defined inputs and return an output. Functions exist to perform common useful operations.</p>
+<div id="using-functions" class="section level3" number="2.5.1">
+<h3><span class="header-section-number">2.5.1</span> Using functions</h3>
+<p>Functions usually take one or more arguments. Often there are a large number of arguments that a function can take, but many are optional and not required to be specified by the user. For example, the function <code>head()</code>, which displays the first rows of a dataframe<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>, has only one required argument <code>x</code>: the name of the dataframe. A second argument is optional, <code>n</code>: the number of rows to display. If <code>n</code> is not entered, it is assumed to have the default value <code>n = 6</code>.</p>
+<p>When running a function, you can either specify the arguments by name or you can enter them in order without their names. If you enter arguments without naming them, R expects the arguments to be entered in exactly the right order.</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="the-basics-of-the-r-programming-language.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># see the head of salespeople, with the default of six rows</span></span>
+<span id="cb84-2"><a href="the-basics-of-the-r-programming-language.html#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(salespeople)</span></code></pre></div>
+<pre><code>##   promoted sales customer_rate performance
+## 1        0   594          3.94           2
+## 2        0   446          4.06           3
+## 3        1   674          3.83           4
+## 4        0   525          3.62           2
+## 5        1   657          4.40           3
+## 6        1   918          4.54           2</code></pre>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="the-basics-of-the-r-programming-language.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co"># see fewer rows - arguments need to be in the right order if not named</span></span>
+<span id="cb86-2"><a href="the-basics-of-the-r-programming-language.html#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(salespeople, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>##   promoted sales customer_rate performance
+## 1        0   594          3.94           2
+## 2        0   446          4.06           3
+## 3        1   674          3.83           4</code></pre>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="the-basics-of-the-r-programming-language.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># or if you don&#39;t know the right order, </span></span>
+<span id="cb88-2"><a href="the-basics-of-the-r-programming-language.html#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="co"># name your arguments and you can put them in any order</span></span>
+<span id="cb88-3"><a href="the-basics-of-the-r-programming-language.html#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="at">n =</span> <span class="dv">3</span>, <span class="at">x =</span> salespeople)</span></code></pre></div>
+<pre><code>##   promoted sales customer_rate performance
+## 1        0   594          3.94           2
+## 2        0   446          4.06           3
+## 3        1   674          3.83           4</code></pre>
+</div>
+<div id="help-with-functions" class="section level3" number="2.5.2">
+<h3><span class="header-section-number">2.5.2</span> Help with functions</h3>
+<p>Most functions in R have excellent help documentation. To get help on the <code>head()</code> function, type <code>help(head)</code> or <code>?head</code>. This will display the results in the Help browser window in RStudio. Alternatively you can open the Help browser window directly in RStudio and do a search there. An example of the browser results for <code>head()</code> is in Figure <a href="the-basics-of-the-r-programming-language.html#fig:head-help">2.2</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:head-help"></span>
+<img src="www/R/head-help-small.png" alt="Results of a search for the `head()` function in the RStudio Help browser" width="821" />
+<p class="caption">
+Figure 2.2: Results of a search for the <code>head()</code> function in the RStudio Help browser
+</p>
+</div>
+<p>The help page normally shows the following:</p>
+<ul>
+<li>Description of the purpose of the function</li>
+<li>Usage examples, so you can quickly see how it is used</li>
+<li>Arguments list so you can see the names and order of arguments</li>
+<li>Details or notes on further considerations on use</li>
+<li>Expected value of the output (for example <code>head()</code> is expected to return a similar object to its first input <code>x</code>)</li>
+<li>Examples to help orient you further (sometimes examples can be very abstract in nature and not so helpful to users)</li>
+</ul>
+</div>
+<div id="writing-your-own-functions" class="section level3" number="2.5.3">
+<h3><span class="header-section-number">2.5.3</span> Writing your own functions</h3>
+<p>Functions are not limited to those that come packaged in R. Users can write their own functions to perform tasks that are helpful to their objectives. Experienced programmers in most languages subscribe to a principle called DRY (Don’t Repeat Yourself). Whenever a task needs to be done repeatedly, it is poor practice to write the same code numerous times. It makes more sense to write a function to do the task.</p>
+<p>In this example, a simple function is written which generates a report on a dataframe:</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="the-basics-of-the-r-programming-language.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create df_report function</span></span>
+<span id="cb90-2"><a href="the-basics-of-the-r-programming-language.html#cb90-2" aria-hidden="true" tabindex="-1"></a>df_report <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
+<span id="cb90-3"><a href="the-basics-of-the-r-programming-language.html#cb90-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="st">&quot;This dataframe contains&quot;</span>, <span class="fu">nrow</span>(df), <span class="st">&quot;rows and&quot;</span>, </span>
+<span id="cb90-4"><a href="the-basics-of-the-r-programming-language.html#cb90-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">ncol</span>(df), <span class="st">&quot;columns. There are&quot;</span>, <span class="fu">sum</span>(<span class="fu">is.na</span>(df)), <span class="st">&quot;NA entries.&quot;</span>)</span>
+<span id="cb90-5"><a href="the-basics-of-the-r-programming-language.html#cb90-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>We can test our function by using the built-in <code>mtcars</code> data set in R.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="the-basics-of-the-r-programming-language.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">df_report</span>(mtcars)</span></code></pre></div>
+<pre><code>## [1] &quot;This dataframe contains 32 rows and 11 columns. There are 0 NA entries.&quot;</code></pre>
+</div>
+<div id="installing-packages" class="section level3" number="2.5.4">
+<h3><span class="header-section-number">2.5.4</span> Installing packages</h3>
+<p>All the common functions that we have used so far exist in the base R installation. However, the beauty of open source languages like R is that users can write their own functions or resources and release them to others via packages. A package is an additional module that can be installed easily; it makes resources available which are not in the base R installation. In this book we will be using functions from both base R and from popular and useful packages. As an example, a popular package used for statistical modeling is the <code>MASS</code> package, which is based on methods in a popular applied statistics book<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>.</p>
+<p>Before an external package can be used, it must be installed into your package library using <code>install.packages()</code>. So to install <code>MASS</code>, type <code>install.packages("MASS")</code> into the console. This will send R to the main internet repository for R packages (known as CRAN). It will find the right version of <code>MASS</code> for your operating system and download and install it into your package library. If <code>MASS</code> needs other packages in order to work, it will also install these packages.</p>
+<p>If you want to install more than one package, put the names of the packages inside a character vector—for example:</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="the-basics-of-the-r-programming-language.html#cb93-1" aria-hidden="true" tabindex="-1"></a>my_packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;MASS&quot;</span>, <span class="st">&quot;DescTools&quot;</span>, <span class="st">&quot;dplyr&quot;</span>)</span>
+<span id="cb93-2"><a href="the-basics-of-the-r-programming-language.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(my_packages)</span></code></pre></div>
+<p>Once you have installed a package, you can see what functions are available by calling for help on it, for example using <code>help(package = MASS)</code>. One package you may wish to install now is the <code>peopleanalyticsdata</code> package, which contains all the data sets used in this book. By installing and loading this package, all the data sets used in this book will be loaded into your R session and ready to work with. If you do this, you can ignore the <code>read.csv()</code> commands later in the book, which download the data from the internet.</p>
+</div>
+<div id="using-packages" class="section level3" number="2.5.5">
+<h3><span class="header-section-number">2.5.5</span> Using packages</h3>
+<p>Once you have installed a package into your package library, to use it in your R session you need to load it using the <code>library()</code> function. For example, to load <code>MASS</code> after installing it, use <code>library(MASS)</code>. Often nothing will happen when you use this command, but rest assured the package has been loaded and you can start to use the functions inside it. Sometimes when you load the package a series of messages will display, usually to make you aware of certain things that you need to keep in mind when using the package. Note that whenever you see the <code>library()</code> command in this book, it is assumed that you have already installed the package in that command. If you have not, the <code>library()</code> command will fail.</p>
+<p>Once a package is loaded from your library, you can use any of the functions inside it. For example, the <code>stepAIC()</code> function is not available before you load the <code>MASS</code> package but becomes available after it is loaded. In this sense, functions ‘belong’ to packages.</p>
+<p>Problems can occur when you load packages that contain functions with the same name as functions that already exist in your R session. Often the messages you see when loading a package will alert you to this. When R is faced with a situation where a function exists in multiple packages you have loaded, R always defaults to the function in <em>the most recently loaded</em> package. This may not always be what you intended.</p>
+<p>One way to completely avoid this issue is to get in the habit of <em>namespacing</em> your functions. To namespace, you simply use <code>package::function()</code>, so to safely call <code>stepAIC()</code> from <code>MASS</code>, you use <code>MASS::stepAIC()</code>. Most of the time in this book when a function is being called from a package outside base R, I use namespacing to call that function. This should help avoid confusion about which packages are being used for which functions.</p>
+</div>
+<div id="the-pipe-operator" class="section level3" number="2.5.6">
+<h3><span class="header-section-number">2.5.6</span> The pipe operator</h3>
+<p>Even in the most elementary briefing about R, it is very difficult to ignore the pipe operator. The pipe operator makes code more natural to read and write and reduces the typical computing problem of many nested operations inside parentheses. The pipe operator comes inside many R packages, particularly <code>magrittr</code> and <code>dplyr</code>.</p>
+<p>As an example, imagine we wanted to do the following two operations in one command:</p>
+<ol style="list-style-type: decimal">
+<li>Subset <code>salespeople</code> to only the <code>sales</code> values of those with <code>sales</code> less than 500</li>
+<li>Take the mean of those values</li>
+</ol>
+<p>In base R, one way to do this is:</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="the-basics-of-the-r-programming-language.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">subset</span>(salespeople<span class="sc">$</span>sales, <span class="at">subset =</span> salespeople<span class="sc">$</span>sales <span class="sc">&lt;</span> <span class="dv">500</span>))</span></code></pre></div>
+<pre><code>## [1] 388.6684</code></pre>
+<p>This is nested and needs to be read from the inside out in order to align with the instructions. The pipe operator <code>%&gt;%</code> takes the command that comes before it and places it inside the function that follows it (by default as the first argument). This reduces complexity and allows you to follow the logic more clearly.</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="the-basics-of-the-r-programming-language.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load magrittr library to get the pipe operator</span></span>
+<span id="cb96-2"><a href="the-basics-of-the-r-programming-language.html#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb96-3"><a href="the-basics-of-the-r-programming-language.html#cb96-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-4"><a href="the-basics-of-the-r-programming-language.html#cb96-4" aria-hidden="true" tabindex="-1"></a><span class="co"># use the pipe operator to lay out the steps more logically</span></span>
+<span id="cb96-5"><a href="the-basics-of-the-r-programming-language.html#cb96-5" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(salespeople<span class="sc">$</span>sales, <span class="at">subset =</span> salespeople<span class="sc">$</span>sales <span class="sc">&lt;</span> <span class="dv">500</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb96-6"><a href="the-basics-of-the-r-programming-language.html#cb96-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>() </span></code></pre></div>
+<pre><code>## [1] 388.6684</code></pre>
+<p>This can be extended to perform arbitrarily many operations in one piped command.</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="the-basics-of-the-r-programming-language.html#cb98-1" aria-hidden="true" tabindex="-1"></a>salespeople<span class="sc">$</span>sales <span class="sc">%&gt;%</span> <span class="co"># start with all data</span></span>
+<span id="cb98-2"><a href="the-basics-of-the-r-programming-language.html#cb98-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(<span class="at">subset =</span> salespeople<span class="sc">$</span>sales <span class="sc">&lt;</span> <span class="dv">500</span>) <span class="sc">%&gt;%</span> <span class="co"># get the subsetted data</span></span>
+<span id="cb98-3"><a href="the-basics-of-the-r-programming-language.html#cb98-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>() <span class="sc">%&gt;%</span> <span class="co"># take the mean value</span></span>
+<span id="cb98-4"><a href="the-basics-of-the-r-programming-language.html#cb98-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>() <span class="co"># round to the nearest integer</span></span></code></pre></div>
+<pre><code>## [1] 389</code></pre>
+<p>The pipe operator is unique to R and is very widely used because it helps to make code more readable, it reduces complexity, and it helps orient around a common ‘grammar’ for the manipulation of data. The pipe operator helps you structure your code more clearly around nouns (objects), verbs (functions) and adverbs (arguments of functions). One of the most developed sets of packages in R that follows these principles is the <code>tidyverse</code> family of packages, which I encourage you to explore.</p>
+</div>
+</div>
+<div id="errors-warnings-and-messages" class="section level2" number="2.6">
+<h2><span class="header-section-number">2.6</span> Errors, warnings and messages</h2>
+<p>As I mentioned earlier in this chapter, getting familiar with R can be frustrating at the beginning if you have never programmed before. You can expect to regularly see messages, warnings or errors in response to your commands. I encourage you to regard these as your friend rather than your enemy. It is very tempting to take the latter approach when you are starting out, but over time I hope you will appreciate some wisdom from my words.</p>
+<p><em>Errors</em> are serious problems which usually result in the halting of your code and a failure to return your requested output. They usually come with an indication of the source of the error, and these can sometimes be easy to understand and sometimes frustratingly vague and abstract. For example, an easy-to-understand error is:</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="the-basics-of-the-r-programming-language.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(salespeople, <span class="at">subset =</span> <span class="at">sales =</span> <span class="dv">720</span>)</span></code></pre></div>
+<pre><code>Error: unexpected &#39;=&#39; in &quot;subset(salespeople, subset = sales =&quot;</code></pre>
+<p>This helps you see that you have used <code>sales = 720</code> as a condition to subset your data, when you should have used <code>sales == 720</code> for precise equality.</p>
+<p>A much more challenging error to understand is:</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="the-basics-of-the-r-programming-language.html#cb102-1" aria-hidden="true" tabindex="-1"></a>head[salespeople]</span></code></pre></div>
+<pre><code>Error in head[salespeople] : object of type &#39;closure&#39; is not subsettable</code></pre>
+<p>When first faced with an error that you can’t understand, try not to get frustrated and proceed in the knowledge that it usually can be fixed easily and quickly. Often the problem is much more obvious than you think, and if not, there is still a 99% likelihood that others have made this error and you can read about it online. The first step is to take a look at your code to see if you can spot what you did wrong. In this case, you may see that you have used square brackets <code>[]</code> instead of parentheses <code>()</code> when calling your <code>head()</code> function. If you cannot see what is wrong, the next step is to ask a colleague or do an internet search with the text of the error message you receive, or to consult online forums like <a href="https://stackoverflow.com" class="uri">https://stackoverflow.com</a>. The more experienced you become, the easier it is to interpret error messages.</p>
+<p><em>Warnings</em> are less serious and usually alert you to something that you might be overlooking and which could indicate a problem with the output. In many cases you can ignore warnings, but sometimes they are an important reminder to go back and edit your code. For example, you may run a model which doesn’t converge, and while this does not stop R from returning results, it is also very useful for you to know that it didn’t converge.</p>
+<p><em>Messages</em> are pieces of information that may or may not be useful to you at a particular point in time. Sometimes you will receive messages when you load a package from your library. Sometimes messages will keep you up to date on the progress of a process that is taking a long time to execute.</p>
+</div>
+<div id="plotting-and-graphing" class="section level2" number="2.7">
+<h2><span class="header-section-number">2.7</span> Plotting and graphing</h2>
+<p>As you might expect in a well-developed programming language, there are numerous ways to plot and graph information in R. If you are doing exploratory data analysis on fairly simple data and you don’t need to worry about pretty appearance or formatting, the built-in plot capabilities of base R are fine. If you need a pretty appearance, more precision, color coding or even 3D graphics or animation, there are also specialized plotting and graphing packages for these purposes. In general when working interactively in RStudio, graphical output will be rendered in the Plots pane, where you can copy it or save it as an image.</p>
+<div id="plotting-in-base-r" class="section level3" number="2.7.1">
+<h3><span class="header-section-number">2.7.1</span> Plotting in base R</h3>
+<p>The simplest plot function in base R is <code>plot()</code>. This performs basic X-Y plotting. As an example, this code will generate a scatter plot of <code>customer_rate</code> against <code>sales</code> in the <code>salespeople</code> data set, with the results displayed in Figure <a href="the-basics-of-the-r-programming-language.html#fig:basicscatter">2.3</a>. Note the use of the arguments <code>main</code>, <code>xlab</code> and <code>ylab</code> for customizing the axis labels and title for the plot.</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="the-basics-of-the-r-programming-language.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co"># scatter plot of customer_rate against sales</span></span>
+<span id="cb104-2"><a href="the-basics-of-the-r-programming-language.html#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> salespeople<span class="sc">$</span>sales, <span class="at">y =</span> salespeople<span class="sc">$</span>customer_rate,</span>
+<span id="cb104-3"><a href="the-basics-of-the-r-programming-language.html#cb104-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Sales ($m)&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Average customer rating&quot;</span>,</span>
+<span id="cb104-4"><a href="the-basics-of-the-r-programming-language.html#cb104-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Scatterplot of Sales vs Customer Rating&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:basicscatter"></span>
+<img src="_main_files/figure-html/basicscatter-1.png" alt="Simple scatterplot of `customer_rate` against `sales` in the `salespeople` data set" width="672" />
+<p class="caption">
+Figure 2.3: Simple scatterplot of <code>customer_rate</code> against <code>sales</code> in the <code>salespeople</code> data set
+</p>
+</div>
+<p>Histograms of data can be generated using the <code>hist()</code> function. This command will generate a histogram of <code>performance</code> as displayed in Figure <a href="the-basics-of-the-r-programming-language.html#fig:basichist">2.4</a>. Note the use of <code>breaks</code> to customize how the bars appear.</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="the-basics-of-the-r-programming-language.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert performance ratings back to numeric data type for histogram</span></span>
+<span id="cb105-2"><a href="the-basics-of-the-r-programming-language.html#cb105-2" aria-hidden="true" tabindex="-1"></a>salespeople<span class="sc">$</span>performance <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(salespeople<span class="sc">$</span>performance)</span>
+<span id="cb105-3"><a href="the-basics-of-the-r-programming-language.html#cb105-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-4"><a href="the-basics-of-the-r-programming-language.html#cb105-4" aria-hidden="true" tabindex="-1"></a><span class="co"># histogram of performance ratings</span></span>
+<span id="cb105-5"><a href="the-basics-of-the-r-programming-language.html#cb105-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(salespeople<span class="sc">$</span>performance, <span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>,</span>
+<span id="cb105-6"><a href="the-basics-of-the-r-programming-language.html#cb105-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Performance Rating&quot;</span>, </span>
+<span id="cb105-7"><a href="the-basics-of-the-r-programming-language.html#cb105-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Histogram of Performance Ratings&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:basichist"></span>
+<img src="_main_files/figure-html/basichist-1.png" alt="Simple histogram of `performance` in the `salespeople` data set" width="672" />
+<p class="caption">
+Figure 2.4: Simple histogram of <code>performance</code> in the <code>salespeople</code> data set
+</p>
+</div>
+<p>Box and whisker plots are excellent ways to see the distribution of a variable, and can be grouped against another variable to see bivariate patterns. For example, this command will show a box and whisker plot of <code>sales</code> grouped against <code>performance</code>, with the output shown in Figure <a href="the-basics-of-the-r-programming-language.html#fig:basicbox">2.5</a>. Note the use of the <code>formula</code> and <code>data</code> notation here to define the variable we are interested in and how we want it grouped. We will study this formula notation in greater depth later in this book.</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="the-basics-of-the-r-programming-language.html#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="co"># box plot of sales by performance rating</span></span>
+<span id="cb106-2"><a href="the-basics-of-the-r-programming-language.html#cb106-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(<span class="at">formula =</span> sales <span class="sc">~</span> performance, <span class="at">data =</span> salespeople,</span>
+<span id="cb106-3"><a href="the-basics-of-the-r-programming-language.html#cb106-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">&quot;Performance Rating&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Sales ($m)&quot;</span>,</span>
+<span id="cb106-4"><a href="the-basics-of-the-r-programming-language.html#cb106-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">&quot;Boxplot of Sales by Performance Rating&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:basicbox"></span>
+<img src="_main_files/figure-html/basicbox-1.png" alt="Simple box plot of `sales` grouped against `performance` in the `salespeople` data set" width="672" />
+<p class="caption">
+Figure 2.5: Simple box plot of <code>sales</code> grouped against <code>performance</code> in the <code>salespeople</code> data set
+</p>
+</div>
+<p>These are among the most common plots used for data exploration purposes. They are examples of a wider range of plotting and graphing functions available in base R, such as line plots, bar plots and other varieties which you may see later in this book.</p>
+</div>
+<div id="specialist-plotting-and-graphing-packages" class="section level3" number="2.7.2">
+<h3><span class="header-section-number">2.7.2</span> Specialist plotting and graphing packages</h3>
+<p>By far the most commonly used specialist plotting and graphing package in R is <code>ggplot2</code>. <code>ggplot2</code> allows the flexible construction of a very wide range of charts and graphs, but uses a very specific command grammar which can take some getting used to. However, once learned, <code>ggplot2</code> can be an extremely powerful tool. Many of the illustratory figures used in this book are developed using <code>ggplot2</code> and while the code for these figures is generally not included for the sake of brevity, you can always find it in the source code of this book on Github<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>. A great learning resource for <code>ggplot2</code> is <span class="citation"><a href="#ref-ggplot2" role="doc-biblioref">Wickham</a> (<a href="#ref-ggplot2" role="doc-biblioref">2016</a>)</span>.</p>
+<p>The <code>plotly</code> package allows the use of the <code>plotly</code> graphing library in R. This is an excellent package for interactive graphing and is used for 3D illustrations in this book. Output can be rendered in HTML—allowing the user to play with and explore the graphs interactively—or can be saved as static 2D images.</p>
+<p><code>GGally</code> is a package that extends <code>ggplot2</code> to allow easy combination of charts and graphs. This is particularly valuable for quicker exploratory data analysis. One of its most popular functions is <code>ggpairs()</code>, which produces a pairplot. A pairplot is a visualization of all univariate and bivariate patterns in a data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed in the off-diagonal. Figure <a href="the-basics-of-the-r-programming-language.html#fig:basicpair">2.6</a> is an example of a pairplot for the <code>salespeople</code> data set, which we will explore further in Chapter <a href="bin-log-reg.html#bin-log-reg">5</a>.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="the-basics-of-the-r-programming-language.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb107-2"><a href="the-basics-of-the-r-programming-language.html#cb107-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-3"><a href="the-basics-of-the-r-programming-language.html#cb107-3" aria-hidden="true" tabindex="-1"></a><span class="co"># convert performance and promotion to categorical</span></span>
+<span id="cb107-4"><a href="the-basics-of-the-r-programming-language.html#cb107-4" aria-hidden="true" tabindex="-1"></a>salespeople<span class="sc">$</span>promoted <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(salespeople<span class="sc">$</span>promoted)</span>
+<span id="cb107-5"><a href="the-basics-of-the-r-programming-language.html#cb107-5" aria-hidden="true" tabindex="-1"></a>salespeople<span class="sc">$</span>performance <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(salespeople<span class="sc">$</span>performance)</span>
+<span id="cb107-6"><a href="the-basics-of-the-r-programming-language.html#cb107-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-7"><a href="the-basics-of-the-r-programming-language.html#cb107-7" aria-hidden="true" tabindex="-1"></a><span class="co"># pairplot of salespeople</span></span>
+<span id="cb107-8"><a href="the-basics-of-the-r-programming-language.html#cb107-8" aria-hidden="true" tabindex="-1"></a>GGally<span class="sc">::</span><span class="fu">ggpairs</span>(salespeople)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:basicpair"></span>
+<img src="_main_files/figure-html/basicpair-1.png" alt="Pairplot of the `salespeople` data set" width="672" />
+<p class="caption">
+Figure 2.6: Pairplot of the <code>salespeople</code> data set
+</p>
+</div>
+</div>
+</div>
+<div id="documenting-your-work-using-r-markdown" class="section level2" number="2.8">
+<h2><span class="header-section-number">2.8</span> Documenting your work using R Markdown</h2>
+<p>For anyone performing any sort of multivariate analysis using a statistical programming language, appropriate documentation and reproducibility of the work is essential to its success and longevity. If your code is not easily obtained or run by others, it is likely to have a very limited impact and lifetime. Learning how to create integrated documents that contain both text and code is critical to providing access to your code and narration of your work.</p>
+<p>R Markdown is a package which allows you to create integrated documents containing both formatted text and executed code. It is, in my opinion, one of the best resources available currently for this purpose. This entire book has been created using R Markdown. You can start an R Markdown document in RStudio by installing the <code>rmarkdown</code> package and then opening a new R Markdown document file, which will have the suffix <code>.Rmd</code>.</p>
+<p>R Markdown documents always start with a particular heading type called a YAML header, which contains overall information on the document you are creating. Care must be taken with the precise formatting of the YAML header, as it is sensitive to spacing and indentation. Usually a basic YAML header is created for you in RStudio when you start a new <code>.Rmd</code> file. Here is an example.</p>
+<pre><code>---
+title: &quot;My new document&quot;
+author: &quot;Keith McNulty&quot;
+date: &quot;25/01/2021&quot;
+output: html_document
+---</code></pre>
+<p>The <code>output</code> part of this header has numerous options, but the most commonly used are <code>html_document</code>, which generates your document as a web page, and <code>pdf_document</code>, which generates your document as a PDF using the open source <code>LaTeX</code> software package. If you wish to create PDF documents you will need to have a version of <code>LaTeX</code> installed on your system. One R package that can do this for you easily is the <code>tinytex</code> package. The function <code>install_tinytex()</code> from this package will install a minimal version of <code>LaTeX</code> which is fine for most purposes.</p>
+<p>R Markdown allows you to build a formatted document using many shorthand formatting commands. Here are a few examples of how to format headings and place web links or images in your document:</p>
+<pre><code># My top heading
+
+This section is about this general topic.
+
+## My first sub heading 
+
+To see more information on this sub-topic visit [here](https://my.web.link).
+
+## My second sub heading
+
+Here is a nice picture about this sub-topic.
+
+![](path/to/image)</code></pre>
+<p>Code can be written and executed and the results displayed inline using backticks. For example, writing</p>
+<pre><code>`r nrow(salespeople)`</code></pre>
+<p>inline will display 351 in the final document. Entire code blocks can be included and executed by using triple-backticks. The following code block:</p>
+<pre><code>```{r}
+# show the first few rows of salespeople
+head(salespeople)
+```</code></pre>
+<p>will display this output:</p>
+<pre><code>##   promoted sales customer_rate performance
+## 1        0   594          3.94           2
+## 2        0   446          4.06           3
+## 3        1   674          3.83           4
+## 4        0   525          3.62           2
+## 5        1   657          4.40           3
+## 6        1   918          4.54           2</code></pre>
+<p>The <code>{}</code> wrapping allows you to specify different languages for your code chunk. For example, if you wanted to run Python code instead of R code you can use <code>{python}</code>. It also allows you to set options for the code chunk display separated by commas. For example, if you want the results of your code to be displayed, but without the code itself being displayed, you can use <code>{r, echo = FALSE}</code>.</p>
+<p>The process of compiling your R Markdown code to produce a document is known as ‘knitting.’ To create a knitted document, you simply need to click on the ‘Knit’ button in RStudio that appears above your R Markdown code.</p>
+<p>If you are not familiar with R Markdown, I strongly encourage you to learn it alongside R and to challenge yourself to write up any practice exercises you take on in this book using R Markdown. Useful cheat sheets and reference guides for R Markdown formatting and commands are available through the Cheatsheets section of the Help menu in RStudio. I also recommend <span class="citation"><a href="#ref-rmarkdown" role="doc-biblioref">Xie, Dervieux, and Riederer</a> (<a href="#ref-rmarkdown" role="doc-biblioref">2020</a>)</span> for a really thorough instruction and reference guide.</p>
+</div>
+<div id="learning-exercises" class="section level2" number="2.9">
+<h2><span class="header-section-number">2.9</span> Learning exercises</h2>
+<div id="discussion-questions" class="section level3" number="2.9.1">
+<h3><span class="header-section-number">2.9.1</span> Discussion questions</h3>
+<ol style="list-style-type: decimal">
+<li>Describe the following data types: numeric, character, logical, factor.</li>
+<li>Why is a vector known as a homogeneous data structure?</li>
+<li>Give an example of a heterogeneous data structure in R.</li>
+<li>What is the difference between <code>NA</code> and <code>"NA"</code>?</li>
+<li>What operator is used to return named elements of a list and named columns of a dataframe?</li>
+<li>Describe some functions that are used to manipulate dataframes.</li>
+<li>What is a package and how do you install and use a new package?</li>
+<li>Describe what is meant by ‘namespacing’ and why it might be useful.</li>
+<li>What is the pipe operator, and why is it popular in R?</li>
+<li>What is the difference between an error and a warning in R?</li>
+<li>Name some simple plotting functions in base R.</li>
+<li>Name some common specialist plotting and graphing packages in R.</li>
+<li>What is R Markdown, and why is it useful to someone performing analysis using programming languages?</li>
+</ol>
+</div>
+<div id="data-exercises" class="section level3" number="2.9.2">
+<h3><span class="header-section-number">2.9.2</span> Data exercises</h3>
+<ol style="list-style-type: decimal">
+<li>Create a character vector called <code>my_names</code> that contains all your first, middle and last names as elements. Calculate the length of <code>my_names</code>.</li>
+<li>Create a second numeric vector called <code>which</code> which corresponds to <code>my_names</code>. The entries should be the position of each name in the order of your full name. Verify that it has the same length as <code>my_names</code>.</li>
+<li>Create a dataframe called <code>names</code>, which consists of the two vectors <code>my_names</code> and <code>which</code> as columns. Calculate the dimensions of <code>names</code>.</li>
+<li>Create a new dataframe <code>new_names</code> with the <code>which</code> column converted to character type. Verify that your command worked using <code>str()</code>.</li>
+<li>Load the <code>ugtests</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>. Calculate the dimensions of <code>ugtests</code> and view the first three rows only.</li>
+<li>View a statistical summary of all of the columns of <code>ugtests</code>. Determine if there are any missing values.</li>
+<li>View the subset of <code>ugtests</code> for values of <code>Yr1</code> greater than 50.</li>
+<li>Install and load the package <code>dplyr</code>. Look up the help for the <code>filter()</code> function in this package and try to use it to repeat the task in the previous question.</li>
+<li>Write code to find the mean of the <code>Yr1</code> test scores for all those who achieved <code>Yr3</code> test scores greater than 100. Round this mean to the nearest integer.</li>
+<li>Familiarize yourself with the two functions <code>filter()</code> and <code>pull()</code> from <code>dplyr</code>. Use these functions to try to do the same calculation in the previous question using a single unbroken piped command. Be sure to namespace where necessary.</li>
+<li>Create a scatter plot using the <code>ugtests</code> data with <code>Final</code> scores on the <span class="math inline">\(y\)</span> axis and <code>Yr3</code> scores on the <span class="math inline">\(x\)</span> axis.</li>
+<li>Create your own 5-level grading logic and use it to create a new <code>finalgrade</code> column in the <code>ugtests</code> data set with grades 1–5 of increasing attainment based on the <code>Final</code> score in <code>ugtests</code>. Generate a histogram of this <code>finalgrade</code> column.</li>
+<li>Using your new <code>ugtests</code> data with the extra column from the previous exercise, create a box plot of <code>Yr3</code> scores grouped by <code>finalgrade</code>.</li>
+<li>Knit all of your answers to these exercises into an R Markdown document. Create one version that displays your code and answers, and another that just displays the answers.</li>
+</ol>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-ripley" class="csl-entry">
+Venables, W. N., and B. D. Ripley. 2002. <em>Modern Applied Statistics with s</em>.
+</div>
+<div id="ref-ggplot2" class="csl-entry">
+Wickham, Hadley. 2016. <em><span class="nocase">ggplot2</span>: Elegant Graphics for Data Analysis</em>. <a href="https://ggplot2-book.org/">https://ggplot2-book.org/</a>.
+</div>
+<div id="ref-wickham" class="csl-entry">
+Wickham, Hadley, and Garrett Grolemund. 2016. <em>R for Data Science</em>. <a href="https://r4ds.had.co.nz/">https://r4ds.had.co.nz/</a>.
+</div>
+<div id="ref-rmarkdown" class="csl-entry">
+Xie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. <em>R Markdown Cookbook</em>. <a href="https://bookdown.org/yihui/rmarkdown-cookbook/">https://bookdown.org/yihui/rmarkdown-cookbook/</a>.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="3">
+<li id="fn3"><p>R also has some built-in data sets for testing and playing with. For example, check out <code>mtcars</code> by typing it into the terminal, or type <code>data()</code> to see a full list of built-in data sets.<a href="the-basics-of-the-r-programming-language.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>It actually has a broader definition but is mostly used for showing the first rows of a dataframe.<a href="the-basics-of-the-r-programming-language.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p><span class="citation"><a href="#ref-ripley" role="doc-biblioref">Venables and Ripley</a> (<a href="#ref-ripley" role="doc-biblioref">2002</a>)</span><a href="the-basics-of-the-r-programming-language.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p><a href="https://github.com/keithmcnulty/peopleanalytics-regression-book" class="uri">https://github.com/keithmcnulty/peopleanalytics-regression-book</a><a href="the-basics-of-the-r-programming-language.html#fnref6" class="footnote-back">↩︎</a></p></li>
+<li id="fn7"><p><a href="http://peopleanalytics-regression-book.org/data/ugtests.csv" class="uri">http://peopleanalytics-regression-book.org/data/ugtests.csv</a><a href="the-basics-of-the-r-programming-language.html#fnref7" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="inf-model.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="found-stats.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

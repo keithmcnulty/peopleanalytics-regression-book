@@ -97,10 +97,6 @@ pad.managers().info()
 ```
 
 `r if (knitr::is_latex_output()) '<!--'`
-### Solutions to exercises {-}
-
-It is not my intention to publish a comprehensive set of solutions to the exercises in this book.  Many of the exercises can be approached in different ways and I think it is important that readers apply their learning without being constrained to an example solution.  However, some specific questions have generated considerable interest from readers and I have started to post example solutions to those questions [here](https://keithmcnulty.github.io/peopleanalytics-regression-book/solutions/).  Illustrative solutions submitted by readers will progressively be posted there also.  
-
 
 Happy modeling!
 

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>11 Power Analysis to Estimate Required Sample Sizes for Modeling | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
+<meta name="author" content="Keith McNulty">
+<meta name="description" content="In the vast majority of situations in people analytics, researchers and analysts have limited control over the size of their samples. The most common situation is, of course, that analyses are run...">
+<meta name="generator" content="bookdown 0.22.15 with bs4_book()">
+<meta property="og:title" content="11 Power Analysis to Estimate Required Sample Sizes for Modeling | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://peopleanalytics-regression-book.org/power-tests.html">
+<meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
+<meta property="og:description" content="In the vast majority of situations in people analytics, researchers and analysts have limited control over the size of their samples. The most common situation is, of course, that analyses are run...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="11 Power Analysis to Estimate Required Sample Sizes for Modeling | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
+<meta name="twitter:site" content="@dr_keithmcnulty">
+<meta name="twitter:description" content="In the vast majority of situations in people analytics, researchers and analysts have limited control over the size of their samples. The most common situation is, of course, that analyses are run...">
+<meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.9.5/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.2.5.1/tabs.js"></script><script src="libs/bs3compat-0.2.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python">
+<meta name="citation_author" content="Keith McNulty">
+<meta name="citation_publication_date" content="2021">
+<meta name="citation_isbn" content="9781003194156">
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script><script src="libs/plotly-binding-4.9.2.1/plotly.js"></script><script src="libs/typedarray-0.1/typedarray.min.js"></script><link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet">
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script><script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-N7JZGMVRZK');
+    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="css/style.css">
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="With Examples in R, Python and Julia">Handbook of Regression Modeling in People Analytics</a>:
+        <small class="text-muted">With Examples in R, Python and Julia</small>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">Welcome</a></li>
+<li><a class="" href="foreword-by-alexis-fink.html">Foreword by Alexis Fink</a></li>
+<li><a class="" href="introduction.html">Introduction</a></li>
+<li><a class="" href="inf-model.html"><span class="header-section-number">1</span> The Importance of Regression in People Analytics</a></li>
+<li><a class="" href="the-basics-of-the-r-programming-language.html"><span class="header-section-number">2</span> The Basics of the R Programming Language</a></li>
+<li><a class="" href="found-stats.html"><span class="header-section-number">3</span> Statistics Foundations</a></li>
+<li><a class="" href="linear-reg-ols.html"><span class="header-section-number">4</span> Linear Regression for Continuous Outcomes</a></li>
+<li><a class="" href="bin-log-reg.html"><span class="header-section-number">5</span> Binomial Logistic Regression for Binary Outcomes</a></li>
+<li><a class="" href="multinomial-logistic-regression-for-nominal-category-outcomes.html"><span class="header-section-number">6</span> Multinomial Logistic Regression for Nominal Category Outcomes</a></li>
+<li><a class="" href="ord-reg.html"><span class="header-section-number">7</span> Proportional Odds Logistic Regression for Ordered Category Outcomes</a></li>
+<li><a class="" href="modeling-explicit-and-latent-hierarchy-in-data.html"><span class="header-section-number">8</span> Modeling Explicit and Latent Hierarchy in Data</a></li>
+<li><a class="" href="survival.html"><span class="header-section-number">9</span> Survival Analysis for Modeling Singular Events Over Time</a></li>
+<li><a class="" href="alt-approaches.html"><span class="header-section-number">10</span> Alternative Technical Approaches in R, Python and Julia</a></li>
+<li><a class="active" href="power-tests.html"><span class="header-section-number">11</span> Power Analysis to Estimate Required Sample Sizes for Modeling</a></li>
+<li><a class="" href="solutions-to-exercises.html">Solutions to Exercises</a></li>
+<li><a class="" href="references.html">References</a></li>
+</ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/keithmcnulty/peopleanalytics-regression-book">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="power-tests" class="section level1" number="11">
+<h1>
+<span class="header-section-number">11</span> Power Analysis to Estimate Required Sample Sizes for Modeling<a class="anchor" aria-label="anchor" href="#power-tests"><i class="fas fa-link"></i></a>
+</h1>
+<p>In the vast majority of situations in people analytics, researchers and analysts have limited control over the size of their samples. The most common situation is, of course, that analyses are run with whatever data can be gleaned and cleaned in the time available. At the same time, as we have seen in all of our previous work, even if a certain difference might exist in real life in the populations being studied, it is by no means certain that a specific analysis on samples from these populations will elucidate that difference. Whether that difference is visible depends on the statistical properties of the samples used. Therefore, researchers and analysts are living in the reality that when they conduct inferential analysis, the usefulness of their work depends to a very large degree on the samples they have available.</p>
+<p>This suggests that a conscientious analyst would be well advised to do some up-front work to determine if their samples have a chance of yielding results that are of some inferential value. In a practical context, however, this is only partly true (and that is an important reason why this chapter has been left towards the end of this book). Estimating required sample sizes is an imprecise science. Although the mathematics suggest that in theory it should be precise, in reality we are guessing most of the inputs to the mathematics. In many cases we are so clueless about those inputs that we move into the realms of pure speculation and produce ranges of required sample sizes that are so wide as to be fairly meaningless in practice.</p>
+<p>That said, there are situations where conducting <em>power analysis</em>—that is, analysis of the required statistical properties of samples in order to have a certain minimum probability of observing a true difference—makes sense. Power analysis is an important element of experimental design. Experiments in people analytics usually take one of two forms:</p>
+<ol style="list-style-type: decimal">
+<li><p><em>Prospective experiments</em> involve running some sort of test or pilot on populations to determine if a certain measure has a hypothesized effect. For example, introducing a certain new employee benefit for a specific subset of the company for a limited period of time, and determining if there was a difference in the impact on employee satisfaction compared to those who did not receive the benefit.</p></li>
+<li><p><em>Retrospective experiments</em> involve the use of historical data to test if a certain measure has a hypothesized effect. This usually occurs opportunistically when it is apparent that a certain measure has occurred in the past and for a limited time, and data can be drawn to test whether or not that measure resulted in the hypothesized effect.</p></li>
+</ol>
+<p>Both prospective and retrospective experiments can involve a lot of work—either in setting up experiments or in extracting data from history. There is a natural question as to whether the chances of success justify the required resources and effort. Before proceeding in these cases, it is sensible to get a point of view on the likely power of the experiment and what level of sample size might be needed in order to establish a meaningful inference. For this reason, power analysis is a common component of research proposals in the medical or social sciences.</p>
+<p>Power analysis is a relatively blunt instrument whose primary value is to make sure that substantial effort is not being wasted on foolhardy research. If the analyst already has reasonably available data and wants to test for the effect of a certain phenomenon, the most direct approach is to just go and run the appropriate model assuming that it is relatively straightforward to do so. Power analysis should only be considered if there is clearly some substantial labor involved in the proposed modeling work.</p>
+<div id="errors-effect-sizes-and-statistical-power" class="section level2" number="11.1">
+<h2>
+<span class="header-section-number">11.1</span> Errors, effect sizes and statistical power<a class="anchor" aria-label="anchor" href="#errors-effect-sizes-and-statistical-power"><i class="fas fa-link"></i></a>
+</h2>
+<p>Before looking at practical ways to conduct power tests on proposed experiments, let’s review an example of the logical and mathematical principles behind power testing, so that we understand what the results of power tests mean. Recall from Section <a href="found-stats.html#hyp-tests">3.3</a> the logical mechanisms for testing hypotheses of statistical difference. Given data on samples of two groups in a population, the <em>null hypothesis</em> <span class="math inline">\(H_0\)</span> is the hypothesis that a difference does not exist between the groups in the overall population. If the null hypothesis is rejected, we accept the alternative hypothesis <span class="math inline">\(H_1\)</span> that a difference does exist between the groups in the population.</p>
+<p>Recall also that we use the statistical properties of the samples to make inferences about the null and alternative hypotheses based on statistical likelihood. This means that four possible situations can occur when we run hypothesis tests:</p>
+<ol style="list-style-type: decimal">
+<li>We fail to reject <span class="math inline">\(H_0\)</span>, and in fact <span class="math inline">\(H_1\)</span> is false. This is a good outcome.</li>
+<li>We reject <span class="math inline">\(H_0\)</span>, but in fact <span class="math inline">\(H_1\)</span> is false. This is known as a <em>Type I error</em>.</li>
+<li>We fail to reject <span class="math inline">\(H_0\)</span>, but in fact <span class="math inline">\(H_1\)</span> is true. This is known as a <em>Type II error</em>.</li>
+<li>We reject <span class="math inline">\(H_0\)</span>, and in fact <span class="math inline">\(H_1\)</span> is true. This is a good outcome and one which is most often the motivation for the hypothesis test in the first place.</li>
+</ol>
+<p><em>Statistical power</em> refers to the fourth situation and is the <em>probability that <span class="math inline">\(H_0\)</span> is rejected and <span class="math inline">\(H_1\)</span> is true</em>. Statistical power depends <em>at a minimum</em> on three criteria:</p>
+<ul>
+<li>The significance level <span class="math inline">\(\alpha\)</span> at which the analysis wishes to reject <span class="math inline">\(H_0\)</span> (see Section <a href="found-stats.html#hyp-tests">3.3</a>). Usually <span class="math inline">\(\alpha = 0.05\)</span>.</li>
+<li>The size <span class="math inline">\(n\)</span> of the sample being used.</li>
+<li>The size of the difference observed in the sample, known as the <em>effect size</em>. There are numerous definitions of the effect size that depend on the specific type of power test being conducted.</li>
+</ul>
+<p>As an example to illustrate the mathematical relationship between these criteria, let’s assume that we run an experiment on a group of employees of size <span class="math inline">\(n\)</span> where we introduce a new benefit and then test their satisfaction levels before and after its introduction. As a statistic of a random variable, we can expect the mean difference in satisfaction to have a normal distribution. Let <span class="math inline">\(\mu_0\)</span> be the mean of the population under the null hypothesis and let <span class="math inline">\(\mu_1\)</span> be the mean of the population under the alternative hypothesis. Now let’s assume that in our sample we observe a mean satisfaction of <span class="math inline">\(\mu^*\)</span> after the experiment. Recall from Chapter <a href="found-stats.html#found-stats">3</a> that to meet a statistical significance standard of <span class="math inline">\(\alpha\)</span>, we will need <span class="math inline">\(\mu^*\)</span> to be greater than a certain multiple of the standard error <span class="math inline">\(\frac{\sigma}{\sqrt{n}}\)</span> above <span class="math inline">\(\mu_0\)</span> based on the normal distribution. Let’s call that multiple <span class="math inline">\(z_{\alpha}\)</span>. Therefore, we can say that the statistical power of our hypothesis test is:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{Power} &amp;= P(\mu^* &gt; \mu_0 + z_{\alpha}\frac{\sigma}{\sqrt{n}}\vert{\mu = \mu_1}) \\
+&amp;= P(\frac{\mu^* - \mu_1}{\frac{\sigma}{\sqrt{n}}} &gt; -\frac{\mu_1 - \mu_0}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}\vert{\mu = \mu_1}) \\
+&amp;= 1 - \Phi(-\frac{\mu_1 - \mu_0}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}) \\
+&amp;= 1 - \Phi(-\frac{\mu_1 - \mu_0}{\sigma}\sqrt{n} + z_{\alpha}) \\
+&amp;=  1 - \Phi(-d\sqrt{n} + z_{\alpha}) 
+\end{aligned}
+\]</span></p>
+<p>where <span class="math inline">\(\Phi\)</span> is the cumulative normal probability distribution function, and <span class="math inline">\(d = \frac{\mu_1 - \mu_0}{\sigma}\)</span> is known as <em>Cohen’s effect size</em>. Therefore, we can see that power depends on a measure of the observed effect size between our two samples (defined as Cohen’s <span class="math inline">\(d\)</span>) the significance level <span class="math inline">\(\alpha\)</span> and the sample size <span class="math inline">\(n\)</span><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;We will also need to know the expected distribution of the statistics that we are analyzing in order to determine the power probability.&lt;/p&gt;"><sup>46</sup></a>.</p>
+<p>The reader may immediately observe that many of these measures are not known at the typical point at which we would wish to do a power analysis. We can assert a minimum level of statistical power that we would wish for—usually this is somewhere between 0.8 and 0.9. We can also assert our <span class="math inline">\(\alpha\)</span>. But at a point of experimental design, we usually do not know the sample size and we do not know what difference would be observed in that sample (the effect size). This implies that we are dealing with a single equation with more than one unknown, and this means that there is no unique solution<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;In reality there are more unknowns that this math would imply, due to the imperfection of what we are trying to measure. For example measurement error and reliability will often be an unmeasurable unknown. For this reason you will often need a larger sample size than that indicated by power tests.&lt;/p&gt;"><sup>47</sup></a>. Practically speaking, looking at ranges of values will be common in power analysis.</p>
+</div>
+<div id="simple-stats" class="section level2" number="11.2">
+<h2>
+<span class="header-section-number">11.2</span> Power analysis for simple hypothesis tests<a class="anchor" aria-label="anchor" href="#simple-stats"><i class="fas fa-link"></i></a>
+</h2>
+<p>Usually we will run power analyses to get a sense of required sample sizes. Given the observations on unknowns in the previous section, we will have to assert certain possible statistical results in order to estimate required sample sizes. Most often, we will need to suggest the observed effect size in order to obtain the minimum sample size for that effect size to return a statistically significant result at a desired level of statistical power.</p>
+<p>Using our example from the previous section, let’s assume that we would see a ‘medium’ effect size on our samples. <em>Cohen’s Rule of Thumb</em> for <span class="math inline">\(d\)</span> states that <span class="math inline">\(d = 0.2\)</span> is a small effect size, <span class="math inline">\(d = 0.5\)</span> a medium effect size and <span class="math inline">\(d = 0.8\)</span> a large effect size. We can use the <code><a href="https://rdrr.io/pkg/WebPower/man/wp.t.html">wp.t()</a></code> function from the <code>WebPower</code> package in R to do a power analysis on a paired two-sample <span class="math inline">\(t\)</span>-test and return a minimum required sample size. We can assume <span class="math inline">\(d = 0.5\)</span> and that we require a power of 0.8—that is, we want an 80% probability that the test will return an accurate rejection of the null hypothesis.</p>
+<div class="sourceCode" id="cb477"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://webpower.psychstat.org">WebPower</a></span><span class="op">)</span>
+
+<span class="co"># get minimum n for power of 0.8</span>
+<span class="op">(</span><span class="va">n_test</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.t.html">wp.t</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">0.5</span>, p <span class="op">=</span> <span class="fl">0.8</span>, type <span class="op">=</span> <span class="st">"paired"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## Paired t-test
+## 
+##            n   d alpha power
+##     33.36713 0.5  0.05   0.8
+## 
+## NOTE: n is number of *pairs*
+## URL: http://psychstat.org/ttest</code></pre>
+<p>This tells us that we need an absolute minimum of 34 individuals in our sample for an effect size of 0.5 to return a significant difference at an alpha of 0.05 with 80% probability. Alternatively we can test the power of a specific proposed sample size.</p>
+<div class="sourceCode" id="cb479"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># get power for n of 40</span>
+<span class="op">(</span><span class="va">p_test</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.t.html">wp.t</a></span><span class="op">(</span>n1 <span class="op">=</span> <span class="fl">40</span>, d <span class="op">=</span> <span class="fl">0.5</span>, type <span class="op">=</span> <span class="st">"paired"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code>## Paired t-test
+## 
+##      n   d alpha     power
+##     40 0.5  0.05 0.8693981
+## 
+## NOTE: n is number of *pairs*
+## URL: http://psychstat.org/ttest</code></pre>
+<p>This tells us that a minimum sample size of 40 would result in a power of 0.87. A similar process can be used to plot the dependence between power and sample size under various conditions as in Figure <a href="power-tests.html#fig:powersampleplot">11.1</a>. This is known as a <em>power curve</em>.</p>
+<div class="sourceCode" id="cb481"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># test a range of sample sizes</span>
+<span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fl">20</span><span class="op">:</span><span class="fl">100</span>
+<span class="va">power</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.t.html">wp.t</a></span><span class="op">(</span>n1 <span class="op">=</span> <span class="va">sample_sizes</span>, d <span class="op">=</span> <span class="fl">0.5</span>, type <span class="op">=</span> <span class="st">"paired"</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">power</span><span class="op">)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:powersampleplot"></span>
+<img src="_main_files/figure-html/powersampleplot-1.png" alt="Plot of power against sample size for a paired t-test" width="672"><p class="caption">
+Figure 11.1: Plot of power against sample size for a paired t-test
+</p>
+</div>
+<p>We can see a ‘sweet spot’ of approximately 40–60 minimum required participants, and a diminishing return on statistical power over and above this. Similarly we can plot a proposed minimum sample size against a range of effect sizes as in Figure <a href="power-tests.html#fig:powerdplot">11.2</a>.</p>
+<div class="sourceCode" id="cb482"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># test a range of effect sizes</span>
+<span class="va">effect_sizes</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">:</span><span class="fl">8</span><span class="op">/</span><span class="fl">10</span>
+<span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.t.html">wp.t</a></span><span class="op">(</span>n1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">7</span><span class="op">)</span>, 
+                          d <span class="op">=</span> <span class="va">effect_sizes</span>, 
+                          type <span class="op">=</span> <span class="st">"paired"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">samples</span><span class="op">$</span><span class="va">d</span>, <span class="va">samples</span><span class="op">$</span><span class="va">power</span>, type <span class="op">=</span> <span class="st">"b"</span>,
+     xlab <span class="op">=</span> <span class="st">"Effect size"</span>, ylab <span class="op">=</span> <span class="st">"Power"</span><span class="op">)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:powerdplot"></span>
+<img src="_main_files/figure-html/powerdplot-1.png" alt="Plot of power against effect size for a paired t-test" width="672"><p class="caption">
+Figure 11.2: Plot of power against effect size for a paired t-test
+</p>
+</div>
+<p>Similar power test variants exist for other common simple hypothesis tests. Let’s assume that we want to institute a screening test in a recruiting process, and we want to validate this test by running it on a random set of employees with the aim of proving that the test score has a significant non-zero correlation with job performance. If we assume that we will see a moderate correlation of <span class="math inline">\(r = 0.3\)</span> in our sample<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Cohen’s rule of thumb for correlation coefficients is Weak: 0.1, Moderate: 0.3 and Strong: 0.5.&lt;/p&gt;"><sup>48</sup></a>, we can use the <code><a href="https://rdrr.io/pkg/WebPower/man/wp.correlation.html">wp.correlation()</a></code> function in <code>WebPower</code> to do a power analysis, resulting in Figure <a href="power-tests.html#fig:correlpower">11.3</a>.</p>
+<div class="sourceCode" id="cb483"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fl">50</span><span class="op">:</span><span class="fl">150</span>
+<span class="va">correl_powers</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.correlation.html">wp.correlation</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">sample_sizes</span>, r <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">correl_powers</span><span class="op">)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:correlpower"></span>
+<img src="_main_files/figure-html/correlpower-1.png" alt="Plot of power against sample size for a correlation test" width="672"><p class="caption">
+Figure 11.3: Plot of power against sample size for a correlation test
+</p>
+</div>
+<p>Figure <a href="power-tests.html#fig:correlpower">11.3</a> informs us that we will likely want to be hitting at least 100 employees in our study to have any reasonable chance of establishing possible validity for our screening test.</p>
+</div>
+<div id="power-analysis-for-linear-regression-models" class="section level2" number="11.3">
+<h2>
+<span class="header-section-number">11.3</span> Power analysis for linear regression models<a class="anchor" aria-label="anchor" href="#power-analysis-for-linear-regression-models"><i class="fas fa-link"></i></a>
+</h2>
+<p>In power tests of linear regression models, the effect size is a statistic of the difference in model fit between the two models being compared. Most commonly this will be a comparison of a ‘full’ fitted model involving specific input variables compared to a ‘reduced’ model with fewer input variables (often a random variance model with no input variables).</p>
+<p>The <span class="math inline">\(f^2\)</span> statistic is defined as follows:</p>
+<p><span class="math display">\[
+f^2 = \frac{R_{\mathrm{full}}^2 - R_{\mathrm{reduced}}^2}{1 - R_{\mathrm{full}}^2}
+\]</span>
+where the formula refers to the <span class="math inline">\(R^2\)</span> fit statistics for the two models being compared. As an example, imagine we already know that GPA in college has a significant relationship with job performance, and we wish to determine if our proposed screening test had incremental validity on top of knowing college GPA. We might run two linear regression models, one relating job performance to GPA, and another relating job performance to <em>both</em> GPA and screening test score. Assuming we would observe a relatively small effect size for our screening test, we assume <span class="math inline">\(f^2 = 0.05\)</span><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Cohen’s rule of thumb for &lt;span class="math inline"&gt;\(f^2\)&lt;/span&gt; effect sizes is Small: 0.02, Medium: 0.15, Large: 0.35.&lt;/p&gt;'><sup>49</sup></a>, we can plot sample size against power in determining whether the two models are significantly different. We will also need to define the number of predictors in the full model (<code>p1 = 2</code>) and the reduced model (<code>p2 = 1</code>). The plot is shown in Figure <a href="power-tests.html#fig:regressionpower">11.4</a>.</p>
+<div class="sourceCode" id="cb484"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fl">100</span><span class="op">:</span><span class="fl">300</span>
+<span class="va">f_sq_power</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.regression.html">wp.regression</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">sample_sizes</span>, 
+                                      p1 <span class="op">=</span> <span class="fl">2</span>, p2 <span class="op">=</span> <span class="fl">1</span>, f2 <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">f_sq_power</span><span class="op">)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:regressionpower"></span>
+<img src="_main_files/figure-html/regressionpower-1.png" alt="Plot of power against sample size for a small effect of a second input variable in a linear regression model" width="672"><p class="caption">
+Figure 11.4: Plot of power against sample size for a small effect of a second input variable in a linear regression model
+</p>
+</div>
+</div>
+<div id="power-analysis-for-log-likelihood-regression-models" class="section level2" number="11.4">
+<h2>
+<span class="header-section-number">11.4</span> Power analysis for log-likelihood regression models<a class="anchor" aria-label="anchor" href="#power-analysis-for-log-likelihood-regression-models"><i class="fas fa-link"></i></a>
+</h2>
+<p>In Chapter <a href="bin-log-reg.html#bin-log-reg">5</a>, we reviewed how measures of fit for log-likelihood models are still the subject of some debate. Given this, it is unsurprising that measures of effect size for log-likelihood models are not well established. The most well-developed current method appeared in <span class="citation"><a href="references.html#ref-demidenko" role="doc-biblioref">Demidenko</a> (<a href="references.html#ref-demidenko" role="doc-biblioref">2007</a>)</span>, and works when we want to do a power test on a single input variable <span class="math inline">\(x\)</span> using the Wald test on the significance of model coefficients (see Section <a href="ord-reg.html#wald">7.3.2</a> for a reminder of the Wald test).</p>
+<p>In this method, the statistical power of a significance test on the input variable <span class="math inline">\(x\)</span> is determined using multiple inputs as follows:</p>
+<ol style="list-style-type: decimal">
+<li>The likelihood of a positive outcome when <span class="math inline">\(x = 0\)</span> is used to determine the intercept (<code>p0</code> in the code below).</li>
+<li>The likelihood of a positive outcome when <span class="math inline">\(x = 1\)</span> is then used to determine the regression coefficient for <span class="math inline">\(x\)</span> (<code>p1</code> in the code below).</li>
+<li>A distribution for <span class="math inline">\(x\)</span> is inputted (<code>family</code> below) and the parameters of that distribution are also entered (<code>parameter</code> below). For example, if the distribution is assumed to be normal then the mean and standard deviation would be entered as parameters.</li>
+<li>This information is fed into the Wald test, and the power for specific sample sizes is calculated.</li>
+</ol>
+<p>For example, let’s assume that we wanted to determine if our new screening test had a significant effect on promotion likelihood by running an experiment on employees who were being considered for promotion. We assume that our screening test is scored on a percentile scale and has a mean of 53 and a standard deviation of 21. We know that approximately 50% of those being considered for promotion will be promoted, and we believe that the screening test may have a small effect whereby those who score zero would still have a 40% chance of promotion and every additional point scored would increase this chance by 0.2 percentage points. We run the <code><a href="https://rdrr.io/pkg/WebPower/man/wp.logistic.html">wp.logistic()</a></code> function in <code>WebPower</code> to plot a power curve for various sample sizes as in Figure <a href="power-tests.html#fig:logisticpower">11.5</a>.</p>
+<div class="sourceCode" id="cb485"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fl">50</span><span class="op">:</span><span class="fl">2000</span>
+<span class="va">logistic_power</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.logistic.html">wp.logistic</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">sample_sizes</span>, 
+                                        p0 <span class="op">=</span> <span class="fl">0.4</span>, p1 <span class="op">=</span> <span class="fl">0.402</span>,
+                                        family <span class="op">=</span> <span class="st">"normal"</span>, 
+                                        parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">53</span>, <span class="fl">21</span><span class="op">)</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">logistic_power</span><span class="op">)</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:logisticpower"></span>
+<img src="_main_files/figure-html/logisticpower-1.png" alt="Plot of power against sample size for a single input variable in logistic regression" width="672"><p class="caption">
+Figure 11.5: Plot of power against sample size for a single input variable in logistic regression
+</p>
+</div>
+<p>This test suggests that we would need over 1000 individuals in our experiment in order to have at least an 80% chance of establishing the statistical significance of a true relationship between screening test score and promotion likelihood.</p>
+</div>
+<div id="power-analysis-for-hierarchical-regression-models" class="section level2" number="11.5">
+<h2>
+<span class="header-section-number">11.5</span> Power analysis for hierarchical regression models<a class="anchor" aria-label="anchor" href="#power-analysis-for-hierarchical-regression-models"><i class="fas fa-link"></i></a>
+</h2>
+<p>Power tests for explicit hierarchical models usually originate from the context of the design of clinical trials, which not only concern themselves with the entire sample size of a study but also need to determine the split of that sample between treatment and control. It is rare that power analysis would need to be conducted for hierarchical models in people analytics but the technology is available in the <code>WebPower</code> package to explore this.</p>
+<p><em>Cluster randomized trials</em> are trials where it is not possible to allocate individuals randomly to treatment or control groups and where entire clusters have been allocated at random instead. This creates substantial additional complexity in understanding statistical power and required sample sizes. The <code><a href="https://rdrr.io/pkg/WebPower/man/wp.crt2arm.html">wp.crt2arm()</a></code> function in <code>WebPower</code> supports power analysis on 2-arm trials (treatment and control), and the <code><a href="https://rdrr.io/pkg/WebPower/man/wp.crt3arm.html">wp.crt3arm()</a></code> function supports power analysis on 3-arm trials (Two different treatments and a control).</p>
+<p><em>Multisite randomized trials</em> are trials where individuals are assigned to treatment or control groups at random, but where these individuals also belong to different clusters which are important in modeling—for example, they may be members of clinical groups based on pre-existing conditions, or they may be being treated in different hospitals or outpatient facilities. Again, this makes for a substantially more complex calculation of statistical power. The <code><a href="https://rdrr.io/pkg/WebPower/man/wp.mrt2arm.html">wp.mrt2arm()</a></code> and <code><a href="https://rdrr.io/pkg/WebPower/man/wp.mrt3arm.html">wp.mrt3arm()</a></code> functions offer support for this.</p>
+<p>Power tests are also available for structural equation models. This involves comparing a more ‘complete’ structural model to a ‘subset’ model where some of the coefficients from the more ‘complete’ model are set to zero. Such power tests can be valuable when structural models have been applied previously on responses to survey instruments and there is an intention to test alternative models in the future. They can provide information on required future survey participation and response rates in order to establish whether the improved fit can be established for the alternative models.</p>
+<p>There are two approaches to power tests for structural equation models, using a chi square test and a root mean squared error (RMSEA) approach. Both of these methods take a substantial number of input parameters, consistent with the complexity of structural equation model parameters and the various alternatives for measuring fit of these models. The chi square test approach is implemented by the <code><a href="https://rdrr.io/pkg/WebPower/man/wp.sem.chisq.html">wp.sem.chisq()</a></code> function, and the RMSEA approach is implemented by the <code><a href="https://rdrr.io/pkg/WebPower/man/wp.sem.rmsea.html">wp.sem.rmsea()</a></code> function in <code>WebPower</code>.</p>
+</div>
+<div id="power-analysis-using-python" class="section level2" number="11.6">
+<h2>
+<span class="header-section-number">11.6</span> Power analysis using Python<a class="anchor" aria-label="anchor" href="#power-analysis-using-python"><i class="fas fa-link"></i></a>
+</h2>
+<p>A limited set of resources for doing power analysis is available in the <code>stats.power</code> module of the <code>statsmodels</code> package. As an example, here is how we would conduct the power analysis for a paired <span class="math inline">\(t\)</span>-test as in Section <a href="power-tests.html#simple-stats">11.2</a> above.</p>
+<div class="sourceCode" id="cb486"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb486-1"><a href="power-tests.html#cb486-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb486-2"><a href="power-tests.html#cb486-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.power <span class="im">import</span> TTestPower</span>
+<span id="cb486-3"><a href="power-tests.html#cb486-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb486-4"><a href="power-tests.html#cb486-4" aria-hidden="true" tabindex="-1"></a>power <span class="op">=</span> TTestPower()</span>
+<span id="cb486-5"><a href="power-tests.html#cb486-5" aria-hidden="true" tabindex="-1"></a>n_test <span class="op">=</span> power.solve_power(effect_size <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span id="cb486-6"><a href="power-tests.html#cb486-6" aria-hidden="true" tabindex="-1"></a>                           power <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span id="cb486-7"><a href="power-tests.html#cb486-7" aria-hidden="true" tabindex="-1"></a>                           alpha <span class="op">=</span> <span class="fl">0.05</span>)</span>
+<span id="cb486-8"><a href="power-tests.html#cb486-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(math.ceil(n_test))</span></code></pre></div>
+<pre><code>## 34</code></pre>
+<p>And a power curve can be constructed as in Figure <a href="power-tests.html#fig:pythonpowerplot">11.6</a>.</p>
+<div class="sourceCode" id="cb488"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb488-1"><a href="power-tests.html#cb488-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb488-2"><a href="power-tests.html#cb488-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb488-3"><a href="power-tests.html#cb488-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb488-4"><a href="power-tests.html#cb488-4" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb488-5"><a href="power-tests.html#cb488-5" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> TTestPower().plot_power(dep_var <span class="op">=</span> <span class="st">'nobs'</span>,</span>
+<span id="cb488-6"><a href="power-tests.html#cb488-6" aria-hidden="true" tabindex="-1"></a>                              nobs <span class="op">=</span> np.arange(<span class="dv">20</span>, <span class="dv">100</span>),</span>
+<span id="cb488-7"><a href="power-tests.html#cb488-7" aria-hidden="true" tabindex="-1"></a>                              effect_size <span class="op">=</span> np.array([<span class="fl">0.5</span>]),</span>
+<span id="cb488-8"><a href="power-tests.html#cb488-8" aria-hidden="true" tabindex="-1"></a>                              alpha <span class="op">=</span> <span class="fl">0.05</span>)</span>
+<span id="cb488-9"><a href="power-tests.html#cb488-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="figure" style="text-align: center">
+<span style="display:block;" id="fig:pythonpowerplot"></span>
+<img src="_main_files/figure-html/unnamed-chunk-82-1.png" alt="Plot of power against sample size for a paired t-test" width="672"><p class="caption">
+Figure 11.6: Plot of power against sample size for a paired t-test
+</p>
+</div>
+
+</div>
+</div>
+
+  <div class="chapter-nav">
+<div class="prev"><a href="alt-approaches.html"><span class="header-section-number">10</span> Alternative Technical Approaches in R, Python and Julia</a></div>
+<div class="next"><a href="solutions-to-exercises.html">Solutions to Exercises</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#power-tests"><span class="header-section-number">11</span> Power Analysis to Estimate Required Sample Sizes for Modeling</a></li>
+<li><a class="nav-link" href="#errors-effect-sizes-and-statistical-power"><span class="header-section-number">11.1</span> Errors, effect sizes and statistical power</a></li>
+<li><a class="nav-link" href="#simple-stats"><span class="header-section-number">11.2</span> Power analysis for simple hypothesis tests</a></li>
+<li><a class="nav-link" href="#power-analysis-for-linear-regression-models"><span class="header-section-number">11.3</span> Power analysis for linear regression models</a></li>
+<li><a class="nav-link" href="#power-analysis-for-log-likelihood-regression-models"><span class="header-section-number">11.4</span> Power analysis for log-likelihood regression models</a></li>
+<li><a class="nav-link" href="#power-analysis-for-hierarchical-regression-models"><span class="header-section-number">11.5</span> Power analysis for hierarchical regression models</a></li>
+<li><a class="nav-link" href="#power-analysis-using-python"><span class="header-section-number">11.6</span> Power analysis using Python</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/keithmcnulty/peopleanalytics-regression-book/blob/master/r/11-power_tests.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/keithmcnulty/peopleanalytics-regression-book/edit/master/r/11-power_tests.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Handbook of Regression Modeling in People Analytics</strong>: With Examples in R, Python and Julia" was written by Keith McNulty. </p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer><!-- dynamically load mathjax for compatibility with self-contained --><script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script><script type="text/x-mathjax-config">const popovers = document.querySelectorAll('a.footnote-ref[data-toggle="popover"]');
+for (let popover of popovers) {
+  const div = document.createElement('div');
+  div.setAttribute('style', 'position: absolute; top: 0, left:0; width:0, height:0, overflow: hidden; visibility: hidden;');
+  div.innerHTML = popover.getAttribute('data-content');
+
+  var has_math = div.querySelector("span.math");
+  if (has_math) {
+    document.body.appendChild(div);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, div]);
+    MathJax.Hub.Queue(function() {
+      popover.setAttribute('data-content', div.innerHTML);
+      document.body.removeChild(div);
+    })
+  }
+}
+</script>
+</body>
+</html>

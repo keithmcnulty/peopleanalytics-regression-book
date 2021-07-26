@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 The Importance of Regression in People Analytics | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
+  <meta name="description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="generator" content="bookdown 0.22.15 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1 The Importance of Regression in People Analytics | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://peopleanalytics-regression-book.org" />
+  <meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png" />
+  <meta property="og:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="github-repo" content="keithmcnulty/peopleanalytics-regression-book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1 The Importance of Regression in People Analytics | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
+  <meta name="twitter:site" content="@dr_keithmcnulty" />
+  <meta name="twitter:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png" />
+
+<meta name="author" content="Keith McNulty" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction.html"/>
+<link rel="next" href="the-basics-of-the-r-programming-language.html"/>
+<script src="libs/header-attrs-2.9.5/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python"/>
+<meta name="citation_author" content="Keith McNulty"/>
+<meta name="citation_publication_date" content="2021"/>
+<meta name="citation_isbn" content="9781003194156"/>
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-N7JZGMVRZK');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Handbook of Regression Modeling in People Analytics</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#notes-on-data-used-in-this-book"><i class="fa fa-check"></i>Notes on data used in this book</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="foreword-by-alexis-fink.html"><a href="foreword-by-alexis-fink.html"><i class="fa fa-check"></i>Foreword by Alexis Fink</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="inf-model.html"><a href="inf-model.html"><i class="fa fa-check"></i><b>1</b> The Importance of Regression in People Analytics</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="inf-model.html"><a href="inf-model.html#why-is-regression-modeling-so-important-in-people-analytics"><i class="fa fa-check"></i><b>1.1</b> Why is regression modeling so important in people analytics?</a></li>
+<li class="chapter" data-level="1.2" data-path="inf-model.html"><a href="inf-model.html#theory-modeling"><i class="fa fa-check"></i><b>1.2</b> What do we mean by ‘modeling’‍?</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="inf-model.html"><a href="inf-model.html#the-theory-of-inferential-modeling"><i class="fa fa-check"></i><b>1.2.1</b> The theory of inferential modeling</a></li>
+<li class="chapter" data-level="1.2.2" data-path="inf-model.html"><a href="inf-model.html#the-process-of-inferential-modeling"><i class="fa fa-check"></i><b>1.2.2</b> The process of inferential modeling</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="inf-model.html"><a href="inf-model.html#the-structure-system-and-organization-of-this-book"><i class="fa fa-check"></i><b>1.3</b> The structure, system and organization of this book</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html"><i class="fa fa-check"></i><b>2</b> The Basics of the R Programming Language</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#what-is-r"><i class="fa fa-check"></i><b>2.1</b> What is R?</a></li>
+<li class="chapter" data-level="2.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#how-to-start-using-r"><i class="fa fa-check"></i><b>2.2</b> How to start using R</a></li>
+<li class="chapter" data-level="2.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-in-r"><i class="fa fa-check"></i><b>2.3</b> Data in R</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-types"><i class="fa fa-check"></i><b>2.3.1</b> Data types</a></li>
+<li class="chapter" data-level="2.3.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#homogeneous-data-structures"><i class="fa fa-check"></i><b>2.3.2</b> Homogeneous data structures</a></li>
+<li class="chapter" data-level="2.3.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#heterogeneous-data-structures"><i class="fa fa-check"></i><b>2.3.3</b> Heterogeneous data structures</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#working-with-dataframes"><i class="fa fa-check"></i><b>2.4</b> Working with dataframes</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#loading-and-tidying-data-in-dataframes"><i class="fa fa-check"></i><b>2.4.1</b> Loading and tidying data in dataframes</a></li>
+<li class="chapter" data-level="2.4.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#manipulating-dataframes"><i class="fa fa-check"></i><b>2.4.2</b> Manipulating dataframes</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#functions-packages-and-libraries"><i class="fa fa-check"></i><b>2.5</b> Functions, packages and libraries</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#using-functions"><i class="fa fa-check"></i><b>2.5.1</b> Using functions</a></li>
+<li class="chapter" data-level="2.5.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#help-with-functions"><i class="fa fa-check"></i><b>2.5.2</b> Help with functions</a></li>
+<li class="chapter" data-level="2.5.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#writing-your-own-functions"><i class="fa fa-check"></i><b>2.5.3</b> Writing your own functions</a></li>
+<li class="chapter" data-level="2.5.4" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#installing-packages"><i class="fa fa-check"></i><b>2.5.4</b> Installing packages</a></li>
+<li class="chapter" data-level="2.5.5" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#using-packages"><i class="fa fa-check"></i><b>2.5.5</b> Using packages</a></li>
+<li class="chapter" data-level="2.5.6" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#the-pipe-operator"><i class="fa fa-check"></i><b>2.5.6</b> The pipe operator</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#errors-warnings-and-messages"><i class="fa fa-check"></i><b>2.6</b> Errors, warnings and messages</a></li>
+<li class="chapter" data-level="2.7" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#plotting-and-graphing"><i class="fa fa-check"></i><b>2.7</b> Plotting and graphing</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#plotting-in-base-r"><i class="fa fa-check"></i><b>2.7.1</b> Plotting in base R</a></li>
+<li class="chapter" data-level="2.7.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#specialist-plotting-and-graphing-packages"><i class="fa fa-check"></i><b>2.7.2</b> Specialist plotting and graphing packages</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#documenting-your-work-using-r-markdown"><i class="fa fa-check"></i><b>2.8</b> Documenting your work using R Markdown</a></li>
+<li class="chapter" data-level="2.9" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#learning-exercises"><i class="fa fa-check"></i><b>2.9</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="2.9.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#discussion-questions"><i class="fa fa-check"></i><b>2.9.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="2.9.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-exercises"><i class="fa fa-check"></i><b>2.9.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="found-stats.html"><a href="found-stats.html"><i class="fa fa-check"></i><b>3</b> Statistics Foundations</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="found-stats.html"><a href="found-stats.html#elementary-descriptive-statistics-of-populations-and-samples"><i class="fa fa-check"></i><b>3.1</b> Elementary descriptive statistics of populations and samples</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="found-stats.html"><a href="found-stats.html#mean-var-sd"><i class="fa fa-check"></i><b>3.1.1</b> Mean, variance and standard deviation</a></li>
+<li class="chapter" data-level="3.1.2" data-path="found-stats.html"><a href="found-stats.html#covariance-and-correlation"><i class="fa fa-check"></i><b>3.1.2</b> Covariance and correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="found-stats.html"><a href="found-stats.html#distribution-of-random-variables"><i class="fa fa-check"></i><b>3.2</b> Distribution of random variables</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="found-stats.html"><a href="found-stats.html#sampling-of-random-variables"><i class="fa fa-check"></i><b>3.2.1</b> Sampling of random variables</a></li>
+<li class="chapter" data-level="3.2.2" data-path="found-stats.html"><a href="found-stats.html#standard-errors-the-t-distribution-and-confidence-intervals"><i class="fa fa-check"></i><b>3.2.2</b> Standard errors, the <span class="math inline">\(t\)</span>-distribution and confidence intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="found-stats.html"><a href="found-stats.html#hyp-tests"><i class="fa fa-check"></i><b>3.3</b> Hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="found-stats.html"><a href="found-stats.html#means-sig"><i class="fa fa-check"></i><b>3.3.1</b> Testing for a difference in means (Welch’s <span class="math inline">\(t\)</span>-test)</a></li>
+<li class="chapter" data-level="3.3.2" data-path="found-stats.html"><a href="found-stats.html#t-test-cor"><i class="fa fa-check"></i><b>3.3.2</b> Testing for a non-zero correlation between two variables (<span class="math inline">\(t\)</span>-test for correlation)</a></li>
+<li class="chapter" data-level="3.3.3" data-path="found-stats.html"><a href="found-stats.html#testing-for-a-difference-in-frequency-distribution-between-different-categories-in-a-data-set-chi-square-test"><i class="fa fa-check"></i><b>3.3.3</b> Testing for a difference in frequency distribution between different categories in a data set (Chi-square test)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="found-stats.html"><a href="found-stats.html#foundational-statistics-in-python"><i class="fa fa-check"></i><b>3.4</b> Foundational statistics in Python</a></li>
+<li class="chapter" data-level="3.5" data-path="found-stats.html"><a href="found-stats.html#foundational-statistics-in-julia"><i class="fa fa-check"></i><b>3.5</b> Foundational statistics in Julia</a></li>
+<li class="chapter" data-level="3.6" data-path="found-stats.html"><a href="found-stats.html#learning-exercises-1"><i class="fa fa-check"></i><b>3.6</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="found-stats.html"><a href="found-stats.html#discussion-questions-1"><i class="fa fa-check"></i><b>3.6.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="3.6.2" data-path="found-stats.html"><a href="found-stats.html#data-exercises-1"><i class="fa fa-check"></i><b>3.6.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html"><i class="fa fa-check"></i><b>4</b> Linear Regression for Continuous Outcomes</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#when-ols"><i class="fa fa-check"></i><b>4.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#origins-ols"><i class="fa fa-check"></i><b>4.1.1</b> Origins and intuition of linear regression</a></li>
+<li class="chapter" data-level="4.1.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#use-cases-ols"><i class="fa fa-check"></i><b>4.1.2</b> Use cases for linear regression</a></li>
+<li class="chapter" data-level="4.1.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#walkthrough-ols"><i class="fa fa-check"></i><b>4.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#simple-ols"><i class="fa fa-check"></i><b>4.2</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#linear-single"><i class="fa fa-check"></i><b>4.2.1</b> Linear relationship between a single input and an outcome</a></li>
+<li class="chapter" data-level="4.2.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#minimising-error-ols"><i class="fa fa-check"></i><b>4.2.2</b> Minimising the error</a></li>
+<li class="chapter" data-level="4.2.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#best-fit-simple-ols"><i class="fa fa-check"></i><b>4.2.3</b> Determining the best fit</a></li>
+<li class="chapter" data-level="4.2.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#measuring-the-fit-of-the-model"><i class="fa fa-check"></i><b>4.2.4</b> Measuring the fit of the model</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#multiple-linear-regression"><i class="fa fa-check"></i><b>4.3</b> Multiple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#running-a-multiple-linear-regression-model-and-interpreting-its-coefficients"><i class="fa fa-check"></i><b>4.3.1</b> Running a multiple linear regression model and interpreting its coefficients</a></li>
+<li class="chapter" data-level="4.3.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#coefficient-confidence"><i class="fa fa-check"></i><b>4.3.2</b> Coefficient confidence</a></li>
+<li class="chapter" data-level="4.3.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#lin-good-fit"><i class="fa fa-check"></i><b>4.3.3</b> Model ‘goodness-of-fit’</a></li>
+<li class="chapter" data-level="4.3.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#making-predictions-from-your-model"><i class="fa fa-check"></i><b>4.3.4</b> Making predictions from your model</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#managing-inputs-in-linear-regression"><i class="fa fa-check"></i><b>4.4</b> Managing inputs in linear regression</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#relevance-of-input-variables"><i class="fa fa-check"></i><b>4.4.1</b> Relevance of input variables</a></li>
+<li class="chapter" data-level="4.4.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#sparseness-missingness-of-data"><i class="fa fa-check"></i><b>4.4.2</b> Sparseness (‘missingness’) of data</a></li>
+<li class="chapter" data-level="4.4.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#transforming-categorical-inputs-to-dummy-variables"><i class="fa fa-check"></i><b>4.4.3</b> Transforming categorical inputs to dummy variables</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#testing-your-model-assumptions"><i class="fa fa-check"></i><b>4.5</b> Testing your model assumptions</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#assumption-of-linearity-and-additivity"><i class="fa fa-check"></i><b>4.5.1</b> Assumption of linearity and additivity</a></li>
+<li class="chapter" data-level="4.5.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#lin-reg-const-var"><i class="fa fa-check"></i><b>4.5.2</b> Assumption of constant error variance</a></li>
+<li class="chapter" data-level="4.5.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#norm-dist-assum"><i class="fa fa-check"></i><b>4.5.3</b> Assumption of normally distributed errors</a></li>
+<li class="chapter" data-level="4.5.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#collinearity"><i class="fa fa-check"></i><b>4.5.4</b> Avoiding high collinearity and multicollinearity between input variables</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#extending-multiple-linear-regression"><i class="fa fa-check"></i><b>4.6</b> Extending multiple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#interactions-between-input-variables"><i class="fa fa-check"></i><b>4.6.1</b> Interactions between input variables</a></li>
+<li class="chapter" data-level="4.6.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#quadratic-and-higher-order-polynomial-terms"><i class="fa fa-check"></i><b>4.6.2</b> Quadratic and higher-order polynomial terms</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#learning-exercises-2"><i class="fa fa-check"></i><b>4.7</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="4.7.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#discussion-questions-2"><i class="fa fa-check"></i><b>4.7.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="4.7.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#data-exercises-2"><i class="fa fa-check"></i><b>4.7.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="bin-log-reg.html"><a href="bin-log-reg.html"><i class="fa fa-check"></i><b>5</b> Binomial Logistic Regression for Binary Outcomes</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#when-to-use-it"><i class="fa fa-check"></i><b>5.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#logistic-origins"><i class="fa fa-check"></i><b>5.1.1</b> Origins and intuition of binomial logistic regression</a></li>
+<li class="chapter" data-level="5.1.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#use-cases-for-binomial-logistic-regression"><i class="fa fa-check"></i><b>5.1.2</b> Use cases for binomial logistic regression</a></li>
+<li class="chapter" data-level="5.1.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#walkthrough-logit"><i class="fa fa-check"></i><b>5.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#mod-prob"><i class="fa fa-check"></i><b>5.2</b> Modeling probabilistic outcomes using a logistic function</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#deriving-the-concept-of-log-odds"><i class="fa fa-check"></i><b>5.2.1</b> Deriving the concept of log odds</a></li>
+<li class="chapter" data-level="5.2.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#modeling-the-log-odds-and-interpreting-the-coefficients"><i class="fa fa-check"></i><b>5.2.2</b> Modeling the log odds and interpreting the coefficients</a></li>
+<li class="chapter" data-level="5.2.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#odds-versus-probability"><i class="fa fa-check"></i><b>5.2.3</b> Odds versus probability</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#running-a-multivariate-binomial-logistic-regression-model"><i class="fa fa-check"></i><b>5.3</b> Running a multivariate binomial logistic regression model</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#running-and-interpreting-a-multivariate-binomial-logistic-regression-model"><i class="fa fa-check"></i><b>5.3.1</b> Running and interpreting a multivariate binomial logistic regression model</a></li>
+<li class="chapter" data-level="5.3.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#logistic-gof"><i class="fa fa-check"></i><b>5.3.2</b> Understanding the fit and goodness-of-fit of a binomial logistic regression model</a></li>
+<li class="chapter" data-level="5.3.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#model-parsimony"><i class="fa fa-check"></i><b>5.3.3</b> Model parsimony</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="bin-log-reg.html"><a href="bin-log-reg.html#other-considerations-in-binomial-logistic-regression"><i class="fa fa-check"></i><b>5.4</b> Other considerations in binomial logistic regression</a></li>
+<li class="chapter" data-level="5.5" data-path="bin-log-reg.html"><a href="bin-log-reg.html#learning-exercises-3"><i class="fa fa-check"></i><b>5.5</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#discussion-questions-3"><i class="fa fa-check"></i><b>5.5.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="5.5.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#data-exercises-3"><i class="fa fa-check"></i><b>5.5.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html"><i class="fa fa-check"></i><b>6</b> Multinomial Logistic Regression for Nominal Category Outcomes</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#when-to-use-it-1"><i class="fa fa-check"></i><b>6.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#intuition-for-multinomial-logistic-regression"><i class="fa fa-check"></i><b>6.1.1</b> Intuition for multinomial logistic regression</a></li>
+<li class="chapter" data-level="6.1.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#use-cases-for-multinomial-logistic-regression"><i class="fa fa-check"></i><b>6.1.2</b> Use cases for multinomial logistic regression</a></li>
+<li class="chapter" data-level="6.1.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#walkthrough-example"><i class="fa fa-check"></i><b>6.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#stratified"><i class="fa fa-check"></i><b>6.2</b> Running stratified binomial models</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#modeling-the-choice-of-product-a-versus-other-products"><i class="fa fa-check"></i><b>6.2.1</b> Modeling the choice of Product A versus other products</a></li>
+<li class="chapter" data-level="6.2.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#modeling-other-choices"><i class="fa fa-check"></i><b>6.2.2</b> Modeling other choices</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#running-a-multinomial-regression-model"><i class="fa fa-check"></i><b>6.3</b> Running a multinomial regression model</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#def-ref"><i class="fa fa-check"></i><b>6.3.1</b> Defining a reference level and running the model</a></li>
+<li class="chapter" data-level="6.3.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#interpreting-the-model"><i class="fa fa-check"></i><b>6.3.2</b> Interpreting the model</a></li>
+<li class="chapter" data-level="6.3.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#changing-ref"><i class="fa fa-check"></i><b>6.3.3</b> Changing the reference</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#model-simplification-fit-and-goodness-of-fit-for-multinomial-logistic-regression-models"><i class="fa fa-check"></i><b>6.4</b> Model simplification, fit and goodness-of-fit for multinomial logistic regression models</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#elim"><i class="fa fa-check"></i><b>6.4.1</b> Gradual safe elimination of variables</a></li>
+<li class="chapter" data-level="6.4.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#model-fit-and-goodness-of-fit"><i class="fa fa-check"></i><b>6.4.2</b> Model fit and goodness-of-fit</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#learning-exercises-4"><i class="fa fa-check"></i><b>6.5</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#discussion-questions-4"><i class="fa fa-check"></i><b>6.5.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="6.5.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#data-exercises-4"><i class="fa fa-check"></i><b>6.5.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ord-reg.html"><a href="ord-reg.html"><i class="fa fa-check"></i><b>7</b> Proportional Odds Logistic Regression for Ordered Category Outcomes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="ord-reg.html"><a href="ord-reg.html#when-to-use-it-2"><i class="fa fa-check"></i><b>7.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="ord-reg.html"><a href="ord-reg.html#ord-intuit"><i class="fa fa-check"></i><b>7.1.1</b> Intuition for proportional odds logistic regression</a></li>
+<li class="chapter" data-level="7.1.2" data-path="ord-reg.html"><a href="ord-reg.html#use-cases-for-proportional-odds-logistic-regression"><i class="fa fa-check"></i><b>7.1.2</b> Use cases for proportional odds logistic regression</a></li>
+<li class="chapter" data-level="7.1.3" data-path="ord-reg.html"><a href="ord-reg.html#ord-walkthrough"><i class="fa fa-check"></i><b>7.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="ord-reg.html"><a href="ord-reg.html#modeling-ordinal-outcomes-under-the-assumption-of-proportional-odds"><i class="fa fa-check"></i><b>7.2</b> Modeling ordinal outcomes under the assumption of proportional odds</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="ord-reg.html"><a href="ord-reg.html#mod-lin-reg"><i class="fa fa-check"></i><b>7.2.1</b> Using a latent continuous outcome variable to derive a proportional odds model</a></li>
+<li class="chapter" data-level="7.2.2" data-path="ord-reg.html"><a href="ord-reg.html#running-a-proportional-odds-logistic-regression-model"><i class="fa fa-check"></i><b>7.2.2</b> Running a proportional odds logistic regression model</a></li>
+<li class="chapter" data-level="7.2.3" data-path="ord-reg.html"><a href="ord-reg.html#calculating-the-likelihood-of-an-observation-being-in-a-specific-ordinal-category"><i class="fa fa-check"></i><b>7.2.3</b> Calculating the likelihood of an observation being in a specific ordinal category</a></li>
+<li class="chapter" data-level="7.2.4" data-path="ord-reg.html"><a href="ord-reg.html#model-diagnostics"><i class="fa fa-check"></i><b>7.2.4</b> Model diagnostics</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="ord-reg.html"><a href="ord-reg.html#testing-the-proportional-odds-assumption"><i class="fa fa-check"></i><b>7.3</b> Testing the proportional odds assumption</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="ord-reg.html"><a href="ord-reg.html#sighting-the-coefficients-of-stratified-binomial-models"><i class="fa fa-check"></i><b>7.3.1</b> Sighting the coefficients of stratified binomial models</a></li>
+<li class="chapter" data-level="7.3.2" data-path="ord-reg.html"><a href="ord-reg.html#wald"><i class="fa fa-check"></i><b>7.3.2</b> The Brant-Wald test</a></li>
+<li class="chapter" data-level="7.3.3" data-path="ord-reg.html"><a href="ord-reg.html#alternatives-to-proportional-odds-models"><i class="fa fa-check"></i><b>7.3.3</b> Alternatives to proportional odds models</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="ord-reg.html"><a href="ord-reg.html#learning-exercises-5"><i class="fa fa-check"></i><b>7.4</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="ord-reg.html"><a href="ord-reg.html#discussion-questions-5"><i class="fa fa-check"></i><b>7.4.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="7.4.2" data-path="ord-reg.html"><a href="ord-reg.html#data-exercises-5"><i class="fa fa-check"></i><b>7.4.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html"><i class="fa fa-check"></i><b>8</b> Modeling Explicit and Latent Hierarchy in Data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#mixed"><i class="fa fa-check"></i><b>8.1</b> Mixed models for explicit hierarchy in data</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#fixed-and-random-effects"><i class="fa fa-check"></i><b>8.1.1</b> Fixed and random effects</a></li>
+<li class="chapter" data-level="8.1.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-a-mixed-model"><i class="fa fa-check"></i><b>8.1.2</b> Running a mixed model</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#struc-eq-model"><i class="fa fa-check"></i><b>8.2</b> Structural equation models for latent hierarchy in data</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-and-assessing-the-measurement-model"><i class="fa fa-check"></i><b>8.2.1</b> Running and assessing the measurement model</a></li>
+<li class="chapter" data-level="8.2.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-and-interpreting-the-structural-model"><i class="fa fa-check"></i><b>8.2.2</b> Running and interpreting the structural model</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#learning-exercises-6"><i class="fa fa-check"></i><b>8.3</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#discussion-questions-6"><i class="fa fa-check"></i><b>8.3.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="8.3.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#data-exercises-6"><i class="fa fa-check"></i><b>8.3.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="survival.html"><a href="survival.html"><i class="fa fa-check"></i><b>9</b> Survival Analysis for Modeling Singular Events Over Time</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="survival.html"><a href="survival.html#tracking-and-illustrating-survival-rates-over-the-study-period"><i class="fa fa-check"></i><b>9.1</b> Tracking and illustrating survival rates over the study period</a></li>
+<li class="chapter" data-level="9.2" data-path="survival.html"><a href="survival.html#coxphmodel"><i class="fa fa-check"></i><b>9.2</b> Cox proportional hazard regression models</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="survival.html"><a href="survival.html#running-a-cox-proportional-hazard-regression-model"><i class="fa fa-check"></i><b>9.2.1</b> Running a Cox proportional hazard regression model</a></li>
+<li class="chapter" data-level="9.2.2" data-path="survival.html"><a href="survival.html#checking-the-proportional-hazard-assumption"><i class="fa fa-check"></i><b>9.2.2</b> Checking the proportional hazard assumption</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="survival.html"><a href="survival.html#frailty-models"><i class="fa fa-check"></i><b>9.3</b> Frailty models</a></li>
+<li class="chapter" data-level="9.4" data-path="survival.html"><a href="survival.html#learning-exercises-7"><i class="fa fa-check"></i><b>9.4</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="survival.html"><a href="survival.html#discussion-questions-7"><i class="fa fa-check"></i><b>9.4.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="9.4.2" data-path="survival.html"><a href="survival.html#data-exercises-7"><i class="fa fa-check"></i><b>9.4.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="alt-approaches.html"><a href="alt-approaches.html"><i class="fa fa-check"></i><b>10</b> Alternative Technical Approaches in R, Python and Julia</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="alt-approaches.html"><a href="alt-approaches.html#tidier-modeling-approaches-in-r"><i class="fa fa-check"></i><b>10.1</b> ‘Tidier’ modeling approaches in R</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="alt-approaches.html"><a href="alt-approaches.html#the-broom-package"><i class="fa fa-check"></i><b>10.1.1</b> The <code>broom</code> package</a></li>
+<li class="chapter" data-level="10.1.2" data-path="alt-approaches.html"><a href="alt-approaches.html#the-parsnip-package"><i class="fa fa-check"></i><b>10.1.2</b> The <code>parsnip</code> package</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="alt-approaches.html"><a href="alt-approaches.html#inferential-statistical-modeling-in-python"><i class="fa fa-check"></i><b>10.2</b> Inferential statistical modeling in Python</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="alt-approaches.html"><a href="alt-approaches.html#ordinary-least-squares-ols-linear-regression"><i class="fa fa-check"></i><b>10.2.1</b> Ordinary Least Squares (OLS) linear regression</a></li>
+<li class="chapter" data-level="10.2.2" data-path="alt-approaches.html"><a href="alt-approaches.html#binomial-logistic-regression"><i class="fa fa-check"></i><b>10.2.2</b> Binomial logistic regression</a></li>
+<li class="chapter" data-level="10.2.3" data-path="alt-approaches.html"><a href="alt-approaches.html#multinomial-logistic-regression"><i class="fa fa-check"></i><b>10.2.3</b> Multinomial logistic regression</a></li>
+<li class="chapter" data-level="10.2.4" data-path="alt-approaches.html"><a href="alt-approaches.html#structural-equation-models"><i class="fa fa-check"></i><b>10.2.4</b> Structural equation models</a></li>
+<li class="chapter" data-level="10.2.5" data-path="alt-approaches.html"><a href="alt-approaches.html#survival-analysis"><i class="fa fa-check"></i><b>10.2.5</b> Survival analysis</a></li>
+<li class="chapter" data-level="10.2.6" data-path="alt-approaches.html"><a href="alt-approaches.html#other-model-variants"><i class="fa fa-check"></i><b>10.2.6</b> Other model variants</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="alt-approaches.html"><a href="alt-approaches.html#inferential-statistical-modeling-in-julia"><i class="fa fa-check"></i><b>10.3</b> Inferential statistical modeling in Julia</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="alt-approaches.html"><a href="alt-approaches.html#ordinary-least-squares-ols-linear-regression-1"><i class="fa fa-check"></i><b>10.3.1</b> Ordinary Least Squares (OLS) linear regression</a></li>
+<li class="chapter" data-level="10.3.2" data-path="alt-approaches.html"><a href="alt-approaches.html#binomial-logistic-regression-1"><i class="fa fa-check"></i><b>10.3.2</b> Binomial logistic regression</a></li>
+<li class="chapter" data-level="10.3.3" data-path="alt-approaches.html"><a href="alt-approaches.html#multinomial-logistic-regression-1"><i class="fa fa-check"></i><b>10.3.3</b> Multinomial logistic regression</a></li>
+<li class="chapter" data-level="10.3.4" data-path="alt-approaches.html"><a href="alt-approaches.html#proportional-odds-logistic-regression"><i class="fa fa-check"></i><b>10.3.4</b> Proportional odds logistic regression</a></li>
+<li class="chapter" data-level="10.3.5" data-path="alt-approaches.html"><a href="alt-approaches.html#mixed-models"><i class="fa fa-check"></i><b>10.3.5</b> Mixed models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="power-tests.html"><a href="power-tests.html"><i class="fa fa-check"></i><b>11</b> Power Analysis to Estimate Required Sample Sizes for Modeling</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="power-tests.html"><a href="power-tests.html#errors-effect-sizes-and-statistical-power"><i class="fa fa-check"></i><b>11.1</b> Errors, effect sizes and statistical power</a></li>
+<li class="chapter" data-level="11.2" data-path="power-tests.html"><a href="power-tests.html#simple-stats"><i class="fa fa-check"></i><b>11.2</b> Power analysis for simple hypothesis tests</a></li>
+<li class="chapter" data-level="11.3" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-linear-regression-models"><i class="fa fa-check"></i><b>11.3</b> Power analysis for linear regression models</a></li>
+<li class="chapter" data-level="11.4" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-log-likelihood-regression-models"><i class="fa fa-check"></i><b>11.4</b> Power analysis for log-likelihood regression models</a></li>
+<li class="chapter" data-level="11.5" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-hierarchical-regression-models"><i class="fa fa-check"></i><b>11.5</b> Power analysis for hierarchical regression models</a></li>
+<li class="chapter" data-level="11.6" data-path="power-tests.html"><a href="power-tests.html#power-analysis-using-python"><i class="fa fa-check"></i><b>11.6</b> Power analysis using Python</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="solutions-to-exercises.html"><a href="solutions-to-exercises.html"><i class="fa fa-check"></i>Solutions to Exercises</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Handbook of Regression Modeling in People Analytics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="inf-model" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> The Importance of Regression in People Analytics</h1>
+<p>In the 19th century, when Francis Galton first used the term ‘regression’ to describe a statistical phenomenon (see Chapter <a href="linear-reg-ols.html#linear-reg-ols">4</a>), little did he know how important that term would be today. Many of the most powerful tools of statistical inference that we now have at our disposal can be traced back to the types of early analysis that Galton and his contemporaries were engaged in. The sheer number of different regression-related methodologies and variants that are available to researchers and practitioners today is mind-boggling, and there are still rich veins of ongoing research that are focused on defining and refining new forms of regression to tackle new problems.</p>
+<p>Neither could Galton have imagined the advent of the age of data we now live in. Those of us (like me) who entered the world of work even as recently as 20 years ago remember a time when most problems could not be expected to be solved using a data-driven approach, because there simply was no data. Things are very different now, with data being collected and processed all around us and available to use as direct or indirect measures of the phenomena we are interested in.</p>
+<p>Along with the growth in data that we have seen in recent years, we have also seen a rapid growth in the availability of statistical tools—open source and free to use—that fundamentally change how we go about analytics. Gone are the clunky, complex, repeated steps on calculators or spreadsheets. In their place are lean statistical programming languages that can implement a regression analysis in milliseconds with a single line of code, allowing us to easily run and reproduce multivariate analysis at scale.</p>
+<p>So given that we have access to well-developed methodology, rich sources of data and readily accessible tools, it is somewhat surprising that many analytics practitioners have a limited knowledge and understanding of regression and its applications. The aim of this book is to encourage inexperienced analytics practitioners to ‘dip their toes’ further into the wide and varied world of regression in order to deliver more targeted and precise insights to their organizations and stakeholders on the problems they are most interested in. While the primary subject matter focus of this book is the analysis of people-related phenomena, the material is easily and naturally transferable to other disciplines. Therefore this book can be regarded as a practical introduction to a wide range of regression methods for any analytics student or practitioner.</p>
+<p>It is my firm belief that all people analytics professionals should have a strong understanding of regression models and how to implement and interpret them in practice, and my aim with this book is to provide those who need it with help in getting there. In this chapter we will set the scene for the technical learning in the remainder of the book by outlining the relevance of regression models in people analytics practice. We also touch on some general inferential modeling theory to set a context for later chapters, and we provide a preview of the contents, structure and learning objectives of this book.</p>
+<div id="why-is-regression-modeling-so-important-in-people-analytics" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Why is regression modeling so important in people analytics?</h2>
+<p>People analytics involves the study of the behaviors and characteristics of people or groups in relation to important business, organizational or institutional outcomes. This can involve both qualitative methods and quantitative methods, but if data is available related to a particular topic of interest, then quantitative methods are almost always considered important. With such a specific focus on outcomes, any analyst working in people analytics will frequently need to model these outcomes both to understand what influences them and to potentially predict them in the future.</p>
+<p>Modeling an outcome with the primary goal of understanding what influences it can be quite a different matter to modeling an outcome with the primary goal of predicting if it will happen in the future. If we need to understand what influences an outcome, we need to get inside a model and construct a formula or structure to infer how each variable acts on that outcome, we need to get a sense of which variables are meaningful or not, and we need to quantify the ‘explainability’ of the outcome based on our variables. If our primary aim is to predict the outcome, getting inside the model is less important because we don’t have to explain the outcome, we just need to be confident that it predicts accurately.</p>
+<p>A model constructed to understand an outcome is often called an <em>inferential</em> model. Regression models are the most well-known and well-used inferential models available, providing a wide range of measures and insights that help us explain the relationship between our input variables and our outcome of interest, as we shall see in later chapters of this book.</p>
+<p>The current reality in the field of people analytics is that inferential models are more required than predictive models. There are two reasons for this. First, data sets in people analytics are rarely large enough to facilitate satisfactory prediction accuracy, and so attention is usually shifted to inference for this reason alone. Second, in the field of people analytics, decisions often have a real impact on individuals. Therefore, even in the rare situations where accurate predictive modeling is attainable, stakeholders are unlikely to trust the output and bear the consequences of predictive models without some sort of elementary understanding of how the predictions are generated. This requires the analyst to consider inference power as well as predictive accuracy in selecting their modeling approach. Again, many regression models come to the fore because they are commonly able to provide both inferential and predictive value.</p>
+<p>Finally, the growing importance of evidence-based practice in many clinical and professional fields has generated a need for more advanced modeling skills to satisfy rising demand for quantitative evidence from decision makers. In people-related fields such as human resources, many varieties of specialized regression-based models such as survival models or latent variable models have crossed from academic and clinical settings into business settings in recent years, and there is an increasing need for qualified individuals who understand and can implement and interpret these models in practice.</p>
+</div>
+<div id="theory-modeling" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> What do we mean by ‘modeling’‍?</h2>
+<p>The term ‘modeling’ has a very wide range of meaning in everyday life and work. In this book we are focused on inferential modeling, and we define that as a specific form of statistical learning, which tries to discover and understand a mathematical relationship between a set of measurements of certain constructs and a measurement of an outcome of interest, based on a sample of data on each. Modeling is both a concept and a process.</p>
+<div id="the-theory-of-inferential-modeling" class="section level3" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> The theory of inferential modeling</h3>
+<p>We will start with a theoretical description and then provide a real example from a later chapter to illustrate.</p>
+<p>Imagine we have a population <span class="math inline">\(\mathscr{P}\)</span> for which we believe there may be a non-random relationship between a certain construct or set of constructs <span class="math inline">\(\mathscr{C}\)</span> and a certain measurable outcome <span class="math inline">\(\mathscr{O}\)</span>. Imagine that for a certain sample <span class="math inline">\(S\)</span> of observations from <span class="math inline">\(\mathscr{P}\)</span>, we have a collection of data which we believe measure <span class="math inline">\(\mathscr{C}\)</span> to some acceptable level of accuracy, and for which we also have a measure of the outcome <span class="math inline">\(\mathscr{O}\)</span>.</p>
+<p>By convention, we denote the set of data that measure <span class="math inline">\(\mathscr{C}\)</span> on our sample <span class="math inline">\(S\)</span> as <span class="math inline">\(X = x_1, x_2, \dots, x_p\)</span>, where each <span class="math inline">\(x_i\)</span> is a vector (or column) of data measuring at least one of the constructs in <span class="math inline">\(\mathscr{C}\)</span>. We denote the set of data that measure <span class="math inline">\(\mathscr{O}\)</span> on our sample set <span class="math inline">\(S\)</span> as <span class="math inline">\(y\)</span>. An upper-case <span class="math inline">\(X\)</span> is used because the expectation is that there will be several columns of data measuring our constructs, and a lower-case <span class="math inline">\(y\)</span> is used because the expectation is that the outcome is a single column.</p>
+<p><em>Inferential modeling</em> is the process of learning about a relationship (or lack of relationship) between the data in <span class="math inline">\(X\)</span> and <span class="math inline">\(y\)</span> and using that to <em>describe</em> a relationship (or lack of relationship) between our constructs <span class="math inline">\(\mathscr{C}\)</span> and our outcome <span class="math inline">\(\mathscr{O}\)</span> that is valid to a high degree of statistical certainty on the population <span class="math inline">\(\mathscr{P}\)</span>. This process may include:</p>
+<ul>
+<li>Testing a proposed mathematical relationship in the form of a function, structure or iterative method</li>
+<li>Comparing that relationship against other proposed relationships</li>
+<li>Describing the relationship statistically</li>
+<li>Determining whether the relationship (or certain elements of it) can be generalized from the sample set <span class="math inline">\(S\)</span> to the population <span class="math inline">\(\mathscr{P}\)</span></li>
+</ul>
+<p>When we test a relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(y\)</span>, we acknowledge that data and measurements are imperfect and so each observation in our sample <span class="math inline">\(S\)</span> may contain random error that we cannot control. Therefore we define our relationship as:</p>
+<p><span class="math display">\[
+y = f(X) + \epsilon
+\]</span>
+where <span class="math inline">\(f\)</span> is some transformation or function of the data in <span class="math inline">\(X\)</span> and <span class="math inline">\(\epsilon\)</span> is a random, uncontrollable error.</p>
+<p><span class="math inline">\(f\)</span> can take the form of a predetermined function with a formula defined on <span class="math inline">\(X\)</span>, like a linear function for example. In this case we can call our model a <em>parametric model</em>. In a parametric model, the modeled value of <span class="math inline">\(y\)</span> is known as soon as we know the values of <span class="math inline">\(X\)</span> by simply applying the formula. In a non-parametric model, there is no predetermined formula that defines the modeled value of <span class="math inline">\(y\)</span> purely in terms of <span class="math inline">\(X\)</span>. Non-parametric models need further information in addition to <span class="math inline">\(X\)</span> in order to determine the modeled value of <span class="math inline">\(y\)</span>—for example the value of <span class="math inline">\(y\)</span> in other observations with similar <span class="math inline">\(X\)</span> values.</p>
+<p><em>Regression models</em> are designed to derive <span class="math inline">\(f\)</span> using estimation based on statistical likelihood and expectation, founded on the theory of the distribution of random variables. Regression models can be both parametric and non-parametric, but by far the most commonly used methods (and the majority of those featured in this book) are parametric. Because of their foundation in statistical likelihood and expectation, they are particularly suited to helping answer questions of generalizability—that is, to what extent can the relationship being observed in the sample <span class="math inline">\(S\)</span> be inferred for the population <span class="math inline">\(\mathscr{P}\)</span>, which is usually the driving force in any form of inferential modeling.</p>
+<p>Note that there is a difference between establishing a statistical relationship between <span class="math inline">\(\mathscr{C}\)</span> and <span class="math inline">\(\mathscr{O}\)</span> and establishing a <em>causal relationship</em> between the two. This can be a common trap that inexperienced statistical analysts fall into when communicating the conclusions of their modeling. Establishing that a relationship exists between a construct and an outcome is a far cry from being able to say that one <em>causes</em> the other. This is the common truism that ‘correlation does not equal causation’‍.</p>
+<p>To bring our theory to life, consider the walkthrough example in Chapter <a href="linear-reg-ols.html#linear-reg-ols">4</a> of this book. In this example, we discuss how to establish a relationship between the academic results of students in the first three years of their education program and their results in the fourth year. In this case, our population <span class="math inline">\(\mathscr{P}\)</span> is all past, present and future students who take similar examinations, and our sample <span class="math inline">\(S\)</span> is the students who completed their studies in the past three years. <span class="math inline">\(X = x_1, x_2, x_3\)</span> are each of the three scores from the first three years, and <span class="math inline">\(y\)</span> is the score in the fourth year. We test <span class="math inline">\(f\)</span> to be a linear relationship, and we establish that such a relationship can be generalized to the entire population <span class="math inline">\(\mathscr{P}\)</span> with a substantial level of statistical confidence<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
+<p>Almost all our work in this book will refer to the variables <span class="math inline">\(X\)</span> as <em>input variables</em> and the variable <span class="math inline">\(y\)</span> as the <em>outcome variable</em>. There are many other common terms for these which you may find in other sources—for example <span class="math inline">\(X\)</span> are often known as independent variables or covariates while <span class="math inline">\(y\)</span> is often known as a dependent or response variable.</p>
+</div>
+<div id="the-process-of-inferential-modeling" class="section level3" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> The process of inferential modeling</h3>
+<p>Inferential modeling—regression or otherwise—is a process of numerous steps. Typically the main steps are:</p>
+<ol style="list-style-type: decimal">
+<li>Defining the outcome of interest <span class="math inline">\(\mathscr{O}\)</span> and the input constructs <span class="math inline">\(\mathscr{C}\)</span> based on a broader evidence-based objective</li>
+<li>Confirming that <span class="math inline">\(\mathscr{O}\)</span> has reliable measurement data</li>
+<li>Determining which data can be used to measure <span class="math inline">\(\mathscr{C}\)</span></li>
+<li>Determining a sample <span class="math inline">\(S\)</span> and collecting, refining and cleaning data.</li>
+<li>Performing exploratory data analysis (EDA) and proposing a set of models to test for <span class="math inline">\(f\)</span></li>
+<li>Putting the data in an appropriate format for each model</li>
+<li>Running the models</li>
+<li>Interpreting the outputs and performing model diagnostics</li>
+<li>Selecting an optimal model or models</li>
+<li>Articulating the inferences that can be generalized to apply to <span class="math inline">\(\mathscr{P}\)</span></li>
+</ol>
+<p>This book is primarily focused on steps 7–10 of this process<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. That is not to say that steps 1–6 are not important. Indeed these steps are critical and often loaded with analytic traps. Defining the problem, collecting reliable measures and cleaning and organizing data are still the source of much pain and angst for analysts, but these topics are for another day.</p>
+</div>
+</div>
+<div id="the-structure-system-and-organization-of-this-book" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> The structure, system and organization of this book</h2>
+<p>The purpose of this book is to put inexperienced practitioners firmly on a path to the confident and appropriate use of regression techniques in their day-to-day work. This requires enough of an understanding of the underlying theory so that judgments can be made about results, but also a practical set of steps to help practitioners apply the most common regression methods to a variety of typical modeling scenarios in a reliable and reproducible way.</p>
+<p>In most chapters, time is spent on the underlying mathematics. Not to the degree of an academic theorist, but enough to ensure that the reader can associate some mathematical meaning to the outputs of models. While it may be tempting to skip the math, I strongly recommend against it if you intend to be a high performer in your field. The best analysts are those who can genuinely understand what the numbers are telling them.</p>
+<p>The statistical programming language R is used for most of the practical demonstration in each chapter. Because R is open source and particularly well geared to inferential statistics, it is an excellent choice for those whose work involves a lot of inferential analysis. In later chapters, we show implementations of all of the available methodologies in Python and Julia, which are also powerful open source tools for this sort of work.</p>
+<p>Each chapter involves a walkthrough example to illustrate the specific method and to allow the reader to replicate the analysis for themselves. The exercises at the end of each chapter are designed so that the reader can try the same method on a different data set, or a different problem on the same data set, to test their learning and understanding. All in all, eleven different data sets are used as walkthrough or exercise examples, and all of these data sets are fictitious constructions unless otherwise indicated. Despite the fiction, they are deliberately designed to present the reader with something resembling how the data might look in practice, albeit cleaner and more organized.</p>
+<p>The chapters of this book are arranged as follows:</p>
+<ul>
+<li>Chapter 2 covers the basics of the R programming language for those who want to attempt to jump straight in to the work in subsequent chapters but have very little R experience. Experienced R programmers can skip this chapter.</li>
+<li>Chapter 3 covers the essential statistical concepts needed to understand multivariate regression models. It also serves as a tutorial in univariate and bivariate statistics illustrated with real data. If you need help developing a decent understanding of descriptive statistics, random distribution and hypothesis testing, this is an important chapter to study.</li>
+<li>Chapter 4 covers linear regression and in the course of that introduces many other foundational concepts. The walkthrough example involves modeling academic results from prior results. The exercises involve modeling income levels based on various work and demographic factors.</li>
+<li>Chapter 5 covers binomial logistic regression. The walkthrough example involves modeling promotion likelihood based on performance metrics. The exercises involve modeling charitable donation likelihood based on prior donation behavior and demographics.</li>
+<li>Chapter 6 covers multinomial regression. The walkthrough example and exercise involves modeling the choice of three health insurance products by company employees based on demographic and position data.</li>
+<li>Chapter 7 covers ordinal regression. The walkthrough example involves modeling in-game disciplinary action against soccer players based on prior discipline and other factors. The exercises involve modeling manager performance based on varied data.</li>
+<li>Chapter 8 covers modeling options for data with explicit or latent hierarchy. The first part covers mixed modeling and uses a model of speed dating decisions as a walkthrough and example. The second part covers structural equation modeling and uses a survey for a political party as a walkthrough example. The exercises involve modeling latent variables in an employee engagement survey.</li>
+<li>Chapter 9 covers survival analysis, Cox proportional hazard regression and frailty models. The chapter uses employee attrition as a walkthrough example and exercise.</li>
+<li>Chapter 10 outlines alternative technical approaches to regression modeling in R, Python and Julia. Models from previous chapters are used to illustrate these alternative approaches.</li>
+<li>Chapter 11 covers power analysis, focusing in particular on estimating the required minimum sample sizes in establishing meaningful inferences for both simple statistical tests and multivariate models. Examples related to experimental studies are used to illustrate, such as concurrent validity studies of selection instruments. Example implementations in R, Python and Julia are outlined.</li>
+</ul>
+
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>We also determine that <span class="math inline">\(x_1\)</span> (the first-year examination score) plays no significant role in <span class="math inline">\(f\)</span> and that introducing some non-linearity into <span class="math inline">\(f\)</span> further improves the statistical accuracy of the inferred relationship.<a href="inf-model.html#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>The book also addresses Steps 5 and 6 in some chapters.<a href="inf-model.html#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="the-basics-of-the-r-programming-language.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

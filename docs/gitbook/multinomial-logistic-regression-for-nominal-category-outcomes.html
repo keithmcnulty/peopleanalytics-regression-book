@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>6 Multinomial Logistic Regression for Nominal Category Outcomes | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
+  <meta name="description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="generator" content="bookdown 0.22.15 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="6 Multinomial Logistic Regression for Nominal Category Outcomes | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://peopleanalytics-regression-book.org" />
+  <meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png" />
+  <meta property="og:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="github-repo" content="keithmcnulty/peopleanalytics-regression-book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6 Multinomial Logistic Regression for Nominal Category Outcomes | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
+  <meta name="twitter:site" content="@dr_keithmcnulty" />
+  <meta name="twitter:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
+  <meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png" />
+
+<meta name="author" content="Keith McNulty" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="bin-log-reg.html"/>
+<link rel="next" href="ord-reg.html"/>
+<script src="libs/header-attrs-2.9.5/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python"/>
+<meta name="citation_author" content="Keith McNulty"/>
+<meta name="citation_publication_date" content="2021"/>
+<meta name="citation_isbn" content="9781003194156"/>
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-N7JZGMVRZK');
+</script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Handbook of Regression Modeling in People Analytics</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#notes-on-data-used-in-this-book"><i class="fa fa-check"></i>Notes on data used in this book</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="foreword-by-alexis-fink.html"><a href="foreword-by-alexis-fink.html"><i class="fa fa-check"></i>Foreword by Alexis Fink</a></li>
+<li class="chapter" data-level="" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="inf-model.html"><a href="inf-model.html"><i class="fa fa-check"></i><b>1</b> The Importance of Regression in People Analytics</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="inf-model.html"><a href="inf-model.html#why-is-regression-modeling-so-important-in-people-analytics"><i class="fa fa-check"></i><b>1.1</b> Why is regression modeling so important in people analytics?</a></li>
+<li class="chapter" data-level="1.2" data-path="inf-model.html"><a href="inf-model.html#theory-modeling"><i class="fa fa-check"></i><b>1.2</b> What do we mean by ‘modeling’‍?</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="inf-model.html"><a href="inf-model.html#the-theory-of-inferential-modeling"><i class="fa fa-check"></i><b>1.2.1</b> The theory of inferential modeling</a></li>
+<li class="chapter" data-level="1.2.2" data-path="inf-model.html"><a href="inf-model.html#the-process-of-inferential-modeling"><i class="fa fa-check"></i><b>1.2.2</b> The process of inferential modeling</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="inf-model.html"><a href="inf-model.html#the-structure-system-and-organization-of-this-book"><i class="fa fa-check"></i><b>1.3</b> The structure, system and organization of this book</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html"><i class="fa fa-check"></i><b>2</b> The Basics of the R Programming Language</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#what-is-r"><i class="fa fa-check"></i><b>2.1</b> What is R?</a></li>
+<li class="chapter" data-level="2.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#how-to-start-using-r"><i class="fa fa-check"></i><b>2.2</b> How to start using R</a></li>
+<li class="chapter" data-level="2.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-in-r"><i class="fa fa-check"></i><b>2.3</b> Data in R</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-types"><i class="fa fa-check"></i><b>2.3.1</b> Data types</a></li>
+<li class="chapter" data-level="2.3.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#homogeneous-data-structures"><i class="fa fa-check"></i><b>2.3.2</b> Homogeneous data structures</a></li>
+<li class="chapter" data-level="2.3.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#heterogeneous-data-structures"><i class="fa fa-check"></i><b>2.3.3</b> Heterogeneous data structures</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#working-with-dataframes"><i class="fa fa-check"></i><b>2.4</b> Working with dataframes</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#loading-and-tidying-data-in-dataframes"><i class="fa fa-check"></i><b>2.4.1</b> Loading and tidying data in dataframes</a></li>
+<li class="chapter" data-level="2.4.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#manipulating-dataframes"><i class="fa fa-check"></i><b>2.4.2</b> Manipulating dataframes</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#functions-packages-and-libraries"><i class="fa fa-check"></i><b>2.5</b> Functions, packages and libraries</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#using-functions"><i class="fa fa-check"></i><b>2.5.1</b> Using functions</a></li>
+<li class="chapter" data-level="2.5.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#help-with-functions"><i class="fa fa-check"></i><b>2.5.2</b> Help with functions</a></li>
+<li class="chapter" data-level="2.5.3" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#writing-your-own-functions"><i class="fa fa-check"></i><b>2.5.3</b> Writing your own functions</a></li>
+<li class="chapter" data-level="2.5.4" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#installing-packages"><i class="fa fa-check"></i><b>2.5.4</b> Installing packages</a></li>
+<li class="chapter" data-level="2.5.5" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#using-packages"><i class="fa fa-check"></i><b>2.5.5</b> Using packages</a></li>
+<li class="chapter" data-level="2.5.6" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#the-pipe-operator"><i class="fa fa-check"></i><b>2.5.6</b> The pipe operator</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#errors-warnings-and-messages"><i class="fa fa-check"></i><b>2.6</b> Errors, warnings and messages</a></li>
+<li class="chapter" data-level="2.7" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#plotting-and-graphing"><i class="fa fa-check"></i><b>2.7</b> Plotting and graphing</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#plotting-in-base-r"><i class="fa fa-check"></i><b>2.7.1</b> Plotting in base R</a></li>
+<li class="chapter" data-level="2.7.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#specialist-plotting-and-graphing-packages"><i class="fa fa-check"></i><b>2.7.2</b> Specialist plotting and graphing packages</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#documenting-your-work-using-r-markdown"><i class="fa fa-check"></i><b>2.8</b> Documenting your work using R Markdown</a></li>
+<li class="chapter" data-level="2.9" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#learning-exercises"><i class="fa fa-check"></i><b>2.9</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="2.9.1" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#discussion-questions"><i class="fa fa-check"></i><b>2.9.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="2.9.2" data-path="the-basics-of-the-r-programming-language.html"><a href="the-basics-of-the-r-programming-language.html#data-exercises"><i class="fa fa-check"></i><b>2.9.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="found-stats.html"><a href="found-stats.html"><i class="fa fa-check"></i><b>3</b> Statistics Foundations</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="found-stats.html"><a href="found-stats.html#elementary-descriptive-statistics-of-populations-and-samples"><i class="fa fa-check"></i><b>3.1</b> Elementary descriptive statistics of populations and samples</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="found-stats.html"><a href="found-stats.html#mean-var-sd"><i class="fa fa-check"></i><b>3.1.1</b> Mean, variance and standard deviation</a></li>
+<li class="chapter" data-level="3.1.2" data-path="found-stats.html"><a href="found-stats.html#covariance-and-correlation"><i class="fa fa-check"></i><b>3.1.2</b> Covariance and correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="found-stats.html"><a href="found-stats.html#distribution-of-random-variables"><i class="fa fa-check"></i><b>3.2</b> Distribution of random variables</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="found-stats.html"><a href="found-stats.html#sampling-of-random-variables"><i class="fa fa-check"></i><b>3.2.1</b> Sampling of random variables</a></li>
+<li class="chapter" data-level="3.2.2" data-path="found-stats.html"><a href="found-stats.html#standard-errors-the-t-distribution-and-confidence-intervals"><i class="fa fa-check"></i><b>3.2.2</b> Standard errors, the <span class="math inline">\(t\)</span>-distribution and confidence intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="found-stats.html"><a href="found-stats.html#hyp-tests"><i class="fa fa-check"></i><b>3.3</b> Hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="found-stats.html"><a href="found-stats.html#means-sig"><i class="fa fa-check"></i><b>3.3.1</b> Testing for a difference in means (Welch’s <span class="math inline">\(t\)</span>-test)</a></li>
+<li class="chapter" data-level="3.3.2" data-path="found-stats.html"><a href="found-stats.html#t-test-cor"><i class="fa fa-check"></i><b>3.3.2</b> Testing for a non-zero correlation between two variables (<span class="math inline">\(t\)</span>-test for correlation)</a></li>
+<li class="chapter" data-level="3.3.3" data-path="found-stats.html"><a href="found-stats.html#testing-for-a-difference-in-frequency-distribution-between-different-categories-in-a-data-set-chi-square-test"><i class="fa fa-check"></i><b>3.3.3</b> Testing for a difference in frequency distribution between different categories in a data set (Chi-square test)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="found-stats.html"><a href="found-stats.html#foundational-statistics-in-python"><i class="fa fa-check"></i><b>3.4</b> Foundational statistics in Python</a></li>
+<li class="chapter" data-level="3.5" data-path="found-stats.html"><a href="found-stats.html#foundational-statistics-in-julia"><i class="fa fa-check"></i><b>3.5</b> Foundational statistics in Julia</a></li>
+<li class="chapter" data-level="3.6" data-path="found-stats.html"><a href="found-stats.html#learning-exercises-1"><i class="fa fa-check"></i><b>3.6</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="found-stats.html"><a href="found-stats.html#discussion-questions-1"><i class="fa fa-check"></i><b>3.6.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="3.6.2" data-path="found-stats.html"><a href="found-stats.html#data-exercises-1"><i class="fa fa-check"></i><b>3.6.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html"><i class="fa fa-check"></i><b>4</b> Linear Regression for Continuous Outcomes</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#when-ols"><i class="fa fa-check"></i><b>4.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#origins-ols"><i class="fa fa-check"></i><b>4.1.1</b> Origins and intuition of linear regression</a></li>
+<li class="chapter" data-level="4.1.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#use-cases-ols"><i class="fa fa-check"></i><b>4.1.2</b> Use cases for linear regression</a></li>
+<li class="chapter" data-level="4.1.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#walkthrough-ols"><i class="fa fa-check"></i><b>4.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#simple-ols"><i class="fa fa-check"></i><b>4.2</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#linear-single"><i class="fa fa-check"></i><b>4.2.1</b> Linear relationship between a single input and an outcome</a></li>
+<li class="chapter" data-level="4.2.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#minimising-error-ols"><i class="fa fa-check"></i><b>4.2.2</b> Minimising the error</a></li>
+<li class="chapter" data-level="4.2.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#best-fit-simple-ols"><i class="fa fa-check"></i><b>4.2.3</b> Determining the best fit</a></li>
+<li class="chapter" data-level="4.2.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#measuring-the-fit-of-the-model"><i class="fa fa-check"></i><b>4.2.4</b> Measuring the fit of the model</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#multiple-linear-regression"><i class="fa fa-check"></i><b>4.3</b> Multiple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#running-a-multiple-linear-regression-model-and-interpreting-its-coefficients"><i class="fa fa-check"></i><b>4.3.1</b> Running a multiple linear regression model and interpreting its coefficients</a></li>
+<li class="chapter" data-level="4.3.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#coefficient-confidence"><i class="fa fa-check"></i><b>4.3.2</b> Coefficient confidence</a></li>
+<li class="chapter" data-level="4.3.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#lin-good-fit"><i class="fa fa-check"></i><b>4.3.3</b> Model ‘goodness-of-fit’</a></li>
+<li class="chapter" data-level="4.3.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#making-predictions-from-your-model"><i class="fa fa-check"></i><b>4.3.4</b> Making predictions from your model</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#managing-inputs-in-linear-regression"><i class="fa fa-check"></i><b>4.4</b> Managing inputs in linear regression</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#relevance-of-input-variables"><i class="fa fa-check"></i><b>4.4.1</b> Relevance of input variables</a></li>
+<li class="chapter" data-level="4.4.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#sparseness-missingness-of-data"><i class="fa fa-check"></i><b>4.4.2</b> Sparseness (‘missingness’) of data</a></li>
+<li class="chapter" data-level="4.4.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#transforming-categorical-inputs-to-dummy-variables"><i class="fa fa-check"></i><b>4.4.3</b> Transforming categorical inputs to dummy variables</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#testing-your-model-assumptions"><i class="fa fa-check"></i><b>4.5</b> Testing your model assumptions</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#assumption-of-linearity-and-additivity"><i class="fa fa-check"></i><b>4.5.1</b> Assumption of linearity and additivity</a></li>
+<li class="chapter" data-level="4.5.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#lin-reg-const-var"><i class="fa fa-check"></i><b>4.5.2</b> Assumption of constant error variance</a></li>
+<li class="chapter" data-level="4.5.3" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#norm-dist-assum"><i class="fa fa-check"></i><b>4.5.3</b> Assumption of normally distributed errors</a></li>
+<li class="chapter" data-level="4.5.4" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#collinearity"><i class="fa fa-check"></i><b>4.5.4</b> Avoiding high collinearity and multicollinearity between input variables</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#extending-multiple-linear-regression"><i class="fa fa-check"></i><b>4.6</b> Extending multiple linear regression</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#interactions-between-input-variables"><i class="fa fa-check"></i><b>4.6.1</b> Interactions between input variables</a></li>
+<li class="chapter" data-level="4.6.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#quadratic-and-higher-order-polynomial-terms"><i class="fa fa-check"></i><b>4.6.2</b> Quadratic and higher-order polynomial terms</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#learning-exercises-2"><i class="fa fa-check"></i><b>4.7</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="4.7.1" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#discussion-questions-2"><i class="fa fa-check"></i><b>4.7.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="4.7.2" data-path="linear-reg-ols.html"><a href="linear-reg-ols.html#data-exercises-2"><i class="fa fa-check"></i><b>4.7.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="bin-log-reg.html"><a href="bin-log-reg.html"><i class="fa fa-check"></i><b>5</b> Binomial Logistic Regression for Binary Outcomes</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#when-to-use-it"><i class="fa fa-check"></i><b>5.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#logistic-origins"><i class="fa fa-check"></i><b>5.1.1</b> Origins and intuition of binomial logistic regression</a></li>
+<li class="chapter" data-level="5.1.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#use-cases-for-binomial-logistic-regression"><i class="fa fa-check"></i><b>5.1.2</b> Use cases for binomial logistic regression</a></li>
+<li class="chapter" data-level="5.1.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#walkthrough-logit"><i class="fa fa-check"></i><b>5.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#mod-prob"><i class="fa fa-check"></i><b>5.2</b> Modeling probabilistic outcomes using a logistic function</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#deriving-the-concept-of-log-odds"><i class="fa fa-check"></i><b>5.2.1</b> Deriving the concept of log odds</a></li>
+<li class="chapter" data-level="5.2.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#modeling-the-log-odds-and-interpreting-the-coefficients"><i class="fa fa-check"></i><b>5.2.2</b> Modeling the log odds and interpreting the coefficients</a></li>
+<li class="chapter" data-level="5.2.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#odds-versus-probability"><i class="fa fa-check"></i><b>5.2.3</b> Odds versus probability</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#running-a-multivariate-binomial-logistic-regression-model"><i class="fa fa-check"></i><b>5.3</b> Running a multivariate binomial logistic regression model</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#running-and-interpreting-a-multivariate-binomial-logistic-regression-model"><i class="fa fa-check"></i><b>5.3.1</b> Running and interpreting a multivariate binomial logistic regression model</a></li>
+<li class="chapter" data-level="5.3.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#logistic-gof"><i class="fa fa-check"></i><b>5.3.2</b> Understanding the fit and goodness-of-fit of a binomial logistic regression model</a></li>
+<li class="chapter" data-level="5.3.3" data-path="bin-log-reg.html"><a href="bin-log-reg.html#model-parsimony"><i class="fa fa-check"></i><b>5.3.3</b> Model parsimony</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="bin-log-reg.html"><a href="bin-log-reg.html#other-considerations-in-binomial-logistic-regression"><i class="fa fa-check"></i><b>5.4</b> Other considerations in binomial logistic regression</a></li>
+<li class="chapter" data-level="5.5" data-path="bin-log-reg.html"><a href="bin-log-reg.html#learning-exercises-3"><i class="fa fa-check"></i><b>5.5</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="bin-log-reg.html"><a href="bin-log-reg.html#discussion-questions-3"><i class="fa fa-check"></i><b>5.5.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="5.5.2" data-path="bin-log-reg.html"><a href="bin-log-reg.html#data-exercises-3"><i class="fa fa-check"></i><b>5.5.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html"><i class="fa fa-check"></i><b>6</b> Multinomial Logistic Regression for Nominal Category Outcomes</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#when-to-use-it-1"><i class="fa fa-check"></i><b>6.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#intuition-for-multinomial-logistic-regression"><i class="fa fa-check"></i><b>6.1.1</b> Intuition for multinomial logistic regression</a></li>
+<li class="chapter" data-level="6.1.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#use-cases-for-multinomial-logistic-regression"><i class="fa fa-check"></i><b>6.1.2</b> Use cases for multinomial logistic regression</a></li>
+<li class="chapter" data-level="6.1.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#walkthrough-example"><i class="fa fa-check"></i><b>6.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#stratified"><i class="fa fa-check"></i><b>6.2</b> Running stratified binomial models</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#modeling-the-choice-of-product-a-versus-other-products"><i class="fa fa-check"></i><b>6.2.1</b> Modeling the choice of Product A versus other products</a></li>
+<li class="chapter" data-level="6.2.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#modeling-other-choices"><i class="fa fa-check"></i><b>6.2.2</b> Modeling other choices</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#running-a-multinomial-regression-model"><i class="fa fa-check"></i><b>6.3</b> Running a multinomial regression model</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#def-ref"><i class="fa fa-check"></i><b>6.3.1</b> Defining a reference level and running the model</a></li>
+<li class="chapter" data-level="6.3.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#interpreting-the-model"><i class="fa fa-check"></i><b>6.3.2</b> Interpreting the model</a></li>
+<li class="chapter" data-level="6.3.3" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#changing-ref"><i class="fa fa-check"></i><b>6.3.3</b> Changing the reference</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#model-simplification-fit-and-goodness-of-fit-for-multinomial-logistic-regression-models"><i class="fa fa-check"></i><b>6.4</b> Model simplification, fit and goodness-of-fit for multinomial logistic regression models</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#elim"><i class="fa fa-check"></i><b>6.4.1</b> Gradual safe elimination of variables</a></li>
+<li class="chapter" data-level="6.4.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#model-fit-and-goodness-of-fit"><i class="fa fa-check"></i><b>6.4.2</b> Model fit and goodness-of-fit</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#learning-exercises-4"><i class="fa fa-check"></i><b>6.5</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#discussion-questions-4"><i class="fa fa-check"></i><b>6.5.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="6.5.2" data-path="multinomial-logistic-regression-for-nominal-category-outcomes.html"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#data-exercises-4"><i class="fa fa-check"></i><b>6.5.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ord-reg.html"><a href="ord-reg.html"><i class="fa fa-check"></i><b>7</b> Proportional Odds Logistic Regression for Ordered Category Outcomes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="ord-reg.html"><a href="ord-reg.html#when-to-use-it-2"><i class="fa fa-check"></i><b>7.1</b> When to use it</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="ord-reg.html"><a href="ord-reg.html#ord-intuit"><i class="fa fa-check"></i><b>7.1.1</b> Intuition for proportional odds logistic regression</a></li>
+<li class="chapter" data-level="7.1.2" data-path="ord-reg.html"><a href="ord-reg.html#use-cases-for-proportional-odds-logistic-regression"><i class="fa fa-check"></i><b>7.1.2</b> Use cases for proportional odds logistic regression</a></li>
+<li class="chapter" data-level="7.1.3" data-path="ord-reg.html"><a href="ord-reg.html#ord-walkthrough"><i class="fa fa-check"></i><b>7.1.3</b> Walkthrough example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="ord-reg.html"><a href="ord-reg.html#modeling-ordinal-outcomes-under-the-assumption-of-proportional-odds"><i class="fa fa-check"></i><b>7.2</b> Modeling ordinal outcomes under the assumption of proportional odds</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="ord-reg.html"><a href="ord-reg.html#mod-lin-reg"><i class="fa fa-check"></i><b>7.2.1</b> Using a latent continuous outcome variable to derive a proportional odds model</a></li>
+<li class="chapter" data-level="7.2.2" data-path="ord-reg.html"><a href="ord-reg.html#running-a-proportional-odds-logistic-regression-model"><i class="fa fa-check"></i><b>7.2.2</b> Running a proportional odds logistic regression model</a></li>
+<li class="chapter" data-level="7.2.3" data-path="ord-reg.html"><a href="ord-reg.html#calculating-the-likelihood-of-an-observation-being-in-a-specific-ordinal-category"><i class="fa fa-check"></i><b>7.2.3</b> Calculating the likelihood of an observation being in a specific ordinal category</a></li>
+<li class="chapter" data-level="7.2.4" data-path="ord-reg.html"><a href="ord-reg.html#model-diagnostics"><i class="fa fa-check"></i><b>7.2.4</b> Model diagnostics</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="ord-reg.html"><a href="ord-reg.html#testing-the-proportional-odds-assumption"><i class="fa fa-check"></i><b>7.3</b> Testing the proportional odds assumption</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="ord-reg.html"><a href="ord-reg.html#sighting-the-coefficients-of-stratified-binomial-models"><i class="fa fa-check"></i><b>7.3.1</b> Sighting the coefficients of stratified binomial models</a></li>
+<li class="chapter" data-level="7.3.2" data-path="ord-reg.html"><a href="ord-reg.html#wald"><i class="fa fa-check"></i><b>7.3.2</b> The Brant-Wald test</a></li>
+<li class="chapter" data-level="7.3.3" data-path="ord-reg.html"><a href="ord-reg.html#alternatives-to-proportional-odds-models"><i class="fa fa-check"></i><b>7.3.3</b> Alternatives to proportional odds models</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="ord-reg.html"><a href="ord-reg.html#learning-exercises-5"><i class="fa fa-check"></i><b>7.4</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="ord-reg.html"><a href="ord-reg.html#discussion-questions-5"><i class="fa fa-check"></i><b>7.4.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="7.4.2" data-path="ord-reg.html"><a href="ord-reg.html#data-exercises-5"><i class="fa fa-check"></i><b>7.4.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html"><i class="fa fa-check"></i><b>8</b> Modeling Explicit and Latent Hierarchy in Data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#mixed"><i class="fa fa-check"></i><b>8.1</b> Mixed models for explicit hierarchy in data</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#fixed-and-random-effects"><i class="fa fa-check"></i><b>8.1.1</b> Fixed and random effects</a></li>
+<li class="chapter" data-level="8.1.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-a-mixed-model"><i class="fa fa-check"></i><b>8.1.2</b> Running a mixed model</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#struc-eq-model"><i class="fa fa-check"></i><b>8.2</b> Structural equation models for latent hierarchy in data</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-and-assessing-the-measurement-model"><i class="fa fa-check"></i><b>8.2.1</b> Running and assessing the measurement model</a></li>
+<li class="chapter" data-level="8.2.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-and-interpreting-the-structural-model"><i class="fa fa-check"></i><b>8.2.2</b> Running and interpreting the structural model</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#learning-exercises-6"><i class="fa fa-check"></i><b>8.3</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#discussion-questions-6"><i class="fa fa-check"></i><b>8.3.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="8.3.2" data-path="modeling-explicit-and-latent-hierarchy-in-data.html"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#data-exercises-6"><i class="fa fa-check"></i><b>8.3.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="survival.html"><a href="survival.html"><i class="fa fa-check"></i><b>9</b> Survival Analysis for Modeling Singular Events Over Time</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="survival.html"><a href="survival.html#tracking-and-illustrating-survival-rates-over-the-study-period"><i class="fa fa-check"></i><b>9.1</b> Tracking and illustrating survival rates over the study period</a></li>
+<li class="chapter" data-level="9.2" data-path="survival.html"><a href="survival.html#coxphmodel"><i class="fa fa-check"></i><b>9.2</b> Cox proportional hazard regression models</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="survival.html"><a href="survival.html#running-a-cox-proportional-hazard-regression-model"><i class="fa fa-check"></i><b>9.2.1</b> Running a Cox proportional hazard regression model</a></li>
+<li class="chapter" data-level="9.2.2" data-path="survival.html"><a href="survival.html#checking-the-proportional-hazard-assumption"><i class="fa fa-check"></i><b>9.2.2</b> Checking the proportional hazard assumption</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="survival.html"><a href="survival.html#frailty-models"><i class="fa fa-check"></i><b>9.3</b> Frailty models</a></li>
+<li class="chapter" data-level="9.4" data-path="survival.html"><a href="survival.html#learning-exercises-7"><i class="fa fa-check"></i><b>9.4</b> Learning exercises</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="survival.html"><a href="survival.html#discussion-questions-7"><i class="fa fa-check"></i><b>9.4.1</b> Discussion questions</a></li>
+<li class="chapter" data-level="9.4.2" data-path="survival.html"><a href="survival.html#data-exercises-7"><i class="fa fa-check"></i><b>9.4.2</b> Data exercises</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="alt-approaches.html"><a href="alt-approaches.html"><i class="fa fa-check"></i><b>10</b> Alternative Technical Approaches in R, Python and Julia</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="alt-approaches.html"><a href="alt-approaches.html#tidier-modeling-approaches-in-r"><i class="fa fa-check"></i><b>10.1</b> ‘Tidier’ modeling approaches in R</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="alt-approaches.html"><a href="alt-approaches.html#the-broom-package"><i class="fa fa-check"></i><b>10.1.1</b> The <code>broom</code> package</a></li>
+<li class="chapter" data-level="10.1.2" data-path="alt-approaches.html"><a href="alt-approaches.html#the-parsnip-package"><i class="fa fa-check"></i><b>10.1.2</b> The <code>parsnip</code> package</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="alt-approaches.html"><a href="alt-approaches.html#inferential-statistical-modeling-in-python"><i class="fa fa-check"></i><b>10.2</b> Inferential statistical modeling in Python</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="alt-approaches.html"><a href="alt-approaches.html#ordinary-least-squares-ols-linear-regression"><i class="fa fa-check"></i><b>10.2.1</b> Ordinary Least Squares (OLS) linear regression</a></li>
+<li class="chapter" data-level="10.2.2" data-path="alt-approaches.html"><a href="alt-approaches.html#binomial-logistic-regression"><i class="fa fa-check"></i><b>10.2.2</b> Binomial logistic regression</a></li>
+<li class="chapter" data-level="10.2.3" data-path="alt-approaches.html"><a href="alt-approaches.html#multinomial-logistic-regression"><i class="fa fa-check"></i><b>10.2.3</b> Multinomial logistic regression</a></li>
+<li class="chapter" data-level="10.2.4" data-path="alt-approaches.html"><a href="alt-approaches.html#structural-equation-models"><i class="fa fa-check"></i><b>10.2.4</b> Structural equation models</a></li>
+<li class="chapter" data-level="10.2.5" data-path="alt-approaches.html"><a href="alt-approaches.html#survival-analysis"><i class="fa fa-check"></i><b>10.2.5</b> Survival analysis</a></li>
+<li class="chapter" data-level="10.2.6" data-path="alt-approaches.html"><a href="alt-approaches.html#other-model-variants"><i class="fa fa-check"></i><b>10.2.6</b> Other model variants</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="alt-approaches.html"><a href="alt-approaches.html#inferential-statistical-modeling-in-julia"><i class="fa fa-check"></i><b>10.3</b> Inferential statistical modeling in Julia</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="alt-approaches.html"><a href="alt-approaches.html#ordinary-least-squares-ols-linear-regression-1"><i class="fa fa-check"></i><b>10.3.1</b> Ordinary Least Squares (OLS) linear regression</a></li>
+<li class="chapter" data-level="10.3.2" data-path="alt-approaches.html"><a href="alt-approaches.html#binomial-logistic-regression-1"><i class="fa fa-check"></i><b>10.3.2</b> Binomial logistic regression</a></li>
+<li class="chapter" data-level="10.3.3" data-path="alt-approaches.html"><a href="alt-approaches.html#multinomial-logistic-regression-1"><i class="fa fa-check"></i><b>10.3.3</b> Multinomial logistic regression</a></li>
+<li class="chapter" data-level="10.3.4" data-path="alt-approaches.html"><a href="alt-approaches.html#proportional-odds-logistic-regression"><i class="fa fa-check"></i><b>10.3.4</b> Proportional odds logistic regression</a></li>
+<li class="chapter" data-level="10.3.5" data-path="alt-approaches.html"><a href="alt-approaches.html#mixed-models"><i class="fa fa-check"></i><b>10.3.5</b> Mixed models</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="power-tests.html"><a href="power-tests.html"><i class="fa fa-check"></i><b>11</b> Power Analysis to Estimate Required Sample Sizes for Modeling</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="power-tests.html"><a href="power-tests.html#errors-effect-sizes-and-statistical-power"><i class="fa fa-check"></i><b>11.1</b> Errors, effect sizes and statistical power</a></li>
+<li class="chapter" data-level="11.2" data-path="power-tests.html"><a href="power-tests.html#simple-stats"><i class="fa fa-check"></i><b>11.2</b> Power analysis for simple hypothesis tests</a></li>
+<li class="chapter" data-level="11.3" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-linear-regression-models"><i class="fa fa-check"></i><b>11.3</b> Power analysis for linear regression models</a></li>
+<li class="chapter" data-level="11.4" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-log-likelihood-regression-models"><i class="fa fa-check"></i><b>11.4</b> Power analysis for log-likelihood regression models</a></li>
+<li class="chapter" data-level="11.5" data-path="power-tests.html"><a href="power-tests.html#power-analysis-for-hierarchical-regression-models"><i class="fa fa-check"></i><b>11.5</b> Power analysis for hierarchical regression models</a></li>
+<li class="chapter" data-level="11.6" data-path="power-tests.html"><a href="power-tests.html#power-analysis-using-python"><i class="fa fa-check"></i><b>11.6</b> Power analysis using Python</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="solutions-to-exercises.html"><a href="solutions-to-exercises.html"><i class="fa fa-check"></i>Solutions to Exercises</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Handbook of Regression Modeling in People Analytics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="multinomial-logistic-regression-for-nominal-category-outcomes" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Multinomial Logistic Regression for Nominal Category Outcomes</h1>
+<p>In the previous chapter we looked at how to model a binary or dichotomous outcome using a logistic function. In this chapter we look at how to extend this to the case when the outcome has a number of categories that do not have any order to them. When an outcome has this nominal categorical form, it does not have a sense of direction. There is no ‘better’ or ‘worse’‍, no ‘higher’ or ‘lower’‍, there is only ‘different’‍.</p>
+<div id="when-to-use-it-1" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> When to use it</h2>
+<div id="intuition-for-multinomial-logistic-regression" class="section level3" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Intuition for multinomial logistic regression</h3>
+<p>A binary or dichotomous outcome like we studied in the previous chapter is already in fact a nominal outcome with two categories, so in principle we already have the basic technology with which to study this problem. That said, the way we approach the problem can differ according to the types of inferences we wish to make.</p>
+<p>If we only wish to make inferences about the choice of each specific category—what drives whether an observation is in Category A versus the others, or Category B versus the others—then we have the option of running separate binomial logistic regression models on a ‘one versus the rest’ basis. In this case we can refine our model differently for each category, eliminating variables that are not significant in determining membership of that category. This could potentially lead to models being defined differently for different target outcome categories. Notably, there will be no common comparison category between these models. This is sometimes called a <em>stratified</em> approach.</p>
+<p>However, in many studies there is a need for a ‘reference’ category to better understand the relative odds of category membership. For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the ‘most healthy’ or ‘most recovered’ patients)<a href="#fn29" class="footnote-ref" id="fnref29"><sup>29</sup></a>. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different; we would need to make decisions on refining the model differently, and we interpret the coefficients in a different way.</p>
+<p>In this chapter we will briefly look at the stratified approach (which is effectively a repetition of work done in the previous chapter) before focusing more intently on how we construct models and make inferences using a multinomial approach.</p>
+</div>
+<div id="use-cases-for-multinomial-logistic-regression" class="section level3" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Use cases for multinomial logistic regression</h3>
+<p>Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order. An underlying assumption is the independence of irrelevant alternatives (IIA). Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, would disproportionately influence the membership of one of the other categories<a href="#fn30" class="footnote-ref" id="fnref30"><sup>30</sup></a>. In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives, which are beyond the scope of this book.</p>
+<p>Examples of typical situations that might be modeled by multinomial logistic regression include:</p>
+<ol style="list-style-type: decimal">
+<li>Modeling voting choice in elections with multiple candidates</li>
+<li>Modeling choice of career options by students</li>
+<li>Modeling choice of benefit options by employees</li>
+</ol>
+</div>
+<div id="walkthrough-example" class="section level3" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> Walkthrough example</h3>
+<p>You are an analyst at a large technology company. The company recently introduced a new health insurance provider for its employees. At the beginning of the year the employees had to choose one of three different health plan products from this provider to best suit their needs. You have been asked to determine which factors influenced the choice in product.</p>
+<p>The <code>health_insurance</code> data set consists of the following fields:</p>
+<ul>
+<li><code>product</code>: The choice of product of the individual—A, B or C</li>
+<li><code>age</code>: The age of the individual when they made the choice</li>
+<li><code>gender</code>: The gender of the individual as stated when they made the choice</li>
+<li><code>household</code>: The number of people living with the individual in the same household at the time of the choice</li>
+<li><code>position_level</code>: Position level in the company at the time they made the choice, where 1 is is the lowest and 5 is the highest</li>
+<li><code>absent</code>: The number of days the individual was absent from work in the year prior to the choice</li>
+</ul>
+<p>First we load the data and take a look at it briefly.</p>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb330-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, download health_insurance data</span></span>
+<span id="cb330-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb330-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/health_insurance.csv&quot;</span></span>
+<span id="cb330-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb330-3" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code></pre></div>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb331-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view first few rows</span></span>
+<span id="cb331-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb331-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(health_insurance)</span></code></pre></div>
+<pre><code>##   product age household position_level gender absent
+## 1       C  57         2              2   Male     10
+## 2       A  21         7              2   Male      7
+## 3       C  66         7              2   Male      1
+## 4       A  36         4              2 Female      6
+## 5       A  23         0              2   Male     11
+## 6       A  31         5              1   Male     14</code></pre>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb333-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view structure</span></span>
+<span id="cb333-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb333-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(health_insurance)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    1453 obs. of  6 variables:
+##  $ product       : chr  &quot;C&quot; &quot;A&quot; &quot;C&quot; &quot;A&quot; ...
+##  $ age           : int  57 21 66 36 23 31 37 37 55 66 ...
+##  $ household     : int  2 7 7 4 0 5 3 0 3 2 ...
+##  $ position_level: int  2 2 2 2 2 1 3 3 3 4 ...
+##  $ gender        : chr  &quot;Male&quot; &quot;Male&quot; &quot;Male&quot; &quot;Female&quot; ...
+##  $ absent        : int  10 7 1 6 11 14 12 25 3 18 ...</code></pre>
+<p>It looks like two of these columns should be converted to factor—<code>product</code> and <code>gender</code>—so let’s do that and then run a pairplot for a quick overview of any patterns, which can be seen in Figure <a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#fig:insurance-pairplot">6.1</a>.</p>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb335-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb335-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb335-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb335-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb335-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb335-3" aria-hidden="true" tabindex="-1"></a><span class="co"># convert product and gender to factors</span></span>
+<span id="cb335-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb335-4" aria-hidden="true" tabindex="-1"></a>health_insurance<span class="sc">$</span>product <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(health_insurance<span class="sc">$</span>product)</span>
+<span id="cb335-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb335-5" aria-hidden="true" tabindex="-1"></a>health_insurance<span class="sc">$</span>gender <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(health_insurance<span class="sc">$</span>gender)</span>
+<span id="cb335-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb335-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb335-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb335-7" aria-hidden="true" tabindex="-1"></a>GGally<span class="sc">::</span><span class="fu">ggpairs</span>(health_insurance)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:insurance-pairplot"></span>
+<img src="_main_files/figure-html/insurance-pairplot-1.png" alt="Pairplot of the `health_insurance` data set" width="672" />
+<p class="caption">
+Figure 6.1: Pairplot of the <code>health_insurance</code> data set
+</p>
+</div>
+<p>The data appears somewhat chaotic here. However, there are a few things to note. Firstly, we notice that there is a relatively even spread in choice between the products. We also notice that <code>age</code> seems to be playing a role in product choice. There are also some mild-to-moderate correlations in the data—in particular between <code>age</code> and <code>position_level</code>, and between <code>absent</code> and <code>position_level</code>. However, this problem is clearly more complex than we can determine from a bivariate perspective.</p>
+</div>
+</div>
+<div id="stratified" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Running stratified binomial models</h2>
+<p>One approach to this problem is to look at each product choice and treat it as an independent binomial logistic regression model, modeling that choice against an alternative of all other choices. Each such model may help us describe the dynamics of the choice of a specific product, but we have to be careful in making conclusions about the overall choice between the three products. Running stratified models would not be very efficient if we had a wider range of choices for our outcome, but since we only have three possible choices here, it is reasonable to take this route.</p>
+<div id="modeling-the-choice-of-product-a-versus-other-products" class="section level3" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> Modeling the choice of Product A versus other products</h3>
+<p>Let’s first create and refine a binomial model for the choice of Product A.</p>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dummies)</span>
+<span id="cb336-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb336-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create dummies for product choice outcome</span></span>
+<span id="cb336-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-4" aria-hidden="true" tabindex="-1"></a>dummy_product <span class="ot">&lt;-</span> dummies<span class="sc">::</span><span class="fu">dummy</span>(<span class="st">&quot;product&quot;</span>, <span class="at">data =</span> health_insurance)</span>
+<span id="cb336-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb336-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-6" aria-hidden="true" tabindex="-1"></a><span class="co"># combine to original set</span></span>
+<span id="cb336-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-7" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="ot">&lt;-</span> <span class="fu">cbind</span>(health_insurance, dummy_product)</span>
+<span id="cb336-8"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb336-9"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-9" aria-hidden="true" tabindex="-1"></a><span class="co"># run a binomial model for the Product A dummy against </span></span>
+<span id="cb336-10"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-10" aria-hidden="true" tabindex="-1"></a><span class="co"># all input variables (let glm() handle dummy input variables)</span></span>
+<span id="cb336-11"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-11" aria-hidden="true" tabindex="-1"></a>A_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb336-12"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> productA <span class="sc">~</span> age <span class="sc">+</span> gender <span class="sc">+</span> household <span class="sc">+</span> </span>
+<span id="cb336-13"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-13" aria-hidden="true" tabindex="-1"></a>    position_level <span class="sc">+</span> absent, </span>
+<span id="cb336-14"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance, </span>
+<span id="cb336-15"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span></span>
+<span id="cb336-16"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb336-17"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb336-18"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb336-19"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-19" aria-hidden="true" tabindex="-1"></a><span class="co"># summary</span></span>
+<span id="cb336-20"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-20" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(A_model)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = productA ~ age + gender + household + position_level + 
+##     absent, family = &quot;binomial&quot;, data = health_insurance)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -2.19640  -0.43691  -0.07051   0.46304   2.37416  
+## 
+## Coefficients:
+##                   Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)       5.873634   0.453041  12.965  &lt; 2e-16 ***
+## age              -0.239814   0.013945 -17.197  &lt; 2e-16 ***
+## genderMale        0.845978   0.168237   5.028 4.94e-07 ***
+## genderNon-binary  0.222521   1.246591   0.179    0.858    
+## household         0.240205   0.037358   6.430 1.28e-10 ***
+## position_level    0.321497   0.071770   4.480 7.48e-06 ***
+## absent           -0.003751   0.010753  -0.349    0.727    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1864.15  on 1452  degrees of freedom
+## Residual deviance:  940.92  on 1446  degrees of freedom
+## AIC: 954.92
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<p>We see that all variables except <code>absent</code> seem to play a significant role in the choice of Product A. All else being equal, being older makes the choice of Product A less likely. Males are more likely to choose Product A, and larger households and higher position levels also make the choice of Product A more likely. Based on this, we can consider simplifying our model to remove <code>absent</code>. We can also calculate odds ratios and perform some model diagnostics if we wish, similar to how we approached the problem in the previous chapter.</p>
+<p>These results need to be interpreted carefully. For example, the odds ratios for the Product A choice based on a simplified model are as follows:</p>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simpler model</span></span>
+<span id="cb338-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-2" aria-hidden="true" tabindex="-1"></a>A_simple <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb338-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> productA <span class="sc">~</span> age <span class="sc">+</span> household <span class="sc">+</span> gender <span class="sc">+</span> position_level, </span>
+<span id="cb338-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance</span>
+<span id="cb338-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb338-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb338-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-7" aria-hidden="true" tabindex="-1"></a><span class="co"># view odds ratio as a data frame</span></span>
+<span id="cb338-8"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-8" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">exp</span>(A_simple<span class="sc">$</span>coefficients))</span></code></pre></div>
+<pre><code>##                  exp(A_simple$coefficients)
+## (Intercept)                       2.8212501
+## age                               0.9776023
+## household                         1.0253707
+## genderMale                        1.0973280
+## genderNon-binary                  0.9697639
+## position_level                    1.0397906</code></pre>
+<p>As an example, and as a reminder from our previous chapter, we interpret the odds ratio for <code>age</code> as follows: all else being equal, every additional year of age is associated with an approximately 2.2% decrease in the odds of choosing Product A over the other products.</p>
+</div>
+<div id="modeling-other-choices" class="section level3" number="6.2.2">
+<h3><span class="header-section-number">6.2.2</span> Modeling other choices</h3>
+<p>In a similar way we can produce two other models, representing the choice of Products B and C. These models produce similar significant variables, except that <code>position_level</code> does not appear to be significant in the choice of Product C. If we simplify all our three models we will have a slightly differently defined model for the choice of Product C versus our models for the other two product choices. However, we can conclude in general that the only input variable that seems to be non-significant across all choices of product is <code>absent</code>.</p>
+</div>
+</div>
+<div id="running-a-multinomial-regression-model" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Running a multinomial regression model</h2>
+<p>An alternative to running separate binary stratified models is to run a multinomial logistic regression model. A multinomial logistic model will base itself from a defined reference category, and run a generalized linear model on the log-odds of membership of each of the other categories versus the reference category. Due to its extensive use in epidemiology and medicine, this is often known as the <em>relative risk</em> of one category compared to the reference category. Mathematically speaking, if <span class="math inline">\(X\)</span> is the vector of input variables, and <span class="math inline">\(y\)</span> takes the value <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> or <span class="math inline">\(C\)</span>, with <span class="math inline">\(A\)</span> as the reference, a multinomial logistic regression model will calculate:</p>
+<p><span class="math display">\[
+\mathrm{ln}\left(\frac{P(y = B)}{P(y=A)}\right) = \alpha{X}
+\]</span>
+and</p>
+<p><span class="math display">\[
+\mathrm{ln}\left(\frac{P(y = C)}{P(y=A)}\right) = \beta{X}
+\]</span>
+for different vectors of coefficients <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>.</p>
+<div id="def-ref" class="section level3" number="6.3.1">
+<h3><span class="header-section-number">6.3.1</span> Defining a reference level and running the model</h3>
+<p>The <code>nnet</code> package in R contains a <code>multinom()</code> function for running a multinomial logistic regression model using neural network technology<a href="#fn31" class="footnote-ref" id="fnref31"><sup>31</sup></a>. Before we can run the model we need to make sure our reference level is defined.</p>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define reference by ensuring it is the first level of the factor</span></span>
+<span id="cb340-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-2" aria-hidden="true" tabindex="-1"></a>health_insurance<span class="sc">$</span>product <span class="ot">&lt;-</span> <span class="fu">relevel</span>(health_insurance<span class="sc">$</span>product, <span class="at">ref =</span> <span class="st">&quot;A&quot;</span>)</span>
+<span id="cb340-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb340-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-4" aria-hidden="true" tabindex="-1"></a><span class="co"># check that A is now our reference</span></span>
+<span id="cb340-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-5" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(health_insurance<span class="sc">$</span>product)</span></code></pre></div>
+<pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
+<p>Once the reference outcome is defined, the <code>multinom()</code> function from the <code>nnet</code> package will run a series of binomial models comparing the reference to each of the other categories.</p>
+<p>First we will calculate our multinomial logistic regression model.</p>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb342-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)</span>
+<span id="cb342-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb342-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb342-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb342-3" aria-hidden="true" tabindex="-1"></a>multi_model <span class="ot">&lt;-</span> <span class="fu">multinom</span>(</span>
+<span id="cb342-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb342-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product <span class="sc">~</span> age <span class="sc">+</span> gender <span class="sc">+</span> household <span class="sc">+</span> </span>
+<span id="cb342-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb342-5" aria-hidden="true" tabindex="-1"></a>    position_level <span class="sc">+</span> absent, </span>
+<span id="cb342-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb342-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance</span>
+<span id="cb342-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb342-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>Now we will look at a summary of the results.</p>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb343-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(multi_model)</span></code></pre></div>
+<pre><code>## Call:
+## multinom(formula = product ~ age + gender + household + position_level + 
+##     absent, data = health_insurance)
+## 
+## Coefficients:
+##   (Intercept)       age  genderMale genderNon-binary  household position_level      absent
+## B    -4.60100 0.2436645 -2.38259765        0.2523409 -0.9677237     -0.4153040 0.011676034
+## C   -10.22617 0.2698141  0.09670752       -1.2715643  0.2043568     -0.2135843 0.003263631
+## 
+## Std. Errors:
+##   (Intercept)        age genderMale genderNon-binary  household position_level     absent
+## B   0.5105532 0.01543139  0.2324262         1.226141 0.06943089     0.08916739 0.01298141
+## C   0.6197408 0.01567034  0.1954353         2.036273 0.04960655     0.08226087 0.01241814
+## 
+## Residual Deviance: 1489.365 
+## AIC: 1517.365</code></pre>
+<p>Notice that the output of <code>summary(multi_model)</code> is much less detailed than for our standard binomial models, and it effectively just delivers the coefficients and standard errors of the two models against the reference. To determine whether specific input variables are significant we will need to calculate the p-values of the coefficients manually by calculating the z-statistics and converting (we covered this hypothesis testing methodology in Section <a href="found-stats.html#means-sig">3.3.1</a>).</p>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate z-statistics of coefficients</span></span>
+<span id="cb345-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-2" aria-hidden="true" tabindex="-1"></a>z_stats <span class="ot">&lt;-</span> <span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients<span class="sc">/</span></span>
+<span id="cb345-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(multi_model)<span class="sc">$</span>standard.errors</span>
+<span id="cb345-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb345-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-5" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to p-values</span></span>
+<span id="cb345-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-6" aria-hidden="true" tabindex="-1"></a>p_values <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="fu">abs</span>(z_stats)))<span class="sc">*</span><span class="dv">2</span></span>
+<span id="cb345-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb345-8"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb345-9"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-9" aria-hidden="true" tabindex="-1"></a><span class="co"># display p-values in transposed data frame</span></span>
+<span id="cb345-10"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-10" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(p_values))</span></code></pre></div>
+<pre><code>##                             B            C
+## (Intercept)      0.000000e+00 0.000000e+00
+## age              0.000000e+00 0.000000e+00
+## genderMale       0.000000e+00 6.207192e-01
+## genderNon-binary 8.369465e-01 5.323278e-01
+## household        0.000000e+00 3.796088e-05
+## position_level   3.199529e-06 9.419906e-03
+## absent           3.684170e-01 7.926958e-01</code></pre>
+</div>
+<div id="interpreting-the-model" class="section level3" number="6.3.2">
+<h3><span class="header-section-number">6.3.2</span> Interpreting the model</h3>
+<p>This confirms that all variables except <code>absent</code> play a role in the choice between all products relative to a reference of Product A. We can also calculate odds ratios as before.</p>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb347-1" aria-hidden="true" tabindex="-1"></a><span class="co"># display odds ratios in transposed data frame</span></span>
+<span id="cb347-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb347-2" aria-hidden="true" tabindex="-1"></a>odds_ratios <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients)</span>
+<span id="cb347-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb347-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(odds_ratios))</span></code></pre></div>
+<pre><code>##                           B            C
+## (Intercept)      0.01004179 3.621021e-05
+## age              1.27591615 1.309721e+00
+## genderMale       0.09231048 1.101538e+00
+## genderNon-binary 1.28703467 2.803927e-01
+## household        0.37994694 1.226736e+00
+## position_level   0.66013957 8.076841e-01
+## absent           1.01174446 1.003269e+00</code></pre>
+<p>Here are some examples of how these odds ratios can be interpreted in the multinomial context (used in combination with the p-values above):</p>
+<ul>
+<li>All else being equal, every additional year of age increases the relative odds of selecting Product B versus Product A by approximately 28%, and increases the relative odds of selecting Product C versus Product A by approximately 31%</li>
+<li>All else being equal, being Male reduces the relative odds of selecting Product B relative to Product A by 91%.</li>
+<li>All else being equal, each additional household member deceases the odds of selecting Product B relative to Product A by 62%, and increases the odds of selecting Product C relative to Product A by 23%.</li>
+</ul>
+</div>
+<div id="changing-ref" class="section level3" number="6.3.3">
+<h3><span class="header-section-number">6.3.3</span> Changing the reference</h3>
+<p>It may be the case that someone would like to hear the odds ratios stated against the reference of an individual choosing Product B. For example, what are the odds ratios of Product C relative to a reference of Product B? One way to do this would be to change the reference and run the model again. Another option is to note that:</p>
+<p><span class="math display">\[
+\frac{P(y = C)}{P(y=B)} = \frac{\frac{P(y = C)}{P(y = A)}}{\frac{P(y=B)}{P(y = A)}} 
+= \frac{e^{\beta{X}}}{e^{\alpha{X}}} 
+= e^{(\beta - \alpha)X}
+\]</span>
+Therefore</p>
+<p><span class="math display">\[
+\mathrm{ln}\left(\frac{P(y = C)}{P(y=B)}\right) = (\beta - \alpha)X
+\]</span>
+This means we can obtain the coefficients of C against the reference of B by simply calculating the difference between the coefficients of C and B against the common reference of A. Let’s do this.</p>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate difference between coefficients and view as column</span></span>
+<span id="cb349-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-2" aria-hidden="true" tabindex="-1"></a>coefs_c_to_b <span class="ot">&lt;-</span> <span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients[<span class="dv">2</span>, ] <span class="sc">-</span> </span>
+<span id="cb349-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients[<span class="dv">1</span>, ]</span>
+<span id="cb349-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb349-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(coefs_c_to_b)</span></code></pre></div>
+<pre><code>##                  coefs_c_to_b
+## (Intercept)      -5.625169520
+## age               0.026149597
+## genderMale        2.479305168
+## genderNon-binary -1.523905192
+## household         1.172080452
+## position_level    0.201719688
+## absent           -0.008412403</code></pre>
+<p>If the number of categories in the outcome variable is limited, this can be an efficient way to obtain the model coefficients against various reference points without having to rerun models. However, to determine standard errors and p-values for these coefficients the model will need to be recalculated against the new reference.</p>
+</div>
+</div>
+<div id="model-simplification-fit-and-goodness-of-fit-for-multinomial-logistic-regression-models" class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> Model simplification, fit and goodness-of-fit for multinomial logistic regression models</h2>
+<p>Simplifying a multinomial regression model needs to be done with care. In a binomial model, there is one set of coefficients and their p-values can be a strong guide to which variables can be removed safely. However, in multinomial models there are several sets of coefficients to consider.</p>
+<div id="elim" class="section level3" number="6.4.1">
+<h3><span class="header-section-number">6.4.1</span> Gradual safe elimination of variables</h3>
+<p>In <span class="citation"><a href="#ref-hosmer-logistic" role="doc-biblioref">Hosmer, Lemeshow, and Sturdivant</a> (<a href="#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span>, a gradual process of elimination of variables is recommended to ensure that significant variables that confound each other in the different logistic models are not accidentally dropped from the final model. The recommended approach is as follows:</p>
+<ul>
+<li>Start with the variable with the least significant p-values in all sets of coefficients—in our case <code>absent</code> would be the obvious first candidate.</li>
+<li>Run the multinomial model without this variable.</li>
+<li>Test that none of the previous coefficients change by more than 20–25%.</li>
+<li>If there was no such change, safely remove the variable and proceed to the next non-significant variable.</li>
+<li>If there is such a change, retain the variable and proceed to the next non-significant variable.</li>
+<li>Stop when all non-significant variables have been tested.</li>
+</ul>
+<p>In our case, we can compare the coefficients of the model with and without <code>absent</code> included and verify that the changes in the coefficients are not substantial.</p>
+<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb351-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb351-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove absent</span></span>
+<span id="cb351-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb351-2" aria-hidden="true" tabindex="-1"></a>simpler_multi_model <span class="ot">&lt;-</span> <span class="fu">multinom</span>(</span>
+<span id="cb351-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb351-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product <span class="sc">~</span> age <span class="sc">+</span> gender <span class="sc">+</span> household <span class="sc">+</span> position_level,</span>
+<span id="cb351-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb351-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance, </span>
+<span id="cb351-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb351-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="cn">TRUE</span></span>
+<span id="cb351-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb351-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb352-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view coefficients with absent</span></span>
+<span id="cb352-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb352-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(<span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients))</span></code></pre></div>
+<pre><code>##                            B             C
+## (Intercept)      -4.60099991 -10.226169428
+## age               0.24366447   0.269814063
+## genderMale       -2.38259765   0.096707521
+## genderNon-binary  0.25234087  -1.271564323
+## household        -0.96772368   0.204356774
+## position_level   -0.41530400  -0.213584308
+## absent            0.01167603   0.003263631</code></pre>
+<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb354-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view coefficients without absent</span></span>
+<span id="cb354-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb354-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(<span class="fu">summary</span>(simpler_multi_model)<span class="sc">$</span>coefficients))</span></code></pre></div>
+<pre><code>##                           B            C
+## (Intercept)      -4.5008999 -10.19269011
+## age               0.2433855   0.26976294
+## genderMale       -2.3771342   0.09801281
+## genderNon-binary  0.1712091  -1.29636779
+## household        -0.9641956   0.20510806
+## position_level   -0.3912014  -0.20908835</code></pre>
+<p>We can see that only <code>genderNon-binary</code> changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model<a href="#fn32" class="footnote-ref" id="fnref32"><sup>32</sup></a>. It therefore appears safe to remove <code>absent</code>. Furthermore, the Akaike Information Criterion is equally valid in multinomial models for evaluating model parsimony. Here we can calculate that the AIC of our model with and without <code>absent</code> is 1517.36 and 1514.25, respectively, confirming that the model without <code>absent</code> is marginally more parsimonious.</p>
+</div>
+<div id="model-fit-and-goodness-of-fit" class="section level3" number="6.4.2">
+<h3><span class="header-section-number">6.4.2</span> Model fit and goodness-of-fit</h3>
+<p>As with the binomial case, a variety of Pseudo-<span class="math inline">\(R^2\)</span> methods are available to assess the fit of a multinomial logistic regression model, although some of our previous variants (particularly Tjur) are not defined on models with more than two outcome categories.</p>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb356-1" aria-hidden="true" tabindex="-1"></a>DescTools<span class="sc">::</span><span class="fu">PseudoR2</span>(simpler_multi_model, </span>
+<span id="cb356-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb356-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">which =</span> <span class="fu">c</span>(<span class="st">&quot;McFadden&quot;</span>, <span class="st">&quot;CoxSnell&quot;</span>, <span class="st">&quot;Nagelkerke&quot;</span>))</span></code></pre></div>
+<pre><code>##   McFadden   CoxSnell Nagelkerke 
+##  0.5329175  0.6896945  0.7760413</code></pre>
+<p>Due to the fact that multinomial models have more than one set of coefficients, assessing goodness-of-fit is more challenging, and is still an area of intense research. The most approachable method to assess model confidence is the Hosmer-Lemeshow test mentioned in the previous chapter, which was extended in <span class="citation"><a href="#ref-fagerland" role="doc-biblioref">Fagerland, Hosmer, and Bofin</a> (<a href="#ref-fagerland" role="doc-biblioref">2008</a>)</span> for multinomial models. An implementation is available in the <code>generalhoslem</code> package in R. However, this version of the Hosmer-Lemeshow test is problematic for models with a small number of input variables (fewer than ten), and therefore we will not experiment with it here. For further exploration of this topic, Chapter 8 of <span class="citation"><a href="#ref-hosmer-logistic" role="doc-biblioref">Hosmer, Lemeshow, and Sturdivant</a> (<a href="#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span> is recommended, and for a more thorough treatment of the entire topic of categorical analytics, <span class="citation"><a href="#ref-agresti" role="doc-biblioref">Agresti</a> (<a href="#ref-agresti" role="doc-biblioref">2007</a>)</span> is an excellent companion.</p>
+</div>
+</div>
+<div id="learning-exercises-4" class="section level2" number="6.5">
+<h2><span class="header-section-number">6.5</span> Learning exercises</h2>
+<div id="discussion-questions-4" class="section level3" number="6.5.1">
+<h3><span class="header-section-number">6.5.1</span> Discussion questions</h3>
+<ol style="list-style-type: decimal">
+<li>Describe the difference between a stratified versus a multinomial approach to modeling an outcome with more than two nominal categories.</li>
+<li>Describe how you would interpret the odds ratio of an input variable for a given category in a stratified modeling approach.</li>
+<li>Describe what is meant by the ‘reference’ of a multinomial logistic regression model with at least three nominal outcome categories.</li>
+<li>Describe how you would interpret the odds ratio of an input variable for a given category in a multinomial modeling approach.</li>
+<li>Given a multinomial logistic regression model with outcome categories A, B, C and D and reference category A, describe two ways to determine the coefficients of a multinomial logistic regression model with reference category C.</li>
+<li>Describe a process for safely simplifying a multinomial logistic regression model by removing input variables.</li>
+</ol>
+</div>
+<div id="data-exercises-4" class="section level3" number="6.5.2">
+<h3><span class="header-section-number">6.5.2</span> Data exercises</h3>
+<p>Use the same <code>health_insurance</code> data set from this chapter to answer these questions.</p>
+<ol style="list-style-type: decimal">
+<li>Complete the full stratified approach to modeling the three product choices that was started in Section <a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#stratified">6.2</a>. Calculate the coefficients, odds ratios and p-values in each case.</li>
+<li>Carefully write down your interpretation of the odds ratios from the previous question.</li>
+<li>Run a multinomial logistic regression model on the <code>product</code> outcome using Product B as reference. Calculate the coefficients, ratios and p-values in each case.</li>
+<li>Verify that the coefficients for Product C against reference Product B matches those calculated in Section <a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#changing-ref">6.3.3</a>.</li>
+<li>Carefully write down your interpretation of the odds ratios calculated in the previous question.</li>
+<li>Use the process described in Section <a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#elim">6.4.1</a> to simplify the multinomial model in Question 3.</li>
+</ol>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-agresti" class="csl-entry">
+Agresti, Alan. 2007. <em>An Introduction to Categorical Data Analysis</em>.
+</div>
+<div id="ref-fagerland" class="csl-entry">
+Fagerland, Morten W., David W. Hosmer, and Anna M. Bofin. 2008. <span>“Multinomial Goodness‐of‐fit Tests for Logistic Regression Models.”</span> <em>Statistics in Medicine</em>.
+</div>
+<div id="ref-hosmer-logistic" class="csl-entry">
+Hosmer, David W., Stanley Lemeshow, and Rodney X. Sturdivant. 2013. <em>Applied Logistic Regression</em>.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="29">
+<li id="fn29"><p>In <span class="citation"><a href="#ref-hosmer-logistic" role="doc-biblioref">Hosmer, Lemeshow, and Sturdivant</a> (<a href="#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span>, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient Care as the reference.<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#fnref29" class="footnote-back">↩︎</a></p></li>
+<li id="fn30"><p>Put differently, it assumes that adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption.<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#fnref30" class="footnote-back">↩︎</a></p></li>
+<li id="fn31"><p>Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onward in the network. Most commonly they are used in deep learning, but a simple neural network here can model these different categories using a logistic function.<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#fnref31" class="footnote-back">↩︎</a></p></li>
+<li id="fn32"><p>Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done. In the case of these observations of <code>genderNon-binary</code>, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a minuscule effect<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#fnref32" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="bin-log-reg.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ord-reg.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "lunr",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

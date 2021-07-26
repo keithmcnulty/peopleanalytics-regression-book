@@ -1,0 +1,355 @@
+"n_donations","total_donations","time_donating","recent_donation","last_donation","gender","reside","age"
+2,310,27,0,4,"M","Urban Domestic",29
+3,1200,22,0,6,"M","Rural Domestic",41
+3,1200,37,1,11,"M","Urban Domestic",77
+2,760,19,1,1,"F","Overseas",66
+6,2540,37,0,11,"M","Urban Domestic",26
+8,3440,35,1,1,"M","Rural Domestic",65
+3,1200,36,0,4,"F","Overseas",60
+10,4330,42,0,1,"F","Urban Domestic",50
+5,2100,27,1,6,"F","Rural Domestic",82
+3,1200,34,0,4,"M","Rural Domestic",41
+5,2100,29,1,6,"F","Rural Domestic",72
+4,1650,31,0,11,"M","Overseas",57
+2,760,19,0,1,"M","Urban Domestic",27
+6,2540,29,1,1,"M","Rural Domestic",80
+2,760,22,0,11,"M","Rural Domestic",57
+3,1200,26,1,11,"F","Overseas",56
+4,1650,47,0,11,"F","Urban Domestic",34
+14,6120,62,0,11,"F","Rural Domestic",52
+2,760,27,0,4,"F","Urban Domestic",39
+3,1200,22,1,11,"F","Rural Domestic",66
+15,6570,46,0,4,"F","Urban Domestic",61
+2,760,29,0,11,"F","Rural Domestic",39
+2,310,23,0,11,"F","Rural Domestic",58
+8,3440,34,1,6,"F","Rural Domestic",58
+5,2100,20,1,6,"M","Urban Domestic",85
+3,1200,32,0,11,"F","Rural Domestic",30
+2,760,31,0,6,"M","Overseas",37
+3,1200,41,0,4,"M","Rural Domestic",31
+4,1650,40,0,4,"M","Rural Domestic",42
+3,1200,26,0,11,"M","Urban Domestic",26
+2,310,16,0,6,"F","Urban Domestic",27
+2,760,64,0,4,"F","Rural Domestic",27
+2,760,16,1,1,"M","Urban Domestic",82
+8,3440,68,0,4,"M","Overseas",46
+9,3890,29,1,6,"F","Rural Domestic",27
+6,2540,34,0,6,"M","Rural Domestic",36
+8,3440,44,1,11,"F","Rural Domestic",85
+2,310,22,0,11,"M","Urban Domestic",25
+2,760,29,0,11,"F","Urban Domestic",57
+15,6570,58,0,6,"F","Overseas",40
+2,760,30,0,4,"F","Urban Domestic",32
+2,310,22,0,11,"M","Overseas",45
+8,3440,30,0,11,"F","Urban Domestic",61
+4,1650,23,0,1,"F","Urban Domestic",50
+2,760,34,0,4,"M","Urban Domestic",38
+2,760,27,0,4,"M","Overseas",29
+12,5230,54,1,1,"M","Rural Domestic",62
+13,5670,48,0,11,"F","Rural Domestic",60
+4,1650,29,0,11,"F","Overseas",36
+5,2100,30,0,6,"M","Overseas",60
+4,1650,23,0,1,"F","Urban Domestic",39
+4,1650,40,0,11,"F","Rural Domestic",61
+2,310,27,0,4,"F","Overseas",30
+6,2540,29,0,11,"F","Urban Domestic",31
+24,10590,51,0,11,"M","Overseas",53
+2,760,30,0,4,"F","Rural Domestic",33
+3,1200,34,0,11,"M","Rural Domestic",31
+3,1200,37,0,4,"F","Overseas",31
+6,2540,54,0,4,"F","Overseas",27
+2,760,27,0,4,"M","Overseas",52
+2,310,16,0,6,"F","Rural Domestic",40
+2,760,22,0,11,"F","Rural Domestic",31
+2,310,22,0,11,"M","Rural Domestic",56
+5,2100,34,0,11,"M","Overseas",26
+3,1200,25,1,11,"F","Overseas",55
+4,1650,45,0,4,"F","Urban Domestic",23
+4,1650,16,0,6,"F","Rural Domestic",59
+5,2100,33,1,1,"M","Urban Domestic",60
+2,760,16,0,6,"M","Overseas",50
+6,2540,31,0,6,"F","Overseas",41
+19,8350,50,0,4,"F","Rural Domestic",41
+2,310,23,0,11,"F","Rural Domestic",40
+3,1200,44,0,6,"M","Urban Domestic",53
+2,760,15,0,1,"M","Overseas",39
+2,760,44,0,6,"F","Overseas",50
+2,760,20,0,1,"M","Rural Domestic",31
+7,2990,32,1,1,"F","Overseas",79
+2,310,19,0,6,"F","Urban Domestic",33
+4,1650,29,0,6,"F","Urban Domestic",46
+16,7010,56,0,1,"M","Rural Domestic",54
+2,310,22,0,11,"M","Rural Domestic",31
+2,760,54,0,11,"F","Rural Domestic",41
+4,1650,27,1,11,"M","Overseas",54
+2,310,26,0,4,"M","Rural Domestic",44
+4,1650,37,0,6,"M","Rural Domestic",30
+3,1200,25,0,1,"F","Urban Domestic",32
+3,1200,34,0,6,"F","Overseas",60
+11,4780,58,0,6,"F","Urban Domestic",59
+3,1200,62,0,11,"F","Urban Domestic",51
+2,760,48,0,6,"F","Overseas",55
+3,1200,29,1,6,"F","Overseas",71
+2,310,56,0,12,"M","Urban Domestic",49
+6,2540,34,1,11,"F","Rural Domestic",84
+3,1200,51,0,4,"F","Overseas",54
+2,310,16,1,6,"F","Overseas",81
+9,3890,45,0,6,"F","Urban Domestic",44
+2,760,20,0,1,"M","Urban Domestic",24
+5,2100,43,1,6,"F","Rural Domestic",50
+13,5670,36,1,6,"F","Rural Domestic",69
+2,760,22,0,11,"F","Overseas",56
+14,6120,41,1,1,"M","Rural Domestic",57
+7,2990,57,0,1,"F","Urban Domestic",33
+9,3890,44,0,6,"F","Urban Domestic",27
+4,1650,34,0,1,"M","Overseas",28
+2,760,30,0,6,"M","Overseas",32
+8,3440,29,0,11,"F","Rural Domestic",56
+6,2540,22,0,6,"M","Overseas",47
+2,760,29,0,4,"F","Rural Domestic",58
+11,4780,30,0,1,"M","Urban Domestic",55
+44,19530,70,0,1,"F","Overseas",35
+3,1200,16,1,1,"F","Rural Domestic",59
+11,4780,37,0,11,"M","Overseas",44
+2,760,26,1,4,"F","Rural Domestic",80
+2,310,16,1,6,"M","Rural Domestic",77
+2,760,19,1,6,"F","Urban Domestic",65
+4,1650,29,0,11,"F","Rural Domestic",35
+7,2990,51,0,11,"M","Urban Domestic",47
+9,3890,30,0,6,"F","Urban Domestic",40
+6,2540,39,0,6,"M","Overseas",48
+9,3890,35,1,6,"F","Urban Domestic",57
+6,2540,56,0,1,"M","Urban Domestic",48
+3,1200,37,0,4,"M","Rural Domestic",33
+3,1200,57,0,11,"F","Overseas",57
+2,310,27,0,4,"F","Overseas",25
+11,4780,36,0,11,"F","Overseas",34
+3,1200,22,0,1,"F","Overseas",24
+5,2100,24,0,11,"M","Urban Domestic",38
+6,2540,63,0,4,"F","Rural Domestic",31
+2,310,16,0,6,"M","Urban Domestic",27
+3,1200,16,0,1,"F","Overseas",55
+4,1650,20,0,1,"F","Rural Domestic",25
+2,310,22,0,11,"M","Overseas",31
+7,2990,29,1,6,"F","Rural Domestic",74
+2,760,20,0,1,"M","Rural Domestic",38
+11,4780,27,0,1,"M","Rural Domestic",30
+6,2540,34,0,6,"M","Overseas",38
+5,2100,35,0,1,"M","Rural Domestic",59
+5,2100,23,1,1,"F","Rural Domestic",47
+22,9700,30,1,6,"F","Overseas",25
+4,1650,35,0,11,"M","Overseas",61
+2,760,23,0,11,"M","Overseas",54
+2,760,29,0,4,"F","Rural Domestic",58
+5,2100,40,1,1,"M","Urban Domestic",47
+5,2100,48,0,4,"F","Rural Domestic",24
+12,5230,63,0,4,"M","Rural Domestic",36
+3,1200,34,0,11,"F","Overseas",46
+2,310,23,0,11,"F","Overseas",48
+2,760,20,0,11,"F","Rural Domestic",54
+8,3440,29,1,6,"F","Overseas",79
+2,310,26,0,4,"F","Rural Domestic",45
+3,1200,27,0,11,"F","Urban Domestic",57
+4,1650,39,1,6,"M","Rural Domestic",81
+2,760,23,0,1,"F","Rural Domestic",28
+9,3890,43,0,1,"F","Rural Domestic",28
+2,760,35,0,4,"M","Rural Domestic",39
+8,3440,53,0,4,"F","Rural Domestic",41
+2,310,20,0,11,"M","Rural Domestic",56
+7,2990,46,0,1,"M","Urban Domestic",45
+12,5230,64,0,6,"F","Urban Domestic",41
+24,10590,58,0,1,"F","Overseas",56
+8,3440,30,0,6,"M","Overseas",24
+2,760,37,0,1,"F","Overseas",61
+7,2990,36,0,11,"M","Urban Domestic",43
+2,310,16,1,6,"F","Rural Domestic",19
+6,2540,23,1,6,"F","Rural Domestic",67
+11,4780,64,0,1,"M","Rural Domestic",23
+2,310,27,0,4,"M","Rural Domestic",31
+2,760,29,0,11,"F","Overseas",60
+12,5230,61,0,1,"M","Rural Domestic",29
+7,2990,51,0,11,"M","Overseas",31
+2,760,16,0,6,"M","Urban Domestic",35
+11,4780,40,1,1,"M","Urban Domestic",69
+3,1200,40,0,11,"M","Overseas",45
+3,1200,37,0,4,"F","Overseas",47
+2,310,27,0,4,"M","Urban Domestic",58
+2,310,23,0,11,"F","Overseas",53
+2,310,23,0,11,"F","Overseas",46
+8,3440,43,0,11,"F","Urban Domestic",38
+2,760,15,0,1,"F","Rural Domestic",43
+2,310,16,1,6,"M","Urban Domestic",74
+4,1650,16,1,6,"M","Rural Domestic",51
+6,2540,60,0,11,"F","Rural Domestic",31
+3,1200,33,0,11,"M","Overseas",55
+2,310,16,0,6,"F","Overseas",47
+34,15060,58,1,1,"M","Rural Domestic",59
+4,1650,23,1,11,"F","Rural Domestic",65
+3,1200,44,0,11,"M","Urban Domestic",41
+2,310,16,0,6,"M","Overseas",51
+14,6120,47,0,1,"M","Overseas",51
+7,2990,47,0,6,"M","Urban Domestic",26
+7,2990,64,0,4,"F","Rural Domestic",31
+2,310,16,0,6,"F","Rural Domestic",37
+8,3440,34,1,1,"F","Rural Domestic",78
+5,2100,30,0,11,"F","Overseas",50
+5,2100,34,0,11,"F","Urban Domestic",34
+2,310,27,0,4,"F","Overseas",55
+18,7910,58,0,11,"M","Rural Domestic",42
+11,4780,65,0,6,"F","Urban Domestic",39
+4,1650,48,0,11,"M","Urban Domestic",27
+15,6570,55,0,11,"F","Urban Domestic",31
+2,760,34,1,11,"F","Rural Domestic",81
+5,2100,47,0,6,"M","Rural Domestic",46
+16,7010,34,1,1,"M","Rural Domestic",52
+2,310,16,1,6,"F","Urban Domestic",65
+9,3890,55,1,11,"M","Rural Domestic",79
+2,310,23,0,11,"F","Overseas",34
+2,760,16,1,1,"M","Overseas",51
+4,1650,22,1,1,"F","Rural Domestic",74
+2,310,27,1,4,"F","Overseas",62
+2,760,33,0,4,"F","Overseas",26
+4,1650,29,0,1,"M","Overseas",57
+24,10590,59,0,6,"M","Overseas",41
+2,310,16,0,6,"F","Overseas",53
+2,760,22,0,11,"F","Rural Domestic",25
+4,1650,44,0,4,"M","Urban Domestic",28
+16,7010,54,0,11,"M","Rural Domestic",35
+10,4330,40,0,6,"F","Overseas",23
+2,310,26,0,4,"M","Rural Domestic",51
+2,310,26,0,4,"M","Overseas",50
+3,1200,30,0,11,"M","Overseas",56
+6,2540,30,1,6,"F","Urban Domestic",58
+2,760,16,1,1,"F","Rural Domestic",25
+4,1650,34,1,6,"F","Rural Domestic",52
+2,760,44,0,6,"M","Overseas",26
+6,2540,34,0,11,"F","Urban Domestic",44
+5,2100,42,1,5,"M","Rural Domestic",73
+8,3440,48,0,1,"F","Overseas",23
+9,3890,47,0,6,"F","Overseas",43
+4,1650,30,1,1,"F","Rural Domestic",25
+2,760,37,0,4,"M","Overseas",54
+7,2990,30,0,1,"M","Urban Domestic",23
+3,1200,57,0,11,"M","Overseas",53
+2,310,22,0,11,"F","Overseas",50
+3,1200,34,0,4,"M","Rural Domestic",33
+2,760,23,0,6,"F","Overseas",37
+13,5670,46,0,11,"F","Urban Domestic",26
+4,1650,33,0,11,"F","Overseas",28
+7,2990,35,0,11,"M","Urban Domestic",49
+9,3890,40,0,6,"F","Rural Domestic",41
+2,310,15,0,1,"M","Rural Domestic",44
+2,310,19,0,6,"M","Overseas",52
+2,310,15,0,1,"F","Overseas",36
+3,1200,29,0,6,"F","Urban Domestic",38
+2,310,27,0,4,"F","Rural Domestic",53
+5,2100,47,0,4,"F","Rural Domestic",55
+8,3440,43,0,1,"M","Rural Domestic",58
+2,760,23,0,11,"F","Overseas",28
+8,3440,51,0,4,"M","Rural Domestic",59
+5,2100,23,1,6,"F","Urban Domestic",19
+11,4780,30,0,6,"F","Urban Domestic",28
+14,6120,34,0,1,"M","Overseas",35
+4,1650,27,0,11,"F","Rural Domestic",27
+3,1200,23,0,11,"F","Overseas",31
+7,2990,29,0,6,"F","Urban Domestic",49
+2,310,16,1,6,"F","Urban Domestic",74
+2,310,15,0,1,"M","Overseas",56
+2,310,27,0,4,"M","Overseas",38
+3,1200,43,0,11,"F","Overseas",56
+2,760,32,0,6,"M","Urban Domestic",50
+2,310,23,0,11,"F","Overseas",54
+10,4330,50,0,6,"F","Rural Domestic",59
+10,4330,33,1,1,"F","Overseas",77
+2,760,27,0,6,"M","Overseas",42
+14,6120,46,1,1,"F","Urban Domestic",62
+2,310,15,0,1,"M","Overseas",28
+2,310,26,0,4,"F","Rural Domestic",26
+8,3440,40,0,11,"M","Overseas",55
+7,2990,27,1,6,"M","Rural Domestic",80
+17,7460,59,1,11,"F","Urban Domestic",48
+14,6120,67,0,4,"M","Overseas",38
+2,310,26,0,4,"M","Urban Domestic",45
+3,1200,16,1,1,"M","Urban Domestic",72
+6,2540,34,1,6,"M","Rural Domestic",47
+6,2540,23,1,1,"M","Rural Domestic",27
+10,4330,30,1,6,"F","Overseas",62
+2,310,20,0,11,"M","Overseas",27
+6,2540,43,0,5,"F","Overseas",47
+20,8800,53,1,6,"F","Rural Domestic",79
+15,6570,42,1,1,"F","Rural Domestic",48
+3,1200,35,0,4,"F","Rural Domestic",45
+6,2540,30,1,1,"F","Urban Domestic",49
+2,760,16,0,1,"F","Urban Domestic",47
+2,760,44,0,6,"F","Rural Domestic",48
+13,5670,40,0,1,"F","Urban Domestic",50
+16,7010,51,0,4,"M","Urban Domestic",56
+2,310,15,0,1,"M","Rural Domestic",29
+2,310,16,0,6,"M","Overseas",61
+7,2990,47,0,6,"F","Rural Domestic",49
+3,1200,30,0,6,"F","Overseas",33
+2,310,22,0,11,"M","Urban Domestic",56
+2,760,29,0,4,"F","Urban Domestic",47
+6,2540,40,0,6,"F","Rural Domestic",46
+15,6570,64,0,11,"M","Rural Domestic",34
+2,310,26,0,4,"F","Overseas",44
+13,5670,32,1,1,"F","Rural Domestic",83
+6,2540,22,0,6,"M","Urban Domestic",59
+8,3440,40,0,4,"F","Urban Domestic",60
+3,1200,25,0,11,"F","Urban Domestic",35
+2,760,26,0,11,"F","Overseas",33
+2,310,16,1,1,"F","Rural Domestic",57
+5,2100,55,0,11,"F","Urban Domestic",43
+20,8800,40,1,1,"M","Urban Domestic",55
+2,310,22,0,11,"M","Urban Domestic",42
+2,310,22,0,11,"F","Urban Domestic",52
+7,2990,61,0,6,"F","Overseas",40
+3,1200,35,0,11,"M","Rural Domestic",60
+8,3440,41,0,11,"M","Urban Domestic",57
+4,1650,23,1,1,"F","Rural Domestic",84
+4,1650,44,0,4,"M","Overseas",58
+5,2100,29,0,1,"M","Overseas",39
+16,7010,65,0,11,"M","Rural Domestic",52
+2,760,23,0,11,"M","Rural Domestic",47
+4,1650,23,0,6,"M","Urban Domestic",32
+38,16850,70,0,4,"M","Rural Domestic",54
+8,3440,37,1,6,"F","Rural Domestic",50
+7,2990,50,0,6,"M","Rural Domestic",46
+2,760,27,0,4,"F","Rural Domestic",50
+21,9250,38,1,1,"M","Urban Domestic",77
+2,760,23,1,6,"F","Rural Domestic",74
+3,1200,27,0,11,"F","Urban Domestic",35
+2,310,27,0,4,"F","Overseas",28
+9,3890,48,0,11,"F","Overseas",29
+5,2100,50,0,1,"F","Overseas",52
+5,2100,34,0,6,"M","Rural Domestic",35
+2,310,23,0,11,"F","Overseas",54
+7,2990,30,1,1,"F","Urban Domestic",67
+2,310,15,0,1,"F","Rural Domestic",56
+6,2540,23,1,1,"F","Rural Domestic",60
+3,1200,59,0,11,"F","Urban Domestic",37
+16,7010,61,0,11,"F","Urban Domestic",33
+2,310,16,0,6,"M","Urban Domestic",57
+9,3890,34,0,1,"F","Urban Domestic",58
+2,760,54,0,11,"M","Rural Domestic",28
+2,760,40,0,6,"F","Urban Domestic",32
+2,760,16,0,6,"F","Overseas",23
+2,760,19,0,6,"M","Urban Domestic",57
+2,310,20,0,11,"M","Overseas",49
+7,2990,57,0,11,"M","Urban Domestic",60
+2,760,16,0,6,"M","Urban Domestic",45
+9,3890,45,0,6,"F","Urban Domestic",24
+4,1650,29,1,6,"F","Urban Domestic",76
+2,310,15,0,1,"F","Overseas",33
+5,2100,23,1,6,"F","Overseas",47
+7,2990,22,1,1,"F","Urban Domestic",69
+2,310,20,0,11,"F","Rural Domestic",53
+4,1650,46,0,11,"M","Rural Domestic",51
+7,2990,47,1,1,"F","Urban Domestic",80
+2,310,15,0,1,"F","Overseas",45
+11,4780,59,1,1,"F","Rural Domestic",19
+2,310,20,0,11,"M","Rural Domestic",47
+16,7010,58,0,11,"M","Rural Domestic",25
+6,2540,36,0,6,"F","Rural Domestic",28
+6,2540,29,0,11,"F","Urban Domestic",40
+4,1650,30,1,11,"F","Urban Domestic",68
