@@ -1,11 +1,26 @@
-# Solutions to Exercises {-}
+# Solutions to Exercises, Slide Presentations, Videos and Other Learning Resources {-}
+
+In the section I will progressively post helpful learning resources created as a consequence of this book.
+
+## Solutions to exercises {-}
 
 It is not my intention to publish a comprehensive set of solutions to the exercises in this book.  Many of the exercises can be approached in different ways and I think it is important that readers apply their learning without being constrained to an example solution.  
 
 However, I have made a place available where readers can contribute their solutions to exercises for the benefit of other readers.  If you are interested in seeing submitted solutions, or requesting or submitting a solution yourself, please visit   [https://solutions.peopleanalytics-regression-book.org](https://solutions.peopleanalytics-regression-book.org). 
 
-I encourage you to contibute your learnings and expertise by considering submitting a solution to a discussion question or data exercise.  
+I encourage you to contribute your learning and expertise by considering submitting a solution to a discussion question or data exercise.  
 
-Happy modeling!
+## Learning resources {-}
+
+Here are a set of links to slide presentations, videos and interactive tutorials I have developed for various teaching sessions related to the book:
+
+
+* [Statistical Inference and Regression Analysis using R](https://talks.peopleanalytics-regression-book.org/r_ladies_tunis.html): Xaringan slide presentation covering hypothesis testing, linear and binomial logistic regression.
+* [Explaining Performance Ratings Using Proportional Odds Regression](https://talks.peopleanalytics-regression-book.org/polr.html):   Xaringan slide presentation using proportional odds logistic regression to explain performance ratings.  [Video of this session here](https://www.youtube.com/watch?v=6IBL8BOSdUQ).
+* [Multinomial Logistic Regression and Batch Modeling with the Tidyverse](https://talks.peopleanalytics-regression-book.org/multinom_tidymodels.html):  Xaringan slide presentation focused on multinomial logistic regression and covering 'tidy' approaches to modeling. 
+* [Regression Analysis: The ‘Swiss Army Knife’ of Advanced People Analytics](https://talks.peopleanalytics-regression-book.org/dfw_meetup.html):  Xaringan slide presentation on various regression methods with a deep dive on proportional odds logistic regression.
+* [Regression Modeling in People Analytics: Survival Analysis](https://talks.peopleanalytics-regression-book.org/london_meetup_2021): Xaringan slide presentation on various regression methods with a deep dive on survival analysis. [Video of this session here](https://www.hranalyticsthinktank.com/community-content/video-keith-mcnulty-book-launch-handbook-of-regression-modeling-in-people-analytics-r57/).
+* [Introduction to Hypothesis Testing](https://keith-mcnulty.shinyapps.io/hyptesting/):  Interactive tutorial for beginners.
+
 
 
