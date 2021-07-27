@@ -16,6 +16,8 @@ Here are a set of links to slide presentations, videos and interactive tutorials
 
 
 * [Statistical Inference and Regression Analysis using R](https://talks.peopleanalytics-regression-book.org/r_ladies_tunis.html): Xaringan slide presentation covering hypothesis testing, linear and binomial logistic regression.
+* [Linear Regression for Analysis and Prediction](https://keithmcnulty.github.io/linear_regression_training/): Xaringan slide presentation explaining linear regression using a popular data set on advertising.
+* [Introduction to Binomial Logistic Regression for Inference on Binary Outcomes](https://keithmcnulty.github.io/logit_regression_training/): Xaringan slide presentation explaining binomial logistic regression using a speed dating example.
 * [Explaining Performance Ratings Using Proportional Odds Regression](https://talks.peopleanalytics-regression-book.org/polr.html):   Xaringan slide presentation using proportional odds logistic regression to explain performance ratings.  [Video of this session here](https://www.youtube.com/watch?v=6IBL8BOSdUQ).
 * [Multinomial Logistic Regression and Batch Modeling with the Tidyverse](https://talks.peopleanalytics-regression-book.org/multinom_tidymodels.html):  Xaringan slide presentation focused on multinomial logistic regression and covering 'tidy' approaches to modeling. 
 * [Regression Analysis: The ‘Swiss Army Knife’ of Advanced People Analytics](https://talks.peopleanalytics-regression-book.org/dfw_meetup.html):  Xaringan slide presentation on various regression methods with a deep dive on proportional odds logistic regression.
