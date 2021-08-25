@@ -192,7 +192,7 @@ plt.show()
 
 ```
 
-```{python pythonpowerplot, echo = FALSE, fig.cap="Plot of power against sample size for a paired t-test", fig.align="center", out.width = if(knitr::is_latex_output()) {"90%"}, dev = "png", dev.args = list(type = "cairo-png")}
+```{python, echo = FALSE, results = FALSE}
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -200,12 +200,18 @@ matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype'] = 42
 matplotlib.rcParams['text.usetex'] = True
 
+plt.cla()
+
 fig = plt.figure()
 fig = TTestPower().plot_power(dep_var = 'nobs',
                               nobs = np.arange(20, 100),
                               effect_size = np.array([0.5]),
                               alpha = 0.05)
-plt.show()
+                              
+plt.savefig("www/11/pythonpowerplot-1.png")
+```
 
+```{r pythonpowerplot, echo = FALSE, fig.cap="Plot of power against sample size for a paired t-test", fig.align="center", out.width = "90%"}
+knitr::include_graphics("www/11/pythonpowerplot-1.png")
 ```
 `r if (knitr::is_latex_output()) '\\index{power analysis|)}'`

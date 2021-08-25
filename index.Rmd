@@ -20,8 +20,6 @@ twitter-handle: "dr_keithmcnulty"
 ```{r, echo = FALSE}
 library(reticulate)
 library(JuliaCall)
-matplotlib <- import("matplotlib")
-matplotlib$use("Agg", force = TRUE)
 
 if (knitr::is_latex_output()) {
   options(width = 100)

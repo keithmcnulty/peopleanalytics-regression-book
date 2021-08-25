@@ -445,9 +445,10 @@ kmf.plot_survival_function(ax = survplot)
 # show survival curves by sentiment category
 plt.show()
 ```
+
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
-```{python survival-python, fig.align = "center", fig.cap = "Survival curves by sentiment category in the job retention data", out.width = if (knitr::is_latex_output()) {"90%"}, echo = FALSE, results = FALSE, dev = "png", dev.args = list(type = "cairo-png")}
+```{python, echo = FALSE, results = FALSE}
 import pandas as pd
 import matplotlib
 from lifelines import KaplanMeierFitter
@@ -455,6 +456,8 @@ from matplotlib import pyplot as plt
 matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype'] = 42
 matplotlib.rcParams['text.usetex'] = True
+
+plt.cla()
 
 # get data
 url = "http://peopleanalytics-regression-book.org/data/job_retention.csv"
@@ -485,10 +488,12 @@ label = "Not High Sentiment")
 kmf.plot_survival_function(ax = survplot)
 
 # show survival curves by sentiment category
-plt.show()
+plt.savefig("www/10/survival-python-1.png")
 ```
 
-
+```{r survival-python, fig.align = "center", fig.cap = "Survival curves by sentiment category in the job retention data", out.width = "90%", echo = FALSE}
+knitr::include_graphics("www/10/survival-python-1.png")
+```
 
 And here is an example of how to fit a Cox Proportional Hazard model similarly to Section \@ref(coxphmodel)^[I am not aware of any way of running frailty models currently in Python.].
 
