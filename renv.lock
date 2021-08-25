@@ -315,15 +315,10 @@
     },
     "bookdown": {
       "Package": "bookdown",
-      "Version": "0.22.15",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "bookdown",
-      "RemoteUsername": "rstudio",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "6ae8900f1438a463a6e14ab8ffbe75eecb1d59a4",
-      "Hash": "bf4ec53bb69cfc23965f00380bca3231"
+      "Version": "0.23",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "bc07f4b5b93bbf21075429e0c7e090f8"
     },
     "boot": {
       "Package": "boot",
@@ -682,13 +677,6 @@
       "Repository": "CRAN",
       "Hash": "ba8048a1641465f807c52b78d1eae18a"
     },
-    "gdtools": {
-      "Package": "gdtools",
-      "Version": "0.2.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "12a524de5a491ff39debb9311fc0763f"
-    },
     "generalhoslem": {
       "Package": "generalhoslem",
       "Version": "1.3.4",
@@ -967,19 +955,19 @@
       "Repository": "CRAN",
       "Hash": "bc316c003aba520fc73d70ad53b5fc36"
     },
+    "jquerylib": {
+      "Package": "jquerylib",
+      "Version": "0.1.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "5aab57a3bd297eee1c1d862735972182"
+    },
     "jsonlite": {
       "Package": "jsonlite",
       "Version": "1.7.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "98138e0994d41508c7a6b84a0600cfcb"
-    },
-    "kableExtra": {
-      "Package": "kableExtra",
-      "Version": "1.3.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "1cd5a91d0efcd926b025a8d483f40b84"
     },
     "km.ci": {
       "Package": "km.ci",
@@ -1057,13 +1045,6 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "d908914ae53b04d4c0c0fd72ecc35370"
-    },
-    "learnr": {
-      "Package": "learnr",
-      "Version": "0.10.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "ee4c94c586f032847b5ff679935f2ba4"
     },
     "lhs": {
       "Package": "lhs",
@@ -1712,13 +1693,6 @@
       "Repository": "CRAN",
       "Hash": "00fe8bd5a1da755b74a1d53172fa4d5d"
     },
-    "servr": {
-      "Package": "servr",
-      "Version": "0.21",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "48d1289a847c801b3f0e76fc619fa65d"
-    },
     "shiny": {
       "Package": "shiny",
       "Version": "1.5.0",
@@ -1803,26 +1777,12 @@
       "Repository": "CRAN",
       "Hash": "7ac6bc85f8759d17b9a6ecc6b8bc5c18"
     },
-    "svglite": {
-      "Package": "svglite",
-      "Version": "1.2.3.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "5d82ff095302092753fd50acdd1e1a0c"
-    },
     "sys": {
       "Package": "sys",
       "Version": "3.4",
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "b227d13e29222b4574486cfcbde077fa"
-    },
-    "systemfonts": {
-      "Package": "systemfonts",
-      "Version": "1.0.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "6e899d7c097698d50ec87b1d8e65f246"
     },
     "testthat": {
       "Package": "testthat",
@@ -1957,13 +1917,6 @@
       "Repository": "CRAN",
       "Hash": "2982481615756e24e79fee95bdc95daa"
     },
-    "webshot": {
-      "Package": "webshot",
-      "Version": "0.5.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "e99d80ad34457a4853674e89d5e806de"
-    },
     "whisker": {
       "Package": "whisker",
       "Version": "0.4",
@@ -1984,13 +1937,6 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "c5063a0296c7d6e32ee1351a1d88d2b1"
-    },
-    "xaringan": {
-      "Package": "xaringan",
-      "Version": "0.19",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "0d0e49333c8a4841db419aea628ac16f"
     },
     "xfun": {
       "Package": "xfun",
