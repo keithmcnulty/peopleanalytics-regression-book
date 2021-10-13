@@ -16,7 +16,6 @@ cover-image: "www/cover/coverpage-og.png"
 twitter-handle: "dr_keithmcnulty"
 ---
 
-
 ```{r, echo = FALSE}
 library(reticulate)
 library(JuliaCall)
@@ -27,6 +26,7 @@ if (knitr::is_latex_output()) {
 
 # bookdown::render_book("index.Rmd", output_format = "bookdown::bs4_book", config_file = "_bookdown_bs4.yml")
 # knitr::opts_chunk$set(dpi=300)
+knitr::opts_chunk$set(out.width = "90%")
 ```
 
 ```{r, echo = FALSE}
@@ -43,6 +43,26 @@ if (knitr::is_html_output()) {
     ) 
 }
 ```
+
+<!--
+<div class="banner">
+  <div class="banner__content">
+    <div class="banner__text">
+      <strong>News:</strong> The new textbook in this series - <i>Handbook of Graphs and Networks in People Analytics</i> - is now online <a href="https://ona-book.org">here</a>
+      <button class="banner__close" type="button">
+        <span class="material-icons">
+          close
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+<script>
+      document.querySelector(".banner__close").addEventListener("click", function() {
+        this.closest(".banner").style.display = "none";
+      });
+</script>
+-->
 
 `r if (knitr::is_latex_output()) '<!--'`
 # Welcome {-}

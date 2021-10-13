@@ -9,3 +9,48 @@
 .caution {
   background-image: url("../www/caution.png");
 }
+
+.banner {
+  background: #0C1480;
+}
+
+.banner__content {
+  padding: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.banner__text {
+  flex-grow: 1;
+  line-height: 1.4;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.banner__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.banner__text,
+.banner__close>span {
+  color: #ffffff;
+}
+
+.banner__text a:link {
+    color: #FFFFFF !important;
+    font-weight: bold !important;
+    text-decoration: underline !important;
+}
+
+.banner__text a:visited {
+    color: #FFFFFF !important;
+    text-decoration: underline !important;
+}
+
+.material-icons {
+  font-size: 14px;
+}
+

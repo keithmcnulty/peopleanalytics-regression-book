@@ -4,10 +4,10 @@ bookdown::bs4_book:
     primary: "#0C1480"
   repo: https://github.com/keithmcnulty/peopleanalytics-regression-book
   includes:
-    in_header: [ga_script.html]
+    in_header: [ga_script.html, material_icons.html]
 bookdown::gitbook:
   includes:
-    in_header: [ga_script.html]
+    in_header: [ga_script.html, material_icons.html]
   config:
     toc:
       collapse: section
