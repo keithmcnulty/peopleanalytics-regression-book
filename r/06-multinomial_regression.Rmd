@@ -118,14 +118,15 @@ These results need to be interpreted carefully.  For example, the odds ratios fo
 # simpler model
 A_simple <- glm(
   formula = productA ~ age + household + gender + position_level, 
-  data = health_insurance
+  data = health_insurance,
+  family = "binomial"
 )
 
 # view odds ratio as a data frame
 as.data.frame(exp(A_simple$coefficients))
 ```
 
-As an example, and as a reminder from our previous chapter, we interpret the odds ratio for `age` as follows: all else being equal, every additional year of age is associated with an approximately 2.2% decrease in the odds of choosing Product A over the other products.
+As an example, and as a reminder from our previous chapter, we interpret the odds ratio for `age` as follows: all else being equal, every additional year of age is associated with an approximately 21% decrease in the odds of choosing Product A over the other products.
 
 ### Modeling other choices
 

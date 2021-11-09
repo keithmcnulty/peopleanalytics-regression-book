@@ -611,19 +611,20 @@ Figure 6.1: Pairplot of the <code>health_insurance</code> data set
 <div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simpler model</span></span>
 <span id="cb338-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-2" aria-hidden="true" tabindex="-1"></a>A_simple <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
 <span id="cb338-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> productA <span class="sc">~</span> age <span class="sc">+</span> household <span class="sc">+</span> gender <span class="sc">+</span> position_level, </span>
-<span id="cb338-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance</span>
-<span id="cb338-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb338-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb338-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-7" aria-hidden="true" tabindex="-1"></a><span class="co"># view odds ratio as a data frame</span></span>
-<span id="cb338-8"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-8" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">exp</span>(A_simple<span class="sc">$</span>coefficients))</span></code></pre></div>
+<span id="cb338-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance,</span>
+<span id="cb338-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span></span>
+<span id="cb338-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb338-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb338-8"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-8" aria-hidden="true" tabindex="-1"></a><span class="co"># view odds ratio as a data frame</span></span>
+<span id="cb338-9"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-9" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">exp</span>(A_simple<span class="sc">$</span>coefficients))</span></code></pre></div>
 <pre><code>##                  exp(A_simple$coefficients)
-## (Intercept)                       2.8212501
-## age                               0.9776023
-## household                         1.0253707
-## genderMale                        1.0973280
-## genderNon-binary                  0.9697639
-## position_level                    1.0397906</code></pre>
-<p>As an example, and as a reminder from our previous chapter, we interpret the odds ratio for <code>age</code> as follows: all else being equal, every additional year of age is associated with an approximately 2.2% decrease in the odds of choosing Product A over the other products.</p>
+## (Intercept)                     343.4406669
+## age                               0.7868098
+## household                         1.2711317
+## genderMale                        2.3282637
+## genderNon-binary                  1.2794288
+## position_level                    1.3692971</code></pre>
+<p>As an example, and as a reminder from our previous chapter, we interpret the odds ratio for <code>age</code> as follows: all else being equal, every additional year of age is associated with an approximately 21% decrease in the odds of choosing Product A over the other products.</p>
 </div>
 <div id="modeling-other-choices" class="section level3" number="6.2.2">
 <h3><span class="header-section-number">6.2.2</span> Modeling other choices</h3>

@@ -238,19 +238,20 @@ Figure 6.1: Pairplot of the <code>health_insurance</code> data set
 <code class="sourceCode R"><span class="co"># simpler model</span>
 <span class="va">A_simple</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span>
   formula <span class="op">=</span> <span class="va">productA</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">household</span> <span class="op">+</span> <span class="va">gender</span> <span class="op">+</span> <span class="va">position_level</span>, 
-  data <span class="op">=</span> <span class="va">health_insurance</span>
+  data <span class="op">=</span> <span class="va">health_insurance</span>,
+  family <span class="op">=</span> <span class="st">"binomial"</span>
 <span class="op">)</span>
 
 <span class="co"># view odds ratio as a data frame</span>
 <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">A_simple</span><span class="op">$</span><span class="va">coefficients</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##                  exp(A_simple$coefficients)
-## (Intercept)                       2.8212501
-## age                               0.9776023
-## household                         1.0253707
-## genderMale                        1.0973280
-## genderNon-binary                  0.9697639
-## position_level                    1.0397906</code></pre>
-<p>As an example, and as a reminder from our previous chapter, we interpret the odds ratio for <code>age</code> as follows: all else being equal, every additional year of age is associated with an approximately 2.2% decrease in the odds of choosing Product A over the other products.</p>
+## (Intercept)                     343.4406669
+## age                               0.7868098
+## household                         1.2711317
+## genderMale                        2.3282637
+## genderNon-binary                  1.2794288
+## position_level                    1.3692971</code></pre>
+<p>As an example, and as a reminder from our previous chapter, we interpret the odds ratio for <code>age</code> as follows: all else being equal, every additional year of age is associated with an approximately 21% decrease in the odds of choosing Product A over the other products.</p>
 </div>
 <div id="modeling-other-choices" class="section level3" number="6.2.2">
 <h3>
