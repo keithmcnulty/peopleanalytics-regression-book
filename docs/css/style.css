@@ -1,5 +1,5 @@
 .infobox {
-  padding: 1em 1em 1em 4em;
+  padding: 1em 1em 1em 10em;
   margin-bottom: 10px;
   background: lightgray 5px center/3em no-repeat;
   border: 2px solid orange;
@@ -8,6 +8,12 @@
 
 .caution {
   background-image: url("../www/caution.png");
+}
+
+.ukraine {
+  background-image: url("../www/ukraine.png");
+   background-size: 150px 150px;
+   background-repeat: no-repeat;
 }
 
 .banner {
