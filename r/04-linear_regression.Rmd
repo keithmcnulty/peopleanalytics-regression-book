@@ -106,7 +106,15 @@ In the diagonal, we can see the distributions of the data in each column.  We ob
 
 ### Linear relationship between a single input and an outcome {#linear-single}
 
-Let our input variable be $x$ and our outcome variable be $y$.  Recalling the equation of a straight line, because we assume that the relationship is linear, we expect the relationship to be of the form:
+Let our input variable be $x$ and our outcome variable be $y$.  In Chapter \@ref(inf-model), we introduced the concept of parametric modeling as an assumption that our outcome variable $y$ is expected to be related to the input variable $x$ by means of some mathematically definable function.  In other words, we assume:
+
+$$
+y = f(x) + \epsilon
+$$
+
+where $f$ is some mathematical transformation of $x$ and $\epsilon$ is some random, uncontrollable error.  Put another way, we assume that $f(x)$ represents the mean expected value of $y$ over many observations of $x$, and that any single observation of $y$ could vary from $f(x)$ by an error of $\epsilon$.  Since we are assuming that $f(x)$ represents the mean of $y$, and because $\epsilon$ is assumed to be a random variable, this implies that $\epsilon$ will be normally distributed around a mean of zero.   
+
+Recalling the equation of a straight line, because we assume that the expected relationship is linear, it will take the form:
 
 $$y = mx + c$$
 where $m$ represents the slope or gradient of the line, and $c$ represents the point at which the line intercepts the $y$ axis.  `r if (knitr::is_latex_output()) '\\index{linear regression!coefficients}'`When using a straight line to model a relationship in the data, we call $c$ and $m$ the *coefficients* of the model.
@@ -137,7 +145,7 @@ This looks like an approximation of the relationship, but how do we know that it
 
 ### Minimising the error {#minimising-error-ols}
 
-For each of our observations, we can determine an error in the fitted model by calculating the difference between the real value of $y$ and the one predicted by our model.  For example, at $x = 52$, our modeled value of y is `r 1.2*52 + 5`, but the real value is 93, producing an error of `r 93 - 1.2*52 - 5`.  `r if (knitr::is_latex_output()) '\\index{linear regression!residuals}'`These errors are known as the *residuals* of our model. The residuals for the 10 points in our data set are illustrated by the solid red line segments in Figure \@ref(fig:sample-plot-residuals).  It looks like at least one of our residuals is pretty large.
+Remember that our assumed relationship $y = mx + c$ represents the expected mean value of $y$ over many observations of $x$.   For a specific single observation of $x$, we do not expect $y$ to be precisely on our expected line, because each individual observation will have an error term $\epsilon$ either above or below the expected line.   We can determine this error term $\epsilon$ in the fitted model by calculating the difference between the real value of $y$ and the one predicted by our model.  For example, at $x = 52$, our modeled value of y is `r 1.2*52 + 5`, but the real value is 93, producing an error $\epsilon$ of `r 93 - 1.2*52 - 5`.  `r if (knitr::is_latex_output()) '\\index{linear regression!residuals}'`These errors $\epsilon$ are known as the *residuals* of our model. The residuals for the 10 points in our data set are illustrated by the solid red line segments in Figure \@ref(fig:sample-plot-residuals).  It looks like at least one of our residuals is pretty large.
 
 
 ``` {r sample-plot-residuals, fig.cap = "Residuals of $y=1.2x + 5$ for our 10 observations", fig.align = "center", echo = FALSE, out.width = if (knitr::is_latex_output()) {"90%"}}
@@ -395,19 +403,22 @@ predict(newmodel, new_students)
 
 ```
 
-We know from our earlier work in this chapter that there is a confidence interval around the coefficients of our model, which means that there is a range of values for our prediction according to those confidence intervals.  This can be determined by specifying that you require a confidence interval for your predictions.
+Because we are modeling the expected value of the Final examination result, this prediction represents the expected mean over many students with the same scores in previous years examinations.  We know from our earlier work in this chapter that there is a confidence interval around the coefficients of our model, which means that there is a range of values for our expected Final score according to those confidence intervals.  This can be determined by specifying that you require a confidence interval for your predictions.
 
 ```{r}
 # get a confidence interval 
 predict(newmodel, new_students, interval = "confidence")
 ```
 
-You may also recall from Chapter \@ref(inf-model) that any observation in our outcome is subject to uncontrollable error, so that there is a further margin of 'prediction error'&zwj;, even after we take into consideration the confidence interval of our fitted model.  Therefore to generate a more reliable prediction range to use in real life, which takes this random, uncontrollable error into consideration, you should calculate a 'prediction interval'&zwj;.
+As an example, another way of interpreting the confidence interval is to say that, if you have many students who scored precisely `r new_students$Yr2[1]` and `r new_students$Yr3[1]` in the Year 2 and Year 3 examinations respectively, we expect the mean Final score of these students to be somewhere between `r round(predict(newmodel, new_students, interval = "confidence")[1, 2])` and `r round(predict(newmodel, new_students, interval = "confidence")[1, 3])`.
+
+You may also recall from Section \@ref(linear-single) that any prediction of an individual observation is subject to an error term $\epsilon$.  Therefore, to generate a more reliable prediction range for an individual observation, you should calculate a 'prediction interval'&zwj;.
 
 ```{r}
 # get a prediction interval 
 predict(newmodel, new_students, interval = "prediction")
 ```
+
 
 As discussed in Chapter \@ref(inf-model), the process of developing a model to *predict* an outcome can be quite different from developing a model to *explain* an outcome.  For a start, it is unlikely that you would use your entire sample to fit a predictive model, as you would want to reserve a portion of your data to test for its fit on new data.  Since the focus of this book is inferential modeling, much of this topic will be out of our scope.
 
@@ -450,7 +461,7 @@ In general, all model input variables should take a numeric form.  The most reli
 ```{r}
 
 (vehicle_data <- data.frame(
-  make = c("Ford", "Toyota", "Audi"), 
+  make = factor(c("Ford", "Toyota", "Audi")), 
   manufacturing_cost = c(15000, 19000, 28000)
 ))
 
@@ -459,19 +470,11 @@ In general, all model input variables should take a numeric form.  The most reli
 The `make` data is categorical, so it will be converted to several columns for each possible value of `make`, and binary labeling will be used to identify whether that value is present in that specific observation.  Many packages and functions are available to conveniently do this, for example:
 
 ```{r}
-library(dummies)
-(dummy_vehicle <- dummies::dummy("make", data = vehicle_data))
+library(makedummies)
+(dummy_vehicle <- makedummies::makedummies(vehicle_data, 
+                                           basal_level = TRUE))
 ```
 
-Dummy variables can then replace the original `make` column to get your data set ready for modeling.
-
-```{r}
-(vehicle_data_dummies <- cbind(
-  manufacturing_cost = vehicle_data$manufacturing_cost,
-  dummy_vehicle
-))
-
-```
 
 It is worth a moment to consider how to interpret coefficients of dummy variables in a linear regression model.  Note that all observations will have one of the dummy variable values (all cars must have a make).  Therefore the model will assume a 'reference value' for the categorical variable---often this is the first value in alphabetical or numerical order.  In this case, `Audi` would be the reference dummy variable.  The model then calculates the effect on the outcome variable of a 'switch' from `Audi` to one of the other dummies^[For more on how to control which categorical value is used as a reference, see Section \@ref(def-ref).].  If we were to try to use the data in our `vehicle_data_dummies` data set to explain the retail price of a vehicle, we would interpret coefficients like this:
 
@@ -538,7 +541,9 @@ Figure \@ref(fig:resyr3) also shows a consistent range of values for the residua
 
 ### Assumption of normally distributed errors {#norm-dist-assum}
 
-`r if (knitr::is_latex_output()) '\\index{linear regression!normal distribution of residuals}'`In an appropriate model we expect our errors to be random, so we would therefore expect our residuals to be normally distributed over sufficient numbers of observations.  If our residuals are distributed differently, this is again an indicator of an inappropriate model and can result in inaccurate estimates of confidence intervals and the statistical significance of coefficients.
+`r if (knitr::is_latex_output()) '\\index{linear regression!normal distribution of residuals}'`Recall from Section \@ref(linear-single) that one of the assumptions when we run a linear regression model is that the residuals of the model are normally distributed around a mean of zero.  Therefore it is useful to check your data to see how well it fits these assumptions.  If your data shows that the residuals have a substantially non-normal distribution, this may tell you something about your model and how well you can rely on it for accurate inferences or predictions.
+
+When residuals violate this assumption, it means that the ingoing mathematical premise of your model does not fully describe your data.  Whether or not this is a big problem depends on the existing properties of your sample and on other model diagnostics.   In models built on smaller samples, where hypothesis test criteria are only narrowly met, residual non-normality could present a significant challenge to the reliability of inferences and predictions. On models where hypothesis test criteria are very comfortably met, residual non-normality is less likely to be a problem (@lumley).   In any case, it is good practice to examine the distribution of your residuals so that you can refine or improve your model.  
 
 The quickest way to determine if residuals in your sample are consistent with a normal distribution is to run a quantile-quantile plot (or Q-Q plot) on the residuals.  This will plot the observed quantiles of your sample against the theoretical quantiles of a normal distribution.  The closer this plot looks like a perfect correlation, the more certain you can be that this normality assumption holds.  An example for our student examination model is in Figure \@ref(fig:qqplottests).
 

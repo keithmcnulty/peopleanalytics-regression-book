@@ -300,17 +300,10 @@ Let's put this into practice.
 `r if (knitr::is_latex_output()) '\\index{dummy variables!in logistic regression}'``r if (knitr::is_latex_output()) '\\index{input variables!categorical}'`First, as we learned previously, it is good practice to convert the categorical `performance` variable to a dummy variable^[Note that most standard modeling functions have a built-in capability to deal with categorical variables, meaning that it's often not necessary to explicitly construct dummies.  However, it is shown here for completion sake.  You may wish to try running the subsequent code without explicitly constructing dummies, but note that constructing your own dummies gives you greater control over how they are labeled in any modeling output.]. 
 
 ```{r, eval = FALSE}
-library(dummies)
+library(makedummies)
 
 # convert performance to dummy
-perf_dummies <- dummies::dummy("performance", data = salespeople)
-
-
-# replace in salespeople dataframe
-salespeople_dummies <- cbind(
-  salespeople[c("promoted", "sales", "customer_rate")], 
-  perf_dummies
-)
+salespeople_dummies <- makedummies::makedummies(salespeople)
 
 # check it worked
 head(salespeople_dummies)
@@ -319,17 +312,10 @@ head(salespeople_dummies)
 `r if (knitr::is_latex_output()) '\\newpage'`
 `r if (knitr::is_latex_output()) '\\small'`
 ```{r, echo = FALSE}
-library(dummies)
+library(makedummies)
 
 # convert performance to dummy
-perf_dummies <- dummies::dummy("performance", data = salespeople)
-
-
-# replace in salespeople dataframe
-salespeople_dummies <- cbind(
-  salespeople[c("promoted", "sales", "customer_rate")], 
-  perf_dummies
-)
+salespeople_dummies <- makedummies::makedummies(salespeople)
 
 # check it worked
 head(salespeople_dummies)
@@ -348,7 +334,7 @@ full_model <- glm(formula = "promoted ~ .",
 (coefs <- summary(full_model)$coefficients)
 ```
 
-Note how only three of the `performance` dummies have displayed.  This is because everyone is in one of the four performance categories, so the model is using `performance4` as the reference case.  We can interpret each performance coefficient as the effect of a move to that performance category from `performance4`.
+Note how only three of the `performance` dummies have displayed.  This is because everyone is in one of the four performance categories, so the model is using `performance_1` as the reference case.  We can interpret each performance coefficient as the effect of a move to that performance category from `performance_1`.
 
 We can already see from the last column of our coefficient summary---the coefficient p-values---that only `sales` and `customer_rate` meet the significance threshold of less than 0.05.  Interestingly, it appears from the `Estimate` column that `customer_rate` has a negative effect on the log odds of promotion.    For convenience, we can add an extra column to our coefficient summary to create the exponents of our estimated coefficients so that we can see the odds ratios.  We can also remove columns that are less useful to us if we wish.
 

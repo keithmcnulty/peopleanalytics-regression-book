@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 The Basics of the R Programming Language | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
   <meta name="description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 The Basics of the R Programming Language | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
   <meta property="og:type" content="book" />
-  <meta property="og:url" content="https://peopleanalytics-regression-book.org" />
   <meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png" />
   <meta property="og:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
   <meta name="github-repo" content="keithmcnulty/peopleanalytics-regression-book" />
@@ -32,8 +31,8 @@
   
 <link rel="prev" href="inf-model.html"/>
 <link rel="next" href="found-stats.html"/>
-<script src="libs/header-attrs-2.9.5/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,9 +48,9 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python"/>
 <meta name="citation_author" content="Keith McNulty"/>
 <meta name="citation_publication_date" content="2021"/>
@@ -479,14 +478,14 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="the-basics-of-the-r-programming-language" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> The Basics of the R Programming Language</h1>
+<div id="the-basics-of-the-r-programming-language" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">2</span> The Basics of the R Programming Language<a href="the-basics-of-the-r-programming-language.html#the-basics-of-the-r-programming-language" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis. Sample implementations in Python are also provided at various points in the book, as well as implementations in Julia for those who are keen on this newer and up-and-coming language. I have made efforts to keep the code as simple as possible, and I have tried to avoid the use of too many external packages. For the most part, readers should see (especially in the earlier chapters) that code blocks are short and simple, relying wherever possible on base R functionality. No doubt there are neater and more effective ways to code some of the material in this book using a wide array of R packages—and some of these are illustrated in Chapter <a href="alt-approaches.html#alt-approaches">10</a>—but my priority has been to keep the code simple, consistent and easily reproducible.</p>
 <p>For those who wish to follow the method and theory without the implementations in this book, there is no need to read this chapter. However, the style of this book is to use implementation to illustrate theory and practice, and so tolerance of many code blocks will be necessary as you read onward.</p>
 <p>For those who wish to simply replicate the models as quickly as possible, they will be able to avail of the code block copying feature, which appears whenever you scroll over an input code block. Assuming all the required external packages have been installed, these code blocks should all be transportable and immediately usable. For those who are extra-inquisitive and want to explore how I constructed graphics used for illustration (for which code is usually not displayed), the best place to go is the <a href="https://github.com/keithmcnulty/peopleanalytics-regression-book">Github repository</a> for this book.</p>
-<p>This chapter is for those who wish to learn the methods in this book but do not know how to use R. However, it is not intended to be a full tutorial on R. There are many more qualified individuals and existing resources that would better serve that purpose—in particular I recommend <span class="citation"><a href="#ref-wickham" role="doc-biblioref">Wickham and Grolemund</a> (<a href="#ref-wickham" role="doc-biblioref">2016</a>)</span>. It is recommended that you consult these resources and become comfortable with the basics of R before proceeding into the later chapters of this book. However, acknowledging that many will want to dive in sooner rather than later, this chapter covers the absolute basics of R that will allow the uninitiated reader to proceed with at least some orientation.</p>
-<div id="what-is-r" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> What is R?</h2>
+<p>This chapter is for those who wish to learn the methods in this book but do not know how to use R. However, it is not intended to be a full tutorial on R. There are many more qualified individuals and existing resources that would better serve that purpose—in particular I recommend <span class="citation">Wickham and Grolemund (<a href="#ref-wickham" role="doc-biblioref">2016</a>)</span>. It is recommended that you consult these resources and become comfortable with the basics of R before proceeding into the later chapters of this book. However, acknowledging that many will want to dive in sooner rather than later, this chapter covers the absolute basics of R that will allow the uninitiated reader to proceed with at least some orientation.</p>
+<div id="what-is-r" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> What is R?<a href="the-basics-of-the-r-programming-language.html#what-is-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>R is a programming language that was originally developed by and for statisticians, but in recent years its capabilities and the environments in which it is used have expanded greatly, with extensive use nowadays in academia and the public and private sectors. There are many advantages to using a programming language like R. Here are some:</p>
 <ol style="list-style-type: decimal">
 <li>It is completely free and open source.</li>
@@ -497,8 +496,8 @@ div.csl-indent {
 </ol>
 <p>There is often heated debate about which tools are better for doing non-trivial statistical analysis. I personally find that R provides the widest array of resources for those interested in inferential modeling, while Python has a more well-developed toolkit for predictive modeling and machine learning. Since the primary focus of this book is inferential modeling, the in-depth walkthroughs are coded in R.</p>
 </div>
-<div id="how-to-start-using-r" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> How to start using R</h2>
+<div id="how-to-start-using-r" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> How to start using R<a href="the-basics-of-the-r-programming-language.html#how-to-start-using-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Just like most programming languages, R itself is an interpreter which receives input and returns output. It is not very easy to use without an IDE. An IDE is an <em>Integrated Development Environment</em>, which is a convenient user interface allowing an R programmer to do all their main tasks including writing and running R code, saving files, viewing data and plots, integrating code into documents and many other things. By far the most popular IDE for R is RStudio. An example of what the RStudio IDE looks like can be seen in Figure <a href="the-basics-of-the-r-programming-language.html#fig:rstudio-ide">2.1</a>.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:rstudio-ide"></span>
 <img src="www/R/rstudio-windows.png" alt="The RStudio IDE" width="474" />
@@ -515,8 +514,8 @@ Figure 2.1: The RStudio IDE
 </ol>
 <p>The initial stages of using R can be challenging, mostly due to the need to become familiar with how R understands, stores and processes data. Extensive trial and error is a learning necessity. Perseverance is important in these early stages, as well as an openness to seek help from others either in person or via online forums.</p>
 </div>
-<div id="data-in-r" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> Data in R</h2>
+<div id="data-in-r" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Data in R<a href="the-basics-of-the-r-programming-language.html#data-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>As you start to do tasks involving data in R, you will generally want to store the things you create so that you can refer to them later. Simply calculating something does not store it in R. For example, a simple calculation like this can be performed easily:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="the-basics-of-the-r-programming-language.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">+</span> <span class="dv">3</span></span></code></pre></div>
 <pre><code>## [1] 6</code></pre>
@@ -535,8 +534,8 @@ Figure 2.1: The RStudio IDE
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="the-basics-of-the-r-programming-language.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># assign my_sum + 3 to new_sum and show its value</span></span>
 <span id="cb9-2"><a href="the-basics-of-the-r-programming-language.html#cb9-2" aria-hidden="true" tabindex="-1"></a>(new_sum <span class="ot">&lt;-</span> my_sum <span class="sc">+</span> <span class="dv">3</span>)</span></code></pre></div>
 <pre><code>## [1] 9</code></pre>
-<div id="data-types" class="section level3" number="2.3.1">
-<h3><span class="header-section-number">2.3.1</span> Data types</h3>
+<div id="data-types" class="section level3 hasAnchor" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> Data types<a href="the-basics-of-the-r-programming-language.html#data-types" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>All data in R has an associated type, to reflect the wide range of data that R is able to work with. The <code>typeof()</code> function can be used to see the type of a single scalar value. Let’s look at the most common scalar data types.</p>
 <p><strong>Numeric data</strong> can be in integer form or double (decimal) form.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="the-basics-of-the-r-programming-language.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># integers can be signified by adding an &#39;L&#39; to the end</span></span>
@@ -556,8 +555,8 @@ Figure 2.1: The RStudio IDE
 <span id="cb17-2"><a href="the-basics-of-the-r-programming-language.html#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(my_logical)</span></code></pre></div>
 <pre><code>## [1] &quot;logical&quot;</code></pre>
 </div>
-<div id="homogeneous-data-structures" class="section level3" number="2.3.2">
-<h3><span class="header-section-number">2.3.2</span> Homogeneous data structures</h3>
+<div id="homogeneous-data-structures" class="section level3 hasAnchor" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Homogeneous data structures<a href="the-basics-of-the-r-programming-language.html#homogeneous-data-structures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Vectors</strong> are one-dimensional structures containing data of the same type and are notated by using <code>c()</code>. The type of the vector can also be viewed using the <code>typeof()</code> function, but the <code>str()</code> function can be used to display both the contents of the vector and its type.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="the-basics-of-the-r-programming-language.html#cb19-1" aria-hidden="true" tabindex="-1"></a>my_double_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.3</span>, <span class="fl">6.8</span>, <span class="fl">4.5</span>, <span class="dv">65</span>, <span class="dv">6</span>)</span>
 <span id="cb19-2"><a href="the-basics-of-the-r-programming-language.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(my_double_vector)</span></code></pre></div>
@@ -619,8 +618,8 @@ Figure 2.1: The RStudio IDE
 ## [2,]    2    4</code></pre>
 <p><strong>Arrays</strong> are n-dimensional data structures with the same data type and are not used extensively by most R users.</p>
 </div>
-<div id="heterogeneous-data-structures" class="section level3" number="2.3.3">
-<h3><span class="header-section-number">2.3.3</span> Heterogeneous data structures</h3>
+<div id="heterogeneous-data-structures" class="section level3 hasAnchor" number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> Heterogeneous data structures<a href="the-basics-of-the-r-programming-language.html#heterogeneous-data-structures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Lists</strong> are one-dimensional data structures that can take data of any type.</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="the-basics-of-the-r-programming-language.html#cb41-1" aria-hidden="true" tabindex="-1"></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">6</span>, <span class="cn">TRUE</span>, <span class="st">&quot;hello&quot;</span>)</span>
 <span id="cb41-2"><a href="the-basics-of-the-r-programming-language.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(my_list)</span></code></pre></div>
@@ -665,11 +664,11 @@ Figure 2.1: The RStudio IDE
 <pre><code>## [1] 2 2</code></pre>
 </div>
 </div>
-<div id="working-with-dataframes" class="section level2" number="2.4">
-<h2><span class="header-section-number">2.4</span> Working with dataframes</h2>
+<div id="working-with-dataframes" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Working with dataframes<a href="the-basics-of-the-r-programming-language.html#working-with-dataframes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The dataframe is the most common data structure used by analysts in R, due to its similarity to data tables found in databases and spreadsheets. We will work almost entirely with dataframes in this book, so let’s get to know them.</p>
-<div id="loading-and-tidying-data-in-dataframes" class="section level3" number="2.4.1">
-<h3><span class="header-section-number">2.4.1</span> Loading and tidying data in dataframes</h3>
+<div id="loading-and-tidying-data-in-dataframes" class="section level3 hasAnchor" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Loading and tidying data in dataframes<a href="the-basics-of-the-r-programming-language.html#loading-and-tidying-data-in-dataframes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To work with data in R, you usually need to pull it in from an outside source into a dataframe<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>. R facilitates numerous ways of importing data from simple <code>.csv</code> files, from Excel files, from online sources or from databases. Let’s load a data set that we will use later—the <code>salespeople</code> data set, which contains some information on the sales, average customer ratings and performance ratings of salespeople. The <code>read.csv()</code> function can accept a URL address of the file if it is online.</p>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="the-basics-of-the-r-programming-language.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># url of data set </span></span>
 <span id="cb53-2"><a href="the-basics-of-the-r-programming-language.html#cb53-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/salespeople.csv&quot;</span></span>
@@ -732,8 +731,8 @@ Figure 2.1: The RStudio IDE
 ##  $ customer_rate: num  3.94 4.06 3.83 3.62 4.4 4.54 3.09 4.89 3.74 3 ...
 ##  $ performance  : Factor w/ 4 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;: 2 3 4 2 3 2 3 1 3 3 ...</code></pre>
 </div>
-<div id="manipulating-dataframes" class="section level3" number="2.4.2">
-<h3><span class="header-section-number">2.4.2</span> Manipulating dataframes</h3>
+<div id="manipulating-dataframes" class="section level3 hasAnchor" number="2.4.2">
+<h3><span class="header-section-number">2.4.2</span> Manipulating dataframes<a href="the-basics-of-the-r-programming-language.html#manipulating-dataframes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Dataframes can be subsetted to contain only rows that satisfy specific conditions.</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="the-basics-of-the-r-programming-language.html#cb74-1" aria-hidden="true" tabindex="-1"></a>(sales_720 <span class="ot">&lt;-</span> <span class="fu">subset</span>(salespeople, <span class="at">subset =</span> sales <span class="sc">==</span> <span class="dv">720</span>))</span></code></pre></div>
 <pre><code>##     promoted sales customer_rate performance
@@ -791,11 +790,11 @@ Figure 2.1: The RStudio IDE
 ## 6   918           2        1          4.54</code></pre>
 </div>
 </div>
-<div id="functions-packages-and-libraries" class="section level2" number="2.5">
-<h2><span class="header-section-number">2.5</span> Functions, packages and libraries</h2>
+<div id="functions-packages-and-libraries" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Functions, packages and libraries<a href="the-basics-of-the-r-programming-language.html#functions-packages-and-libraries" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In the code so far we have used a variety of functions. For example <code>head()</code>, <code>subset()</code>, <code>rbind()</code>. Functions are operations that take certain defined inputs and return an output. Functions exist to perform common useful operations.</p>
-<div id="using-functions" class="section level3" number="2.5.1">
-<h3><span class="header-section-number">2.5.1</span> Using functions</h3>
+<div id="using-functions" class="section level3 hasAnchor" number="2.5.1">
+<h3><span class="header-section-number">2.5.1</span> Using functions<a href="the-basics-of-the-r-programming-language.html#using-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Functions usually take one or more arguments. Often there are a large number of arguments that a function can take, but many are optional and not required to be specified by the user. For example, the function <code>head()</code>, which displays the first rows of a dataframe<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>, has only one required argument <code>x</code>: the name of the dataframe. A second argument is optional, <code>n</code>: the number of rows to display. If <code>n</code> is not entered, it is assumed to have the default value <code>n = 6</code>.</p>
 <p>When running a function, you can either specify the arguments by name or you can enter them in order without their names. If you enter arguments without naming them, R expects the arguments to be entered in exactly the right order.</p>
 <div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="the-basics-of-the-r-programming-language.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># see the head of salespeople, with the default of six rows</span></span>
@@ -821,8 +820,8 @@ Figure 2.1: The RStudio IDE
 ## 2        0   446          4.06           3
 ## 3        1   674          3.83           4</code></pre>
 </div>
-<div id="help-with-functions" class="section level3" number="2.5.2">
-<h3><span class="header-section-number">2.5.2</span> Help with functions</h3>
+<div id="help-with-functions" class="section level3 hasAnchor" number="2.5.2">
+<h3><span class="header-section-number">2.5.2</span> Help with functions<a href="the-basics-of-the-r-programming-language.html#help-with-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Most functions in R have excellent help documentation. To get help on the <code>head()</code> function, type <code>help(head)</code> or <code>?head</code>. This will display the results in the Help browser window in RStudio. Alternatively you can open the Help browser window directly in RStudio and do a search there. An example of the browser results for <code>head()</code> is in Figure <a href="the-basics-of-the-r-programming-language.html#fig:head-help">2.2</a>.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:head-help"></span>
 <img src="www/R/head-help-small.png" alt="Results of a search for the `head()` function in the RStudio Help browser" width="821" />
@@ -840,8 +839,8 @@ Figure 2.2: Results of a search for the <code>head()</code> function in the RStu
 <li>Examples to help orient you further (sometimes examples can be very abstract in nature and not so helpful to users)</li>
 </ul>
 </div>
-<div id="writing-your-own-functions" class="section level3" number="2.5.3">
-<h3><span class="header-section-number">2.5.3</span> Writing your own functions</h3>
+<div id="writing-your-own-functions" class="section level3 hasAnchor" number="2.5.3">
+<h3><span class="header-section-number">2.5.3</span> Writing your own functions<a href="the-basics-of-the-r-programming-language.html#writing-your-own-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Functions are not limited to those that come packaged in R. Users can write their own functions to perform tasks that are helpful to their objectives. Experienced programmers in most languages subscribe to a principle called DRY (Don’t Repeat Yourself). Whenever a task needs to be done repeatedly, it is poor practice to write the same code numerous times. It makes more sense to write a function to do the task.</p>
 <p>In this example, a simple function is written which generates a report on a dataframe:</p>
 <div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="the-basics-of-the-r-programming-language.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create df_report function</span></span>
@@ -853,8 +852,8 @@ Figure 2.2: Results of a search for the <code>head()</code> function in the RStu
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="the-basics-of-the-r-programming-language.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">df_report</span>(mtcars)</span></code></pre></div>
 <pre><code>## [1] &quot;This dataframe contains 32 rows and 11 columns. There are 0 NA entries.&quot;</code></pre>
 </div>
-<div id="installing-packages" class="section level3" number="2.5.4">
-<h3><span class="header-section-number">2.5.4</span> Installing packages</h3>
+<div id="installing-packages" class="section level3 hasAnchor" number="2.5.4">
+<h3><span class="header-section-number">2.5.4</span> Installing packages<a href="the-basics-of-the-r-programming-language.html#installing-packages" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>All the common functions that we have used so far exist in the base R installation. However, the beauty of open source languages like R is that users can write their own functions or resources and release them to others via packages. A package is an additional module that can be installed easily; it makes resources available which are not in the base R installation. In this book we will be using functions from both base R and from popular and useful packages. As an example, a popular package used for statistical modeling is the <code>MASS</code> package, which is based on methods in a popular applied statistics book<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>.</p>
 <p>Before an external package can be used, it must be installed into your package library using <code>install.packages()</code>. So to install <code>MASS</code>, type <code>install.packages("MASS")</code> into the console. This will send R to the main internet repository for R packages (known as CRAN). It will find the right version of <code>MASS</code> for your operating system and download and install it into your package library. If <code>MASS</code> needs other packages in order to work, it will also install these packages.</p>
 <p>If you want to install more than one package, put the names of the packages inside a character vector—for example:</p>
@@ -862,15 +861,15 @@ Figure 2.2: Results of a search for the <code>head()</code> function in the RStu
 <span id="cb93-2"><a href="the-basics-of-the-r-programming-language.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(my_packages)</span></code></pre></div>
 <p>Once you have installed a package, you can see what functions are available by calling for help on it, for example using <code>help(package = MASS)</code>. One package you may wish to install now is the <code>peopleanalyticsdata</code> package, which contains all the data sets used in this book. By installing and loading this package, all the data sets used in this book will be loaded into your R session and ready to work with. If you do this, you can ignore the <code>read.csv()</code> commands later in the book, which download the data from the internet.</p>
 </div>
-<div id="using-packages" class="section level3" number="2.5.5">
-<h3><span class="header-section-number">2.5.5</span> Using packages</h3>
+<div id="using-packages" class="section level3 hasAnchor" number="2.5.5">
+<h3><span class="header-section-number">2.5.5</span> Using packages<a href="the-basics-of-the-r-programming-language.html#using-packages" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Once you have installed a package into your package library, to use it in your R session you need to load it using the <code>library()</code> function. For example, to load <code>MASS</code> after installing it, use <code>library(MASS)</code>. Often nothing will happen when you use this command, but rest assured the package has been loaded and you can start to use the functions inside it. Sometimes when you load the package a series of messages will display, usually to make you aware of certain things that you need to keep in mind when using the package. Note that whenever you see the <code>library()</code> command in this book, it is assumed that you have already installed the package in that command. If you have not, the <code>library()</code> command will fail.</p>
 <p>Once a package is loaded from your library, you can use any of the functions inside it. For example, the <code>stepAIC()</code> function is not available before you load the <code>MASS</code> package but becomes available after it is loaded. In this sense, functions ‘belong’ to packages.</p>
 <p>Problems can occur when you load packages that contain functions with the same name as functions that already exist in your R session. Often the messages you see when loading a package will alert you to this. When R is faced with a situation where a function exists in multiple packages you have loaded, R always defaults to the function in <em>the most recently loaded</em> package. This may not always be what you intended.</p>
 <p>One way to completely avoid this issue is to get in the habit of <em>namespacing</em> your functions. To namespace, you simply use <code>package::function()</code>, so to safely call <code>stepAIC()</code> from <code>MASS</code>, you use <code>MASS::stepAIC()</code>. Most of the time in this book when a function is being called from a package outside base R, I use namespacing to call that function. This should help avoid confusion about which packages are being used for which functions.</p>
 </div>
-<div id="the-pipe-operator" class="section level3" number="2.5.6">
-<h3><span class="header-section-number">2.5.6</span> The pipe operator</h3>
+<div id="the-pipe-operator" class="section level3 hasAnchor" number="2.5.6">
+<h3><span class="header-section-number">2.5.6</span> The pipe operator<a href="the-basics-of-the-r-programming-language.html#the-pipe-operator" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Even in the most elementary briefing about R, it is very difficult to ignore the pipe operator. The pipe operator makes code more natural to read and write and reduces the typical computing problem of many nested operations inside parentheses. The pipe operator comes inside many R packages, particularly <code>magrittr</code> and <code>dplyr</code>.</p>
 <p>As an example, imagine we wanted to do the following two operations in one command:</p>
 <ol style="list-style-type: decimal">
@@ -897,8 +896,8 @@ Figure 2.2: Results of a search for the <code>head()</code> function in the RStu
 <p>The pipe operator is unique to R and is very widely used because it helps to make code more readable, it reduces complexity, and it helps orient around a common ‘grammar’ for the manipulation of data. The pipe operator helps you structure your code more clearly around nouns (objects), verbs (functions) and adverbs (arguments of functions). One of the most developed sets of packages in R that follows these principles is the <code>tidyverse</code> family of packages, which I encourage you to explore.</p>
 </div>
 </div>
-<div id="errors-warnings-and-messages" class="section level2" number="2.6">
-<h2><span class="header-section-number">2.6</span> Errors, warnings and messages</h2>
+<div id="errors-warnings-and-messages" class="section level2 hasAnchor" number="2.6">
+<h2><span class="header-section-number">2.6</span> Errors, warnings and messages<a href="the-basics-of-the-r-programming-language.html#errors-warnings-and-messages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>As I mentioned earlier in this chapter, getting familiar with R can be frustrating at the beginning if you have never programmed before. You can expect to regularly see messages, warnings or errors in response to your commands. I encourage you to regard these as your friend rather than your enemy. It is very tempting to take the latter approach when you are starting out, but over time I hope you will appreciate some wisdom from my words.</p>
 <p><em>Errors</em> are serious problems which usually result in the halting of your code and a failure to return your requested output. They usually come with an indication of the source of the error, and these can sometimes be easy to understand and sometimes frustratingly vague and abstract. For example, an easy-to-understand error is:</p>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="the-basics-of-the-r-programming-language.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(salespeople, <span class="at">subset =</span> <span class="at">sales =</span> <span class="dv">720</span>)</span></code></pre></div>
@@ -911,11 +910,11 @@ Figure 2.2: Results of a search for the <code>head()</code> function in the RStu
 <p><em>Warnings</em> are less serious and usually alert you to something that you might be overlooking and which could indicate a problem with the output. In many cases you can ignore warnings, but sometimes they are an important reminder to go back and edit your code. For example, you may run a model which doesn’t converge, and while this does not stop R from returning results, it is also very useful for you to know that it didn’t converge.</p>
 <p><em>Messages</em> are pieces of information that may or may not be useful to you at a particular point in time. Sometimes you will receive messages when you load a package from your library. Sometimes messages will keep you up to date on the progress of a process that is taking a long time to execute.</p>
 </div>
-<div id="plotting-and-graphing" class="section level2" number="2.7">
-<h2><span class="header-section-number">2.7</span> Plotting and graphing</h2>
+<div id="plotting-and-graphing" class="section level2 hasAnchor" number="2.7">
+<h2><span class="header-section-number">2.7</span> Plotting and graphing<a href="the-basics-of-the-r-programming-language.html#plotting-and-graphing" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>As you might expect in a well-developed programming language, there are numerous ways to plot and graph information in R. If you are doing exploratory data analysis on fairly simple data and you don’t need to worry about pretty appearance or formatting, the built-in plot capabilities of base R are fine. If you need a pretty appearance, more precision, color coding or even 3D graphics or animation, there are also specialized plotting and graphing packages for these purposes. In general when working interactively in RStudio, graphical output will be rendered in the Plots pane, where you can copy it or save it as an image.</p>
-<div id="plotting-in-base-r" class="section level3" number="2.7.1">
-<h3><span class="header-section-number">2.7.1</span> Plotting in base R</h3>
+<div id="plotting-in-base-r" class="section level3 hasAnchor" number="2.7.1">
+<h3><span class="header-section-number">2.7.1</span> Plotting in base R<a href="the-basics-of-the-r-programming-language.html#plotting-in-base-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The simplest plot function in base R is <code>plot()</code>. This performs basic X-Y plotting. As an example, this code will generate a scatter plot of <code>customer_rate</code> against <code>sales</code> in the <code>salespeople</code> data set, with the results displayed in Figure <a href="the-basics-of-the-r-programming-language.html#fig:basicscatter">2.3</a>. Note the use of the arguments <code>main</code>, <code>xlab</code> and <code>ylab</code> for customizing the axis labels and title for the plot.</p>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="the-basics-of-the-r-programming-language.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co"># scatter plot of customer_rate against sales</span></span>
 <span id="cb104-2"><a href="the-basics-of-the-r-programming-language.html#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> salespeople<span class="sc">$</span>sales, <span class="at">y =</span> salespeople<span class="sc">$</span>customer_rate,</span>
@@ -954,9 +953,9 @@ Figure 2.5: Simple box plot of <code>sales</code> grouped against <code>performa
 </div>
 <p>These are among the most common plots used for data exploration purposes. They are examples of a wider range of plotting and graphing functions available in base R, such as line plots, bar plots and other varieties which you may see later in this book.</p>
 </div>
-<div id="specialist-plotting-and-graphing-packages" class="section level3" number="2.7.2">
-<h3><span class="header-section-number">2.7.2</span> Specialist plotting and graphing packages</h3>
-<p>By far the most commonly used specialist plotting and graphing package in R is <code>ggplot2</code>. <code>ggplot2</code> allows the flexible construction of a very wide range of charts and graphs, but uses a very specific command grammar which can take some getting used to. However, once learned, <code>ggplot2</code> can be an extremely powerful tool. Many of the illustratory figures used in this book are developed using <code>ggplot2</code> and while the code for these figures is generally not included for the sake of brevity, you can always find it in the source code of this book on Github<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>. A great learning resource for <code>ggplot2</code> is <span class="citation"><a href="#ref-ggplot2" role="doc-biblioref">Wickham</a> (<a href="#ref-ggplot2" role="doc-biblioref">2016</a>)</span>.</p>
+<div id="specialist-plotting-and-graphing-packages" class="section level3 hasAnchor" number="2.7.2">
+<h3><span class="header-section-number">2.7.2</span> Specialist plotting and graphing packages<a href="the-basics-of-the-r-programming-language.html#specialist-plotting-and-graphing-packages" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>By far the most commonly used specialist plotting and graphing package in R is <code>ggplot2</code>. <code>ggplot2</code> allows the flexible construction of a very wide range of charts and graphs, but uses a very specific command grammar which can take some getting used to. However, once learned, <code>ggplot2</code> can be an extremely powerful tool. Many of the illustratory figures used in this book are developed using <code>ggplot2</code> and while the code for these figures is generally not included for the sake of brevity, you can always find it in the source code of this book on Github<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>. A great learning resource for <code>ggplot2</code> is <span class="citation">Wickham (<a href="#ref-ggplot2" role="doc-biblioref">2016</a>)</span>.</p>
 <p>The <code>plotly</code> package allows the use of the <code>plotly</code> graphing library in R. This is an excellent package for interactive graphing and is used for 3D illustrations in this book. Output can be rendered in HTML—allowing the user to play with and explore the graphs interactively—or can be saved as static 2D images.</p>
 <p><code>GGally</code> is a package that extends <code>ggplot2</code> to allow easy combination of charts and graphs. This is particularly valuable for quicker exploratory data analysis. One of its most popular functions is <code>ggpairs()</code>, which produces a pairplot. A pairplot is a visualization of all univariate and bivariate patterns in a data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed in the off-diagonal. Figure <a href="the-basics-of-the-r-programming-language.html#fig:basicpair">2.6</a> is an example of a pairplot for the <code>salespeople</code> data set, which we will explore further in Chapter <a href="bin-log-reg.html#bin-log-reg">5</a>.</p>
 <div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="the-basics-of-the-r-programming-language.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
@@ -975,8 +974,8 @@ Figure 2.6: Pairplot of the <code>salespeople</code> data set
 </div>
 </div>
 </div>
-<div id="documenting-your-work-using-r-markdown" class="section level2" number="2.8">
-<h2><span class="header-section-number">2.8</span> Documenting your work using R Markdown</h2>
+<div id="documenting-your-work-using-r-markdown" class="section level2 hasAnchor" number="2.8">
+<h2><span class="header-section-number">2.8</span> Documenting your work using R Markdown<a href="the-basics-of-the-r-programming-language.html#documenting-your-work-using-r-markdown" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>For anyone performing any sort of multivariate analysis using a statistical programming language, appropriate documentation and reproducibility of the work is essential to its success and longevity. If your code is not easily obtained or run by others, it is likely to have a very limited impact and lifetime. Learning how to create integrated documents that contain both text and code is critical to providing access to your code and narration of your work.</p>
 <p>R Markdown is a package which allows you to create integrated documents containing both formatted text and executed code. It is, in my opinion, one of the best resources available currently for this purpose. This entire book has been created using R Markdown. You can start an R Markdown document in RStudio by installing the <code>rmarkdown</code> package and then opening a new R Markdown document file, which will have the suffix <code>.Rmd</code>.</p>
 <p>R Markdown documents always start with a particular heading type called a YAML header, which contains overall information on the document you are creating. Care must be taken with the precise formatting of the YAML header, as it is sensitive to spacing and indentation. Usually a basic YAML header is created for you in RStudio when you start a new <code>.Rmd</code> file. Here is an example.</p>
@@ -1017,13 +1016,13 @@ head(salespeople)
 ## 5        1   657          4.40           3
 ## 6        1   918          4.54           2</code></pre>
 <p>The <code>{}</code> wrapping allows you to specify different languages for your code chunk. For example, if you wanted to run Python code instead of R code you can use <code>{python}</code>. It also allows you to set options for the code chunk display separated by commas. For example, if you want the results of your code to be displayed, but without the code itself being displayed, you can use <code>{r, echo = FALSE}</code>.</p>
-<p>The process of compiling your R Markdown code to produce a document is known as ‘knitting.’ To create a knitted document, you simply need to click on the ‘Knit’ button in RStudio that appears above your R Markdown code.</p>
-<p>If you are not familiar with R Markdown, I strongly encourage you to learn it alongside R and to challenge yourself to write up any practice exercises you take on in this book using R Markdown. Useful cheat sheets and reference guides for R Markdown formatting and commands are available through the Cheatsheets section of the Help menu in RStudio. I also recommend <span class="citation"><a href="#ref-rmarkdown" role="doc-biblioref">Xie, Dervieux, and Riederer</a> (<a href="#ref-rmarkdown" role="doc-biblioref">2020</a>)</span> for a really thorough instruction and reference guide.</p>
+<p>The process of compiling your R Markdown code to produce a document is known as ‘knitting’. To create a knitted document, you simply need to click on the ‘Knit’ button in RStudio that appears above your R Markdown code.</p>
+<p>If you are not familiar with R Markdown, I strongly encourage you to learn it alongside R and to challenge yourself to write up any practice exercises you take on in this book using R Markdown. Useful cheat sheets and reference guides for R Markdown formatting and commands are available through the Cheatsheets section of the Help menu in RStudio. I also recommend <span class="citation">Xie, Dervieux, and Riederer (<a href="#ref-rmarkdown" role="doc-biblioref">2020</a>)</span> for a really thorough instruction and reference guide.</p>
 </div>
-<div id="learning-exercises" class="section level2" number="2.9">
-<h2><span class="header-section-number">2.9</span> Learning exercises</h2>
-<div id="discussion-questions" class="section level3" number="2.9.1">
-<h3><span class="header-section-number">2.9.1</span> Discussion questions</h3>
+<div id="learning-exercises" class="section level2 hasAnchor" number="2.9">
+<h2><span class="header-section-number">2.9</span> Learning exercises<a href="the-basics-of-the-r-programming-language.html#learning-exercises" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="discussion-questions" class="section level3 hasAnchor" number="2.9.1">
+<h3><span class="header-section-number">2.9.1</span> Discussion questions<a href="the-basics-of-the-r-programming-language.html#discussion-questions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ol style="list-style-type: decimal">
 <li>Describe the following data types: numeric, character, logical, factor.</li>
 <li>Why is a vector known as a homogeneous data structure?</li>
@@ -1040,8 +1039,8 @@ head(salespeople)
 <li>What is R Markdown, and why is it useful to someone performing analysis using programming languages?</li>
 </ol>
 </div>
-<div id="data-exercises" class="section level3" number="2.9.2">
-<h3><span class="header-section-number">2.9.2</span> Data exercises</h3>
+<div id="data-exercises" class="section level3 hasAnchor" number="2.9.2">
+<h3><span class="header-section-number">2.9.2</span> Data exercises<a href="the-basics-of-the-r-programming-language.html#data-exercises" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ol style="list-style-type: decimal">
 <li>Create a character vector called <code>my_names</code> that contains all your first, middle and last names as elements. Calculate the length of <code>my_names</code>.</li>
 <li>Create a second numeric vector called <code>which</code> which corresponds to <code>my_names</code>. The entries should be the position of each name in the order of your full name. Verify that it has the same length as <code>my_names</code>.</li>
@@ -1062,7 +1061,7 @@ head(salespeople)
 </div>
 </div>
 </div>
-<h3>References</h3>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-ripley" class="csl-entry">
 Venables, W. N., and B. D. Ripley. 2002. <em>Modern Applied Statistics with s</em>.
@@ -1082,7 +1081,7 @@ Xie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. <em>R Markdown Cookbo
 <ol start="3">
 <li id="fn3"><p>R also has some built-in data sets for testing and playing with. For example, check out <code>mtcars</code> by typing it into the terminal, or type <code>data()</code> to see a full list of built-in data sets.<a href="the-basics-of-the-r-programming-language.html#fnref3" class="footnote-back">↩︎</a></p></li>
 <li id="fn4"><p>It actually has a broader definition but is mostly used for showing the first rows of a dataframe.<a href="the-basics-of-the-r-programming-language.html#fnref4" class="footnote-back">↩︎</a></p></li>
-<li id="fn5"><p><span class="citation"><a href="#ref-ripley" role="doc-biblioref">Venables and Ripley</a> (<a href="#ref-ripley" role="doc-biblioref">2002</a>)</span><a href="the-basics-of-the-r-programming-language.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p><span class="citation">Venables and Ripley (<a href="#ref-ripley" role="doc-biblioref">2002</a>)</span><a href="the-basics-of-the-r-programming-language.html#fnref5" class="footnote-back">↩︎</a></p></li>
 <li id="fn6"><p><a href="https://github.com/keithmcnulty/peopleanalytics-regression-book" class="uri">https://github.com/keithmcnulty/peopleanalytics-regression-book</a><a href="the-basics-of-the-r-programming-language.html#fnref6" class="footnote-back">↩︎</a></p></li>
 <li id="fn7"><p><a href="http://peopleanalytics-regression-book.org/data/ugtests.csv" class="uri">http://peopleanalytics-regression-book.org/data/ugtests.csv</a><a href="the-basics-of-the-r-programming-language.html#fnref7" class="footnote-back">↩︎</a></p></li>
 </ol>
@@ -1097,7 +1096,6 @@ Xie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. <em>R Markdown Cookbo
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -1138,7 +1136,7 @@ gitbook.start({
 },
 "download": null,
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {

@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Handbook of Regression Modeling in People Analytics | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
   <meta name="description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Handbook of Regression Modeling in People Analytics | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
   <meta property="og:type" content="book" />
-  <meta property="og:url" content="https://peopleanalytics-regression-book.org" />
   <meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png" />
   <meta property="og:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
   <meta name="github-repo" content="keithmcnulty/peopleanalytics-regression-book" />
@@ -32,8 +31,8 @@
   
 
 <link rel="next" href="foreword-by-alexis-fink.html"/>
-<script src="libs/header-attrs-2.9.5/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,9 +48,9 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python"/>
 <meta name="citation_author" content="Keith McNulty"/>
 <meta name="citation_publication_date" content="2021"/>
@@ -484,8 +483,8 @@ div.csl-indent {
 <h2 class="subtitle"><em>With Examples in R, Python and Julia</em></h2>
 <p class="author"><em>Keith McNulty</em></p>
 </div>
-<div id="welcome" class="section level1 unnumbered">
-<h1>Welcome</h1>
+<div id="welcome" class="section level1 unnumbered hasAnchor">
+<h1>Welcome<a href="index.html#welcome" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Welcome to the website for the book <em>Handbook of Regression Modeling in People Analytics</em> by <a href="https://twitter.com/dr_keithmcnulty">Keith McNulty</a>.</p>
 <p style="text-align: center;">
 <a href="https://www.routledge.com/Handbook-of-Regression-Modeling-in-People-Analytics-With-Examples-in-R/McNulty/p/book/9781032041742"><img src="www/cover/coverpage.png" alt="Handbook of Regression Modeling Cover" width="300"/></a>
@@ -494,8 +493,8 @@ div.csl-indent {
 <p><strong>Note</strong>: This book is published by Chapman &amp; Hall/CRC and can be purchased <a href="https://www.routledge.com/Handbook-of-Regression-Modeling-in-People-Analytics-With-Examples-in-R/McNulty/p/book/9781032041742">directly from their website</a>, as well as from Amazon and other book retailers. <em>Please consider buying this book if you find it useful</em> - all the author’s royalties are donated to the <a href="https://donate.redcross.org.uk/appeal/ukraine-crisis-appeal">Red Cross Ukraine Appeal</a>. The online version of this book is free to read here (thanks to Chapman &amp; Hall/CRC), and licensed under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. If you have any feedback, please feel free to <a href="https://github.com/keithmcnulty/peopleanalytics-regression-book/issues">file an issue on GitHub</a>. Thank you!</p>
 </div>
 <p>This book is available in <a href="http://peopleanalytics-regression-book.org">bootstrap format</a> and, for those who prefer, in a more plain <a href="http://peopleanalytics-regression-book.org/gitbook/index.html">gitbook format</a>.</p>
-<div id="notes-on-data-used-in-this-book" class="section level3 unnumbered">
-<h3>Notes on data used in this book</h3>
+<div id="notes-on-data-used-in-this-book" class="section level3 unnumbered hasAnchor">
+<h3>Notes on data used in this book<a href="index.html#notes-on-data-used-in-this-book" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>For R, Python and Julia users, each of the data sets used in this book can be downloaded individually by following the code in each chapter. Alternatively, packages containing all the data sets used in this book are now available in R and Python. For R users, install and load the <code>peopleanalyticsdata</code> R package.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install peopleanalyticsdata package</span></span>
 <span id="cb1-2"><a href="index.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;peopleanalyticsdata&quot;</span>)</span>
@@ -520,7 +519,7 @@ div.csl-indent {
 <span id="cb2-11"><a href="index.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># find out more about a specific data set (&#39;managers&#39; example)</span></span>
 <span id="cb2-12"><a href="index.html#cb2-12" aria-hidden="true" tabindex="-1"></a>pad.managers().info()</span></code></pre></div>
 <p>Happy modeling!</p>
-<p><em>Last update: 05 March 2022</em></p>
+<p><em>Last update: 10 June 2022</em></p>
 
 </div>
 </div>
@@ -534,7 +533,6 @@ div.csl-indent {
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -575,7 +573,7 @@ gitbook.start({
 },
 "download": null,
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {
