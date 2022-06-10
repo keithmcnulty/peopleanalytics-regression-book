@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3 Statistics Foundations | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
   <meta name="description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3 Statistics Foundations | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
   <meta property="og:type" content="book" />
-  <meta property="og:url" content="https://peopleanalytics-regression-book.org" />
   <meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png" />
   <meta property="og:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
   <meta name="github-repo" content="keithmcnulty/peopleanalytics-regression-book" />
@@ -32,8 +31,8 @@
   
 <link rel="prev" href="the-basics-of-the-r-programming-language.html"/>
 <link rel="next" href="linear-reg-ols.html"/>
-<script src="libs/header-attrs-2.9.5/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,9 +48,9 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python"/>
 <meta name="citation_author" content="Keith McNulty"/>
 <meta name="citation_publication_date" content="2021"/>
@@ -479,8 +478,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="found-stats" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Statistics Foundations</h1>
+<div id="found-stats" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> Statistics Foundations<a href="found-stats.html#found-stats" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>To properly understand multivariate models, an analyst needs to have a decent grasp of foundational statistics. Many of the assumptions and results of multivariate models require an understanding of these foundations in order to be properly interpreted. There are three topics that are particularly important for those proceeding further in this book:</p>
 <ol style="list-style-type: decimal">
 <li>Descriptive statistics of populations and samples</li>
@@ -510,15 +509,15 @@ div.csl-indent {
 ##  $ performance  : int  2 3 4 2 3 2 3 1 3 3 ...</code></pre>
 <p>It looks like:</p>
 <ul>
-<li><code>promoted</code> is a binary value, either 1 or 0, indicating ‘promoted’ or ‘not promoted,’ respectively.</li>
+<li><code>promoted</code> is a binary value, either 1 or 0, indicating ‘promoted’ or ‘not promoted’, respectively.</li>
 <li><code>sales</code> and <code>customer_rate</code> look like normal numerical values.</li>
 <li><code>performance</code> looks like a set of performance categories—there appear to be four based on what we can see.</li>
 </ul>
-<div id="elementary-descriptive-statistics-of-populations-and-samples" class="section level2" number="3.1">
-<h2><span class="header-section-number">3.1</span> Elementary descriptive statistics of populations and samples</h2>
+<div id="elementary-descriptive-statistics-of-populations-and-samples" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Elementary descriptive statistics of populations and samples<a href="found-stats.html#elementary-descriptive-statistics-of-populations-and-samples" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Any collection of numerical data on one or more variables can be described using a number of common statistical concepts. Let <span class="math inline">\(x = x_1, x_2, \dots, x_n\)</span> be a sample of <span class="math inline">\(n\)</span> observations of a variable drawn from a population.</p>
-<div id="mean-var-sd" class="section level3" number="3.1.1">
-<h3><span class="header-section-number">3.1.1</span> Mean, variance and standard deviation</h3>
+<div id="mean-var-sd" class="section level3 hasAnchor" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Mean, variance and standard deviation<a href="found-stats.html#mean-var-sd" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <strong>mean</strong> is the average value of the observations and is defined by adding up all the values and dividing by the number of observations. The mean <span class="math inline">\(\bar{x}\)</span> of our sample <span class="math inline">\(x\)</span> is defined as:</p>
 <p><span class="math display">\[
 \bar{x} = \frac{1}{n}\sum_{i = 1}^{n}x_i
@@ -571,15 +570,15 @@ So as the data set gets larger, the sample variance and the population variance 
 <pre><code>## [1] 184.9597</code></pre>
 <p>Given the range of sales is [151, 945] and the mean is 527, we see that the standard deviation gives a more intuitive sense of the ‘spread’ of the data relative to its inherent scale.</p>
 </div>
-<div id="covariance-and-correlation" class="section level3" number="3.1.2">
-<h3><span class="header-section-number">3.1.2</span> Covariance and correlation</h3>
+<div id="covariance-and-correlation" class="section level3 hasAnchor" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Covariance and correlation<a href="found-stats.html#covariance-and-correlation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <strong>covariance</strong> between two variables is a measure of the extent to which one changes as the other changes. If <span class="math inline">\(y = y_1, y_2, \dots, y_n\)</span> is a second variable, and <span class="math inline">\(\bar{x}\)</span> and <span class="math inline">\(\bar{y}\)</span> are the means of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, respectively, then the <strong>sample covariance</strong> of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> is defined as</p>
 <p><span class="math display">\[
 \mathrm{cov}_s(x, y) = \frac{1}{n - 1}\sum_{i = 1}^{n}(x_i - \bar{x})(y_i - \bar{y})
 \]</span>
 and as with variance, the <strong>population covariance</strong> is</p>
 <p><span class="math display">\[
-\mathrm{cov}_p(x, y) = \frac{n-1}{n}\mathrm{cov}_s(x, y) 
+\mathrm{cov}_p(x, y) = \frac{n-1}{n}\mathrm{cov}_s(x, y)
 \]</span></p>
 <p>Again, the sample covariance is the default in R, and we need to transform to obtain the population covariance.</p>
 <div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="found-stats.html#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get sample covariance for sales and customer_rate, </span></span>
@@ -606,7 +605,7 @@ This creates a scale of <span class="math inline">\(-1\)</span> to <span class="
 <p>You will notice that we have so far used two variables on a continuous scale to demonstrate covariance and correlation. Pearson’s correlation can also be used between a continuous scale and a dichotomous (binary) scale variable, and this is known as a <strong>point-biserial correlation</strong>.</p>
 <div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="found-stats.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(salespeople<span class="sc">$</span>sales, salespeople<span class="sc">$</span>promoted, <span class="at">use =</span> <span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 0.8511283</code></pre>
-<p>Correlating ranked variables involves an adjusted approach leading to <strong>Spearman’s rho</strong> (<span class="math inline">\(\rho\)</span>) or <strong>Kendall’s tau</strong> (<span class="math inline">\(\tau\)</span>), among others. We will not dive into the mathematics of this here, but a good source is <span class="citation"><a href="#ref-bhattacharya" role="doc-biblioref">Bhattacharya and Burman</a> (<a href="#ref-bhattacharya" role="doc-biblioref">2016</a>)</span>. Spearman’s or Kendall’s variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.</p>
+<p>Correlating ranked variables involves an adjusted approach leading to <strong>Spearman’s rho</strong> (<span class="math inline">\(\rho\)</span>) or <strong>Kendall’s tau</strong> (<span class="math inline">\(\tau\)</span>), among others. We will not dive into the mathematics of this here, but a good source is <span class="citation">Bhattacharya and Burman (<a href="#ref-bhattacharya" role="doc-biblioref">2016</a>)</span>. Spearman’s or Kendall’s variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.</p>
 <div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="found-stats.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="co"># spearman&#39;s rho correlation</span></span>
 <span id="cb142-2"><a href="found-stats.html#cb142-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(salespeople<span class="sc">$</span>sales, salespeople<span class="sc">$</span>performance, </span>
 <span id="cb142-3"><a href="found-stats.html#cb142-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&quot;spearman&quot;</span>, <span class="at">use =</span> <span class="st">&quot;complete.obs&quot;</span>)</span></code></pre></div>
@@ -618,11 +617,11 @@ This creates a scale of <span class="math inline">\(-1\)</span> to <span class="
 <p>In this case, both indicate a low to moderate correlation. Spearman’s rho or Kendall’s tau can also be used to correlate a ranked and a dichotomous variable, and this is known as a <strong>rank-biserial correlation</strong>.</p>
 </div>
 </div>
-<div id="distribution-of-random-variables" class="section level2" number="3.2">
-<h2><span class="header-section-number">3.2</span> Distribution of random variables</h2>
+<div id="distribution-of-random-variables" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Distribution of random variables<a href="found-stats.html#distribution-of-random-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>As we outlined in Section <a href="inf-model.html#theory-modeling">1.2</a>, when we build a model we are using a set of sample data to infer a general relationship on a larger population. A major underlying assumption in our inference is that we believe the real-life variables we are dealing with are random in nature. For example, we might be trying to model the drivers of the voting choice of millions of people in a national election, but we may only have sample data on a few thousand people. When we infer nationwide voting intentions from our sample, we assume that the characteristics of the voting population are random variables.</p>
-<div id="sampling-of-random-variables" class="section level3" number="3.2.1">
-<h3><span class="header-section-number">3.2.1</span> Sampling of random variables</h3>
+<div id="sampling-of-random-variables" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Sampling of random variables<a href="found-stats.html#sampling-of-random-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>When we describe variables as random, we are assuming that they take a form which is <em>independent and identically distributed</em>. Using our <code>salespeople</code> data as an example, we are assuming that the sales of one person in the data set is not influenced by the sales of another person in the data set. In this case, this seems like a reasonable assumption, and we will be making it for many (though not all) of the statistical methods used in this book. However, it is good to recognize that there are scenarios where this assumption cannot be made. For example, if the salespeople worked together in serving the same customers on the same products, and each individual’s sales represented some proportion of the overall sales to the customer, we cannot say that the sales data is independent and identically distributed. In this case, we will expect to see some hierarchy in our data and will need to adjust our techniques accordingly to take this into consideration.</p>
 <p>Under the central limit theorem, if we take samples from a random variable and calculate a summary statistic for each sample, that statistic is itself a random variable, and its mean converges to the true population statistic with more and more sampling. Let’s test this with a little experiment on our <code>salespeople</code> data. Figure <a href="found-stats.html#fig:sales-sample">3.1</a> shows the results of taking 10, 100 and 1000 different random samples of 50, 100 and 150 salespeople from the <code>salespeople</code> data set and creating a histogram of the resulting mean sales values. We can see how greater numbers of samples (down the rows) lead to a more normal distribution curve and larger sample sizes (across the columns) lead to a ‘spikier’ distribution with a smaller standard deviation.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:sales-sample"></span>
@@ -632,8 +631,8 @@ Figure 3.1: Histogram and density of mean <code>sales</code> from the <code>sale
 </p>
 </div>
 </div>
-<div id="standard-errors-the-t-distribution-and-confidence-intervals" class="section level3" number="3.2.2">
-<h3><span class="header-section-number">3.2.2</span> Standard errors, the <span class="math inline">\(t\)</span>-distribution and confidence intervals</h3>
+<div id="standard-errors-the-t-distribution-and-confidence-intervals" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Standard errors, the <span class="math inline">\(t\)</span>-distribution and confidence intervals<a href="found-stats.html#standard-errors-the-t-distribution-and-confidence-intervals" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>One consequence of the observations in Figure <a href="found-stats.html#fig:sales-sample">3.1</a> is that the summary statistics calculated from larger sample sizes fall into distributions that are ‘narrower’ and hence represent more precise estimations of the population statistic. The standard deviation of a sampled statistic is called the <strong>standard error</strong> of that statistic. In the special case of a sampled mean, the formula for the standard error of the mean can be derived to be</p>
 <p><span class="math display">\[
 SE = \frac{\sigma}{\sqrt{n}}
@@ -668,8 +667,8 @@ where <span class="math inline">\(\sigma\)</span> is the (sample) standard devia
 <pre><code>## [3.47995410046738, 3.81704589953262]</code></pre>
 </div>
 </div>
-<div id="hyp-tests" class="section level2" number="3.3">
-<h2><span class="header-section-number">3.3</span> Hypothesis testing</h2>
+<div id="hyp-tests" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Hypothesis testing<a href="found-stats.html#hyp-tests" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Observations about the distribution of statistics on samples of random variables allow us to construct tests for hypotheses of difference or similarity. Such hypothesis testing is useful in itself for simple bivariate analysis in practice settings, but it will be particularly critical in later chapters in determining whether models are useful or not. Before we go through some technical examples of hypothesis testing, let’s overview the logic and intuition for how hypothesis testing works.</p>
 <p>The purpose of hypothesis testing is to establish a high degree of statistical certainty regarding a claim of difference in a population based on the properties of a sample. Consistent with a high burden of proof, we start from the hypothesis that there is no difference, called the <em>null hypothesis</em>. We only reject the null hypothesis if the statistical properties of the sample data render it very unlikely, in which case we confirm the <em>alternative hypothesis</em> that a statistical difference does exist in the population.</p>
 <p>Most hypothesis tests can return a p-value, which is the maximum probability of finding the sample results (or results that are more extreme or unusual than the sample results) when the null hypothesis is true for the population. The analyst must decide on the level of p-value needed to reject the null hypothesis. This threshold is referred to as the significance level <span class="math inline">\(\alpha\)</span> (alpha). A common standard is to set <span class="math inline">\(\alpha\)</span> at 0.05. That is, we reject the null hypothesis if the p-value that we find for our sample results is less than 0.05. If we reject the null hypothesis at <span class="math inline">\(\alpha = 0.05\)</span>, this means that the results we observe in the sample are so extreme or unusual that they would only occur by chance at most 1 in 20 times if the null hypothesis were true. An alpha of 0.05 is not the only standard of certainty used in research and practice, and in some fields of study smaller alphas are the norm, particularly if erroneous conclusions might have very serious consequences.</p>
@@ -680,8 +679,8 @@ where <span class="math inline">\(\sigma\)</span> is the (sample) standard devia
 <li>Testing for a difference in frequency distributions between different categories</li>
 </ol>
 <p>We will go through an example of each of these. In each case, you will see a three-step process. First, we calculate a test statistic. Second, we determine an expected distribution for that test statistic. Finally, we determine where our calculated statistic falls in that distribution in order to assess the likelihood of our sample occurring if the null hypothesis is true. During these examples, we will go through all the logic and calculation steps needed to do the hypothesis testing, before we demonstrate the simple functions that perform all the steps for you in R. Readers don’t absolutely need to know all the details contained in this section, but a strong understanding of the underlying methods is encouraged.</p>
-<div id="means-sig" class="section level3" number="3.3.1">
-<h3><span class="header-section-number">3.3.1</span> Testing for a difference in means (Welch’s <span class="math inline">\(t\)</span>-test)</h3>
+<div id="means-sig" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Testing for a difference in means (Welch’s <span class="math inline">\(t\)</span>-test)<a href="found-stats.html#means-sig" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Imagine that we are asked if, in general, the sales of low-performing salespeople are different from the sales of high-performing salespeople. This question refers to all salespeople, but we only have data for the sample in our <code>salespeople</code> data set. Let’s take two subsets of our data for those with a performance rating of 1 and those with a performance rating of 4, and calculate the difference in mean sales.</p>
 <div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="found-stats.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take two performance group samples </span></span>
 <span id="cb155-2"><a href="found-stats.html#cb155-2" aria-hidden="true" tabindex="-1"></a>perf1 <span class="ot">&lt;-</span> <span class="fu">subset</span>(salespeople, <span class="at">subset =</span> performance <span class="sc">==</span> <span class="dv">1</span>)</span>
@@ -746,8 +745,8 @@ Figure 3.2: t-distribution of the mean sales difference between <code>perf1</cod
 <p>In practice, there are numerous alphas that are of interest to analysts, each reflecting different levels of certainty. While 0.05 is the most common standard in many disciplines, more stringent alphas of 0.01 and 0.001 are often used in situations where a high degree of certainty is desirable (for example, some medical fields). Similarly, a less stringent alpha standard of 0.1 can be of interest particularly when sample sizes are small and the analyst is satisfied with ‘indications’ from the data. In many statistical software packages, including those that we will see in this book, tests that meet an <span class="math inline">\(\alpha = 0.1\)</span> standard are usually marked with period(<code>.</code>), those that meet <span class="math inline">\(\alpha = 0.05\)</span> with an asterisk(<code>*</code>), <span class="math inline">\(\alpha = 0.01\)</span> a double asterisk(<code>**</code>) and <span class="math inline">\(\alpha = 0.001\)</span> a triple asterisk(<code>***</code>).</p>
 <p>Many leading statisticians have argued that p-values are more a test of sample size than anything else and have cautioned against too much of a focus on p-values in making statistical conclusions from data. In particular, situations where data and methodology have been deliberately manipulated to achieve certain alpha standards—a process known as ‘p-hacking’—has been of increasing concern recently. See Chapter <a href="power-tests.html#power-tests">11</a> for a better understanding of how the significance level and the sample size contribute to determining statistical power in hypothesis testing.</p>
 </div>
-<div id="t-test-cor" class="section level3" number="3.3.2">
-<h3><span class="header-section-number">3.3.2</span> Testing for a non-zero correlation between two variables (<span class="math inline">\(t\)</span>-test for correlation)</h3>
+<div id="t-test-cor" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Testing for a non-zero correlation between two variables (<span class="math inline">\(t\)</span>-test for correlation)<a href="found-stats.html#t-test-cor" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Imagine that we are given a sample of data for two variables and we are asked if the variables are correlated in the overall population. We can take a null hypothesis that the variables are not correlated, determine a t-statistic associated with a zero correlation and convert this to a p-value. The t-statistic associated with a correlation <span class="math inline">\(r\)</span> between two samples of length <span class="math inline">\(n\)</span> is often notated <span class="math inline">\(t^*\)</span> and is defined as</p>
 <p><span class="math display">\[
 t^* = \frac{r\sqrt{n-2}}{\sqrt{1-r^2}}
@@ -779,8 +778,8 @@ t^* = \frac{r\sqrt{n-2}}{\sqrt{1-r^2}}
 ## 0.337805</code></pre>
 <p>This confirms our manual calculations, and we see the null hypothesis has been rejected and we can conclude that there is a significant correlation between sales and customer rating.</p>
 </div>
-<div id="testing-for-a-difference-in-frequency-distribution-between-different-categories-in-a-data-set-chi-square-test" class="section level3" number="3.3.3">
-<h3><span class="header-section-number">3.3.3</span> Testing for a difference in frequency distribution between different categories in a data set (Chi-square test)</h3>
+<div id="testing-for-a-difference-in-frequency-distribution-between-different-categories-in-a-data-set-chi-square-test" class="section level3 hasAnchor" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Testing for a difference in frequency distribution between different categories in a data set (Chi-square test)<a href="found-stats.html#testing-for-a-difference-in-frequency-distribution-between-different-categories-in-a-data-set-chi-square-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Imagine that we are asked if the performance category of each person in the <code>salespeople</code> data set has a relationship with their promotion likelihood. We will test the null hypothesis that there is no difference in the distribution of promoted versus not promoted across the four performance categories.</p>
 <p>First we can produce a <em>contingency table</em>, which is a matrix containing counts of how many people were promoted or not promoted in each category.</p>
 <div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="found-stats.html#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create contingency table of promoted vs performance</span></span>
@@ -828,8 +827,8 @@ and add these all up to get a total, known as the <span class="math inline">\(\c
 <p>Again, we can reject the null hypothesis and confirm the alternative hypothesis that there is a difference in the distribution of promoted/not promoted individuals between the four performance categories.</p>
 </div>
 </div>
-<div id="foundational-statistics-in-python" class="section level2" number="3.4">
-<h2><span class="header-section-number">3.4</span> Foundational statistics in Python</h2>
+<div id="foundational-statistics-in-python" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Foundational statistics in Python<a href="found-stats.html#foundational-statistics-in-python" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Elementary descriptive statistics can be performed in Python using various packages. Descriptive statistics of <code>numpy</code> arrays are usually available as methods.</p>
 <div class="sourceCode" id="cb183"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb183-1"><a href="found-stats.html#cb183-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb183-2"><a href="found-stats.html#cb183-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -916,62 +915,62 @@ and add these all up to get a total, known as the <span class="math inline">\(\c
 <pre><code>## (25.895405268094862, 1.0030629464566802e-05, 3, array([[40.62857143, 74.48571429, 84.64285714, 37.24285714],
 ##        [19.37142857, 35.51428571, 40.35714286, 17.75714286]]))</code></pre>
 </div>
-<div id="foundational-statistics-in-julia" class="section level2" number="3.5">
-<h2><span class="header-section-number">3.5</span> Foundational statistics in Julia</h2>
+<div id="foundational-statistics-in-julia" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> Foundational statistics in Julia<a href="found-stats.html#foundational-statistics-in-julia" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The <code>Statistics</code> package in Julia provides a wide range of functions for univariate and bivariate analysis. Note that Julia has a particular <code>missing</code> type for missing data, and the specific string form of missing data may need to be defined when importing data from CSVs and other data sources. A little more up front work is required in Julia to ensure missing data structures are not being passed to statistics functions.</p>
-<div class="sourceCode" id="cb207"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb207-1"><a href="found-stats.html#cb207-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> DataFrames<span class="op">,</span> CSV<span class="op">,</span> StatsBase<span class="op">,</span> Statistics<span class="op">,</span> Missings<span class="op">;</span></span>
+<div class="sourceCode" id="cb207"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb207-1"><a href="found-stats.html#cb207-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span>, <span class="bu">CSV</span>, <span class="bu">StatsBase</span>, <span class="bu">Statistics</span>, <span class="bu">Missings;</span></span>
 <span id="cb207-2"><a href="found-stats.html#cb207-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb207-3"><a href="found-stats.html#cb207-3" aria-hidden="true" tabindex="-1"></a><span class="co"># get salespeople data</span></span>
-<span id="cb207-4"><a href="found-stats.html#cb207-4" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/salespeople.csv&quot;</span><span class="op">;</span></span>
-<span id="cb207-5"><a href="found-stats.html#cb207-5" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> CSV.<span class="cn">read</span>(download(url)<span class="op">,</span> DataFrame<span class="op">,</span> missingstrings<span class="op">=</span>[<span class="st">&quot;NA&quot;</span>])<span class="op">;</span></span>
+<span id="cb207-4"><a href="found-stats.html#cb207-4" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/salespeople.csv&quot;</span>;</span>
+<span id="cb207-5"><a href="found-stats.html#cb207-5" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="fu">download</span>(url), DataFrame, missingstrings<span class="op">=</span>[<span class="st">&quot;NA&quot;</span>]);</span>
 <span id="cb207-6"><a href="found-stats.html#cb207-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb207-7"><a href="found-stats.html#cb207-7" aria-hidden="true" tabindex="-1"></a><span class="co"># remove missing value rows from dataset</span></span>
-<span id="cb207-8"><a href="found-stats.html#cb207-8" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> salespeople[completecases(salespeople)<span class="op">,</span> <span class="op">:</span>]<span class="op">;</span></span>
+<span id="cb207-8"><a href="found-stats.html#cb207-8" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> salespeople[<span class="fu">completecases</span>(salespeople), <span class="op">:</span>];</span>
 <span id="cb207-9"><a href="found-stats.html#cb207-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ensure no missing data structures</span></span>
-<span id="cb207-10"><a href="found-stats.html#cb207-10" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> mapcols(col <span class="op">-&gt;</span> disallowmissing(col)<span class="op">,</span> salespeople)<span class="op">;</span></span>
+<span id="cb207-10"><a href="found-stats.html#cb207-10" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> <span class="fu">mapcols</span>(col <span class="op">-&gt;</span> <span class="fu">disallowmissing</span>(col), salespeople);</span>
 <span id="cb207-11"><a href="found-stats.html#cb207-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb207-12"><a href="found-stats.html#cb207-12" aria-hidden="true" tabindex="-1"></a><span class="co"># mean of sales</span></span>
-<span id="cb207-13"><a href="found-stats.html#cb207-13" aria-hidden="true" tabindex="-1"></a>mean(salespeople.sales)</span></code></pre></div>
+<span id="cb207-13"><a href="found-stats.html#cb207-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(salespeople.sales)</span></code></pre></div>
 <pre><code>## 527.0057142857142</code></pre>
 <div class="sourceCode" id="cb209"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb209-1"><a href="found-stats.html#cb209-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample variance</span></span>
-<span id="cb209-2"><a href="found-stats.html#cb209-2" aria-hidden="true" tabindex="-1"></a>var(salespeople.sales)</span></code></pre></div>
+<span id="cb209-2"><a href="found-stats.html#cb209-2" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(salespeople.sales)</span></code></pre></div>
 <pre><code>## 34308.1145804339</code></pre>
 <div class="sourceCode" id="cb211"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb211-1"><a href="found-stats.html#cb211-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample standard deviation</span></span>
-<span id="cb211-2"><a href="found-stats.html#cb211-2" aria-hidden="true" tabindex="-1"></a>std(salespeople.sales)</span></code></pre></div>
+<span id="cb211-2"><a href="found-stats.html#cb211-2" aria-hidden="true" tabindex="-1"></a><span class="fu">std</span>(salespeople.sales)</span></code></pre></div>
 <pre><code>## 185.22449778696634</code></pre>
 <p>Population statistics can be obtained by setting the <code>corrected</code> argument to <code>false</code> inside the standard statistics functions.</p>
 <div class="sourceCode" id="cb213"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb213-1"><a href="found-stats.html#cb213-1" aria-hidden="true" tabindex="-1"></a><span class="co"># population standard deviation</span></span>
-<span id="cb213-2"><a href="found-stats.html#cb213-2" aria-hidden="true" tabindex="-1"></a>std(salespeople.sales<span class="op">,</span> corrected <span class="op">=</span> <span class="ex">false</span>)</span></code></pre></div>
+<span id="cb213-2"><a href="found-stats.html#cb213-2" aria-hidden="true" tabindex="-1"></a><span class="fu">std</span>(salespeople.sales, corrected <span class="op">=</span> <span class="cn">false</span>)</span></code></pre></div>
 <pre><code>## 184.95970208647714</code></pre>
 <p>Note that there are some useful time-saving double functions in Julia for common statistics.</p>
 <div class="sourceCode" id="cb215"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb215-1"><a href="found-stats.html#cb215-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample mean and variance</span></span>
-<span id="cb215-2"><a href="found-stats.html#cb215-2" aria-hidden="true" tabindex="-1"></a>mean_and_var(salespeople.sales)</span></code></pre></div>
+<span id="cb215-2"><a href="found-stats.html#cb215-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean_and_var</span>(salespeople.sales)</span></code></pre></div>
 <pre><code>## (527.0057142857142, 34308.1145804339)</code></pre>
 <div class="sourceCode" id="cb217"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb217-1"><a href="found-stats.html#cb217-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample mean and standard deviation</span></span>
-<span id="cb217-2"><a href="found-stats.html#cb217-2" aria-hidden="true" tabindex="-1"></a>mean_and_std(salespeople.sales)</span></code></pre></div>
+<span id="cb217-2"><a href="found-stats.html#cb217-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean_and_std</span>(salespeople.sales)</span></code></pre></div>
 <pre><code>## (527.0057142857142, 185.22449778696634)</code></pre>
 <p>Covariance and correlations are straightforward, with specific functions for Spearman’s rho and Kendall’s tau:</p>
 <div class="sourceCode" id="cb219"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb219-1"><a href="found-stats.html#cb219-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample covariance</span></span>
-<span id="cb219-2"><a href="found-stats.html#cb219-2" aria-hidden="true" tabindex="-1"></a>cov(salespeople.sales<span class="op">,</span> salespeople.customer_rate)</span></code></pre></div>
+<span id="cb219-2"><a href="found-stats.html#cb219-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cov</span>(salespeople.sales, salespeople.customer_rate)</span></code></pre></div>
 <pre><code>## 55.81769119934503</code></pre>
 <div class="sourceCode" id="cb221"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb221-1"><a href="found-stats.html#cb221-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample Pearson correlation</span></span>
-<span id="cb221-2"><a href="found-stats.html#cb221-2" aria-hidden="true" tabindex="-1"></a>cor(salespeople.sales<span class="op">,</span> salespeople.customer_rate)</span></code></pre></div>
+<span id="cb221-2"><a href="found-stats.html#cb221-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(salespeople.sales, salespeople.customer_rate)</span></code></pre></div>
 <pre><code>## 0.337805044858678</code></pre>
 <div class="sourceCode" id="cb223"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb223-1"><a href="found-stats.html#cb223-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample Spearman correlation</span></span>
-<span id="cb223-2"><a href="found-stats.html#cb223-2" aria-hidden="true" tabindex="-1"></a>corspearman(salespeople.sales<span class="op">,</span> salespeople.performance)</span></code></pre></div>
+<span id="cb223-2"><a href="found-stats.html#cb223-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corspearman</span>(salespeople.sales, salespeople.performance)</span></code></pre></div>
 <pre><code>## 0.2735445984745253</code></pre>
 <div class="sourceCode" id="cb225"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb225-1"><a href="found-stats.html#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample Kendall correlation</span></span>
-<span id="cb225-2"><a href="found-stats.html#cb225-2" aria-hidden="true" tabindex="-1"></a>corkendall(salespeople.sales<span class="op">,</span> salespeople.performance)</span></code></pre></div>
+<span id="cb225-2"><a href="found-stats.html#cb225-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corkendall</span>(salespeople.sales, salespeople.performance)</span></code></pre></div>
 <pre><code>## 0.20736088105812</code></pre>
 <p>The <code>HypothesisTests</code> package provides common hypothesis testing functionality with nicely formatted output. To perform a two-tailed t-test on samples of unequal variance:</p>
-<div class="sourceCode" id="cb227"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb227-1"><a href="found-stats.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> HypothesisTests</span>
+<div class="sourceCode" id="cb227"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb227-1"><a href="found-stats.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">HypothesisTests</span></span>
 <span id="cb227-2"><a href="found-stats.html#cb227-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb227-3"><a href="found-stats.html#cb227-3" aria-hidden="true" tabindex="-1"></a><span class="co"># get sales for top and bottom performers</span></span>
-<span id="cb227-4"><a href="found-stats.html#cb227-4" aria-hidden="true" tabindex="-1"></a>perf1 <span class="op">=</span> salespeople[salespeople.performance .<span class="op">==</span> <span class="fl">1</span><span class="op">,</span> <span class="op">:</span>].sales<span class="op">;</span></span>
-<span id="cb227-5"><a href="found-stats.html#cb227-5" aria-hidden="true" tabindex="-1"></a>perf4 <span class="op">=</span> salespeople[salespeople.performance .<span class="op">==</span> <span class="fl">4</span><span class="op">,</span> <span class="op">:</span>].sales<span class="op">;</span></span>
+<span id="cb227-4"><a href="found-stats.html#cb227-4" aria-hidden="true" tabindex="-1"></a>perf1 <span class="op">=</span> salespeople[salespeople.performance <span class="op">.==</span> <span class="fl">1</span>, <span class="op">:</span>].sales;</span>
+<span id="cb227-5"><a href="found-stats.html#cb227-5" aria-hidden="true" tabindex="-1"></a>perf4 <span class="op">=</span> salespeople[salespeople.performance <span class="op">.==</span> <span class="fl">4</span>, <span class="op">:</span>].sales;</span>
 <span id="cb227-6"><a href="found-stats.html#cb227-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb227-7"><a href="found-stats.html#cb227-7" aria-hidden="true" tabindex="-1"></a><span class="co"># perform two-tailed t-test with unequal variance</span></span>
-<span id="cb227-8"><a href="found-stats.html#cb227-8" aria-hidden="true" tabindex="-1"></a>UnequalVarianceTTest(perf4<span class="op">,</span> perf1)</span></code></pre></div>
+<span id="cb227-8"><a href="found-stats.html#cb227-8" aria-hidden="true" tabindex="-1"></a><span class="fu">UnequalVarianceTTest</span>(perf4, perf1)</span></code></pre></div>
 <pre><code>## Two sample t-test (unequal variance)
 ## ------------------------------------
 ## Population details:
@@ -991,8 +990,8 @@ and add these all up to get a total, known as the <span class="math inline">\(\c
 ##     empirical standard error: 33.47553559717553</code></pre>
 <p>Currently, Julia does not have packaged hypothesis tests for correlations, so these would need to be done manually using the methods illustrated in Section <a href="found-stats.html#t-test-cor">3.3.2</a><a href="#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a>. A chi-square test is conducted on a contingency matrix as follows:</p>
 <div class="sourceCode" id="cb229"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb229-1"><a href="found-stats.html#cb229-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chi-square test</span></span>
-<span id="cb229-2"><a href="found-stats.html#cb229-2" aria-hidden="true" tabindex="-1"></a>contingency <span class="op">=</span> counts(salespeople.promoted<span class="op">,</span> salespeople.performance)<span class="op">;</span></span>
-<span id="cb229-3"><a href="found-stats.html#cb229-3" aria-hidden="true" tabindex="-1"></a>ChisqTest(contingency)</span></code></pre></div>
+<span id="cb229-2"><a href="found-stats.html#cb229-2" aria-hidden="true" tabindex="-1"></a>contingency <span class="op">=</span> <span class="fu">counts</span>(salespeople.promoted, salespeople.performance);</span>
+<span id="cb229-3"><a href="found-stats.html#cb229-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ChisqTest</span>(contingency)</span></code></pre></div>
 <pre><code>## Pearson&#39;s Chi-square Test
 ## -------------------------
 ## Population details:
@@ -1013,16 +1012,16 @@ and add these all up to get a total, known as the <span class="math inline">\(\c
 ##     std. residuals:     [2.84263, -2.84263, 2.58921, -2.58921, -1.82347, 1.82347, -3.84573, 3.84573]</code></pre>
 <p>Specific elements of the hypothesis test results can be extracted as follows:</p>
 <div class="sourceCode" id="cb231"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb231-1"><a href="found-stats.html#cb231-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get confidence interval of t-test</span></span>
-<span id="cb231-2"><a href="found-stats.html#cb231-2" aria-hidden="true" tabindex="-1"></a>confint(UnequalVarianceTTest(perf4<span class="op">,</span> perf1))</span></code></pre></div>
+<span id="cb231-2"><a href="found-stats.html#cb231-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(<span class="fu">UnequalVarianceTTest</span>(perf4, perf1))</span></code></pre></div>
 <pre><code>## (88.56760038276616, 221.38088446571862)</code></pre>
 <div class="sourceCode" id="cb233"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb233-1"><a href="found-stats.html#cb233-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get p-value of chi-square test</span></span>
-<span id="cb233-2"><a href="found-stats.html#cb233-2" aria-hidden="true" tabindex="-1"></a>pvalue(ChisqTest(contingency))</span></code></pre></div>
+<span id="cb233-2"><a href="found-stats.html#cb233-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pvalue</span>(<span class="fu">ChisqTest</span>(contingency))</span></code></pre></div>
 <pre><code>## 1.0030629464566678e-5</code></pre>
 </div>
-<div id="learning-exercises-1" class="section level2" number="3.6">
-<h2><span class="header-section-number">3.6</span> Learning exercises</h2>
-<div id="discussion-questions-1" class="section level3" number="3.6.1">
-<h3><span class="header-section-number">3.6.1</span> Discussion questions</h3>
+<div id="learning-exercises-1" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> Learning exercises<a href="found-stats.html#learning-exercises-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="discussion-questions-1" class="section level3 hasAnchor" number="3.6.1">
+<h3><span class="header-section-number">3.6.1</span> Discussion questions<a href="found-stats.html#discussion-questions-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Where relevant in these discussion exercises, let <span class="math inline">\(x = x_1, x_2, \dots, x_n\)</span> and <span class="math inline">\(y = y_1, y_2, \dots, y_m\)</span> be samples of two random variables of length <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span> respectively.</p>
 <ol style="list-style-type: decimal">
 <li>If the values of <span class="math inline">\(x\)</span> can only take the form 0 or 1, and if their mean is 0.25, how many of the values equal 0?</li>
@@ -1045,8 +1044,8 @@ SE = \frac{\sigma(x)}{\sqrt{n}}
 \sqrt{\frac{\sigma(x)^2}{n} + \frac{\sigma(y)^2}{m}}
 \]</span></p>
 </div>
-<div id="data-exercises-1" class="section level3" number="3.6.2">
-<h3><span class="header-section-number">3.6.2</span> Data exercises</h3>
+<div id="data-exercises-1" class="section level3 hasAnchor" number="3.6.2">
+<h3><span class="header-section-number">3.6.2</span> Data exercises<a href="found-stats.html#data-exercises-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>For these exercises, load the <code>charity_donation</code> data set via the <code>peopleanalyticsdata</code> package, or download it from the internet<a href="#fn16" class="footnote-ref" id="fnref16"><sup>16</sup></a>. This data set contains information on a sample of individuals who made donations to a nature charity.</p>
 <ol style="list-style-type: decimal">
 <li>Calculate the mean <code>total_donations</code> from the data set.</li>
@@ -1064,7 +1063,7 @@ SE = \frac{\sigma(x)}{\sqrt{n}}
 </div>
 </div>
 </div>
-<h3>References</h3>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-bhattacharya" class="csl-entry">
 Bhattacharya, P. K., and Prabir Burman. 2016. <em>Theory and Methods of Statistics</em>.
@@ -1094,7 +1093,6 @@ Bhattacharya, P. K., and Prabir Burman. 2016. <em>Theory and Methods of Statisti
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -1135,7 +1133,7 @@ gitbook.start({
 },
 "download": null,
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {

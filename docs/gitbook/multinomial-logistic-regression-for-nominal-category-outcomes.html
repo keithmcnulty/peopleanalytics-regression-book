@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>6 Multinomial Logistic Regression for Nominal Category Outcomes | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
   <meta name="description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
-  <meta name="generator" content="bookdown 0.23 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
 
   <meta property="og:title" content="6 Multinomial Logistic Regression for Nominal Category Outcomes | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
   <meta property="og:type" content="book" />
-  <meta property="og:url" content="https://peopleanalytics-regression-book.org" />
   <meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png" />
   <meta property="og:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
   <meta name="github-repo" content="keithmcnulty/peopleanalytics-regression-book" />
@@ -32,8 +31,8 @@
   
 <link rel="prev" href="bin-log-reg.html"/>
 <link rel="next" href="ord-reg.html"/>
-<script src="libs/header-attrs-2.9.5/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -49,9 +48,9 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python"/>
 <meta name="citation_author" content="Keith McNulty"/>
 <meta name="citation_publication_date" content="2021"/>
@@ -479,20 +478,20 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="multinomial-logistic-regression-for-nominal-category-outcomes" class="section level1" number="6">
-<h1><span class="header-section-number">6</span> Multinomial Logistic Regression for Nominal Category Outcomes</h1>
+<div id="multinomial-logistic-regression-for-nominal-category-outcomes" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">6</span> Multinomial Logistic Regression for Nominal Category Outcomes<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#multinomial-logistic-regression-for-nominal-category-outcomes" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>In the previous chapter we looked at how to model a binary or dichotomous outcome using a logistic function. In this chapter we look at how to extend this to the case when the outcome has a number of categories that do not have any order to them. When an outcome has this nominal categorical form, it does not have a sense of direction. There is no ‘better’ or ‘worse’‍, no ‘higher’ or ‘lower’‍, there is only ‘different’‍.</p>
-<div id="when-to-use-it-1" class="section level2" number="6.1">
-<h2><span class="header-section-number">6.1</span> When to use it</h2>
-<div id="intuition-for-multinomial-logistic-regression" class="section level3" number="6.1.1">
-<h3><span class="header-section-number">6.1.1</span> Intuition for multinomial logistic regression</h3>
+<div id="when-to-use-it-1" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> When to use it<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#when-to-use-it-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="intuition-for-multinomial-logistic-regression" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Intuition for multinomial logistic regression<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#intuition-for-multinomial-logistic-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>A binary or dichotomous outcome like we studied in the previous chapter is already in fact a nominal outcome with two categories, so in principle we already have the basic technology with which to study this problem. That said, the way we approach the problem can differ according to the types of inferences we wish to make.</p>
 <p>If we only wish to make inferences about the choice of each specific category—what drives whether an observation is in Category A versus the others, or Category B versus the others—then we have the option of running separate binomial logistic regression models on a ‘one versus the rest’ basis. In this case we can refine our model differently for each category, eliminating variables that are not significant in determining membership of that category. This could potentially lead to models being defined differently for different target outcome categories. Notably, there will be no common comparison category between these models. This is sometimes called a <em>stratified</em> approach.</p>
 <p>However, in many studies there is a need for a ‘reference’ category to better understand the relative odds of category membership. For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the ‘most healthy’ or ‘most recovered’ patients)<a href="#fn29" class="footnote-ref" id="fnref29"><sup>29</sup></a>. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different; we would need to make decisions on refining the model differently, and we interpret the coefficients in a different way.</p>
 <p>In this chapter we will briefly look at the stratified approach (which is effectively a repetition of work done in the previous chapter) before focusing more intently on how we construct models and make inferences using a multinomial approach.</p>
 </div>
-<div id="use-cases-for-multinomial-logistic-regression" class="section level3" number="6.1.2">
-<h3><span class="header-section-number">6.1.2</span> Use cases for multinomial logistic regression</h3>
+<div id="use-cases-for-multinomial-logistic-regression" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Use cases for multinomial logistic regression<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#use-cases-for-multinomial-logistic-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order. An underlying assumption is the independence of irrelevant alternatives (IIA). Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, would disproportionately influence the membership of one of the other categories<a href="#fn30" class="footnote-ref" id="fnref30"><sup>30</sup></a>. In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives, which are beyond the scope of this book.</p>
 <p>Examples of typical situations that might be modeled by multinomial logistic regression include:</p>
 <ol style="list-style-type: decimal">
@@ -501,8 +500,8 @@ div.csl-indent {
 <li>Modeling choice of benefit options by employees</li>
 </ol>
 </div>
-<div id="walkthrough-example" class="section level3" number="6.1.3">
-<h3><span class="header-section-number">6.1.3</span> Walkthrough example</h3>
+<div id="walkthrough-example" class="section level3 hasAnchor" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> Walkthrough example<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#walkthrough-example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You are an analyst at a large technology company. The company recently introduced a new health insurance provider for its employees. At the beginning of the year the employees had to choose one of three different health plan products from this provider to best suit their needs. You have been asked to determine which factors influenced the choice in product.</p>
 <p>The <code>health_insurance</code> data set consists of the following fields:</p>
 <ul>
@@ -514,11 +513,11 @@ div.csl-indent {
 <li><code>absent</code>: The number of days the individual was absent from work in the year prior to the choice</li>
 </ul>
 <p>First we load the data and take a look at it briefly.</p>
-<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb330-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, download health_insurance data</span></span>
-<span id="cb330-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb330-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/health_insurance.csv&quot;</span></span>
-<span id="cb330-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb330-3" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code></pre></div>
-<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb331-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view first few rows</span></span>
-<span id="cb331-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb331-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(health_insurance)</span></code></pre></div>
+<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb328-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, download health_insurance data</span></span>
+<span id="cb328-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb328-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/health_insurance.csv&quot;</span></span>
+<span id="cb328-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb328-3" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code></pre></div>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb329-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view first few rows</span></span>
+<span id="cb329-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb329-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(health_insurance)</span></code></pre></div>
 <pre><code>##   product age household position_level gender absent
 ## 1       C  57         2              2   Male     10
 ## 2       A  21         7              2   Male      7
@@ -526,8 +525,8 @@ div.csl-indent {
 ## 4       A  36         4              2 Female      6
 ## 5       A  23         0              2   Male     11
 ## 6       A  31         5              1   Male     14</code></pre>
-<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb333-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view structure</span></span>
-<span id="cb333-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb333-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(health_insurance)</span></code></pre></div>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb331-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view structure</span></span>
+<span id="cb331-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb331-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(health_insurance)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    1453 obs. of  6 variables:
 ##  $ product       : chr  &quot;C&quot; &quot;A&quot; &quot;C&quot; &quot;A&quot; ...
 ##  $ age           : int  57 21 66 36 23 31 37 37 55 66 ...
@@ -536,13 +535,13 @@ div.csl-indent {
 ##  $ gender        : chr  &quot;Male&quot; &quot;Male&quot; &quot;Male&quot; &quot;Female&quot; ...
 ##  $ absent        : int  10 7 1 6 11 14 12 25 3 18 ...</code></pre>
 <p>It looks like two of these columns should be converted to factor—<code>product</code> and <code>gender</code>—so let’s do that and then run a pairplot for a quick overview of any patterns, which can be seen in Figure <a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#fig:insurance-pairplot">6.1</a>.</p>
-<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb335-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb335-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb335-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb335-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb335-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb335-3" aria-hidden="true" tabindex="-1"></a><span class="co"># convert product and gender to factors</span></span>
-<span id="cb335-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb335-4" aria-hidden="true" tabindex="-1"></a>health_insurance<span class="sc">$</span>product <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(health_insurance<span class="sc">$</span>product)</span>
-<span id="cb335-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb335-5" aria-hidden="true" tabindex="-1"></a>health_insurance<span class="sc">$</span>gender <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(health_insurance<span class="sc">$</span>gender)</span>
-<span id="cb335-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb335-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb335-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb335-7" aria-hidden="true" tabindex="-1"></a>GGally<span class="sc">::</span><span class="fu">ggpairs</span>(health_insurance)</span></code></pre></div>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb333-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb333-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb333-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb333-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb333-3" aria-hidden="true" tabindex="-1"></a><span class="co"># convert product and gender to factors</span></span>
+<span id="cb333-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb333-4" aria-hidden="true" tabindex="-1"></a>health_insurance<span class="sc">$</span>product <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(health_insurance<span class="sc">$</span>product)</span>
+<span id="cb333-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb333-5" aria-hidden="true" tabindex="-1"></a>health_insurance<span class="sc">$</span>gender <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(health_insurance<span class="sc">$</span>gender)</span>
+<span id="cb333-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb333-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb333-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb333-7" aria-hidden="true" tabindex="-1"></a>GGally<span class="sc">::</span><span class="fu">ggpairs</span>(health_insurance)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:insurance-pairplot"></span>
 <img src="_main_files/figure-html/insurance-pairplot-1.png" alt="Pairplot of the `health_insurance` data set" width="672" />
 <p class="caption">
@@ -552,35 +551,37 @@ Figure 6.1: Pairplot of the <code>health_insurance</code> data set
 <p>The data appears somewhat chaotic here. However, there are a few things to note. Firstly, we notice that there is a relatively even spread in choice between the products. We also notice that <code>age</code> seems to be playing a role in product choice. There are also some mild-to-moderate correlations in the data—in particular between <code>age</code> and <code>position_level</code>, and between <code>absent</code> and <code>position_level</code>. However, this problem is clearly more complex than we can determine from a bivariate perspective.</p>
 </div>
 </div>
-<div id="stratified" class="section level2" number="6.2">
-<h2><span class="header-section-number">6.2</span> Running stratified binomial models</h2>
+<div id="stratified" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Running stratified binomial models<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#stratified" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>One approach to this problem is to look at each product choice and treat it as an independent binomial logistic regression model, modeling that choice against an alternative of all other choices. Each such model may help us describe the dynamics of the choice of a specific product, but we have to be careful in making conclusions about the overall choice between the three products. Running stratified models would not be very efficient if we had a wider range of choices for our outcome, but since we only have three possible choices here, it is reasonable to take this route.</p>
-<div id="modeling-the-choice-of-product-a-versus-other-products" class="section level3" number="6.2.1">
-<h3><span class="header-section-number">6.2.1</span> Modeling the choice of Product A versus other products</h3>
+<div id="modeling-the-choice-of-product-a-versus-other-products" class="section level3 hasAnchor" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> Modeling the choice of Product A versus other products<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#modeling-the-choice-of-product-a-versus-other-products" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Let’s first create and refine a binomial model for the choice of Product A.</p>
-<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dummies)</span>
-<span id="cb336-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb336-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create dummies for product choice outcome</span></span>
-<span id="cb336-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-4" aria-hidden="true" tabindex="-1"></a>dummy_product <span class="ot">&lt;-</span> dummies<span class="sc">::</span><span class="fu">dummy</span>(<span class="st">&quot;product&quot;</span>, <span class="at">data =</span> health_insurance)</span>
-<span id="cb336-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb336-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-6" aria-hidden="true" tabindex="-1"></a><span class="co"># combine to original set</span></span>
-<span id="cb336-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-7" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="ot">&lt;-</span> <span class="fu">cbind</span>(health_insurance, dummy_product)</span>
-<span id="cb336-8"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb336-9"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-9" aria-hidden="true" tabindex="-1"></a><span class="co"># run a binomial model for the Product A dummy against </span></span>
-<span id="cb336-10"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-10" aria-hidden="true" tabindex="-1"></a><span class="co"># all input variables (let glm() handle dummy input variables)</span></span>
-<span id="cb336-11"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-11" aria-hidden="true" tabindex="-1"></a>A_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb336-12"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> productA <span class="sc">~</span> age <span class="sc">+</span> gender <span class="sc">+</span> household <span class="sc">+</span> </span>
-<span id="cb336-13"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-13" aria-hidden="true" tabindex="-1"></a>    position_level <span class="sc">+</span> absent, </span>
-<span id="cb336-14"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance, </span>
-<span id="cb336-15"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span></span>
-<span id="cb336-16"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-16" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb336-17"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb336-18"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb336-19"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-19" aria-hidden="true" tabindex="-1"></a><span class="co"># summary</span></span>
-<span id="cb336-20"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-20" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(A_model)</span></code></pre></div>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(makedummies)</span>
+<span id="cb334-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb334-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create dummies for product choice outcome</span></span>
+<span id="cb334-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-4" aria-hidden="true" tabindex="-1"></a>dummy_product <span class="ot">&lt;-</span> makedummies<span class="sc">::</span><span class="fu">makedummies</span>(health_insurance, </span>
+<span id="cb334-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-5" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">col =</span> <span class="st">&quot;product&quot;</span>,</span>
+<span id="cb334-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-6" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">basal_level =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb334-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb334-8"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-8" aria-hidden="true" tabindex="-1"></a><span class="co"># combine to original set</span></span>
+<span id="cb334-9"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-9" aria-hidden="true" tabindex="-1"></a>health_insurance <span class="ot">&lt;-</span> <span class="fu">cbind</span>(health_insurance, dummy_product)</span>
+<span id="cb334-10"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb334-11"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-11" aria-hidden="true" tabindex="-1"></a><span class="co"># run a binomial model for the Product A dummy against </span></span>
+<span id="cb334-12"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-12" aria-hidden="true" tabindex="-1"></a><span class="co"># all input variables (let glm() handle dummy input variables)</span></span>
+<span id="cb334-13"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-13" aria-hidden="true" tabindex="-1"></a>A_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb334-14"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product_A <span class="sc">~</span> age <span class="sc">+</span> gender <span class="sc">+</span> household <span class="sc">+</span> </span>
+<span id="cb334-15"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-15" aria-hidden="true" tabindex="-1"></a>    position_level <span class="sc">+</span> absent, </span>
+<span id="cb334-16"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance, </span>
+<span id="cb334-17"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span></span>
+<span id="cb334-18"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb334-19"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb334-20"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb334-21"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-21" aria-hidden="true" tabindex="-1"></a><span class="co"># summary</span></span>
+<span id="cb334-22"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb334-22" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(A_model)</span></code></pre></div>
 <pre><code>## 
 ## Call:
-## glm(formula = productA ~ age + gender + household + position_level + 
+## glm(formula = product_A ~ age + gender + household + position_level + 
 ##     absent, family = &quot;binomial&quot;, data = health_insurance)
 ## 
 ## Deviance Residuals: 
@@ -608,15 +609,15 @@ Figure 6.1: Pairplot of the <code>health_insurance</code> data set
 ## Number of Fisher Scoring iterations: 6</code></pre>
 <p>We see that all variables except <code>absent</code> seem to play a significant role in the choice of Product A. All else being equal, being older makes the choice of Product A less likely. Males are more likely to choose Product A, and larger households and higher position levels also make the choice of Product A more likely. Based on this, we can consider simplifying our model to remove <code>absent</code>. We can also calculate odds ratios and perform some model diagnostics if we wish, similar to how we approached the problem in the previous chapter.</p>
 <p>These results need to be interpreted carefully. For example, the odds ratios for the Product A choice based on a simplified model are as follows:</p>
-<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simpler model</span></span>
-<span id="cb338-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-2" aria-hidden="true" tabindex="-1"></a>A_simple <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb338-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> productA <span class="sc">~</span> age <span class="sc">+</span> household <span class="sc">+</span> gender <span class="sc">+</span> position_level, </span>
-<span id="cb338-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance,</span>
-<span id="cb338-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span></span>
-<span id="cb338-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb338-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb338-8"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-8" aria-hidden="true" tabindex="-1"></a><span class="co"># view odds ratio as a data frame</span></span>
-<span id="cb338-9"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-9" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">exp</span>(A_simple<span class="sc">$</span>coefficients))</span></code></pre></div>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simpler model</span></span>
+<span id="cb336-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-2" aria-hidden="true" tabindex="-1"></a>A_simple <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb336-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product_A <span class="sc">~</span> age <span class="sc">+</span> household <span class="sc">+</span> gender <span class="sc">+</span> position_level, </span>
+<span id="cb336-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance,</span>
+<span id="cb336-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span></span>
+<span id="cb336-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb336-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb336-8"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-8" aria-hidden="true" tabindex="-1"></a><span class="co"># view odds ratio as a data frame</span></span>
+<span id="cb336-9"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb336-9" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">exp</span>(A_simple<span class="sc">$</span>coefficients))</span></code></pre></div>
 <pre><code>##                  exp(A_simple$coefficients)
 ## (Intercept)                     343.4406669
 ## age                               0.7868098
@@ -626,13 +627,13 @@ Figure 6.1: Pairplot of the <code>health_insurance</code> data set
 ## position_level                    1.3692971</code></pre>
 <p>As an example, and as a reminder from our previous chapter, we interpret the odds ratio for <code>age</code> as follows: all else being equal, every additional year of age is associated with an approximately 21% decrease in the odds of choosing Product A over the other products.</p>
 </div>
-<div id="modeling-other-choices" class="section level3" number="6.2.2">
-<h3><span class="header-section-number">6.2.2</span> Modeling other choices</h3>
+<div id="modeling-other-choices" class="section level3 hasAnchor" number="6.2.2">
+<h3><span class="header-section-number">6.2.2</span> Modeling other choices<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#modeling-other-choices" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In a similar way we can produce two other models, representing the choice of Products B and C. These models produce similar significant variables, except that <code>position_level</code> does not appear to be significant in the choice of Product C. If we simplify all our three models we will have a slightly differently defined model for the choice of Product C versus our models for the other two product choices. However, we can conclude in general that the only input variable that seems to be non-significant across all choices of product is <code>absent</code>.</p>
 </div>
 </div>
-<div id="running-a-multinomial-regression-model" class="section level2" number="6.3">
-<h2><span class="header-section-number">6.3</span> Running a multinomial regression model</h2>
+<div id="running-a-multinomial-regression-model" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Running a multinomial regression model<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#running-a-multinomial-regression-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>An alternative to running separate binary stratified models is to run a multinomial logistic regression model. A multinomial logistic model will base itself from a defined reference category, and run a generalized linear model on the log-odds of membership of each of the other categories versus the reference category. Due to its extensive use in epidemiology and medicine, this is often known as the <em>relative risk</em> of one category compared to the reference category. Mathematically speaking, if <span class="math inline">\(X\)</span> is the vector of input variables, and <span class="math inline">\(y\)</span> takes the value <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> or <span class="math inline">\(C\)</span>, with <span class="math inline">\(A\)</span> as the reference, a multinomial logistic regression model will calculate:</p>
 <p><span class="math display">\[
 \mathrm{ln}\left(\frac{P(y = B)}{P(y=A)}\right) = \alpha{X}
@@ -642,26 +643,26 @@ and</p>
 \mathrm{ln}\left(\frac{P(y = C)}{P(y=A)}\right) = \beta{X}
 \]</span>
 for different vectors of coefficients <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>.</p>
-<div id="def-ref" class="section level3" number="6.3.1">
-<h3><span class="header-section-number">6.3.1</span> Defining a reference level and running the model</h3>
+<div id="def-ref" class="section level3 hasAnchor" number="6.3.1">
+<h3><span class="header-section-number">6.3.1</span> Defining a reference level and running the model<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#def-ref" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <code>nnet</code> package in R contains a <code>multinom()</code> function for running a multinomial logistic regression model using neural network technology<a href="#fn31" class="footnote-ref" id="fnref31"><sup>31</sup></a>. Before we can run the model we need to make sure our reference level is defined.</p>
-<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define reference by ensuring it is the first level of the factor</span></span>
-<span id="cb340-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-2" aria-hidden="true" tabindex="-1"></a>health_insurance<span class="sc">$</span>product <span class="ot">&lt;-</span> <span class="fu">relevel</span>(health_insurance<span class="sc">$</span>product, <span class="at">ref =</span> <span class="st">&quot;A&quot;</span>)</span>
-<span id="cb340-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb340-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-4" aria-hidden="true" tabindex="-1"></a><span class="co"># check that A is now our reference</span></span>
-<span id="cb340-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-5" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(health_insurance<span class="sc">$</span>product)</span></code></pre></div>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define reference by ensuring it is the first level of the factor</span></span>
+<span id="cb338-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-2" aria-hidden="true" tabindex="-1"></a>health_insurance<span class="sc">$</span>product <span class="ot">&lt;-</span> <span class="fu">relevel</span>(health_insurance<span class="sc">$</span>product, <span class="at">ref =</span> <span class="st">&quot;A&quot;</span>)</span>
+<span id="cb338-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb338-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-4" aria-hidden="true" tabindex="-1"></a><span class="co"># check that A is now our reference</span></span>
+<span id="cb338-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb338-5" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(health_insurance<span class="sc">$</span>product)</span></code></pre></div>
 <pre><code>## [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</code></pre>
 <p>Once the reference outcome is defined, the <code>multinom()</code> function from the <code>nnet</code> package will run a series of binomial models comparing the reference to each of the other categories.</p>
 <p>First we will calculate our multinomial logistic regression model.</p>
-<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb342-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)</span>
-<span id="cb342-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb342-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb342-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb342-3" aria-hidden="true" tabindex="-1"></a>multi_model <span class="ot">&lt;-</span> <span class="fu">multinom</span>(</span>
-<span id="cb342-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb342-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product <span class="sc">~</span> age <span class="sc">+</span> gender <span class="sc">+</span> household <span class="sc">+</span> </span>
-<span id="cb342-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb342-5" aria-hidden="true" tabindex="-1"></a>    position_level <span class="sc">+</span> absent, </span>
-<span id="cb342-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb342-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance</span>
-<span id="cb342-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb342-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)</span>
+<span id="cb340-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb340-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-3" aria-hidden="true" tabindex="-1"></a>multi_model <span class="ot">&lt;-</span> <span class="fu">multinom</span>(</span>
+<span id="cb340-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product <span class="sc">~</span> age <span class="sc">+</span> gender <span class="sc">+</span> household <span class="sc">+</span> </span>
+<span id="cb340-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-5" aria-hidden="true" tabindex="-1"></a>    position_level <span class="sc">+</span> absent, </span>
+<span id="cb340-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance</span>
+<span id="cb340-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb340-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>Now we will look at a summary of the results.</p>
-<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb343-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(multi_model)</span></code></pre></div>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb341-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(multi_model)</span></code></pre></div>
 <pre><code>## Call:
 ## multinom(formula = product ~ age + gender + household + position_level + 
 ##     absent, data = health_insurance)
@@ -679,16 +680,16 @@ for different vectors of coefficients <span class="math inline">\(\alpha\)</span
 ## Residual Deviance: 1489.365 
 ## AIC: 1517.365</code></pre>
 <p>Notice that the output of <code>summary(multi_model)</code> is much less detailed than for our standard binomial models, and it effectively just delivers the coefficients and standard errors of the two models against the reference. To determine whether specific input variables are significant we will need to calculate the p-values of the coefficients manually by calculating the z-statistics and converting (we covered this hypothesis testing methodology in Section <a href="found-stats.html#means-sig">3.3.1</a>).</p>
-<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate z-statistics of coefficients</span></span>
-<span id="cb345-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-2" aria-hidden="true" tabindex="-1"></a>z_stats <span class="ot">&lt;-</span> <span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients<span class="sc">/</span></span>
-<span id="cb345-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(multi_model)<span class="sc">$</span>standard.errors</span>
-<span id="cb345-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb345-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-5" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to p-values</span></span>
-<span id="cb345-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-6" aria-hidden="true" tabindex="-1"></a>p_values <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="fu">abs</span>(z_stats)))<span class="sc">*</span><span class="dv">2</span></span>
-<span id="cb345-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb345-8"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb345-9"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-9" aria-hidden="true" tabindex="-1"></a><span class="co"># display p-values in transposed data frame</span></span>
-<span id="cb345-10"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-10" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(p_values))</span></code></pre></div>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb343-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate z-statistics of coefficients</span></span>
+<span id="cb343-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb343-2" aria-hidden="true" tabindex="-1"></a>z_stats <span class="ot">&lt;-</span> <span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients<span class="sc">/</span></span>
+<span id="cb343-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb343-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(multi_model)<span class="sc">$</span>standard.errors</span>
+<span id="cb343-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb343-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb343-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb343-5" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to p-values</span></span>
+<span id="cb343-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb343-6" aria-hidden="true" tabindex="-1"></a>p_values <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="fu">abs</span>(z_stats)))<span class="sc">*</span><span class="dv">2</span></span>
+<span id="cb343-7"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb343-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb343-8"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb343-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb343-9"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb343-9" aria-hidden="true" tabindex="-1"></a><span class="co"># display p-values in transposed data frame</span></span>
+<span id="cb343-10"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb343-10" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(p_values))</span></code></pre></div>
 <pre><code>##                             B            C
 ## (Intercept)      0.000000e+00 0.000000e+00
 ## age              0.000000e+00 0.000000e+00
@@ -698,12 +699,12 @@ for different vectors of coefficients <span class="math inline">\(\alpha\)</span
 ## position_level   3.199529e-06 9.419906e-03
 ## absent           3.684170e-01 7.926958e-01</code></pre>
 </div>
-<div id="interpreting-the-model" class="section level3" number="6.3.2">
-<h3><span class="header-section-number">6.3.2</span> Interpreting the model</h3>
+<div id="interpreting-the-model" class="section level3 hasAnchor" number="6.3.2">
+<h3><span class="header-section-number">6.3.2</span> Interpreting the model<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#interpreting-the-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This confirms that all variables except <code>absent</code> play a role in the choice between all products relative to a reference of Product A. We can also calculate odds ratios as before.</p>
-<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb347-1" aria-hidden="true" tabindex="-1"></a><span class="co"># display odds ratios in transposed data frame</span></span>
-<span id="cb347-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb347-2" aria-hidden="true" tabindex="-1"></a>odds_ratios <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients)</span>
-<span id="cb347-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb347-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(odds_ratios))</span></code></pre></div>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-1" aria-hidden="true" tabindex="-1"></a><span class="co"># display odds ratios in transposed data frame</span></span>
+<span id="cb345-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-2" aria-hidden="true" tabindex="-1"></a>odds_ratios <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients)</span>
+<span id="cb345-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb345-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(odds_ratios))</span></code></pre></div>
 <pre><code>##                           B            C
 ## (Intercept)      0.01004179 3.621021e-05
 ## age              1.27591615 1.309721e+00
@@ -719,12 +720,12 @@ for different vectors of coefficients <span class="math inline">\(\alpha\)</span
 <li>All else being equal, each additional household member deceases the odds of selecting Product B relative to Product A by 62%, and increases the odds of selecting Product C relative to Product A by 23%.</li>
 </ul>
 </div>
-<div id="changing-ref" class="section level3" number="6.3.3">
-<h3><span class="header-section-number">6.3.3</span> Changing the reference</h3>
+<div id="changing-ref" class="section level3 hasAnchor" number="6.3.3">
+<h3><span class="header-section-number">6.3.3</span> Changing the reference<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#changing-ref" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>It may be the case that someone would like to hear the odds ratios stated against the reference of an individual choosing Product B. For example, what are the odds ratios of Product C relative to a reference of Product B? One way to do this would be to change the reference and run the model again. Another option is to note that:</p>
 <p><span class="math display">\[
-\frac{P(y = C)}{P(y=B)} = \frac{\frac{P(y = C)}{P(y = A)}}{\frac{P(y=B)}{P(y = A)}} 
-= \frac{e^{\beta{X}}}{e^{\alpha{X}}} 
+\frac{P(y = C)}{P(y=B)} = \frac{\frac{P(y = C)}{P(y = A)}}{\frac{P(y=B)}{P(y = A)}}
+= \frac{e^{\beta{X}}}{e^{\alpha{X}}}
 = e^{(\beta - \alpha)X}
 \]</span>
 Therefore</p>
@@ -732,11 +733,11 @@ Therefore</p>
 \mathrm{ln}\left(\frac{P(y = C)}{P(y=B)}\right) = (\beta - \alpha)X
 \]</span>
 This means we can obtain the coefficients of C against the reference of B by simply calculating the difference between the coefficients of C and B against the common reference of A. Let’s do this.</p>
-<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate difference between coefficients and view as column</span></span>
-<span id="cb349-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-2" aria-hidden="true" tabindex="-1"></a>coefs_c_to_b <span class="ot">&lt;-</span> <span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients[<span class="dv">2</span>, ] <span class="sc">-</span> </span>
-<span id="cb349-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients[<span class="dv">1</span>, ]</span>
-<span id="cb349-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb349-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(coefs_c_to_b)</span></code></pre></div>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb347-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb347-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate difference between coefficients and view as column</span></span>
+<span id="cb347-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb347-2" aria-hidden="true" tabindex="-1"></a>coefs_c_to_b <span class="ot">&lt;-</span> <span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients[<span class="dv">2</span>, ] <span class="sc">-</span> </span>
+<span id="cb347-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb347-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients[<span class="dv">1</span>, ]</span>
+<span id="cb347-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb347-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb347-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb347-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(coefs_c_to_b)</span></code></pre></div>
 <pre><code>##                  coefs_c_to_b
 ## (Intercept)      -5.625169520
 ## age               0.026149597
@@ -748,12 +749,12 @@ This means we can obtain the coefficients of C against the reference of B by sim
 <p>If the number of categories in the outcome variable is limited, this can be an efficient way to obtain the model coefficients against various reference points without having to rerun models. However, to determine standard errors and p-values for these coefficients the model will need to be recalculated against the new reference.</p>
 </div>
 </div>
-<div id="model-simplification-fit-and-goodness-of-fit-for-multinomial-logistic-regression-models" class="section level2" number="6.4">
-<h2><span class="header-section-number">6.4</span> Model simplification, fit and goodness-of-fit for multinomial logistic regression models</h2>
+<div id="model-simplification-fit-and-goodness-of-fit-for-multinomial-logistic-regression-models" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Model simplification, fit and goodness-of-fit for multinomial logistic regression models<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#model-simplification-fit-and-goodness-of-fit-for-multinomial-logistic-regression-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Simplifying a multinomial regression model needs to be done with care. In a binomial model, there is one set of coefficients and their p-values can be a strong guide to which variables can be removed safely. However, in multinomial models there are several sets of coefficients to consider.</p>
-<div id="elim" class="section level3" number="6.4.1">
-<h3><span class="header-section-number">6.4.1</span> Gradual safe elimination of variables</h3>
-<p>In <span class="citation"><a href="#ref-hosmer-logistic" role="doc-biblioref">Hosmer, Lemeshow, and Sturdivant</a> (<a href="#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span>, a gradual process of elimination of variables is recommended to ensure that significant variables that confound each other in the different logistic models are not accidentally dropped from the final model. The recommended approach is as follows:</p>
+<div id="elim" class="section level3 hasAnchor" number="6.4.1">
+<h3><span class="header-section-number">6.4.1</span> Gradual safe elimination of variables<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#elim" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In <span class="citation">Hosmer, Lemeshow, and Sturdivant (<a href="#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span>, a gradual process of elimination of variables is recommended to ensure that significant variables that confound each other in the different logistic models are not accidentally dropped from the final model. The recommended approach is as follows:</p>
 <ul>
 <li>Start with the variable with the least significant p-values in all sets of coefficients—in our case <code>absent</code> would be the obvious first candidate.</li>
 <li>Run the multinomial model without this variable.</li>
@@ -763,14 +764,14 @@ This means we can obtain the coefficients of C against the reference of B by sim
 <li>Stop when all non-significant variables have been tested.</li>
 </ul>
 <p>In our case, we can compare the coefficients of the model with and without <code>absent</code> included and verify that the changes in the coefficients are not substantial.</p>
-<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb351-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb351-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove absent</span></span>
-<span id="cb351-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb351-2" aria-hidden="true" tabindex="-1"></a>simpler_multi_model <span class="ot">&lt;-</span> <span class="fu">multinom</span>(</span>
-<span id="cb351-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb351-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product <span class="sc">~</span> age <span class="sc">+</span> gender <span class="sc">+</span> household <span class="sc">+</span> position_level,</span>
-<span id="cb351-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb351-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance, </span>
-<span id="cb351-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb351-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="cn">TRUE</span></span>
-<span id="cb351-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb351-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb352-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view coefficients with absent</span></span>
-<span id="cb352-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb352-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(<span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients))</span></code></pre></div>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb349-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove absent</span></span>
+<span id="cb349-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-2" aria-hidden="true" tabindex="-1"></a>simpler_multi_model <span class="ot">&lt;-</span> <span class="fu">multinom</span>(</span>
+<span id="cb349-3"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> product <span class="sc">~</span> age <span class="sc">+</span> gender <span class="sc">+</span> household <span class="sc">+</span> position_level,</span>
+<span id="cb349-4"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> health_insurance, </span>
+<span id="cb349-5"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="cn">TRUE</span></span>
+<span id="cb349-6"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb349-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb350-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view coefficients with absent</span></span>
+<span id="cb350-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb350-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(<span class="fu">summary</span>(multi_model)<span class="sc">$</span>coefficients))</span></code></pre></div>
 <pre><code>##                            B             C
 ## (Intercept)      -4.60099991 -10.226169428
 ## age               0.24366447   0.269814063
@@ -779,8 +780,8 @@ This means we can obtain the coefficients of C against the reference of B by sim
 ## household        -0.96772368   0.204356774
 ## position_level   -0.41530400  -0.213584308
 ## absent            0.01167603   0.003263631</code></pre>
-<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb354-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view coefficients without absent</span></span>
-<span id="cb354-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb354-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(<span class="fu">summary</span>(simpler_multi_model)<span class="sc">$</span>coefficients))</span></code></pre></div>
+<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb352-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view coefficients without absent</span></span>
+<span id="cb352-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb352-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="fu">t</span>(<span class="fu">summary</span>(simpler_multi_model)<span class="sc">$</span>coefficients))</span></code></pre></div>
 <pre><code>##                           B            C
 ## (Intercept)      -4.5008999 -10.19269011
 ## age               0.2433855   0.26976294
@@ -790,20 +791,20 @@ This means we can obtain the coefficients of C against the reference of B by sim
 ## position_level   -0.3912014  -0.20908835</code></pre>
 <p>We can see that only <code>genderNon-binary</code> changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model<a href="#fn32" class="footnote-ref" id="fnref32"><sup>32</sup></a>. It therefore appears safe to remove <code>absent</code>. Furthermore, the Akaike Information Criterion is equally valid in multinomial models for evaluating model parsimony. Here we can calculate that the AIC of our model with and without <code>absent</code> is 1517.36 and 1514.25, respectively, confirming that the model without <code>absent</code> is marginally more parsimonious.</p>
 </div>
-<div id="model-fit-and-goodness-of-fit" class="section level3" number="6.4.2">
-<h3><span class="header-section-number">6.4.2</span> Model fit and goodness-of-fit</h3>
+<div id="model-fit-and-goodness-of-fit" class="section level3 hasAnchor" number="6.4.2">
+<h3><span class="header-section-number">6.4.2</span> Model fit and goodness-of-fit<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#model-fit-and-goodness-of-fit" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>As with the binomial case, a variety of Pseudo-<span class="math inline">\(R^2\)</span> methods are available to assess the fit of a multinomial logistic regression model, although some of our previous variants (particularly Tjur) are not defined on models with more than two outcome categories.</p>
-<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb356-1" aria-hidden="true" tabindex="-1"></a>DescTools<span class="sc">::</span><span class="fu">PseudoR2</span>(simpler_multi_model, </span>
-<span id="cb356-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb356-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">which =</span> <span class="fu">c</span>(<span class="st">&quot;McFadden&quot;</span>, <span class="st">&quot;CoxSnell&quot;</span>, <span class="st">&quot;Nagelkerke&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb354-1" aria-hidden="true" tabindex="-1"></a>DescTools<span class="sc">::</span><span class="fu">PseudoR2</span>(simpler_multi_model, </span>
+<span id="cb354-2"><a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#cb354-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">which =</span> <span class="fu">c</span>(<span class="st">&quot;McFadden&quot;</span>, <span class="st">&quot;CoxSnell&quot;</span>, <span class="st">&quot;Nagelkerke&quot;</span>))</span></code></pre></div>
 <pre><code>##   McFadden   CoxSnell Nagelkerke 
 ##  0.5329175  0.6896945  0.7760413</code></pre>
-<p>Due to the fact that multinomial models have more than one set of coefficients, assessing goodness-of-fit is more challenging, and is still an area of intense research. The most approachable method to assess model confidence is the Hosmer-Lemeshow test mentioned in the previous chapter, which was extended in <span class="citation"><a href="#ref-fagerland" role="doc-biblioref">Fagerland, Hosmer, and Bofin</a> (<a href="#ref-fagerland" role="doc-biblioref">2008</a>)</span> for multinomial models. An implementation is available in the <code>generalhoslem</code> package in R. However, this version of the Hosmer-Lemeshow test is problematic for models with a small number of input variables (fewer than ten), and therefore we will not experiment with it here. For further exploration of this topic, Chapter 8 of <span class="citation"><a href="#ref-hosmer-logistic" role="doc-biblioref">Hosmer, Lemeshow, and Sturdivant</a> (<a href="#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span> is recommended, and for a more thorough treatment of the entire topic of categorical analytics, <span class="citation"><a href="#ref-agresti" role="doc-biblioref">Agresti</a> (<a href="#ref-agresti" role="doc-biblioref">2007</a>)</span> is an excellent companion.</p>
+<p>Due to the fact that multinomial models have more than one set of coefficients, assessing goodness-of-fit is more challenging, and is still an area of intense research. The most approachable method to assess model confidence is the Hosmer-Lemeshow test mentioned in the previous chapter, which was extended in <span class="citation">Fagerland, Hosmer, and Bofin (<a href="#ref-fagerland" role="doc-biblioref">2008</a>)</span> for multinomial models. An implementation is available in the <code>generalhoslem</code> package in R. However, this version of the Hosmer-Lemeshow test is problematic for models with a small number of input variables (fewer than ten), and therefore we will not experiment with it here. For further exploration of this topic, Chapter 8 of <span class="citation">Hosmer, Lemeshow, and Sturdivant (<a href="#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span> is recommended, and for a more thorough treatment of the entire topic of categorical analytics, <span class="citation">Agresti (<a href="#ref-agresti" role="doc-biblioref">2007</a>)</span> is an excellent companion.</p>
 </div>
 </div>
-<div id="learning-exercises-4" class="section level2" number="6.5">
-<h2><span class="header-section-number">6.5</span> Learning exercises</h2>
-<div id="discussion-questions-4" class="section level3" number="6.5.1">
-<h3><span class="header-section-number">6.5.1</span> Discussion questions</h3>
+<div id="learning-exercises-4" class="section level2 hasAnchor" number="6.5">
+<h2><span class="header-section-number">6.5</span> Learning exercises<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#learning-exercises-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="discussion-questions-4" class="section level3 hasAnchor" number="6.5.1">
+<h3><span class="header-section-number">6.5.1</span> Discussion questions<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#discussion-questions-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <ol style="list-style-type: decimal">
 <li>Describe the difference between a stratified versus a multinomial approach to modeling an outcome with more than two nominal categories.</li>
 <li>Describe how you would interpret the odds ratio of an input variable for a given category in a stratified modeling approach.</li>
@@ -813,8 +814,8 @@ This means we can obtain the coefficients of C against the reference of B by sim
 <li>Describe a process for safely simplifying a multinomial logistic regression model by removing input variables.</li>
 </ol>
 </div>
-<div id="data-exercises-4" class="section level3" number="6.5.2">
-<h3><span class="header-section-number">6.5.2</span> Data exercises</h3>
+<div id="data-exercises-4" class="section level3 hasAnchor" number="6.5.2">
+<h3><span class="header-section-number">6.5.2</span> Data exercises<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#data-exercises-4" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Use the same <code>health_insurance</code> data set from this chapter to answer these questions.</p>
 <ol style="list-style-type: decimal">
 <li>Complete the full stratified approach to modeling the three product choices that was started in Section <a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#stratified">6.2</a>. Calculate the coefficients, odds ratios and p-values in each case.</li>
@@ -828,7 +829,7 @@ This means we can obtain the coefficients of C against the reference of B by sim
 </div>
 </div>
 </div>
-<h3>References</h3>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-agresti" class="csl-entry">
 Agresti, Alan. 2007. <em>An Introduction to Categorical Data Analysis</em>.
@@ -843,7 +844,7 @@ Hosmer, David W., Stanley Lemeshow, and Rodney X. Sturdivant. 2013. <em>Applied 
 <div class="footnotes">
 <hr />
 <ol start="29">
-<li id="fn29"><p>In <span class="citation"><a href="#ref-hosmer-logistic" role="doc-biblioref">Hosmer, Lemeshow, and Sturdivant</a> (<a href="#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span>, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient Care as the reference.<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#fnref29" class="footnote-back">↩︎</a></p></li>
+<li id="fn29"><p>In <span class="citation">Hosmer, Lemeshow, and Sturdivant (<a href="#ref-hosmer-logistic" role="doc-biblioref">2013</a>)</span>, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient Care as the reference.<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#fnref29" class="footnote-back">↩︎</a></p></li>
 <li id="fn30"><p>Put differently, it assumes that adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption.<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#fnref30" class="footnote-back">↩︎</a></p></li>
 <li id="fn31"><p>Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onward in the network. Most commonly they are used in deep learning, but a simple neural network here can model these different categories using a logistic function.<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#fnref31" class="footnote-back">↩︎</a></p></li>
 <li id="fn32"><p>Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done. In the case of these observations of <code>genderNon-binary</code>, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a minuscule effect<a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#fnref32" class="footnote-back">↩︎</a></p></li>
@@ -859,7 +860,6 @@ Hosmer, David W., Stanley Lemeshow, and Rodney X. Sturdivant. 2013. <em>Applied 
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -900,7 +900,7 @@ gitbook.start({
 },
 "download": null,
 "search": {
-"engine": "lunr",
+"engine": "fuse",
 "options": null
 },
 "toc": {

@@ -86,10 +86,12 @@ The data appears somewhat chaotic here.  However, there are a few things to note
 Let's first create and refine a binomial model for the choice of Product A.
 
 ```{r}
-library(dummies)
+library(makedummies)
 
 # create dummies for product choice outcome
-dummy_product <- dummies::dummy("product", data = health_insurance)
+dummy_product <- makedummies::makedummies(health_insurance, 
+                                          col = "product",
+                                          basal_level = TRUE)
 
 # combine to original set
 health_insurance <- cbind(health_insurance, dummy_product)
@@ -97,7 +99,7 @@ health_insurance <- cbind(health_insurance, dummy_product)
 # run a binomial model for the Product A dummy against 
 # all input variables (let glm() handle dummy input variables)
 A_model <- glm(
-  formula = productA ~ age + gender + household + 
+  formula = product_A ~ age + gender + household + 
     position_level + absent, 
   data = health_insurance, 
   family = "binomial"
@@ -117,7 +119,7 @@ These results need to be interpreted carefully.  For example, the odds ratios fo
 ```{r}
 # simpler model
 A_simple <- glm(
-  formula = productA ~ age + household + gender + position_level, 
+  formula = product_A ~ age + household + gender + position_level, 
   data = health_insurance,
   family = "binomial"
 )

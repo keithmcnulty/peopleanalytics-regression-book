@@ -6,21 +6,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>2 The Basics of the R Programming Language | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
 <meta name="author" content="Keith McNulty">
-<meta name="description" content="Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis....">
-<meta name="generator" content="bookdown 0.23 with bs4_book()">
+<meta name="description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences">
+<meta name="generator" content="placeholder">
 <meta property="og:title" content="2 The Basics of the R Programming Language | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
 <meta property="og:type" content="book">
-<meta property="og:url" content="https://peopleanalytics-regression-book.org/the-basics-of-the-r-programming-language.html">
+<meta property="og:url" content="https://peopleanalytics-regression-book.org">
 <meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
-<meta property="og:description" content="Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis....">
+<meta property="og:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2 The Basics of the R Programming Language | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
 <meta name="twitter:site" content="@dr_keithmcnulty">
-<meta name="twitter:description" content="Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis....">
+<meta name="twitter:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences">
 <meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.9.5/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.14/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.2.5.1/tabs.js"></script><script src="libs/bs3compat-0.2.5.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python">
 <meta name="citation_author" content="Keith McNulty">
 <meta name="citation_publication_date" content="2021">
@@ -34,7 +34,33 @@
 
       gtag('config', 'G-N7JZGMVRZK');
     </script><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body data-spy="scroll" data-target="#toc">
 
@@ -87,7 +113,7 @@
 <p>Most of the work in this book is implemented in the R statistical programming language which, along with Python, is one of the two languages that I use in my day-to-day statistical analysis. Sample implementations in Python are also provided at various points in the book, as well as implementations in Julia for those who are keen on this newer and up-and-coming language. I have made efforts to keep the code as simple as possible, and I have tried to avoid the use of too many external packages. For the most part, readers should see (especially in the earlier chapters) that code blocks are short and simple, relying wherever possible on base R functionality. No doubt there are neater and more effective ways to code some of the material in this book using a wide array of R packages—and some of these are illustrated in Chapter <a href="alt-approaches.html#alt-approaches">10</a>—but my priority has been to keep the code simple, consistent and easily reproducible.</p>
 <p>For those who wish to follow the method and theory without the implementations in this book, there is no need to read this chapter. However, the style of this book is to use implementation to illustrate theory and practice, and so tolerance of many code blocks will be necessary as you read onward.</p>
 <p>For those who wish to simply replicate the models as quickly as possible, they will be able to avail of the code block copying feature, which appears whenever you scroll over an input code block. Assuming all the required external packages have been installed, these code blocks should all be transportable and immediately usable. For those who are extra-inquisitive and want to explore how I constructed graphics used for illustration (for which code is usually not displayed), the best place to go is the <a href="https://github.com/keithmcnulty/peopleanalytics-regression-book">Github repository</a> for this book.</p>
-<p>This chapter is for those who wish to learn the methods in this book but do not know how to use R. However, it is not intended to be a full tutorial on R. There are many more qualified individuals and existing resources that would better serve that purpose—in particular I recommend <span class="citation"><a href="references.html#ref-wickham" role="doc-biblioref">Wickham and Grolemund</a> (<a href="references.html#ref-wickham" role="doc-biblioref">2016</a>)</span>. It is recommended that you consult these resources and become comfortable with the basics of R before proceeding into the later chapters of this book. However, acknowledging that many will want to dive in sooner rather than later, this chapter covers the absolute basics of R that will allow the uninitiated reader to proceed with at least some orientation.</p>
+<p>This chapter is for those who wish to learn the methods in this book but do not know how to use R. However, it is not intended to be a full tutorial on R. There are many more qualified individuals and existing resources that would better serve that purpose—in particular I recommend <span class="citation">Wickham and Grolemund (<a href="references.html#ref-wickham" role="doc-biblioref">2016</a>)</span>. It is recommended that you consult these resources and become comfortable with the basics of R before proceeding into the later chapters of this book. However, acknowledging that many will want to dive in sooner rather than later, this chapter covers the absolute basics of R that will allow the uninitiated reader to proceed with at least some orientation.</p>
 <div id="what-is-r" class="section level2" number="2.1">
 <h2>
 <span class="header-section-number">2.1</span> What is R?<a class="anchor" aria-label="anchor" href="#what-is-r"><i class="fas fa-link"></i></a>
@@ -108,7 +134,7 @@
 </h2>
 <p>Just like most programming languages, R itself is an interpreter which receives input and returns output. It is not very easy to use without an IDE. An IDE is an <em>Integrated Development Environment</em>, which is a convenient user interface allowing an R programmer to do all their main tasks including writing and running R code, saving files, viewing data and plots, integrating code into documents and many other things. By far the most popular IDE for R is RStudio. An example of what the RStudio IDE looks like can be seen in Figure <a href="the-basics-of-the-r-programming-language.html#fig:rstudio-ide">2.1</a>.</p>
 <div class="figure" style="text-align: center">
-<span style="display:block;" id="fig:rstudio-ide"></span>
+<span id="fig:rstudio-ide"></span>
 <img src="www/R/rstudio-windows.png" alt="The RStudio IDE" width="474"><p class="caption">
 Figure 2.1: The RStudio IDE
 </p>
@@ -314,7 +340,7 @@ Figure 2.1: The RStudio IDE
 <h3>
 <span class="header-section-number">2.4.1</span> Loading and tidying data in dataframes<a class="anchor" aria-label="anchor" href="#loading-and-tidying-data-in-dataframes"><i class="fas fa-link"></i></a>
 </h3>
-<p>To work with data in R, you usually need to pull it in from an outside source into a dataframe<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;R also has some built-in data sets for testing and playing with. For example, check out &lt;code&gt;mtcars&lt;/code&gt; by typing it into the terminal, or type &lt;code&gt;data()&lt;/code&gt; to see a full list of built-in data sets.&lt;/p&gt;"><sup>3</sup></a>. R facilitates numerous ways of importing data from simple <code>.csv</code> files, from Excel files, from online sources or from databases. Let’s load a data set that we will use later—the <code>salespeople</code> data set, which contains some information on the sales, average customer ratings and performance ratings of salespeople. The <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code> function can accept a URL address of the file if it is online.</p>
+<p>To work with data in R, you usually need to pull it in from an outside source into a dataframe<a href="references.html#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>. R facilitates numerous ways of importing data from simple <code>.csv</code> files, from Excel files, from online sources or from databases. Let’s load a data set that we will use later—the <code>salespeople</code> data set, which contains some information on the sales, average customer ratings and performance ratings of salespeople. The <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code> function can accept a URL address of the file if it is online.</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># url of data set </span>
 <span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"http://peopleanalytics-regression-book.org/data/salespeople.csv"</span>
@@ -462,7 +488,7 @@ Figure 2.1: The RStudio IDE
 <h3>
 <span class="header-section-number">2.5.1</span> Using functions<a class="anchor" aria-label="anchor" href="#using-functions"><i class="fas fa-link"></i></a>
 </h3>
-<p>Functions usually take one or more arguments. Often there are a large number of arguments that a function can take, but many are optional and not required to be specified by the user. For example, the function <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>, which displays the first rows of a dataframe<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;It actually has a broader definition but is mostly used for showing the first rows of a dataframe.&lt;/p&gt;"><sup>4</sup></a>, has only one required argument <code>x</code>: the name of the dataframe. A second argument is optional, <code>n</code>: the number of rows to display. If <code>n</code> is not entered, it is assumed to have the default value <code>n = 6</code>.</p>
+<p>Functions usually take one or more arguments. Often there are a large number of arguments that a function can take, but many are optional and not required to be specified by the user. For example, the function <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code>, which displays the first rows of a dataframe<a href="references.html#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>, has only one required argument <code>x</code>: the name of the dataframe. A second argument is optional, <code>n</code>: the number of rows to display. If <code>n</code> is not entered, it is assumed to have the default value <code>n = 6</code>.</p>
 <p>When running a function, you can either specify the arguments by name or you can enter them in order without their names. If you enter arguments without naming them, R expects the arguments to be entered in exactly the right order.</p>
 <div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># see the head of salespeople, with the default of six rows</span>
@@ -496,7 +522,7 @@ Figure 2.1: The RStudio IDE
 </h3>
 <p>Most functions in R have excellent help documentation. To get help on the <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> function, type <code><a href="https://rdrr.io/r/utils/head.html">help(head)</a></code> or <code><a href="https://rdrr.io/r/utils/head.html">?head</a></code>. This will display the results in the Help browser window in RStudio. Alternatively you can open the Help browser window directly in RStudio and do a search there. An example of the browser results for <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> is in Figure <a href="the-basics-of-the-r-programming-language.html#fig:head-help">2.2</a>.</p>
 <div class="figure" style="text-align: center">
-<span style="display:block;" id="fig:head-help"></span>
+<span id="fig:head-help"></span>
 <img src="www/R/head-help-small.png" alt="Results of a search for the `head()` function in the RStudio Help browser" width="821"><p class="caption">
 Figure 2.2: Results of a search for the <code><a href="https://rdrr.io/r/utils/head.html">head()</a></code> function in the RStudio Help browser
 </p>
@@ -532,7 +558,7 @@ Figure 2.2: Results of a search for the <code><a href="https://rdrr.io/r/utils/h
 <h3>
 <span class="header-section-number">2.5.4</span> Installing packages<a class="anchor" aria-label="anchor" href="#installing-packages"><i class="fas fa-link"></i></a>
 </h3>
-<p>All the common functions that we have used so far exist in the base R installation. However, the beauty of open source languages like R is that users can write their own functions or resources and release them to others via packages. A package is an additional module that can be installed easily; it makes resources available which are not in the base R installation. In this book we will be using functions from both base R and from popular and useful packages. As an example, a popular package used for statistical modeling is the <code>MASS</code> package, which is based on methods in a popular applied statistics book<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;span class="citation"&gt;&lt;a href="references.html#ref-ripley" role="doc-biblioref"&gt;Venables and Ripley&lt;/a&gt; (&lt;a href="references.html#ref-ripley" role="doc-biblioref"&gt;2002&lt;/a&gt;)&lt;/span&gt;&lt;/p&gt;'><sup>5</sup></a>.</p>
+<p>All the common functions that we have used so far exist in the base R installation. However, the beauty of open source languages like R is that users can write their own functions or resources and release them to others via packages. A package is an additional module that can be installed easily; it makes resources available which are not in the base R installation. In this book we will be using functions from both base R and from popular and useful packages. As an example, a popular package used for statistical modeling is the <code>MASS</code> package, which is based on methods in a popular applied statistics book<a href="references.html#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>.</p>
 <p>Before an external package can be used, it must be installed into your package library using <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code>. So to install <code>MASS</code>, type <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("MASS")</a></code> into the console. This will send R to the main internet repository for R packages (known as CRAN). It will find the right version of <code>MASS</code> for your operating system and download and install it into your package library. If <code>MASS</code> needs other packages in order to work, it will also install these packages.</p>
 <p>If you want to install more than one package, put the names of the packages inside a character vector—for example:</p>
 <div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
@@ -615,7 +641,7 @@ Figure 2.2: Results of a search for the <code><a href="https://rdrr.io/r/utils/h
      xlab <span class="op">=</span> <span class="st">"Sales ($m)"</span>, ylab <span class="op">=</span> <span class="st">"Average customer rating"</span>,
      main <span class="op">=</span> <span class="st">"Scatterplot of Sales vs Customer Rating"</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span style="display:block;" id="fig:basicscatter"></span>
+<span id="fig:basicscatter"></span>
 <img src="_main_files/figure-html/basicscatter-1.png" alt="Simple scatterplot of `customer_rate` against `sales` in the `salespeople` data set" width="672"><p class="caption">
 Figure 2.3: Simple scatterplot of <code>customer_rate</code> against <code>sales</code> in the <code>salespeople</code> data set
 </p>
@@ -630,7 +656,7 @@ Figure 2.3: Simple scatterplot of <code>customer_rate</code> against <code>sales
      xlab <span class="op">=</span> <span class="st">"Performance Rating"</span>, 
      main <span class="op">=</span> <span class="st">"Histogram of Performance Ratings"</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span style="display:block;" id="fig:basichist"></span>
+<span id="fig:basichist"></span>
 <img src="_main_files/figure-html/basichist-1.png" alt="Simple histogram of `performance` in the `salespeople` data set" width="672"><p class="caption">
 Figure 2.4: Simple histogram of <code>performance</code> in the <code>salespeople</code> data set
 </p>
@@ -642,7 +668,7 @@ Figure 2.4: Simple histogram of <code>performance</code> in the <code>salespeopl
         xlab <span class="op">=</span> <span class="st">"Performance Rating"</span>, ylab <span class="op">=</span> <span class="st">"Sales ($m)"</span>,
         main <span class="op">=</span> <span class="st">"Boxplot of Sales by Performance Rating"</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span style="display:block;" id="fig:basicbox"></span>
+<span id="fig:basicbox"></span>
 <img src="_main_files/figure-html/basicbox-1.png" alt="Simple box plot of `sales` grouped against `performance` in the `salespeople` data set" width="672"><p class="caption">
 Figure 2.5: Simple box plot of <code>sales</code> grouped against <code>performance</code> in the <code>salespeople</code> data set
 </p>
@@ -653,7 +679,7 @@ Figure 2.5: Simple box plot of <code>sales</code> grouped against <code>performa
 <h3>
 <span class="header-section-number">2.7.2</span> Specialist plotting and graphing packages<a class="anchor" aria-label="anchor" href="#specialist-plotting-and-graphing-packages"><i class="fas fa-link"></i></a>
 </h3>
-<p>By far the most commonly used specialist plotting and graphing package in R is <code>ggplot2</code>. <code>ggplot2</code> allows the flexible construction of a very wide range of charts and graphs, but uses a very specific command grammar which can take some getting used to. However, once learned, <code>ggplot2</code> can be an extremely powerful tool. Many of the illustratory figures used in this book are developed using <code>ggplot2</code> and while the code for these figures is generally not included for the sake of brevity, you can always find it in the source code of this book on Github<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="https://github.com/keithmcnulty/peopleanalytics-regression-book" class="uri"&gt;https://github.com/keithmcnulty/peopleanalytics-regression-book&lt;/a&gt;&lt;/p&gt;'><sup>6</sup></a>. A great learning resource for <code>ggplot2</code> is <span class="citation"><a href="references.html#ref-ggplot2" role="doc-biblioref">Wickham</a> (<a href="references.html#ref-ggplot2" role="doc-biblioref">2016</a>)</span>.</p>
+<p>By far the most commonly used specialist plotting and graphing package in R is <code>ggplot2</code>. <code>ggplot2</code> allows the flexible construction of a very wide range of charts and graphs, but uses a very specific command grammar which can take some getting used to. However, once learned, <code>ggplot2</code> can be an extremely powerful tool. Many of the illustratory figures used in this book are developed using <code>ggplot2</code> and while the code for these figures is generally not included for the sake of brevity, you can always find it in the source code of this book on Github<a href="references.html#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>. A great learning resource for <code>ggplot2</code> is <span class="citation">Wickham (<a href="references.html#ref-ggplot2" role="doc-biblioref">2016</a>)</span>.</p>
 <p>The <code>plotly</code> package allows the use of the <code>plotly</code> graphing library in R. This is an excellent package for interactive graphing and is used for 3D illustrations in this book. Output can be rendered in HTML—allowing the user to play with and explore the graphs interactively—or can be saved as static 2D images.</p>
 <p><code>GGally</code> is a package that extends <code>ggplot2</code> to allow easy combination of charts and graphs. This is particularly valuable for quicker exploratory data analysis. One of its most popular functions is <code><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs()</a></code>, which produces a pairplot. A pairplot is a visualization of all univariate and bivariate patterns in a data set, with univariate distributions in the diagonal and bivariate relationships or correlations displayed in the off-diagonal. Figure <a href="the-basics-of-the-r-programming-language.html#fig:basicpair">2.6</a> is an example of a pairplot for the <code>salespeople</code> data set, which we will explore further in Chapter <a href="bin-log-reg.html#bin-log-reg">5</a>.</p>
 <div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
@@ -666,7 +692,7 @@ Figure 2.5: Simple box plot of <code>sales</code> grouped against <code>performa
 <span class="co"># pairplot of salespeople</span>
 <span class="fu">GGally</span><span class="fu">::</span><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span style="display:block;" id="fig:basicpair"></span>
+<span id="fig:basicpair"></span>
 <img src="_main_files/figure-html/basicpair-1.png" alt="Pairplot of the `salespeople` data set" width="672"><p class="caption">
 Figure 2.6: Pairplot of the <code>salespeople</code> data set
 </p>
@@ -717,8 +743,8 @@ head(salespeople)
 ## 5        1   657          4.40           3
 ## 6        1   918          4.54           2</code></pre>
 <p>The <code>{}</code> wrapping allows you to specify different languages for your code chunk. For example, if you wanted to run Python code instead of R code you can use <code>{python}</code>. It also allows you to set options for the code chunk display separated by commas. For example, if you want the results of your code to be displayed, but without the code itself being displayed, you can use <code>{r, echo = FALSE}</code>.</p>
-<p>The process of compiling your R Markdown code to produce a document is known as ‘knitting.’ To create a knitted document, you simply need to click on the ‘Knit’ button in RStudio that appears above your R Markdown code.</p>
-<p>If you are not familiar with R Markdown, I strongly encourage you to learn it alongside R and to challenge yourself to write up any practice exercises you take on in this book using R Markdown. Useful cheat sheets and reference guides for R Markdown formatting and commands are available through the Cheatsheets section of the Help menu in RStudio. I also recommend <span class="citation"><a href="references.html#ref-rmarkdown" role="doc-biblioref">Xie, Dervieux, and Riederer</a> (<a href="references.html#ref-rmarkdown" role="doc-biblioref">2020</a>)</span> for a really thorough instruction and reference guide.</p>
+<p>The process of compiling your R Markdown code to produce a document is known as ‘knitting’. To create a knitted document, you simply need to click on the ‘Knit’ button in RStudio that appears above your R Markdown code.</p>
+<p>If you are not familiar with R Markdown, I strongly encourage you to learn it alongside R and to challenge yourself to write up any practice exercises you take on in this book using R Markdown. Useful cheat sheets and reference guides for R Markdown formatting and commands are available through the Cheatsheets section of the Help menu in RStudio. I also recommend <span class="citation">Xie, Dervieux, and Riederer (<a href="references.html#ref-rmarkdown" role="doc-biblioref">2020</a>)</span> for a really thorough instruction and reference guide.</p>
 </div>
 <div id="learning-exercises" class="section level2" number="2.9">
 <h2>
@@ -753,7 +779,7 @@ head(salespeople)
 <li>Create a second numeric vector called <code>which</code> which corresponds to <code>my_names</code>. The entries should be the position of each name in the order of your full name. Verify that it has the same length as <code>my_names</code>.</li>
 <li>Create a dataframe called <code>names</code>, which consists of the two vectors <code>my_names</code> and <code>which</code> as columns. Calculate the dimensions of <code>names</code>.</li>
 <li>Create a new dataframe <code>new_names</code> with the <code>which</code> column converted to character type. Verify that your command worked using <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code>.</li>
-<li>Load the <code>ugtests</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="http://peopleanalytics-regression-book.org/data/ugtests.csv" class="uri"&gt;http://peopleanalytics-regression-book.org/data/ugtests.csv&lt;/a&gt;&lt;/p&gt;'><sup>7</sup></a>. Calculate the dimensions of <code>ugtests</code> and view the first three rows only.</li>
+<li>Load the <code>ugtests</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="references.html#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>. Calculate the dimensions of <code>ugtests</code> and view the first three rows only.</li>
 <li>View a statistical summary of all of the columns of <code>ugtests</code>. Determine if there are any missing values.</li>
 <li>View the subset of <code>ugtests</code> for values of <code>Yr1</code> greater than 50.</li>
 <li>Install and load the package <code>dplyr</code>. Look up the help for the <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> function in this package and try to use it to repeat the task in the previous question.</li>
@@ -767,7 +793,6 @@ head(salespeople)
 </div>
 </div>
 </div>
-
   <div class="chapter-nav">
 <div class="prev"><a href="inf-model.html"><span class="header-section-number">1</span> The Importance of Regression in People Analytics</a></div>
 <div class="next"><a href="found-stats.html"><span class="header-section-number">3</span> Statistics Foundations</a></div>
