@@ -112,7 +112,7 @@ $$
 y = f(x) + \epsilon
 $$
 
-where $f$ is some mathematical transformation of $x$ and $\epsilon$ is some random, uncontrollable error.  Put another way, we assume that $f(x)$ represents the mean expected value of $y$ over many observations of $x$, and that any single observation of $y$ could vary from $f(x)$ by an error of $\epsilon$.  Since we are assuming that $f(x)$ represents the mean of $y$, and because $\epsilon$ is assumed to be a random variable, this implies that $\epsilon$ will be normally distributed around a mean of zero.   
+where $f$ is some mathematical transformation of $x$ and $\epsilon$ is some random, uncontrollable error.  Put another way, we assume that $f(x)$ represents the mean expected value of $y$ over many observations of $x$, and that any single observation of $y$ could vary from $f(x)$ by an error of $\epsilon$.  Since we are assuming that $f(x)$ represents the mean of $y$, our errors $\epsilon$ are therefore distributed around a mean of zero.  We further assume that the distribution of our errors $\epsilon$ is a normal distribution^[This assumption is necessary in order for the estimations of the model parameters to be determined.].   
 
 Recalling the equation of a straight line, because we assume that the expected relationship is linear, it will take the form:
 
