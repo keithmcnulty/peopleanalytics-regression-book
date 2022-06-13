@@ -6,19 +6,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>6 Multinomial Logistic Regression for Nominal Category Outcomes | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
 <meta name="author" content="Keith McNulty">
-<meta name="description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences">
-<meta name="generator" content="placeholder">
+<meta name="description" content="In the previous chapter we looked at how to model a binary or dichotomous outcome using a logistic function. In this chapter we look at how to extend this to the case when the outcome has a number...">
+<meta name="generator" content="bookdown 0.26 with bs4_book()">
 <meta property="og:title" content="6 Multinomial Logistic Regression for Nominal Category Outcomes | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
 <meta property="og:type" content="book">
-<meta property="og:url" content="https://peopleanalytics-regression-book.org">
+<meta property="og:url" content="https://peopleanalytics-regression-book.org/multinomial-logistic-regression-for-nominal-category-outcomes.html">
 <meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
-<meta property="og:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences">
+<meta property="og:description" content="In the previous chapter we looked at how to model a binary or dichotomous outcome using a logistic function. In this chapter we look at how to extend this to the case when the outcome has a number...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="6 Multinomial Logistic Regression for Nominal Category Outcomes | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
 <meta name="twitter:site" content="@dr_keithmcnulty">
-<meta name="twitter:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences">
+<meta name="twitter:description" content="In the previous chapter we looked at how to model a binary or dichotomous outcome using a logistic function. In this chapter we look at how to extend this to the case when the outcome has a number...">
 <meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.14/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python">
@@ -121,14 +121,14 @@
 </h3>
 <p>A binary or dichotomous outcome like we studied in the previous chapter is already in fact a nominal outcome with two categories, so in principle we already have the basic technology with which to study this problem. That said, the way we approach the problem can differ according to the types of inferences we wish to make.</p>
 <p>If we only wish to make inferences about the choice of each specific category—what drives whether an observation is in Category A versus the others, or Category B versus the others—then we have the option of running separate binomial logistic regression models on a ‘one versus the rest’ basis. In this case we can refine our model differently for each category, eliminating variables that are not significant in determining membership of that category. This could potentially lead to models being defined differently for different target outcome categories. Notably, there will be no common comparison category between these models. This is sometimes called a <em>stratified</em> approach.</p>
-<p>However, in many studies there is a need for a ‘reference’ category to better understand the relative odds of category membership. For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the ‘most healthy’ or ‘most recovered’ patients)<a href="references.html#fn29" class="footnote-ref" id="fnref29"><sup>29</sup></a>. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different; we would need to make decisions on refining the model differently, and we interpret the coefficients in a different way.</p>
+<p>However, in many studies there is a need for a ‘reference’ category to better understand the relative odds of category membership. For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the ‘most healthy’ or ‘most recovered’ patients)<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;In &lt;span class="citation"&gt;Hosmer, Lemeshow, and Sturdivant (&lt;a href="references.html#ref-hosmer-logistic" role="doc-biblioref"&gt;2013&lt;/a&gt;)&lt;/span&gt;, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient Care as the reference.&lt;/p&gt;'><sup>30</sup></a>. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different; we would need to make decisions on refining the model differently, and we interpret the coefficients in a different way.</p>
 <p>In this chapter we will briefly look at the stratified approach (which is effectively a repetition of work done in the previous chapter) before focusing more intently on how we construct models and make inferences using a multinomial approach.</p>
 </div>
 <div id="use-cases-for-multinomial-logistic-regression" class="section level3" number="6.1.2">
 <h3>
 <span class="header-section-number">6.1.2</span> Use cases for multinomial logistic regression<a class="anchor" aria-label="anchor" href="#use-cases-for-multinomial-logistic-regression"><i class="fas fa-link"></i></a>
 </h3>
-<p>Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order. An underlying assumption is the independence of irrelevant alternatives (IIA). Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, would disproportionately influence the membership of one of the other categories<a href="references.html#fn30" class="footnote-ref" id="fnref30"><sup>30</sup></a>. In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives, which are beyond the scope of this book.</p>
+<p>Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order. An underlying assumption is the independence of irrelevant alternatives (IIA). Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, would disproportionately influence the membership of one of the other categories<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Put differently, it assumes that adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption.&lt;/p&gt;"><sup>31</sup></a>. In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives, which are beyond the scope of this book.</p>
 <p>Examples of typical situations that might be modeled by multinomial logistic regression include:</p>
 <ol style="list-style-type: decimal">
 <li>Modeling voting choice in elections with multiple candidates</li>
@@ -191,7 +191,7 @@
 
 <span class="fu">GGally</span><span class="fu">::</span><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:insurance-pairplot"></span>
+<span style="display:block;" id="fig:insurance-pairplot"></span>
 <img src="_main_files/figure-html/insurance-pairplot-1.png" alt="Pairplot of the `health_insurance` data set" width="672"><p class="caption">
 Figure 6.1: Pairplot of the <code>health_insurance</code> data set
 </p>
@@ -305,7 +305,7 @@ for different vectors of coefficients <span class="math inline">\(\alpha\)</span
 <h3>
 <span class="header-section-number">6.3.1</span> Defining a reference level and running the model<a class="anchor" aria-label="anchor" href="#def-ref"><i class="fas fa-link"></i></a>
 </h3>
-<p>The <code>nnet</code> package in R contains a <code><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom()</a></code> function for running a multinomial logistic regression model using neural network technology<a href="references.html#fn31" class="footnote-ref" id="fnref31"><sup>31</sup></a>. Before we can run the model we need to make sure our reference level is defined.</p>
+<p>The <code>nnet</code> package in R contains a <code><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom()</a></code> function for running a multinomial logistic regression model using neural network technology<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onward in the network. Most commonly they are used in deep learning, but a simple neural network here can model these different categories using a logistic function.&lt;/p&gt;"><sup>32</sup></a>. Before we can run the model we need to make sure our reference level is defined.</p>
 <div class="sourceCode" id="cb338"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># define reference by ensuring it is the first level of the factor</span>
 <span class="va">health_insurance</span><span class="op">$</span><span class="va">product</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/relevel.html">relevel</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">$</span><span class="va">product</span>, ref <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span>
@@ -466,7 +466,7 @@ This means we can obtain the coefficients of C against the reference of B by sim
 ## genderNon-binary  0.1712091  -1.29636779
 ## household        -0.9641956   0.20510806
 ## position_level   -0.3912014  -0.20908835</code></pre>
-<p>We can see that only <code>genderNon-binary</code> changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model<a href="references.html#fn32" class="footnote-ref" id="fnref32"><sup>32</sup></a>. It therefore appears safe to remove <code>absent</code>. Furthermore, the Akaike Information Criterion is equally valid in multinomial models for evaluating model parsimony. Here we can calculate that the AIC of our model with and without <code>absent</code> is 1517.36 and 1514.25, respectively, confirming that the model without <code>absent</code> is marginally more parsimonious.</p>
+<p>We can see that only <code>genderNon-binary</code> changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done. In the case of these observations of &lt;code&gt;genderNon-binary&lt;/code&gt;, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a minuscule effect&lt;/p&gt;"><sup>33</sup></a>. It therefore appears safe to remove <code>absent</code>. Furthermore, the Akaike Information Criterion is equally valid in multinomial models for evaluating model parsimony. Here we can calculate that the AIC of our model with and without <code>absent</code> is 1517.36 and 1514.25, respectively, confirming that the model without <code>absent</code> is marginally more parsimonious.</p>
 </div>
 <div id="model-fit-and-goodness-of-fit" class="section level3" number="6.4.2">
 <h3>
@@ -514,6 +514,7 @@ This means we can obtain the coefficients of C against the reference of B by sim
 </div>
 </div>
 </div>
+
   <div class="chapter-nav">
 <div class="prev"><a href="bin-log-reg.html"><span class="header-section-number">5</span> Binomial Logistic Regression for Binary Outcomes</a></div>
 <div class="next"><a href="ord-reg.html"><span class="header-section-number">7</span> Proportional Odds Logistic Regression for Ordered Category Outcomes</a></div>

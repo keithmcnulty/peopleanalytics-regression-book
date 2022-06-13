@@ -698,7 +698,7 @@ where <span class="math inline">\(h_0(t)\)</span> is a base or intercept hazard 
 ## Likelihood ratio test= 89.18  on 9 df,   p=2e-15
 ## Wald test            = 94.95  on 9 df,   p=&lt;2e-16
 ## Score (logrank) test = 95.31  on 9 df,   p=&lt;2e-16</code></pre>
-<p>The model returns the following<a href="#fn40" class="footnote-ref" id="fnref40"><sup>40</sup></a></p>
+<p>The model returns the following<a href="#fn41" class="footnote-ref" id="fnref41"><sup>41</sup></a></p>
 <ul>
 <li><p>Coefficients for each input variable and their p-values. Here we can conclude that working in Finance or Health is associated with a significantly greater likelihood of leaving over the period studied, and that higher sentiment is associated with a significantly lower likelihood of leaving.</p></li>
 <li><p>Relative odds ratios associated with each input variable. For example, a single extra point in sentiment reduces the odds of leaving by ~11%. A single less point increases the odds of leaving by ~12%. Confidence intervals for the coefficients are also provided.</p></li>
@@ -746,7 +746,7 @@ Figure 9.2: Schoenfeld test on proportional hazard assumption for <code>cox_mode
 <span id="cb416-9"><a href="survival.html#cb416-9" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
 <pre><code>## 
 ## Be patient. The program is computing ... 
-## The program took 1.23 seconds</code></pre>
+## The program took 1.72 seconds</code></pre>
 <pre><code>## Call:
 ## frailtypack::frailtyPenal(formula = Surv(event = left, time = month) ~ 
 ##     gender + level + sentiment + cluster(field), data = job_retention, 
@@ -781,7 +781,7 @@ Figure 9.2: Schoenfeld test on proportional hazard assumption for <code>cox_mode
 ##       Exact number of knots used:  12 
 ##       Value of the smoothing parameter:  10000, DoF:  6.31</code></pre>
 <p>We can see that the frailty parameter is significant, indicating that there is sufficient difference in the background attrition risk to justify the application of a random hazard effect. We also see that the level of employment now becomes more significant in addition to sentiment, with Low and Medium level employees more likely to leave compared to High level employees.</p>
-<p>The <code>frailtyPenal()</code> function can also be a useful way to observe the different baseline survivals for groups in the data. For example, a simple stratified Cox proportional hazard model based on sentiment category can be constructed<a href="#fn41" class="footnote-ref" id="fnref41"><sup>41</sup></a>.</p>
+<p>The <code>frailtyPenal()</code> function can also be a useful way to observe the different baseline survivals for groups in the data. For example, a simple stratified Cox proportional hazard model based on sentiment category can be constructed<a href="#fn42" class="footnote-ref" id="fnref42"><sup>42</sup></a>.</p>
 <div class="sourceCode" id="cb419"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb419-1"><a href="survival.html#cb419-1" aria-hidden="true" tabindex="-1"></a>stratified_base <span class="ot">&lt;-</span> frailtypack<span class="sc">::</span><span class="fu">frailtyPenal</span>(</span>
 <span id="cb419-2"><a href="survival.html#cb419-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> </span>
 <span id="cb419-3"><a href="survival.html#cb419-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">strata</span>(sentiment_category),</span>
@@ -789,7 +789,7 @@ Figure 9.2: Schoenfeld test on proportional hazard assumption for <code>cox_mode
 <span id="cb419-5"><a href="survival.html#cb419-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.knots =</span> <span class="dv">12</span>,</span>
 <span id="cb419-6"><a href="survival.html#cb419-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">kappa =</span> <span class="fu">rep</span>(<span class="dv">10000</span>, <span class="dv">2</span>)</span>
 <span id="cb419-7"><a href="survival.html#cb419-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>This can then be plotted to observe how baseline retention differs by group, as in Figure <a href="survival.html#fig:stratified">9.3</a><a href="#fn42" class="footnote-ref" id="fnref42"><sup>42</sup></a>.</p>
+<p>This can then be plotted to observe how baseline retention differs by group, as in Figure <a href="survival.html#fig:stratified">9.3</a><a href="#fn43" class="footnote-ref" id="fnref43"><sup>43</sup></a>.</p>
 <div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="survival.html#cb420-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(stratified_base, <span class="at">type.plot =</span> <span class="st">&quot;Survival&quot;</span>, </span>
 <span id="cb420-2"><a href="survival.html#cb420-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">pos.legend =</span> <span class="st">&quot;topright&quot;</span>, <span class="at">Xlab =</span> <span class="st">&quot;Month&quot;</span>,</span>
 <span id="cb420-3"><a href="survival.html#cb420-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">Ylab =</span> <span class="st">&quot;Baseline retention rate&quot;</span>,</span>
@@ -816,7 +816,7 @@ Figure 9.3: Baseline retention curves for the two sentiment categories in the <c
 </div>
 <div id="data-exercises-7" class="section level3 hasAnchor" number="9.4.2">
 <h3><span class="header-section-number">9.4.2</span> Data exercises<a href="survival.html#data-exercises-7" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>For these exercises, use the same <code>job_retention</code> data set as in the walkthrough example for this chapter, which can be loaded via the <code>peopleanalyticsdata</code> package or downloaded from the internet<a href="#fn43" class="footnote-ref" id="fnref43"><sup>43</sup></a>. The <code>intention</code> field represents a score of 1 to 10 on the individual’s intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention. This response was recorded at the beginning of the study period.</p>
+<p>For these exercises, use the same <code>job_retention</code> data set as in the walkthrough example for this chapter, which can be loaded via the <code>peopleanalyticsdata</code> package or downloaded from the internet<a href="#fn44" class="footnote-ref" id="fnref44"><sup>44</sup></a>. The <code>intention</code> field represents a score of 1 to 10 on the individual’s intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention. This response was recorded at the beginning of the study period.</p>
 <ol style="list-style-type: decimal">
 <li>Create three categories of <code>intention</code> as follows: High (score of 7 or higher), Moderate (score of 4–6), Low (score of 3 or less)</li>
 <li>Calculate Kaplan-Meier survival estimates for the three categories and visualize these using survival curves.</li>
@@ -837,11 +837,11 @@ Collett, David. 2015. <em>Modelling Survival Data in Medical Research</em>.
 </div>
 <div class="footnotes">
 <hr />
-<ol start="40">
-<li id="fn40"><p>The concordance measure returned is a measure of how well the model can predict in any given pair who will survive longer and is valuable in a number of medical research contexts.<a href="survival.html#fnref40" class="footnote-back">↩︎</a></p></li>
-<li id="fn41"><p>Note there needs to be a <code>kappa</code> for each level of the stratification.<a href="survival.html#fnref41" class="footnote-back">↩︎</a></p></li>
-<li id="fn42"><p>This is another route to calculating survival curves similar to Figure <a href="survival.html#fig:survivalplot">9.1</a>.<a href="survival.html#fnref42" class="footnote-back">↩︎</a></p></li>
-<li id="fn43"><p><a href="http://peopleanalytics-regression-book.org/data/job_retention.csv" class="uri">http://peopleanalytics-regression-book.org/data/job_retention.csv</a><a href="survival.html#fnref43" class="footnote-back">↩︎</a></p></li>
+<ol start="41">
+<li id="fn41"><p>The concordance measure returned is a measure of how well the model can predict in any given pair who will survive longer and is valuable in a number of medical research contexts.<a href="survival.html#fnref41" class="footnote-back">↩︎</a></p></li>
+<li id="fn42"><p>Note there needs to be a <code>kappa</code> for each level of the stratification.<a href="survival.html#fnref42" class="footnote-back">↩︎</a></p></li>
+<li id="fn43"><p>This is another route to calculating survival curves similar to Figure <a href="survival.html#fig:survivalplot">9.1</a>.<a href="survival.html#fnref43" class="footnote-back">↩︎</a></p></li>
+<li id="fn44"><p><a href="http://peopleanalytics-regression-book.org/data/job_retention.csv" class="uri">http://peopleanalytics-regression-book.org/data/job_retention.csv</a><a href="survival.html#fnref44" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

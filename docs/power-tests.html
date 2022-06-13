@@ -6,19 +6,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>11 Power Analysis to Estimate Required Sample Sizes for Modeling | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
 <meta name="author" content="Keith McNulty">
-<meta name="description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences">
-<meta name="generator" content="placeholder">
+<meta name="description" content="In the vast majority of situations in people analytics, researchers and analysts have limited control over the size of their samples. The most common situation is, of course, that analyses are run...">
+<meta name="generator" content="bookdown 0.26 with bs4_book()">
 <meta property="og:title" content="11 Power Analysis to Estimate Required Sample Sizes for Modeling | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
 <meta property="og:type" content="book">
-<meta property="og:url" content="https://peopleanalytics-regression-book.org">
+<meta property="og:url" content="https://peopleanalytics-regression-book.org/power-tests.html">
 <meta property="og:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
-<meta property="og:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences">
+<meta property="og:description" content="In the vast majority of situations in people analytics, researchers and analysts have limited control over the size of their samples. The most common situation is, of course, that analyses are run...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="11 Power Analysis to Estimate Required Sample Sizes for Modeling | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
 <meta name="twitter:site" content="@dr_keithmcnulty">
-<meta name="twitter:description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences">
+<meta name="twitter:description" content="In the vast majority of situations in people analytics, researchers and analysts have limited control over the size of their samples. The most common situation is, of course, that analyses are run...">
 <meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.14/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python">
@@ -147,8 +147,8 @@
 &amp;=  1 - \Phi(-d\sqrt{n} + z_{\alpha})
 \end{aligned}
 \]</span></p>
-<p>where <span class="math inline">\(\Phi\)</span> is the cumulative normal probability distribution function, and <span class="math inline">\(d = \frac{\mu_1 - \mu_0}{\sigma}\)</span> is known as <em>Cohen’s effect size</em>. Therefore, we can see that power depends on a measure of the observed effect size between our two samples (defined as Cohen’s <span class="math inline">\(d\)</span>) the significance level <span class="math inline">\(\alpha\)</span> and the sample size <span class="math inline">\(n\)</span><a href="references.html#fn46" class="footnote-ref" id="fnref46"><sup>46</sup></a>.</p>
-<p>The reader may immediately observe that many of these measures are not known at the typical point at which we would wish to do a power analysis. We can assert a minimum level of statistical power that we would wish for—usually this is somewhere between 0.8 and 0.9. We can also assert our <span class="math inline">\(\alpha\)</span>. But at a point of experimental design, we usually do not know the sample size and we do not know what difference would be observed in that sample (the effect size). This implies that we are dealing with a single equation with more than one unknown, and this means that there is no unique solution<a href="references.html#fn47" class="footnote-ref" id="fnref47"><sup>47</sup></a>. Practically speaking, looking at ranges of values will be common in power analysis.</p>
+<p>where <span class="math inline">\(\Phi\)</span> is the cumulative normal probability distribution function, and <span class="math inline">\(d = \frac{\mu_1 - \mu_0}{\sigma}\)</span> is known as <em>Cohen’s effect size</em>. Therefore, we can see that power depends on a measure of the observed effect size between our two samples (defined as Cohen’s <span class="math inline">\(d\)</span>) the significance level <span class="math inline">\(\alpha\)</span> and the sample size <span class="math inline">\(n\)</span><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;We will also need to know the expected distribution of the statistics that we are analyzing in order to determine the power probability.&lt;/p&gt;"><sup>47</sup></a>.</p>
+<p>The reader may immediately observe that many of these measures are not known at the typical point at which we would wish to do a power analysis. We can assert a minimum level of statistical power that we would wish for—usually this is somewhere between 0.8 and 0.9. We can also assert our <span class="math inline">\(\alpha\)</span>. But at a point of experimental design, we usually do not know the sample size and we do not know what difference would be observed in that sample (the effect size). This implies that we are dealing with a single equation with more than one unknown, and this means that there is no unique solution<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;In reality there are more unknowns that this math would imply, due to the imperfection of what we are trying to measure. For example measurement error and reliability will often be an unmeasurable unknown. For this reason you will often need a larger sample size than that indicated by power tests.&lt;/p&gt;"><sup>48</sup></a>. Practically speaking, looking at ranges of values will be common in power analysis.</p>
 </div>
 <div id="simple-stats" class="section level2" number="11.2">
 <h2>
@@ -187,7 +187,7 @@
 
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">power</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:powersampleplot"></span>
+<span style="display:block;" id="fig:powersampleplot"></span>
 <img src="_main_files/figure-html/powersampleplot-1.png" alt="Plot of power against sample size for a paired t-test" width="672"><p class="caption">
 Figure 11.1: Plot of power against sample size for a paired t-test
 </p>
@@ -202,18 +202,18 @@ Figure 11.1: Plot of power against sample size for a paired t-test
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">samples</span><span class="op">$</span><span class="va">d</span>, <span class="va">samples</span><span class="op">$</span><span class="va">power</span>, type <span class="op">=</span> <span class="st">"b"</span>,
      xlab <span class="op">=</span> <span class="st">"Effect size"</span>, ylab <span class="op">=</span> <span class="st">"Power"</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:powerdplot"></span>
+<span style="display:block;" id="fig:powerdplot"></span>
 <img src="_main_files/figure-html/powerdplot-1.png" alt="Plot of power against effect size for a paired t-test" width="672"><p class="caption">
 Figure 11.2: Plot of power against effect size for a paired t-test
 </p>
 </div>
-<p>Similar power test variants exist for other common simple hypothesis tests. Let’s assume that we want to institute a screening test in a recruiting process, and we want to validate this test by running it on a random set of employees with the aim of proving that the test score has a significant non-zero correlation with job performance. If we assume that we will see a moderate correlation of <span class="math inline">\(r = 0.3\)</span> in our sample<a href="references.html#fn48" class="footnote-ref" id="fnref48"><sup>48</sup></a>, we can use the <code><a href="https://rdrr.io/pkg/WebPower/man/wp.correlation.html">wp.correlation()</a></code> function in <code>WebPower</code> to do a power analysis, resulting in Figure <a href="power-tests.html#fig:correlpower">11.3</a>.</p>
+<p>Similar power test variants exist for other common simple hypothesis tests. Let’s assume that we want to institute a screening test in a recruiting process, and we want to validate this test by running it on a random set of employees with the aim of proving that the test score has a significant non-zero correlation with job performance. If we assume that we will see a moderate correlation of <span class="math inline">\(r = 0.3\)</span> in our sample<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Cohen’s rule of thumb for correlation coefficients is Weak: 0.1, Moderate: 0.3 and Strong: 0.5.&lt;/p&gt;"><sup>49</sup></a>, we can use the <code><a href="https://rdrr.io/pkg/WebPower/man/wp.correlation.html">wp.correlation()</a></code> function in <code>WebPower</code> to do a power analysis, resulting in Figure <a href="power-tests.html#fig:correlpower">11.3</a>.</p>
 <div class="sourceCode" id="cb481"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fl">50</span><span class="op">:</span><span class="fl">150</span>
 <span class="va">correl_powers</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.correlation.html">wp.correlation</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">sample_sizes</span>, r <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">correl_powers</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:correlpower"></span>
+<span style="display:block;" id="fig:correlpower"></span>
 <img src="_main_files/figure-html/correlpower-1.png" alt="Plot of power against sample size for a correlation test" width="672"><p class="caption">
 Figure 11.3: Plot of power against sample size for a correlation test
 </p>
@@ -229,7 +229,7 @@ Figure 11.3: Plot of power against sample size for a correlation test
 <p><span class="math display">\[
 f^2 = \frac{R_{\mathrm{full}}^2 - R_{\mathrm{reduced}}^2}{1 - R_{\mathrm{full}}^2}
 \]</span>
-where the formula refers to the <span class="math inline">\(R^2\)</span> fit statistics for the two models being compared. As an example, imagine we already know that GPA in college has a significant relationship with job performance, and we wish to determine if our proposed screening test had incremental validity on top of knowing college GPA. We might run two linear regression models, one relating job performance to GPA, and another relating job performance to <em>both</em> GPA and screening test score. Assuming we would observe a relatively small effect size for our screening test, we assume <span class="math inline">\(f^2 = 0.05\)</span><a href="references.html#fn49" class="footnote-ref" id="fnref49"><sup>49</sup></a>, we can plot sample size against power in determining whether the two models are significantly different. We will also need to define the number of predictors in the full model (<code>p1 = 2</code>) and the reduced model (<code>p2 = 1</code>). The plot is shown in Figure <a href="power-tests.html#fig:regressionpower">11.4</a>.</p>
+where the formula refers to the <span class="math inline">\(R^2\)</span> fit statistics for the two models being compared. As an example, imagine we already know that GPA in college has a significant relationship with job performance, and we wish to determine if our proposed screening test had incremental validity on top of knowing college GPA. We might run two linear regression models, one relating job performance to GPA, and another relating job performance to <em>both</em> GPA and screening test score. Assuming we would observe a relatively small effect size for our screening test, we assume <span class="math inline">\(f^2 = 0.05\)</span><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Cohen’s rule of thumb for &lt;span class="math inline"&gt;\(f^2\)&lt;/span&gt; effect sizes is Small: 0.02, Medium: 0.15, Large: 0.35.&lt;/p&gt;'><sup>50</sup></a>, we can plot sample size against power in determining whether the two models are significantly different. We will also need to define the number of predictors in the full model (<code>p1 = 2</code>) and the reduced model (<code>p2 = 1</code>). The plot is shown in Figure <a href="power-tests.html#fig:regressionpower">11.4</a>.</p>
 <div class="sourceCode" id="cb482"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fl">100</span><span class="op">:</span><span class="fl">300</span>
 <span class="va">f_sq_power</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.regression.html">wp.regression</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">sample_sizes</span>, 
@@ -237,7 +237,7 @@ where the formula refers to the <span class="math inline">\(R^2\)</span> fit sta
 
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">f_sq_power</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:regressionpower"></span>
+<span style="display:block;" id="fig:regressionpower"></span>
 <img src="_main_files/figure-html/regressionpower-1.png" alt="Plot of power against sample size for a small effect of a second input variable in a linear regression model" width="672"><p class="caption">
 Figure 11.4: Plot of power against sample size for a small effect of a second input variable in a linear regression model
 </p>
@@ -265,7 +265,7 @@ Figure 11.4: Plot of power against sample size for a small effect of a second in
 
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">logistic_power</span><span class="op">)</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:logisticpower"></span>
+<span style="display:block;" id="fig:logisticpower"></span>
 <img src="_main_files/figure-html/logisticpower-1.png" alt="Plot of power against sample size for a single input variable in logistic regression" width="672"><p class="caption">
 Figure 11.5: Plot of power against sample size for a single input variable in logistic regression
 </p>
@@ -307,7 +307,7 @@ Figure 11.5: Plot of power against sample size for a single input variable in lo
 <span id="cb486-8"><a href="power-tests.html#cb486-8" aria-hidden="true" tabindex="-1"></a>                              alpha <span class="op">=</span> <span class="fl">0.05</span>)</span>
 <span id="cb486-9"><a href="power-tests.html#cb486-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <div class="figure" style="text-align: center">
-<span id="fig:pythonpowerplot"></span>
+<span style="display:block;" id="fig:pythonpowerplot"></span>
 <img src="www/11/pythonpowerplot-1.png" alt="Plot of power against sample size for a paired t-test" width="90%"><p class="caption">
 Figure 11.6: Plot of power against sample size for a paired t-test
 </p>
@@ -315,6 +315,7 @@ Figure 11.6: Plot of power against sample size for a paired t-test
 
 </div>
 </div>
+
   <div class="chapter-nav">
 <div class="prev"><a href="alt-approaches.html"><span class="header-section-number">10</span> Alternative Technical Approaches in R, Python and Julia</a></div>
 <div class="next"><a href="solutions-to-exercises-slide-presentations-videos-and-other-learning-resources.html">Solutions to Exercises, Slide Presentations, Videos and Other Learning Resources</a></div>

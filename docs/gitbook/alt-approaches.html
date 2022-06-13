@@ -656,8 +656,8 @@ div.csl-indent {
 ## Dep. Variable:                  Final   R-squared:                       0.530
 ## Model:                            OLS   Adj. R-squared:                  0.529
 ## Method:                 Least Squares   F-statistic:                     365.5
-## Date:                Fri, 10 Jun 2022   Prob (F-statistic):          8.22e-159
-## Time:                        11:55:45   Log-Likelihood:                -4711.6
+## Date:                Mon, 13 Jun 2022   Prob (F-statistic):          8.22e-159
+## Time:                        14:24:10   Log-Likelihood:                -4711.6
 ## No. Observations:                 975   AIC:                             9431.
 ## Df Residuals:                     971   BIC:                             9451.
 ## Df Model:                           3                                         
@@ -709,8 +709,8 @@ div.csl-indent {
 ## Model Family:                Binomial   Df Model:                            2
 ## Link Function:                  logit   Scale:                          1.0000
 ## Method:                          IRLS   Log-Likelihood:                -32.566
-## Date:                Fri, 10 Jun 2022   Deviance:                       65.131
-## Time:                        11:55:46   Pearson chi2:                     198.
+## Date:                Mon, 13 Jun 2022   Deviance:                       65.131
+## Time:                        14:24:12   Pearson chi2:                     198.
 ## No. Iterations:                     9                                         
 ## Covariance Type:            nonrobust                                         
 ## =================================================================================
@@ -757,8 +757,8 @@ div.csl-indent {
 ## Dep. Variable:                      y   No. Observations:                 1453
 ## Model:                        MNLogit   Df Residuals:                     1439
 ## Method:                           MLE   Df Model:                           12
-## Date:                Fri, 10 Jun 2022   Pseudo R-squ.:                  0.5332
-## Time:                        11:55:48   Log-Likelihood:                -744.68
+## Date:                Mon, 13 Jun 2022   Pseudo R-squ.:                  0.5332
+## Time:                        14:24:14   Log-Likelihood:                -744.68
 ## converged:                       True   LL-Null:                       -1595.3
 ## Covariance Type:            nonrobust   LLR p-value:                     0.000
 ## ==================================================================================
@@ -871,7 +871,7 @@ div.csl-indent {
 Figure 10.1: Survival curves by sentiment category in the job retention data
 </p>
 </div>
-<p>And here is an example of how to fit a Cox Proportional Hazard model similarly to Section <a href="survival.html#coxphmodel">9.2</a><a href="#fn44" class="footnote-ref" id="fnref44"><sup>44</sup></a>.</p>
+<p>And here is an example of how to fit a Cox Proportional Hazard model similarly to Section <a href="survival.html#coxphmodel">9.2</a><a href="#fn45" class="footnote-ref" id="fnref45"><sup>45</sup></a>.</p>
 <div class="sourceCode" id="cb450"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb450-1"><a href="alt-approaches.html#cb450-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lifelines <span class="im">import</span> CoxPHFitter</span>
 <span id="cb450-2"><a href="alt-approaches.html#cb450-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb450-3"><a href="alt-approaches.html#cb450-3" aria-hidden="true" tabindex="-1"></a><span class="co"># fit Cox PH model to job_retention data</span></span>
@@ -887,7 +887,7 @@ Figure 10.1: Survival curves by sentiment category in the job retention data
 ##    number of observations = 3770
 ## number of events observed = 1354
 ##    partial log-likelihood = -10724.52
-##          time fit was run = 2022-06-10 11:55:55 UTC
+##          time fit was run = 2022-06-13 14:24:20 UTC
 ## 
 ## ---
 ##                              coef  exp(coef)   se(coef)   coef lower 95%   coef upper 95%  exp(coef) lower 95%  exp(coef) upper 95%
@@ -918,7 +918,7 @@ Figure 10.1: Survival curves by sentiment category in the job retention data
 ## Partial AIC = 21467.04
 ## log-likelihood ratio test = 89.18 on 9 df
 ## -log2(p) of ll-ratio test = 48.58</code></pre>
-<p>Proportional Hazard assumptions can be checked using the <code>check_assumptions()</code> method<a href="#fn45" class="footnote-ref" id="fnref45"><sup>45</sup></a>.</p>
+<p>Proportional Hazard assumptions can be checked using the <code>check_assumptions()</code> method<a href="#fn46" class="footnote-ref" id="fnref46"><sup>46</sup></a>.</p>
 <div class="sourceCode" id="cb453"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb453-1"><a href="alt-approaches.html#cb453-1" aria-hidden="true" tabindex="-1"></a>cph.check_assumptions(job_retention, p_value_threshold <span class="op">=</span> <span class="fl">0.05</span>)</span></code></pre></div>
 <pre><code>## The ``p_value_threshold`` is set at 0.05. Even under the null hypothesis of no violations, some
 ## covariates will be below the threshold by chance. This is compounded when there are many covariates.
@@ -1194,9 +1194,9 @@ Figure 10.1: Survival curves by sentiment category in the job retention data
 </div>
 <div class="footnotes">
 <hr />
-<ol start="44">
-<li id="fn44"><p>I am not aware of any way of running frailty models currently in Python.<a href="alt-approaches.html#fnref44" class="footnote-back">↩︎</a></p></li>
-<li id="fn45"><p>Schoenfeld residual plots can be seen by setting <code>show_plots = True</code> in the parameters.<a href="alt-approaches.html#fnref45" class="footnote-back">↩︎</a></p></li>
+<ol start="45">
+<li id="fn45"><p>I am not aware of any way of running frailty models currently in Python.<a href="alt-approaches.html#fnref45" class="footnote-back">↩︎</a></p></li>
+<li id="fn46"><p>Schoenfeld residual plots can be seen by setting <code>show_plots = True</code> in the parameters.<a href="alt-approaches.html#fnref46" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
