@@ -259,7 +259,7 @@ This creates a scale of <span class="math inline">\(-1\)</span> to <span class="
 <div class="sourceCode" id="cb140"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">$</span><span class="va">sales</span>, <span class="va">salespeople</span><span class="op">$</span><span class="va">promoted</span>, use <span class="op">=</span> <span class="st">"complete.obs"</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.8511283</code></pre>
-<p>Correlating ranked variables involves an adjusted approach leading to <strong>Spearman’s rho</strong> (<span class="math inline">\(\rho\)</span>) or <strong>Kendall’s tau</strong> (<span class="math inline">\(\tau\)</span>), among others. We will not dive into the mathematics of this here, but a good source is <span class="citation">Bhattacharya and Burman (<a href="references.html#ref-bhattacharya" role="doc-biblioref">2016</a>)</span>. Spearman’s or Kendall’s variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.</p>
+<p>Correlating ranked variables involves an adjusted approach leading to <strong>Spearman’s rho</strong> (<span class="math inline">\(\rho\)</span>) or <strong>Kendall’s tau</strong> (<span class="math inline">\(\tau\)</span>), among others. We will not dive into the mathematics of this here, but a good source is <span class="citation">Bhattacharya and Burman (<a href="references.html#ref-bhattacharya">2016</a>)</span>. Spearman’s or Kendall’s variant should be used whenever at least one of the variables is a ranked variable, and both variants are available in R.</p>
 <div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># spearman's rho correlation</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">salespeople</span><span class="op">$</span><span class="va">sales</span>, <span class="va">salespeople</span><span class="op">$</span><span class="va">performance</span>, 
@@ -521,88 +521,88 @@ and add these all up to get a total, known as the <span class="math inline">\(\c
 <span class="header-section-number">3.4</span> Foundational statistics in Python<a class="anchor" aria-label="anchor" href="#foundational-statistics-in-python"><i class="fas fa-link"></i></a>
 </h2>
 <p>Elementary descriptive statistics can be performed in Python using various packages. Descriptive statistics of <code>numpy</code> arrays are usually available as methods.</p>
-<div class="sourceCode" id="cb183"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb183-1"><a href="found-stats.html#cb183-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb183-2"><a href="found-stats.html#cb183-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb183-3"><a href="found-stats.html#cb183-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb183-4"><a href="found-stats.html#cb183-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get data</span></span>
-<span id="cb183-5"><a href="found-stats.html#cb183-5" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
-<span id="cb183-6"><a href="found-stats.html#cb183-6" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> pd.read_csv(url)</span>
-<span id="cb183-7"><a href="found-stats.html#cb183-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb183-8"><a href="found-stats.html#cb183-8" aria-hidden="true" tabindex="-1"></a><span class="co"># mean sales</span></span>
-<span id="cb183-9"><a href="found-stats.html#cb183-9" aria-hidden="true" tabindex="-1"></a>mean_sales <span class="op">=</span> salespeople.sales.mean()</span>
-<span id="cb183-10"><a href="found-stats.html#cb183-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mean_sales)</span></code></pre></div>
+<div class="sourceCode" id="cb183"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb183-1"><a href="found-stats.html#cb183-1" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb183-2"><a href="found-stats.html#cb183-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb183-3"><a href="found-stats.html#cb183-3" tabindex="-1"></a></span>
+<span id="cb183-4"><a href="found-stats.html#cb183-4" tabindex="-1"></a><span class="co"># get data</span></span>
+<span id="cb183-5"><a href="found-stats.html#cb183-5" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/salespeople.csv"</span></span>
+<span id="cb183-6"><a href="found-stats.html#cb183-6" tabindex="-1"></a>salespeople <span class="op">=</span> pd.read_csv(url)</span>
+<span id="cb183-7"><a href="found-stats.html#cb183-7" tabindex="-1"></a></span>
+<span id="cb183-8"><a href="found-stats.html#cb183-8" tabindex="-1"></a><span class="co"># mean sales</span></span>
+<span id="cb183-9"><a href="found-stats.html#cb183-9" tabindex="-1"></a>mean_sales <span class="op">=</span> salespeople.sales.mean()</span>
+<span id="cb183-10"><a href="found-stats.html#cb183-10" tabindex="-1"></a><span class="bu">print</span>(mean_sales)</span></code></pre></div>
 <pre><code>## 527.0057142857142</code></pre>
-<div class="sourceCode" id="cb185"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb185-1"><a href="found-stats.html#cb185-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample variance</span></span>
-<span id="cb185-2"><a href="found-stats.html#cb185-2" aria-hidden="true" tabindex="-1"></a>var_sales <span class="op">=</span> salespeople.sales.var()</span>
-<span id="cb185-3"><a href="found-stats.html#cb185-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(var_sales)</span></code></pre></div>
+<div class="sourceCode" id="cb185"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb185-1"><a href="found-stats.html#cb185-1" tabindex="-1"></a><span class="co"># sample variance</span></span>
+<span id="cb185-2"><a href="found-stats.html#cb185-2" tabindex="-1"></a>var_sales <span class="op">=</span> salespeople.sales.var()</span>
+<span id="cb185-3"><a href="found-stats.html#cb185-3" tabindex="-1"></a><span class="bu">print</span>(var_sales)</span></code></pre></div>
 <pre><code>## 34308.11458043389</code></pre>
-<div class="sourceCode" id="cb187"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb187-1"><a href="found-stats.html#cb187-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample standard deviation</span></span>
-<span id="cb187-2"><a href="found-stats.html#cb187-2" aria-hidden="true" tabindex="-1"></a>sd_sales <span class="op">=</span> salespeople.sales.std()</span>
-<span id="cb187-3"><a href="found-stats.html#cb187-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sd_sales)</span></code></pre></div>
+<div class="sourceCode" id="cb187"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb187-1"><a href="found-stats.html#cb187-1" tabindex="-1"></a><span class="co"># sample standard deviation</span></span>
+<span id="cb187-2"><a href="found-stats.html#cb187-2" tabindex="-1"></a>sd_sales <span class="op">=</span> salespeople.sales.std()</span>
+<span id="cb187-3"><a href="found-stats.html#cb187-3" tabindex="-1"></a><span class="bu">print</span>(sd_sales)</span></code></pre></div>
 <pre><code>## 185.2244977869663</code></pre>
 <p>Population statistics can be obtained by setting the <code>ddof</code> parameter to zero.</p>
-<div class="sourceCode" id="cb189"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb189-1"><a href="found-stats.html#cb189-1" aria-hidden="true" tabindex="-1"></a><span class="co"># population standard deviation</span></span>
-<span id="cb189-2"><a href="found-stats.html#cb189-2" aria-hidden="true" tabindex="-1"></a>popsd_sales <span class="op">=</span> salespeople.sales.std(ddof <span class="op">=</span> <span class="dv">0</span>)</span>
-<span id="cb189-3"><a href="found-stats.html#cb189-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(popsd_sales)</span></code></pre></div>
+<div class="sourceCode" id="cb189"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb189-1"><a href="found-stats.html#cb189-1" tabindex="-1"></a><span class="co"># population standard deviation</span></span>
+<span id="cb189-2"><a href="found-stats.html#cb189-2" tabindex="-1"></a>popsd_sales <span class="op">=</span> salespeople.sales.std(ddof <span class="op">=</span> <span class="dv">0</span>)</span>
+<span id="cb189-3"><a href="found-stats.html#cb189-3" tabindex="-1"></a><span class="bu">print</span>(popsd_sales)</span></code></pre></div>
 <pre><code>## 184.9597020864771</code></pre>
 <p>The <code>numpy</code> covariance function produces a covariance matrix.</p>
-<div class="sourceCode" id="cb191"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb191-1"><a href="found-stats.html#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate a sample covariance matrix between two variables</span></span>
-<span id="cb191-2"><a href="found-stats.html#cb191-2" aria-hidden="true" tabindex="-1"></a>sales_rate <span class="op">=</span> salespeople[[<span class="st">'sales'</span>, <span class="st">'customer_rate'</span>]]</span>
-<span id="cb191-3"><a href="found-stats.html#cb191-3" aria-hidden="true" tabindex="-1"></a>sales_rate <span class="op">=</span> sales_rate[<span class="op">~</span>np.isnan(sales_rate)]</span>
-<span id="cb191-4"><a href="found-stats.html#cb191-4" aria-hidden="true" tabindex="-1"></a>cov <span class="op">=</span> sales_rate.cov()</span>
-<span id="cb191-5"><a href="found-stats.html#cb191-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cov)</span></code></pre></div>
+<div class="sourceCode" id="cb191"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb191-1"><a href="found-stats.html#cb191-1" tabindex="-1"></a><span class="co"># generate a sample covariance matrix between two variables</span></span>
+<span id="cb191-2"><a href="found-stats.html#cb191-2" tabindex="-1"></a>sales_rate <span class="op">=</span> salespeople[[<span class="st">'sales'</span>, <span class="st">'customer_rate'</span>]]</span>
+<span id="cb191-3"><a href="found-stats.html#cb191-3" tabindex="-1"></a>sales_rate <span class="op">=</span> sales_rate[<span class="op">~</span>np.isnan(sales_rate)]</span>
+<span id="cb191-4"><a href="found-stats.html#cb191-4" tabindex="-1"></a>cov <span class="op">=</span> sales_rate.cov()</span>
+<span id="cb191-5"><a href="found-stats.html#cb191-5" tabindex="-1"></a><span class="bu">print</span>(cov)</span></code></pre></div>
 <pre><code>##                       sales  customer_rate
 ## sales          34308.114580      55.817691
 ## customer_rate     55.817691       0.795820</code></pre>
 <p>Specific covariances between variable pairs can be pulled out of the matrix.</p>
-<div class="sourceCode" id="cb193"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb193-1"><a href="found-stats.html#cb193-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pull out specific covariances</span></span>
-<span id="cb193-2"><a href="found-stats.html#cb193-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cov[<span class="st">'sales'</span>][<span class="st">'customer_rate'</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb193"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb193-1"><a href="found-stats.html#cb193-1" tabindex="-1"></a><span class="co"># pull out specific covariances</span></span>
+<span id="cb193-2"><a href="found-stats.html#cb193-2" tabindex="-1"></a><span class="bu">print</span>(cov[<span class="st">'sales'</span>][<span class="st">'customer_rate'</span>])</span></code></pre></div>
 <pre><code>## 55.817691199345006</code></pre>
 <p>Similarly for Pearson correlation:</p>
-<div class="sourceCode" id="cb195"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb195-1"><a href="found-stats.html#cb195-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample pearson correlation matrix</span></span>
-<span id="cb195-2"><a href="found-stats.html#cb195-2" aria-hidden="true" tabindex="-1"></a>cor <span class="op">=</span> sales_rate.corr()</span>
-<span id="cb195-3"><a href="found-stats.html#cb195-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cor)</span></code></pre></div>
+<div class="sourceCode" id="cb195"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb195-1"><a href="found-stats.html#cb195-1" tabindex="-1"></a><span class="co"># sample pearson correlation matrix</span></span>
+<span id="cb195-2"><a href="found-stats.html#cb195-2" tabindex="-1"></a>cor <span class="op">=</span> sales_rate.corr()</span>
+<span id="cb195-3"><a href="found-stats.html#cb195-3" tabindex="-1"></a><span class="bu">print</span>(cor)</span></code></pre></div>
 <pre><code>##                   sales  customer_rate
 ## sales          1.000000       0.337805
 ## customer_rate  0.337805       1.000000</code></pre>
 <p>Specific types of correlation coefficients can be accessed via the <code>stats</code> module of the <code>scipy</code> package.</p>
-<div class="sourceCode" id="cb197"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb197-1"><a href="found-stats.html#cb197-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
-<span id="cb197-2"><a href="found-stats.html#cb197-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb197-3"><a href="found-stats.html#cb197-3" aria-hidden="true" tabindex="-1"></a><span class="co"># spearman's correlation</span></span>
-<span id="cb197-4"><a href="found-stats.html#cb197-4" aria-hidden="true" tabindex="-1"></a>stats.spearmanr(salespeople.sales, salespeople.performance, </span>
-<span id="cb197-5"><a href="found-stats.html#cb197-5" aria-hidden="true" tabindex="-1"></a>nan_policy<span class="op">=</span><span class="st">'omit'</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb197"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb197-1"><a href="found-stats.html#cb197-1" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb197-2"><a href="found-stats.html#cb197-2" tabindex="-1"></a></span>
+<span id="cb197-3"><a href="found-stats.html#cb197-3" tabindex="-1"></a><span class="co"># spearman's correlation</span></span>
+<span id="cb197-4"><a href="found-stats.html#cb197-4" tabindex="-1"></a>stats.spearmanr(salespeople.sales, salespeople.performance, </span>
+<span id="cb197-5"><a href="found-stats.html#cb197-5" tabindex="-1"></a>nan_policy<span class="op">=</span><span class="st">'omit'</span>)</span></code></pre></div>
 <pre><code>## SpearmanrResult(correlation=0.27354459847452534, pvalue=2.0065434379079837e-07)</code></pre>
-<div class="sourceCode" id="cb199"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb199-1"><a href="found-stats.html#cb199-1" aria-hidden="true" tabindex="-1"></a><span class="co"># kendall's tau</span></span>
-<span id="cb199-2"><a href="found-stats.html#cb199-2" aria-hidden="true" tabindex="-1"></a>stats.kendalltau(salespeople.sales, salespeople.performance, </span>
-<span id="cb199-3"><a href="found-stats.html#cb199-3" aria-hidden="true" tabindex="-1"></a>nan_policy<span class="op">=</span><span class="st">'omit'</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb199"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb199-1"><a href="found-stats.html#cb199-1" tabindex="-1"></a><span class="co"># kendall's tau</span></span>
+<span id="cb199-2"><a href="found-stats.html#cb199-2" tabindex="-1"></a>stats.kendalltau(salespeople.sales, salespeople.performance, </span>
+<span id="cb199-3"><a href="found-stats.html#cb199-3" tabindex="-1"></a>nan_policy<span class="op">=</span><span class="st">'omit'</span>)</span></code></pre></div>
 <pre><code>## KendalltauResult(correlation=0.20736088105812, pvalue=2.7353258226376615e-07)</code></pre>
 <p>Common hypothesis testing tools are available in <code>scipy.stats</code>. Here is an example of how to perform Welch’s <span class="math inline">\(t\)</span>-test on a difference in means of samples of unequal variance.</p>
-<div class="sourceCode" id="cb201"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb201-1"><a href="found-stats.html#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get sales for top and bottom performers</span></span>
-<span id="cb201-2"><a href="found-stats.html#cb201-2" aria-hidden="true" tabindex="-1"></a>perf1 <span class="op">=</span> salespeople[salespeople.performance <span class="op">==</span> <span class="dv">1</span>].sales</span>
-<span id="cb201-3"><a href="found-stats.html#cb201-3" aria-hidden="true" tabindex="-1"></a>perf4 <span class="op">=</span> salespeople[salespeople.performance <span class="op">==</span> <span class="dv">4</span>].sales</span>
-<span id="cb201-4"><a href="found-stats.html#cb201-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb201-5"><a href="found-stats.html#cb201-5" aria-hidden="true" tabindex="-1"></a><span class="co"># welch's t-test with unequal variance</span></span>
-<span id="cb201-6"><a href="found-stats.html#cb201-6" aria-hidden="true" tabindex="-1"></a>ttest <span class="op">=</span> stats.ttest_ind(perf4, perf1, equal_var<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb201-7"><a href="found-stats.html#cb201-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ttest)</span></code></pre></div>
+<div class="sourceCode" id="cb201"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb201-1"><a href="found-stats.html#cb201-1" tabindex="-1"></a><span class="co"># get sales for top and bottom performers</span></span>
+<span id="cb201-2"><a href="found-stats.html#cb201-2" tabindex="-1"></a>perf1 <span class="op">=</span> salespeople[salespeople.performance <span class="op">==</span> <span class="dv">1</span>].sales</span>
+<span id="cb201-3"><a href="found-stats.html#cb201-3" tabindex="-1"></a>perf4 <span class="op">=</span> salespeople[salespeople.performance <span class="op">==</span> <span class="dv">4</span>].sales</span>
+<span id="cb201-4"><a href="found-stats.html#cb201-4" tabindex="-1"></a></span>
+<span id="cb201-5"><a href="found-stats.html#cb201-5" tabindex="-1"></a><span class="co"># welch's t-test with unequal variance</span></span>
+<span id="cb201-6"><a href="found-stats.html#cb201-6" tabindex="-1"></a>ttest <span class="op">=</span> stats.ttest_ind(perf4, perf1, equal_var<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb201-7"><a href="found-stats.html#cb201-7" tabindex="-1"></a><span class="bu">print</span>(ttest)</span></code></pre></div>
 <pre><code>## Ttest_indResult(statistic=4.629477606844271, pvalue=1.0932443461577038e-05)</code></pre>
 <p>As seen above, hypothesis tests for non-zero correlation coefficients are performed automatically as part of <code>scipy.stats</code> correlation calculations.</p>
-<div class="sourceCode" id="cb203"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb203-1"><a href="found-stats.html#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate correlation and p-value </span></span>
-<span id="cb203-2"><a href="found-stats.html#cb203-2" aria-hidden="true" tabindex="-1"></a>sales <span class="op">=</span> salespeople.sales[<span class="op">~</span>np.isnan(salespeople.sales)]</span>
-<span id="cb203-3"><a href="found-stats.html#cb203-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb203-4"><a href="found-stats.html#cb203-4" aria-hidden="true" tabindex="-1"></a>cust_rate <span class="op">=</span> salespeople.customer_rate[</span>
-<span id="cb203-5"><a href="found-stats.html#cb203-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">~</span>np.isnan(salespeople.customer_rate)</span>
-<span id="cb203-6"><a href="found-stats.html#cb203-6" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb203-7"><a href="found-stats.html#cb203-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb203-8"><a href="found-stats.html#cb203-8" aria-hidden="true" tabindex="-1"></a>cor <span class="op">=</span> stats.pearsonr(sales, cust_rate)</span>
-<span id="cb203-9"><a href="found-stats.html#cb203-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cor)</span></code></pre></div>
+<div class="sourceCode" id="cb203"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb203-1"><a href="found-stats.html#cb203-1" tabindex="-1"></a><span class="co"># calculate correlation and p-value </span></span>
+<span id="cb203-2"><a href="found-stats.html#cb203-2" tabindex="-1"></a>sales <span class="op">=</span> salespeople.sales[<span class="op">~</span>np.isnan(salespeople.sales)]</span>
+<span id="cb203-3"><a href="found-stats.html#cb203-3" tabindex="-1"></a></span>
+<span id="cb203-4"><a href="found-stats.html#cb203-4" tabindex="-1"></a>cust_rate <span class="op">=</span> salespeople.customer_rate[</span>
+<span id="cb203-5"><a href="found-stats.html#cb203-5" tabindex="-1"></a>  <span class="op">~</span>np.isnan(salespeople.customer_rate)</span>
+<span id="cb203-6"><a href="found-stats.html#cb203-6" tabindex="-1"></a>]</span>
+<span id="cb203-7"><a href="found-stats.html#cb203-7" tabindex="-1"></a></span>
+<span id="cb203-8"><a href="found-stats.html#cb203-8" tabindex="-1"></a>cor <span class="op">=</span> stats.pearsonr(sales, cust_rate)</span>
+<span id="cb203-9"><a href="found-stats.html#cb203-9" tabindex="-1"></a><span class="bu">print</span>(cor)</span></code></pre></div>
 <pre><code>## (0.33780504485867796, 8.647952212091035e-11)</code></pre>
 <p>Finally, a chi-square test of difference in frequency distribution can be performed on a contingency table as follows. The first value of the output is the <span class="math inline">\(\chi^2\)</span> statistic, and the second value is the p-value.</p>
-<div class="sourceCode" id="cb205"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb205-1"><a href="found-stats.html#cb205-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create contingency table for promoted versus performance</span></span>
-<span id="cb205-2"><a href="found-stats.html#cb205-2" aria-hidden="true" tabindex="-1"></a>contingency <span class="op">=</span> pd.crosstab(salespeople.promoted, salespeople.performance)</span>
-<span id="cb205-3"><a href="found-stats.html#cb205-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb205-4"><a href="found-stats.html#cb205-4" aria-hidden="true" tabindex="-1"></a><span class="co"># perform chi-square test</span></span>
-<span id="cb205-5"><a href="found-stats.html#cb205-5" aria-hidden="true" tabindex="-1"></a>chi2_test <span class="op">=</span> stats.chi2_contingency(contingency)</span>
-<span id="cb205-6"><a href="found-stats.html#cb205-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(chi2_test)</span></code></pre></div>
+<div class="sourceCode" id="cb205"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb205-1"><a href="found-stats.html#cb205-1" tabindex="-1"></a><span class="co"># create contingency table for promoted versus performance</span></span>
+<span id="cb205-2"><a href="found-stats.html#cb205-2" tabindex="-1"></a>contingency <span class="op">=</span> pd.crosstab(salespeople.promoted, salespeople.performance)</span>
+<span id="cb205-3"><a href="found-stats.html#cb205-3" tabindex="-1"></a></span>
+<span id="cb205-4"><a href="found-stats.html#cb205-4" tabindex="-1"></a><span class="co"># perform chi-square test</span></span>
+<span id="cb205-5"><a href="found-stats.html#cb205-5" tabindex="-1"></a>chi2_test <span class="op">=</span> stats.chi2_contingency(contingency)</span>
+<span id="cb205-6"><a href="found-stats.html#cb205-6" tabindex="-1"></a><span class="bu">print</span>(chi2_test)</span></code></pre></div>
 <pre><code>## (25.895405268094862, 1.0030629464566802e-05, 3, array([[40.62857143, 74.48571429, 84.64285714, 37.24285714],
 ##        [19.37142857, 35.51428571, 40.35714286, 17.75714286]]))</code></pre>
 </div>
@@ -611,59 +611,59 @@ and add these all up to get a total, known as the <span class="math inline">\(\c
 <span class="header-section-number">3.5</span> Foundational statistics in Julia<a class="anchor" aria-label="anchor" href="#foundational-statistics-in-julia"><i class="fas fa-link"></i></a>
 </h2>
 <p>The <code>Statistics</code> package in Julia provides a wide range of functions for univariate and bivariate analysis. Note that Julia has a particular <code>missing</code> type for missing data, and the specific string form of missing data may need to be defined when importing data from CSVs and other data sources. A little more up front work is required in Julia to ensure missing data structures are not being passed to statistics functions.</p>
-<div class="sourceCode" id="cb207"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb207-1"><a href="found-stats.html#cb207-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span>, <span class="bu">CSV</span>, <span class="bu">StatsBase</span>, <span class="bu">Statistics</span>, <span class="bu">Missings;</span></span>
-<span id="cb207-2"><a href="found-stats.html#cb207-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb207-3"><a href="found-stats.html#cb207-3" aria-hidden="true" tabindex="-1"></a><span class="co"># get salespeople data</span></span>
-<span id="cb207-4"><a href="found-stats.html#cb207-4" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/salespeople.csv"</span>;</span>
-<span id="cb207-5"><a href="found-stats.html#cb207-5" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="fu">download</span>(url), DataFrame, missingstrings<span class="op">=</span>[<span class="st">"NA"</span>]);</span>
-<span id="cb207-6"><a href="found-stats.html#cb207-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb207-7"><a href="found-stats.html#cb207-7" aria-hidden="true" tabindex="-1"></a><span class="co"># remove missing value rows from dataset</span></span>
-<span id="cb207-8"><a href="found-stats.html#cb207-8" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> salespeople[<span class="fu">completecases</span>(salespeople), <span class="op">:</span>];</span>
-<span id="cb207-9"><a href="found-stats.html#cb207-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ensure no missing data structures</span></span>
-<span id="cb207-10"><a href="found-stats.html#cb207-10" aria-hidden="true" tabindex="-1"></a>salespeople <span class="op">=</span> <span class="fu">mapcols</span>(col <span class="op">-&gt;</span> <span class="fu">disallowmissing</span>(col), salespeople);</span>
-<span id="cb207-11"><a href="found-stats.html#cb207-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb207-12"><a href="found-stats.html#cb207-12" aria-hidden="true" tabindex="-1"></a><span class="co"># mean of sales</span></span>
-<span id="cb207-13"><a href="found-stats.html#cb207-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(salespeople.sales)</span></code></pre></div>
+<div class="sourceCode" id="cb207"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb207-1"><a href="found-stats.html#cb207-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span>, <span class="bu">CSV</span>, <span class="bu">StatsBase</span>, <span class="bu">Statistics</span>, <span class="bu">Missings;</span></span>
+<span id="cb207-2"><a href="found-stats.html#cb207-2" tabindex="-1"></a></span>
+<span id="cb207-3"><a href="found-stats.html#cb207-3" tabindex="-1"></a><span class="co"># get salespeople data</span></span>
+<span id="cb207-4"><a href="found-stats.html#cb207-4" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"http://peopleanalytics-regression-book.org/data/salespeople.csv"</span>;</span>
+<span id="cb207-5"><a href="found-stats.html#cb207-5" tabindex="-1"></a>salespeople <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="fu">download</span>(url), DataFrame, missingstrings<span class="op">=</span>[<span class="st">"NA"</span>]);</span>
+<span id="cb207-6"><a href="found-stats.html#cb207-6" tabindex="-1"></a></span>
+<span id="cb207-7"><a href="found-stats.html#cb207-7" tabindex="-1"></a><span class="co"># remove missing value rows from dataset</span></span>
+<span id="cb207-8"><a href="found-stats.html#cb207-8" tabindex="-1"></a>salespeople <span class="op">=</span> salespeople[<span class="fu">completecases</span>(salespeople), <span class="op">:</span>];</span>
+<span id="cb207-9"><a href="found-stats.html#cb207-9" tabindex="-1"></a><span class="co"># ensure no missing data structures</span></span>
+<span id="cb207-10"><a href="found-stats.html#cb207-10" tabindex="-1"></a>salespeople <span class="op">=</span> <span class="fu">mapcols</span>(col <span class="op">-&gt;</span> <span class="fu">disallowmissing</span>(col), salespeople);</span>
+<span id="cb207-11"><a href="found-stats.html#cb207-11" tabindex="-1"></a></span>
+<span id="cb207-12"><a href="found-stats.html#cb207-12" tabindex="-1"></a><span class="co"># mean of sales</span></span>
+<span id="cb207-13"><a href="found-stats.html#cb207-13" tabindex="-1"></a><span class="fu">mean</span>(salespeople.sales)</span></code></pre></div>
 <pre><code>## 527.0057142857142</code></pre>
-<div class="sourceCode" id="cb209"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb209-1"><a href="found-stats.html#cb209-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample variance</span></span>
-<span id="cb209-2"><a href="found-stats.html#cb209-2" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(salespeople.sales)</span></code></pre></div>
+<div class="sourceCode" id="cb209"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb209-1"><a href="found-stats.html#cb209-1" tabindex="-1"></a><span class="co"># sample variance</span></span>
+<span id="cb209-2"><a href="found-stats.html#cb209-2" tabindex="-1"></a><span class="fu">var</span>(salespeople.sales)</span></code></pre></div>
 <pre><code>## 34308.1145804339</code></pre>
-<div class="sourceCode" id="cb211"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb211-1"><a href="found-stats.html#cb211-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample standard deviation</span></span>
-<span id="cb211-2"><a href="found-stats.html#cb211-2" aria-hidden="true" tabindex="-1"></a><span class="fu">std</span>(salespeople.sales)</span></code></pre></div>
+<div class="sourceCode" id="cb211"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb211-1"><a href="found-stats.html#cb211-1" tabindex="-1"></a><span class="co"># sample standard deviation</span></span>
+<span id="cb211-2"><a href="found-stats.html#cb211-2" tabindex="-1"></a><span class="fu">std</span>(salespeople.sales)</span></code></pre></div>
 <pre><code>## 185.22449778696634</code></pre>
 <p>Population statistics can be obtained by setting the <code>corrected</code> argument to <code>false</code> inside the standard statistics functions.</p>
-<div class="sourceCode" id="cb213"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb213-1"><a href="found-stats.html#cb213-1" aria-hidden="true" tabindex="-1"></a><span class="co"># population standard deviation</span></span>
-<span id="cb213-2"><a href="found-stats.html#cb213-2" aria-hidden="true" tabindex="-1"></a><span class="fu">std</span>(salespeople.sales, corrected <span class="op">=</span> <span class="cn">false</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb213"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb213-1"><a href="found-stats.html#cb213-1" tabindex="-1"></a><span class="co"># population standard deviation</span></span>
+<span id="cb213-2"><a href="found-stats.html#cb213-2" tabindex="-1"></a><span class="fu">std</span>(salespeople.sales, corrected <span class="op">=</span> <span class="cn">false</span>)</span></code></pre></div>
 <pre><code>## 184.95970208647714</code></pre>
 <p>Note that there are some useful time-saving double functions in Julia for common statistics.</p>
-<div class="sourceCode" id="cb215"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb215-1"><a href="found-stats.html#cb215-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample mean and variance</span></span>
-<span id="cb215-2"><a href="found-stats.html#cb215-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean_and_var</span>(salespeople.sales)</span></code></pre></div>
+<div class="sourceCode" id="cb215"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb215-1"><a href="found-stats.html#cb215-1" tabindex="-1"></a><span class="co"># sample mean and variance</span></span>
+<span id="cb215-2"><a href="found-stats.html#cb215-2" tabindex="-1"></a><span class="fu">mean_and_var</span>(salespeople.sales)</span></code></pre></div>
 <pre><code>## (527.0057142857142, 34308.1145804339)</code></pre>
-<div class="sourceCode" id="cb217"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb217-1"><a href="found-stats.html#cb217-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample mean and standard deviation</span></span>
-<span id="cb217-2"><a href="found-stats.html#cb217-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean_and_std</span>(salespeople.sales)</span></code></pre></div>
+<div class="sourceCode" id="cb217"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb217-1"><a href="found-stats.html#cb217-1" tabindex="-1"></a><span class="co"># sample mean and standard deviation</span></span>
+<span id="cb217-2"><a href="found-stats.html#cb217-2" tabindex="-1"></a><span class="fu">mean_and_std</span>(salespeople.sales)</span></code></pre></div>
 <pre><code>## (527.0057142857142, 185.22449778696634)</code></pre>
 <p>Covariance and correlations are straightforward, with specific functions for Spearman’s rho and Kendall’s tau:</p>
-<div class="sourceCode" id="cb219"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb219-1"><a href="found-stats.html#cb219-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample covariance</span></span>
-<span id="cb219-2"><a href="found-stats.html#cb219-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cov</span>(salespeople.sales, salespeople.customer_rate)</span></code></pre></div>
+<div class="sourceCode" id="cb219"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb219-1"><a href="found-stats.html#cb219-1" tabindex="-1"></a><span class="co"># sample covariance</span></span>
+<span id="cb219-2"><a href="found-stats.html#cb219-2" tabindex="-1"></a><span class="fu">cov</span>(salespeople.sales, salespeople.customer_rate)</span></code></pre></div>
 <pre><code>## 55.81769119934503</code></pre>
-<div class="sourceCode" id="cb221"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb221-1"><a href="found-stats.html#cb221-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample Pearson correlation</span></span>
-<span id="cb221-2"><a href="found-stats.html#cb221-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(salespeople.sales, salespeople.customer_rate)</span></code></pre></div>
+<div class="sourceCode" id="cb221"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb221-1"><a href="found-stats.html#cb221-1" tabindex="-1"></a><span class="co"># sample Pearson correlation</span></span>
+<span id="cb221-2"><a href="found-stats.html#cb221-2" tabindex="-1"></a><span class="fu">cor</span>(salespeople.sales, salespeople.customer_rate)</span></code></pre></div>
 <pre><code>## 0.337805044858678</code></pre>
-<div class="sourceCode" id="cb223"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb223-1"><a href="found-stats.html#cb223-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample Spearman correlation</span></span>
-<span id="cb223-2"><a href="found-stats.html#cb223-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corspearman</span>(salespeople.sales, salespeople.performance)</span></code></pre></div>
+<div class="sourceCode" id="cb223"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb223-1"><a href="found-stats.html#cb223-1" tabindex="-1"></a><span class="co"># sample Spearman correlation</span></span>
+<span id="cb223-2"><a href="found-stats.html#cb223-2" tabindex="-1"></a><span class="fu">corspearman</span>(salespeople.sales, salespeople.performance)</span></code></pre></div>
 <pre><code>## 0.2735445984745253</code></pre>
-<div class="sourceCode" id="cb225"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb225-1"><a href="found-stats.html#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sample Kendall correlation</span></span>
-<span id="cb225-2"><a href="found-stats.html#cb225-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corkendall</span>(salespeople.sales, salespeople.performance)</span></code></pre></div>
+<div class="sourceCode" id="cb225"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb225-1"><a href="found-stats.html#cb225-1" tabindex="-1"></a><span class="co"># sample Kendall correlation</span></span>
+<span id="cb225-2"><a href="found-stats.html#cb225-2" tabindex="-1"></a><span class="fu">corkendall</span>(salespeople.sales, salespeople.performance)</span></code></pre></div>
 <pre><code>## 0.20736088105812</code></pre>
 <p>The <code>HypothesisTests</code> package provides common hypothesis testing functionality with nicely formatted output. To perform a two-tailed t-test on samples of unequal variance:</p>
-<div class="sourceCode" id="cb227"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb227-1"><a href="found-stats.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">HypothesisTests</span></span>
-<span id="cb227-2"><a href="found-stats.html#cb227-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb227-3"><a href="found-stats.html#cb227-3" aria-hidden="true" tabindex="-1"></a><span class="co"># get sales for top and bottom performers</span></span>
-<span id="cb227-4"><a href="found-stats.html#cb227-4" aria-hidden="true" tabindex="-1"></a>perf1 <span class="op">=</span> salespeople[salespeople.performance <span class="op">.==</span> <span class="fl">1</span>, <span class="op">:</span>].sales;</span>
-<span id="cb227-5"><a href="found-stats.html#cb227-5" aria-hidden="true" tabindex="-1"></a>perf4 <span class="op">=</span> salespeople[salespeople.performance <span class="op">.==</span> <span class="fl">4</span>, <span class="op">:</span>].sales;</span>
-<span id="cb227-6"><a href="found-stats.html#cb227-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb227-7"><a href="found-stats.html#cb227-7" aria-hidden="true" tabindex="-1"></a><span class="co"># perform two-tailed t-test with unequal variance</span></span>
-<span id="cb227-8"><a href="found-stats.html#cb227-8" aria-hidden="true" tabindex="-1"></a><span class="fu">UnequalVarianceTTest</span>(perf4, perf1)</span></code></pre></div>
+<div class="sourceCode" id="cb227"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb227-1"><a href="found-stats.html#cb227-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">HypothesisTests</span></span>
+<span id="cb227-2"><a href="found-stats.html#cb227-2" tabindex="-1"></a></span>
+<span id="cb227-3"><a href="found-stats.html#cb227-3" tabindex="-1"></a><span class="co"># get sales for top and bottom performers</span></span>
+<span id="cb227-4"><a href="found-stats.html#cb227-4" tabindex="-1"></a>perf1 <span class="op">=</span> salespeople[salespeople.performance <span class="op">.==</span> <span class="fl">1</span>, <span class="op">:</span>].sales;</span>
+<span id="cb227-5"><a href="found-stats.html#cb227-5" tabindex="-1"></a>perf4 <span class="op">=</span> salespeople[salespeople.performance <span class="op">.==</span> <span class="fl">4</span>, <span class="op">:</span>].sales;</span>
+<span id="cb227-6"><a href="found-stats.html#cb227-6" tabindex="-1"></a></span>
+<span id="cb227-7"><a href="found-stats.html#cb227-7" tabindex="-1"></a><span class="co"># perform two-tailed t-test with unequal variance</span></span>
+<span id="cb227-8"><a href="found-stats.html#cb227-8" tabindex="-1"></a><span class="fu">UnequalVarianceTTest</span>(perf4, perf1)</span></code></pre></div>
 <pre><code>## Two sample t-test (unequal variance)
 ## ------------------------------------
 ## Population details:
@@ -682,9 +682,9 @@ and add these all up to get a total, known as the <span class="math inline">\(\c
 ##     degrees of freedom:       100.97689117620553
 ##     empirical standard error: 33.47553559717553</code></pre>
 <p>Currently, Julia does not have packaged hypothesis tests for correlations, so these would need to be done manually using the methods illustrated in Section <a href="found-stats.html#t-test-cor">3.3.2</a><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Julia is a relatively young language and a quick perusal of the &lt;code&gt;HypothesisTests&lt;/code&gt; Github repo reveals active work to add correlation testing in upcoming versions&lt;/p&gt;"><sup>15</sup></a>. A chi-square test is conducted on a contingency matrix as follows:</p>
-<div class="sourceCode" id="cb229"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb229-1"><a href="found-stats.html#cb229-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chi-square test</span></span>
-<span id="cb229-2"><a href="found-stats.html#cb229-2" aria-hidden="true" tabindex="-1"></a>contingency <span class="op">=</span> <span class="fu">counts</span>(salespeople.promoted, salespeople.performance);</span>
-<span id="cb229-3"><a href="found-stats.html#cb229-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ChisqTest</span>(contingency)</span></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb229-1"><a href="found-stats.html#cb229-1" tabindex="-1"></a><span class="co"># chi-square test</span></span>
+<span id="cb229-2"><a href="found-stats.html#cb229-2" tabindex="-1"></a>contingency <span class="op">=</span> <span class="fu">counts</span>(salespeople.promoted, salespeople.performance);</span>
+<span id="cb229-3"><a href="found-stats.html#cb229-3" tabindex="-1"></a><span class="fu">ChisqTest</span>(contingency)</span></code></pre></div>
 <pre><code>## Pearson's Chi-square Test
 ## -------------------------
 ## Population details:
@@ -704,11 +704,11 @@ and add these all up to get a total, known as the <span class="math inline">\(\c
 ##     residuals:          [1.47025, -2.12924, 1.21827, -1.76432, -0.830731, 1.20308, -2.00614, 2.90534]
 ##     std. residuals:     [2.84263, -2.84263, 2.58921, -2.58921, -1.82347, 1.82347, -3.84573, 3.84573]</code></pre>
 <p>Specific elements of the hypothesis test results can be extracted as follows:</p>
-<div class="sourceCode" id="cb231"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb231-1"><a href="found-stats.html#cb231-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get confidence interval of t-test</span></span>
-<span id="cb231-2"><a href="found-stats.html#cb231-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(<span class="fu">UnequalVarianceTTest</span>(perf4, perf1))</span></code></pre></div>
+<div class="sourceCode" id="cb231"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb231-1"><a href="found-stats.html#cb231-1" tabindex="-1"></a><span class="co"># get confidence interval of t-test</span></span>
+<span id="cb231-2"><a href="found-stats.html#cb231-2" tabindex="-1"></a><span class="fu">confint</span>(<span class="fu">UnequalVarianceTTest</span>(perf4, perf1))</span></code></pre></div>
 <pre><code>## (88.56760038276616, 221.38088446571862)</code></pre>
-<div class="sourceCode" id="cb233"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb233-1"><a href="found-stats.html#cb233-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get p-value of chi-square test</span></span>
-<span id="cb233-2"><a href="found-stats.html#cb233-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pvalue</span>(<span class="fu">ChisqTest</span>(contingency))</span></code></pre></div>
+<div class="sourceCode" id="cb233"><pre class="sourceCode julia"><code class="sourceCode julia"><span id="cb233-1"><a href="found-stats.html#cb233-1" tabindex="-1"></a><span class="co"># get p-value of chi-square test</span></span>
+<span id="cb233-2"><a href="found-stats.html#cb233-2" tabindex="-1"></a><span class="fu">pvalue</span>(<span class="fu">ChisqTest</span>(contingency))</span></code></pre></div>
 <pre><code>## 1.0030629464566678e-5</code></pre>
 </div>
 <div id="learning-exercises-1" class="section level2" number="3.6">

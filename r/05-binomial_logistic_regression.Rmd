@@ -426,31 +426,24 @@ We see that the Cox and Snell variant is notably lower than the other estimates,
 
 `r if (knitr::is_latex_output()) '\\index{binomial logistic regression!goodness-of-fit tests}'`Goodness-of-fit tests for logistic regression models compare the predictions to the observed outcome and test the null hypothesis that they are similar.  This means that, unlike in linear regression, a low p-value indicates a poor fit.  One commonly used method is the Hosmer-Lemeshow test, which divides the observations into a number of groups (usually 10) according to their fitted probabilities, calculates the proportion of each group that is positive and then compares this to the expected proportions based on the model prediction using a Chi-squared test.  However, this method has limitations.  It is particularly problematic for situations where there is a low sample size and can return highly varied results based on the number of groups used.  It is therefore recommended to use a range of goodness-of-fit tests, and not rely entirely on any one specific approach.
 
-`r if (knitr::is_latex_output()) '\\index{R!packages!LogisticDx@\\texttt{LogisticDx}}'`In R, the `LogisticDx` package offers a range of diagnostic tools for logistic regression models, and is recommended for exploration.  Here is an example using the `gof()` function for assessing goodness-of-fit. 
+`r if (knitr::is_latex_output()) '\\index{R!packages!generalhoslem@\\texttt{generalhoslem}}'`In R, the `generalhoslem` package can perform the popular Hosmer-Lemeshow test of goodness of fit for logistic regression models, and is recommended for exploration.  Here is an example using the `logitgof()` function for assessing goodness-of-fit, which uses 10 groups as default. 
 
 ```{r}
-library(LogisticDx)
+library(generalhoslem)
 
-# get range of goodness-of-fit diagnostics
-simpler_model_diagnostics <- LogisticDx::gof(simpler_model, 
-                                             plotROC = FALSE)
+# run Hosmer-Lemeshow GOF test on observed versus fitted values
+simpler_model_diagnostics <- generalhoslem::logitgof(
+  salespeople$promoted, 
+  fitted(simpler_model) 
+)
 
-# returns a list
-names(simpler_model_diagnostics)
+# view results
+simpler_model_diagnostics
 ```
-
-The `gof` object in this list provides a range of variants of goodness-of-fit statistics.
 
 `r if (knitr::is_latex_output()) '\\newpage'`
 
-```{r}
-# in our case we are interested in goodness-of-fit statistics
-simpler_model_diagnostics$gof
-
-
-```
-
-This confirms that almost all tests, including the Hosmer-Lemeshow test, which is the first in the list, suggest a fit for our model.  
+The non-significant result of the Hosmer-Lemeshow test suggests a good fit for our model.  
 
 Various measures of predictive accuracy can also be used to assess a binomial logistic regression model in a predictive context, such as precision, recall and ROC-curve analysis.  These are particularly suited for implementations of logistic regression models as predictive classifiers in a Machine Learning context, a topic which is outside the scope of this book.  However, a recommended source for a deeper treatment of goodness-of-fit tests for logistic regression models is @hosmer-logistic. 
 
