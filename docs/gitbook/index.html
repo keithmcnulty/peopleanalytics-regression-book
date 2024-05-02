@@ -113,7 +113,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -126,7 +126,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -490,36 +490,36 @@ div.csl-indent {
 <a href="https://www.routledge.com/Handbook-of-Regression-Modeling-in-People-Analytics-With-Examples-in-R/McNulty/p/book/9781032041742?utm_source=website&utm_medium=shared_link&utm_campaign=B027587_jm1_5ll_8pm_d765_handbookofregressionmodeling"><img src="www/cover/coverpage.png" alt="Handbook of Regression Modeling Cover" width="300"/></a>
 </p>
 <div class="infobox ukraine">
-<p><strong>Note</strong>: This book is published by Chapman &amp; Hall/CRC and can be purchased <a href="https://www.routledge.com/Handbook-of-Regression-Modeling-in-People-Analytics-With-Examples-in-R/McNulty/p/book/9781032041742?utm_source=website&amp;utm_medium=shared_link&amp;utm_campaign=B027587_jm1_5ll_8pm_d765_handbookofregressionmodeling">directly from their website at a 20% discount using discount code LLJM20</a>, as well as from Amazon and other book retailers. <em>Please consider buying this book if you find it useful</em> - all the author’s royalties are donated to the <a href="https://donate.redcross.org.uk/appeal/ukraine-crisis-appeal">Red Cross Ukraine Appeal</a>. The online version of this book is free to read here (thanks to Chapman &amp; Hall/CRC), and licensed under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. If you have any feedback, please feel free to <a href="https://github.com/keithmcnulty/peopleanalytics-regression-book/issues">file an issue on GitHub</a>. Thank you!</p>
+<p><strong>Note</strong>: This book is published by Chapman &amp; Hall/CRC and can be purchased <a href="https://www.routledge.com/Handbook-of-Regression-Modeling-in-People-Analytics-With-Examples-in-R/McNulty/p/book/9781032041742?utm_source=website&amp;utm_medium=shared_link&amp;utm_campaign=B027587_jm1_5ll_8pm_d765_handbookofregressionmodeling">directly from their website at a 20% discount using discount code HRM20</a>, as well as from Amazon and other book retailers. <em>Please consider buying this book if you find it useful</em> - all the author’s royalties are donated to the <a href="https://donate.redcross.org.uk/appeal/ukraine-crisis-appeal">Red Cross Ukraine Appeal</a>. The online version of this book is free to read here (thanks to Chapman &amp; Hall/CRC), and licensed under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. If you have any feedback, please feel free to <a href="https://github.com/keithmcnulty/peopleanalytics-regression-book/issues">file an issue on GitHub</a>. Thank you!</p>
 </div>
 <p>This book is available in <a href="http://peopleanalytics-regression-book.org">bootstrap format</a> and, for those who prefer, in a more plain <a href="http://peopleanalytics-regression-book.org/gitbook/index.html">gitbook format</a>.</p>
 <div id="notes-on-data-used-in-this-book" class="section level3 unnumbered hasAnchor">
 <h3>Notes on data used in this book<a href="index.html#notes-on-data-used-in-this-book" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>For R, Python and Julia users, each of the data sets used in this book can be downloaded individually by following the code in each chapter. Alternatively, packages containing all the data sets used in this book are now available in R and Python. For R users, install and load the <code>peopleanalyticsdata</code> R package.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install peopleanalyticsdata package</span></span>
-<span id="cb1-2"><a href="index.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;peopleanalyticsdata&quot;</span>)</span>
-<span id="cb1-3"><a href="index.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(peopleanalyticsdata)</span>
-<span id="cb1-4"><a href="index.html#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="index.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see a list of data sets</span></span>
-<span id="cb1-6"><a href="index.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="at">package =</span> <span class="st">&quot;peopleanalyticsdata&quot;</span>)</span>
-<span id="cb1-7"><a href="index.html#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="index.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># find out more about a specific data set (&#39;managers&#39; example)</span></span>
-<span id="cb1-9"><a href="index.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(managers)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" tabindex="-1"></a><span class="co"># install peopleanalyticsdata package</span></span>
+<span id="cb1-2"><a href="index.html#cb1-2" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;peopleanalyticsdata&quot;</span>)</span>
+<span id="cb1-3"><a href="index.html#cb1-3" tabindex="-1"></a><span class="fu">library</span>(peopleanalyticsdata)</span>
+<span id="cb1-4"><a href="index.html#cb1-4" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="index.html#cb1-5" tabindex="-1"></a><span class="co"># see a list of data sets</span></span>
+<span id="cb1-6"><a href="index.html#cb1-6" tabindex="-1"></a><span class="fu">data</span>(<span class="at">package =</span> <span class="st">&quot;peopleanalyticsdata&quot;</span>)</span>
+<span id="cb1-7"><a href="index.html#cb1-7" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="index.html#cb1-8" tabindex="-1"></a><span class="co"># find out more about a specific data set (&#39;managers&#39; example)</span></span>
+<span id="cb1-9"><a href="index.html#cb1-9" tabindex="-1"></a><span class="fu">help</span>(managers)</span></code></pre></div>
 <p>For Python users , use <code>pip install peopleanalyticsdata</code> to install the package into your environment. Then, to use the package:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import peopleanalyticsdata package</span></span>
-<span id="cb2-2"><a href="index.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> peopleanalyticsdata <span class="im">as</span> pad</span>
-<span id="cb2-3"><a href="index.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb2-4"><a href="index.html#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="index.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># see a list of data sets</span></span>
-<span id="cb2-6"><a href="index.html#cb2-6" aria-hidden="true" tabindex="-1"></a>pad.list_sets()</span>
-<span id="cb2-7"><a href="index.html#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="index.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># load data into a dataframe</span></span>
-<span id="cb2-9"><a href="index.html#cb2-9" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pad.managers()</span>
-<span id="cb2-10"><a href="index.html#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="index.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># find out more about a specific data set (&#39;managers&#39; example)</span></span>
-<span id="cb2-12"><a href="index.html#cb2-12" aria-hidden="true" tabindex="-1"></a>pad.managers().info()</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="index.html#cb2-1" tabindex="-1"></a><span class="co"># import peopleanalyticsdata package</span></span>
+<span id="cb2-2"><a href="index.html#cb2-2" tabindex="-1"></a><span class="im">import</span> peopleanalyticsdata <span class="im">as</span> pad</span>
+<span id="cb2-3"><a href="index.html#cb2-3" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-4"><a href="index.html#cb2-4" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="index.html#cb2-5" tabindex="-1"></a><span class="co"># see a list of data sets</span></span>
+<span id="cb2-6"><a href="index.html#cb2-6" tabindex="-1"></a>pad.list_sets()</span>
+<span id="cb2-7"><a href="index.html#cb2-7" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="index.html#cb2-8" tabindex="-1"></a><span class="co"># load data into a dataframe</span></span>
+<span id="cb2-9"><a href="index.html#cb2-9" tabindex="-1"></a>df <span class="op">=</span> pad.managers()</span>
+<span id="cb2-10"><a href="index.html#cb2-10" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="index.html#cb2-11" tabindex="-1"></a><span class="co"># find out more about a specific data set (&#39;managers&#39; example)</span></span>
+<span id="cb2-12"><a href="index.html#cb2-12" tabindex="-1"></a>pad.managers().info()</span></code></pre></div>
 <p>Happy modeling!</p>
-<p><em>Last update: 09 February 2023</em></p>
+<p><em>Last update: 02 May 2024</em></p>
 
 </div>
 </div>

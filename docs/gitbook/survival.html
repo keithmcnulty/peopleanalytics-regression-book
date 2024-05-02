@@ -113,7 +113,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -126,7 +126,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -489,12 +489,12 @@ div.csl-indent {
 <li>A graphical representation of the future outcome risk of the different groups over time, using <em>survival curves</em> based on Kaplan-Meier estimates of survival rate. This is usually an effective way to establish <em>prima facie</em> relevance of a certain input variable to the survival outcome and is a very effective visual way of communicating the relevance of the input variable to non-statisticians.</li>
 <li>A <em>Cox proportional hazard</em> regression model to establish statistical significance of input variables and to estimate the effect of each input variable on the comparative risk of the outcome throughout the study period.</li>
 </ul>
-<p>Those seeking a more in depth treatment of survival analysis should consult texts on its use in medical/clinical contexts, and a recommended source is <span class="citation">Collett (<a href="#ref-collett" role="doc-biblioref">2015</a>)</span>. In this chapter we will use a walkthrough example to illustrate a typical use of survival analysis in a people analytics context.</p>
+<p>Those seeking a more in depth treatment of survival analysis should consult texts on its use in medical/clinical contexts, and a recommended source is <span class="citation">Collett (<a href="#ref-collett">2015</a>)</span>. In this chapter we will use a walkthrough example to illustrate a typical use of survival analysis in a people analytics context.</p>
 <p>The <code>job_retention</code> data set shows the results of a study of around 3,800 individuals employed in various fields of employment over a one-year period. At the beginning of the study, the individuals were asked to rate their sentiment towards their job. These individuals were then followed up monthly for a year to determine if they were still working in the same job or had left their job for a substantially different job. If an individual was not successfully followed up in a given month, they were no longer followed up for the remainder of the study period.</p>
-<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="survival.html#cb402-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if needed, get job_retention data</span></span>
-<span id="cb402-2"><a href="survival.html#cb402-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/job_retention.csv&quot;</span></span>
-<span id="cb402-3"><a href="survival.html#cb402-3" aria-hidden="true" tabindex="-1"></a>job_retention <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
-<span id="cb402-4"><a href="survival.html#cb402-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(job_retention)</span></code></pre></div>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="survival.html#cb400-1" tabindex="-1"></a><span class="co"># if needed, get job_retention data</span></span>
+<span id="cb400-2"><a href="survival.html#cb400-2" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/job_retention.csv&quot;</span></span>
+<span id="cb400-3"><a href="survival.html#cb400-3" tabindex="-1"></a>job_retention <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span>
+<span id="cb400-4"><a href="survival.html#cb400-4" tabindex="-1"></a><span class="fu">head</span>(job_retention)</span></code></pre></div>
 <pre><code>##   gender                  field  level sentiment intention left month
 ## 1      M      Public/Government   High         3         8    1     1
 ## 2      F                Finance    Low         8         4    0    12
@@ -519,24 +519,24 @@ S_i = S_{i - 1}(1 - \frac{l_i}{n_i})
 \]</span>
 where <span class="math inline">\(l_i\)</span> is the number reported as left in month <span class="math inline">\(i\)</span>, and <span class="math inline">\(n_i\)</span> is the number still in substantially the same job after month <span class="math inline">\(i - 1\)</span>, with <span class="math inline">\(S_0 = 1\)</span>.</p>
 <p>The <code>survival</code> package in R allows easy construction of survival rates on data in a similar format to that in our <code>job_retention</code> data set. A survival object is created using the <code>Surv()</code> function to track the survival rate at each time period.</p>
-<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="survival.html#cb404-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb404-2"><a href="survival.html#cb404-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb404-3"><a href="survival.html#cb404-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create survival object with event as &#39;left&#39; and time as &#39;month&#39;</span></span>
-<span id="cb404-4"><a href="survival.html#cb404-4" aria-hidden="true" tabindex="-1"></a>retention <span class="ot">&lt;-</span> <span class="fu">Surv</span>(<span class="at">event =</span> job_retention<span class="sc">$</span>left, </span>
-<span id="cb404-5"><a href="survival.html#cb404-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">time =</span> job_retention<span class="sc">$</span>month)</span>
-<span id="cb404-6"><a href="survival.html#cb404-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb404-7"><a href="survival.html#cb404-7" aria-hidden="true" tabindex="-1"></a><span class="co"># view unique values of retention</span></span>
-<span id="cb404-8"><a href="survival.html#cb404-8" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(retention)</span></code></pre></div>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="survival.html#cb402-1" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb402-2"><a href="survival.html#cb402-2" tabindex="-1"></a></span>
+<span id="cb402-3"><a href="survival.html#cb402-3" tabindex="-1"></a><span class="co"># create survival object with event as &#39;left&#39; and time as &#39;month&#39;</span></span>
+<span id="cb402-4"><a href="survival.html#cb402-4" tabindex="-1"></a>retention <span class="ot">&lt;-</span> <span class="fu">Surv</span>(<span class="at">event =</span> job_retention<span class="sc">$</span>left, </span>
+<span id="cb402-5"><a href="survival.html#cb402-5" tabindex="-1"></a>                  <span class="at">time =</span> job_retention<span class="sc">$</span>month)</span>
+<span id="cb402-6"><a href="survival.html#cb402-6" tabindex="-1"></a></span>
+<span id="cb402-7"><a href="survival.html#cb402-7" tabindex="-1"></a><span class="co"># view unique values of retention</span></span>
+<span id="cb402-8"><a href="survival.html#cb402-8" tabindex="-1"></a><span class="fu">unique</span>(retention)</span></code></pre></div>
 <pre><code>##  [1]  1  12+  5   2   3   6   8   4   8+  4+ 11  10   9   7+  5+  3+  7   9+ 11+ 12  10+  6+  2+  1+</code></pre>
 <p>We can see that our survival object records the month at which the individual had left their job if they are recorded as having done so in the data set. If not, the object records the last month at which there was a record of the individual, appended with a ‘+’ to indicate that this was the last record available.</p>
 <p>The <code>survfit()</code> function allows us to calculate <em>Kaplan-Meier estimates</em> of survival for different groups in the data so that we can compare them. We can do this using our usual formula notation but using a survival object as the outcome. Let’s take a look at survival by gender.</p>
-<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="survival.html#cb406-1" aria-hidden="true" tabindex="-1"></a><span class="co"># kaplan-meier estimates of survival by gender</span></span>
-<span id="cb406-2"><a href="survival.html#cb406-2" aria-hidden="true" tabindex="-1"></a>kmestimate_gender <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">survfit</span>(</span>
-<span id="cb406-3"><a href="survival.html#cb406-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> gender, </span>
-<span id="cb406-4"><a href="survival.html#cb406-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> job_retention</span>
-<span id="cb406-5"><a href="survival.html#cb406-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb406-6"><a href="survival.html#cb406-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb406-7"><a href="survival.html#cb406-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(kmestimate_gender)</span></code></pre></div>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="survival.html#cb404-1" tabindex="-1"></a><span class="co"># kaplan-meier estimates of survival by gender</span></span>
+<span id="cb404-2"><a href="survival.html#cb404-2" tabindex="-1"></a>kmestimate_gender <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">survfit</span>(</span>
+<span id="cb404-3"><a href="survival.html#cb404-3" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> gender, </span>
+<span id="cb404-4"><a href="survival.html#cb404-4" tabindex="-1"></a>  <span class="at">data =</span> job_retention</span>
+<span id="cb404-5"><a href="survival.html#cb404-5" tabindex="-1"></a>)</span>
+<span id="cb404-6"><a href="survival.html#cb404-6" tabindex="-1"></a></span>
+<span id="cb404-7"><a href="survival.html#cb404-7" tabindex="-1"></a><span class="fu">summary</span>(kmestimate_gender)</span></code></pre></div>
 <pre><code>## Call: survfit(formula = Surv(event = left, time = month) ~ gender, 
 ##     data = job_retention)
 ## 
@@ -571,20 +571,20 @@ where <span class="math inline">\(l_i\)</span> is the number reported as left in
 ##    12   1460      36    0.623 0.00983        0.604        0.642</code></pre>
 <p>We can see that the <code>n.risk</code>, <code>n.event</code> and <code>survival</code> columns for each group correspond to the <span class="math inline">\(n_i\)</span>, <span class="math inline">\(l_i\)</span> and <span class="math inline">\(S_i\)</span> in our formula above and that the confidence intervals for each survival rate are given. This can be very useful if we wish to illustrate a likely effect of a given input variable on survival likelihood.</p>
 <p>Let’s imagine that we wish to determine if the sentiment of the individual had an impact on survival likelihood. We can divide our population into two (or more) groups based on their sentiment and compare their survival rates.</p>
-<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="survival.html#cb408-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new field to define high sentiment (&gt;= 7)</span></span>
-<span id="cb408-2"><a href="survival.html#cb408-2" aria-hidden="true" tabindex="-1"></a>job_retention<span class="sc">$</span>sentiment_category <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
-<span id="cb408-3"><a href="survival.html#cb408-3" aria-hidden="true" tabindex="-1"></a>  job_retention<span class="sc">$</span>sentiment <span class="sc">&gt;=</span> <span class="dv">7</span>, </span>
-<span id="cb408-4"><a href="survival.html#cb408-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;High&quot;</span>, </span>
-<span id="cb408-5"><a href="survival.html#cb408-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Not High&quot;</span></span>
-<span id="cb408-6"><a href="survival.html#cb408-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb408-7"><a href="survival.html#cb408-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb408-8"><a href="survival.html#cb408-8" aria-hidden="true" tabindex="-1"></a><span class="co"># generate survival rates by sentiment category</span></span>
-<span id="cb408-9"><a href="survival.html#cb408-9" aria-hidden="true" tabindex="-1"></a>kmestimate_sentimentcat <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">survfit</span>(</span>
-<span id="cb408-10"><a href="survival.html#cb408-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> sentiment_category,</span>
-<span id="cb408-11"><a href="survival.html#cb408-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> job_retention</span>
-<span id="cb408-12"><a href="survival.html#cb408-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb408-13"><a href="survival.html#cb408-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb408-14"><a href="survival.html#cb408-14" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(kmestimate_sentimentcat)</span></code></pre></div>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="survival.html#cb406-1" tabindex="-1"></a><span class="co"># create a new field to define high sentiment (&gt;= 7)</span></span>
+<span id="cb406-2"><a href="survival.html#cb406-2" tabindex="-1"></a>job_retention<span class="sc">$</span>sentiment_category <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
+<span id="cb406-3"><a href="survival.html#cb406-3" tabindex="-1"></a>  job_retention<span class="sc">$</span>sentiment <span class="sc">&gt;=</span> <span class="dv">7</span>, </span>
+<span id="cb406-4"><a href="survival.html#cb406-4" tabindex="-1"></a>  <span class="st">&quot;High&quot;</span>, </span>
+<span id="cb406-5"><a href="survival.html#cb406-5" tabindex="-1"></a>  <span class="st">&quot;Not High&quot;</span></span>
+<span id="cb406-6"><a href="survival.html#cb406-6" tabindex="-1"></a>)</span>
+<span id="cb406-7"><a href="survival.html#cb406-7" tabindex="-1"></a></span>
+<span id="cb406-8"><a href="survival.html#cb406-8" tabindex="-1"></a><span class="co"># generate survival rates by sentiment category</span></span>
+<span id="cb406-9"><a href="survival.html#cb406-9" tabindex="-1"></a>kmestimate_sentimentcat <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">survfit</span>(</span>
+<span id="cb406-10"><a href="survival.html#cb406-10" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> sentiment_category,</span>
+<span id="cb406-11"><a href="survival.html#cb406-11" tabindex="-1"></a>  <span class="at">data =</span> job_retention</span>
+<span id="cb406-12"><a href="survival.html#cb406-12" tabindex="-1"></a>)</span>
+<span id="cb406-13"><a href="survival.html#cb406-13" tabindex="-1"></a></span>
+<span id="cb406-14"><a href="survival.html#cb406-14" tabindex="-1"></a><span class="fu">summary</span>(kmestimate_sentimentcat)</span></code></pre></div>
 <pre><code>## Call: survfit(formula = Surv(event = left, time = month) ~ sentiment_category, 
 ##     data = job_retention)
 ## 
@@ -618,18 +618,18 @@ where <span class="math inline">\(l_i\)</span> is the number reported as left in
 ##    11    283      24    0.534 0.02209        0.493        0.579
 ##    12    254       8    0.517 0.02218        0.476        0.563</code></pre>
 <p>We can see that survival seems to consistently trend higher for those with high sentiment towards their jobs. The <code>ggsurvplot()</code> function in the <code>survminer</code> package can visualize this neatly and also provide additional statistical information on the differences between the groups, as shown in Figure <a href="survival.html#fig:survivalplot">9.1</a>.</p>
-<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="survival.html#cb410-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survminer)</span>
-<span id="cb410-2"><a href="survival.html#cb410-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb410-3"><a href="survival.html#cb410-3" aria-hidden="true" tabindex="-1"></a><span class="co"># show survival curves with p-value estimate and confidence intervals</span></span>
-<span id="cb410-4"><a href="survival.html#cb410-4" aria-hidden="true" tabindex="-1"></a>survminer<span class="sc">::</span><span class="fu">ggsurvplot</span>(</span>
-<span id="cb410-5"><a href="survival.html#cb410-5" aria-hidden="true" tabindex="-1"></a>  kmestimate_sentimentcat,</span>
-<span id="cb410-6"><a href="survival.html#cb410-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pval =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb410-7"><a href="survival.html#cb410-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">conf.int =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb410-8"><a href="survival.html#cb410-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>),</span>
-<span id="cb410-9"><a href="survival.html#cb410-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">linetype =</span> <span class="fu">c</span>(<span class="st">&quot;solid&quot;</span>, <span class="st">&quot;dashed&quot;</span>),</span>
-<span id="cb410-10"><a href="survival.html#cb410-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;Month&quot;</span>,</span>
-<span id="cb410-11"><a href="survival.html#cb410-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">&quot;Retention Rate&quot;</span></span>
-<span id="cb410-12"><a href="survival.html#cb410-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="survival.html#cb408-1" tabindex="-1"></a><span class="fu">library</span>(survminer)</span>
+<span id="cb408-2"><a href="survival.html#cb408-2" tabindex="-1"></a></span>
+<span id="cb408-3"><a href="survival.html#cb408-3" tabindex="-1"></a><span class="co"># show survival curves with p-value estimate and confidence intervals</span></span>
+<span id="cb408-4"><a href="survival.html#cb408-4" tabindex="-1"></a>survminer<span class="sc">::</span><span class="fu">ggsurvplot</span>(</span>
+<span id="cb408-5"><a href="survival.html#cb408-5" tabindex="-1"></a>  kmestimate_sentimentcat,</span>
+<span id="cb408-6"><a href="survival.html#cb408-6" tabindex="-1"></a>  <span class="at">pval =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb408-7"><a href="survival.html#cb408-7" tabindex="-1"></a>  <span class="at">conf.int =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb408-8"><a href="survival.html#cb408-8" tabindex="-1"></a>  <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>),</span>
+<span id="cb408-9"><a href="survival.html#cb408-9" tabindex="-1"></a>  <span class="at">linetype =</span> <span class="fu">c</span>(<span class="st">&quot;solid&quot;</span>, <span class="st">&quot;dashed&quot;</span>),</span>
+<span id="cb408-10"><a href="survival.html#cb408-10" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;Month&quot;</span>,</span>
+<span id="cb408-11"><a href="survival.html#cb408-11" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">&quot;Retention Rate&quot;</span></span>
+<span id="cb408-12"><a href="survival.html#cb408-12" tabindex="-1"></a>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:survivalplot"></span>
 <img src="_main_files/figure-html/survivalplot-1.png" alt="Survival curves by sentiment category in the `job_retention` data" width="672" />
 <p class="caption">
@@ -656,14 +656,14 @@ where <span class="math inline">\(h_0(t)\)</span> is a base or intercept hazard 
 <div id="running-a-cox-proportional-hazard-regression-model" class="section level3 hasAnchor" number="9.2.1">
 <h3><span class="header-section-number">9.2.1</span> Running a Cox proportional hazard regression model<a href="survival.html#running-a-cox-proportional-hazard-regression-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>A Cox proportional hazard model can be run using the <code>coxph()</code> function in the <code>survival</code> package, with the outcome as a survival object. Let’s model our survival against the input variables <code>gender</code>, <code>field</code>, <code>level</code> and <code>sentiment</code>.</p>
-<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="survival.html#cb411-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run cox model against survival outcome</span></span>
-<span id="cb411-2"><a href="survival.html#cb411-2" aria-hidden="true" tabindex="-1"></a>cox_model <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">coxph</span>(</span>
-<span id="cb411-3"><a href="survival.html#cb411-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> gender <span class="sc">+</span> </span>
-<span id="cb411-4"><a href="survival.html#cb411-4" aria-hidden="true" tabindex="-1"></a>    field <span class="sc">+</span> level <span class="sc">+</span> sentiment,</span>
-<span id="cb411-5"><a href="survival.html#cb411-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> job_retention</span>
-<span id="cb411-6"><a href="survival.html#cb411-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb411-7"><a href="survival.html#cb411-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb411-8"><a href="survival.html#cb411-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cox_model)</span></code></pre></div>
+<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="survival.html#cb409-1" tabindex="-1"></a><span class="co"># run cox model against survival outcome</span></span>
+<span id="cb409-2"><a href="survival.html#cb409-2" tabindex="-1"></a>cox_model <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">coxph</span>(</span>
+<span id="cb409-3"><a href="survival.html#cb409-3" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> gender <span class="sc">+</span> </span>
+<span id="cb409-4"><a href="survival.html#cb409-4" tabindex="-1"></a>    field <span class="sc">+</span> level <span class="sc">+</span> sentiment,</span>
+<span id="cb409-5"><a href="survival.html#cb409-5" tabindex="-1"></a>  <span class="at">data =</span> job_retention</span>
+<span id="cb409-6"><a href="survival.html#cb409-6" tabindex="-1"></a>)</span>
+<span id="cb409-7"><a href="survival.html#cb409-7" tabindex="-1"></a></span>
+<span id="cb409-8"><a href="survival.html#cb409-8" tabindex="-1"></a><span class="fu">summary</span>(cox_model)</span></code></pre></div>
 <pre><code>## Call:
 ## survival::coxph(formula = Surv(event = left, time = month) ~ 
 ##     gender + field + level + sentiment, data = job_retention)
@@ -710,7 +710,7 @@ where <span class="math inline">\(h_0(t)\)</span> is a base or intercept hazard 
 <h3><span class="header-section-number">9.2.2</span> Checking the proportional hazard assumption<a href="survival.html#checking-the-proportional-hazard-assumption" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Note that we mentioned in the previous section a critical assumption for our Cox proportional hazard model to be valid, called the proportional hazard assumption. As always, it is important to check this assumption before finalizing any inferences or conclusions from your model.</p>
 <p>The most popular test of this assumption uses a residual known as a <em>Schoenfeld residual</em>, which would be expected to be independent of time if the proportional hazard assumption holds. The <code>cox.zph()</code> function in the <code>survival</code> package runs a statistical test on the null hypothesis that the Schoenfeld residuals are independent of time. The test is conducted on every input variable and on the model as a whole, and a significant result would reject the proportional hazard assumption.</p>
-<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="survival.html#cb413-1" aria-hidden="true" tabindex="-1"></a>(ph_check <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">cox.zph</span>(cox_model))</span></code></pre></div>
+<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="survival.html#cb411-1" tabindex="-1"></a>(ph_check <span class="ot">&lt;-</span> survival<span class="sc">::</span><span class="fu">cox.zph</span>(cox_model))</span></code></pre></div>
 <pre><code>##            chisq df    p
 ## gender     0.726  1 0.39
 ## field      6.656  5 0.25
@@ -718,10 +718,10 @@ where <span class="math inline">\(h_0(t)\)</span> is a base or intercept hazard 
 ## sentiment  1.828  1 0.18
 ## GLOBAL    11.156  9 0.27</code></pre>
 <p>In our case, we can confirm that the proportional hazard assumption is not rejected. The <code>ggcoxzph()</code> function in the <code>survminer</code> package takes the result of the <code>cox.zph()</code> check and allows a graphical check by plotting the residuals against time, as seen in Figure <a href="survival.html#fig:schoenfeld">9.2</a>.</p>
-<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb415-1"><a href="survival.html#cb415-1" aria-hidden="true" tabindex="-1"></a>survminer<span class="sc">::</span><span class="fu">ggcoxzph</span>(ph_check, </span>
-<span id="cb415-2"><a href="survival.html#cb415-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">font.main =</span> <span class="dv">10</span>, </span>
-<span id="cb415-3"><a href="survival.html#cb415-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">font.x =</span> <span class="dv">10</span>, </span>
-<span id="cb415-4"><a href="survival.html#cb415-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">font.y =</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb413-1"><a href="survival.html#cb413-1" tabindex="-1"></a>survminer<span class="sc">::</span><span class="fu">ggcoxzph</span>(ph_check, </span>
+<span id="cb413-2"><a href="survival.html#cb413-2" tabindex="-1"></a>                    <span class="at">font.main =</span> <span class="dv">10</span>, </span>
+<span id="cb413-3"><a href="survival.html#cb413-3" tabindex="-1"></a>                    <span class="at">font.x =</span> <span class="dv">10</span>, </span>
+<span id="cb413-4"><a href="survival.html#cb413-4" tabindex="-1"></a>                    <span class="at">font.y =</span> <span class="dv">10</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:schoenfeld"></span>
 <img src="_main_files/figure-html/schoenfeld-1.png" alt="Schoenfeld test on proportional hazard assumption for `cox_model`" width="672" />
 <p class="caption">
@@ -734,19 +734,19 @@ Figure 9.2: Schoenfeld test on proportional hazard assumption for <code>cox_mode
 <h2><span class="header-section-number">9.3</span> Frailty models<a href="survival.html#frailty-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We noticed in our example in the previous section that certain fields of employment appeared to have a significant effect on the attrition hazard. It is therefore possible that different fields of employment have different base hazard functions, and we may wish to take this into account in determining if input variables have a significant relationship with attrition. This is analogous to a mixed model which we looked at in Section <a href="modeling-explicit-and-latent-hierarchy-in-data.html#mixed">8.1</a>.</p>
 <p>In this case we would apply a random intercept effect to the base hazard function <span class="math inline">\(h_0(t)\)</span> according to the field of employment of an individual, in order to take this into account in our modeling. This kind of model is called a <em>frailty model</em>, taken from the clinical context, where different groups of patients may have different frailties (background risks of death).</p>
-<p>There are many variants of how frailty models are run in the clinical context (see <span class="citation">Collett (<a href="#ref-collett" role="doc-biblioref">2015</a>)</span> for an excellent exposition of these), but the main application of a frailty model in people analytics would be to adapt a Cox proportional hazard model to take into account different background risks of the hazard event occurring among different groups in the data. This is called a <em>shared frailty model</em>. The <code>frailtypack</code> R package allows various frailty models to be run with relative ease. This is how we would run a shared frailty model on our <code>job_retention</code> data to take account of the different background attrition risk for the different fields of employment.</p>
-<div class="sourceCode" id="cb416"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb416-1"><a href="survival.html#cb416-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(frailtypack)</span>
-<span id="cb416-2"><a href="survival.html#cb416-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb416-3"><a href="survival.html#cb416-3" aria-hidden="true" tabindex="-1"></a>(frailty_model <span class="ot">&lt;-</span> frailtypack<span class="sc">::</span><span class="fu">frailtyPenal</span>(</span>
-<span id="cb416-4"><a href="survival.html#cb416-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> gender <span class="sc">+</span> </span>
-<span id="cb416-5"><a href="survival.html#cb416-5" aria-hidden="true" tabindex="-1"></a>    level <span class="sc">+</span> sentiment <span class="sc">+</span> <span class="fu">cluster</span>(field),</span>
-<span id="cb416-6"><a href="survival.html#cb416-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> job_retention,</span>
-<span id="cb416-7"><a href="survival.html#cb416-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.knots =</span> <span class="dv">12</span>, </span>
-<span id="cb416-8"><a href="survival.html#cb416-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">kappa =</span> <span class="dv">10000</span></span>
-<span id="cb416-9"><a href="survival.html#cb416-9" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
+<p>There are many variants of how frailty models are run in the clinical context (see <span class="citation">Collett (<a href="#ref-collett">2015</a>)</span> for an excellent exposition of these), but the main application of a frailty model in people analytics would be to adapt a Cox proportional hazard model to take into account different background risks of the hazard event occurring among different groups in the data. This is called a <em>shared frailty model</em>. The <code>frailtypack</code> R package allows various frailty models to be run with relative ease. This is how we would run a shared frailty model on our <code>job_retention</code> data to take account of the different background attrition risk for the different fields of employment.</p>
+<div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb414-1"><a href="survival.html#cb414-1" tabindex="-1"></a><span class="fu">library</span>(frailtypack)</span>
+<span id="cb414-2"><a href="survival.html#cb414-2" tabindex="-1"></a></span>
+<span id="cb414-3"><a href="survival.html#cb414-3" tabindex="-1"></a>(frailty_model <span class="ot">&lt;-</span> frailtypack<span class="sc">::</span><span class="fu">frailtyPenal</span>(</span>
+<span id="cb414-4"><a href="survival.html#cb414-4" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> gender <span class="sc">+</span> </span>
+<span id="cb414-5"><a href="survival.html#cb414-5" tabindex="-1"></a>    level <span class="sc">+</span> sentiment <span class="sc">+</span> <span class="fu">cluster</span>(field),</span>
+<span id="cb414-6"><a href="survival.html#cb414-6" tabindex="-1"></a>  <span class="at">data =</span> job_retention,</span>
+<span id="cb414-7"><a href="survival.html#cb414-7" tabindex="-1"></a>  <span class="at">n.knots =</span> <span class="dv">12</span>, </span>
+<span id="cb414-8"><a href="survival.html#cb414-8" tabindex="-1"></a>  <span class="at">kappa =</span> <span class="dv">10000</span></span>
+<span id="cb414-9"><a href="survival.html#cb414-9" tabindex="-1"></a>))</span></code></pre></div>
 <pre><code>## 
 ## Be patient. The program is computing ... 
-## The program took 1.94 seconds</code></pre>
+## The program took 1.21 seconds</code></pre>
 <pre><code>## Call:
 ## frailtypack::frailtyPenal(formula = Surv(event = left, time = month) ~ 
 ##     gender + level + sentiment + cluster(field), data = job_retention, 
@@ -782,18 +782,18 @@ Figure 9.2: Schoenfeld test on proportional hazard assumption for <code>cox_mode
 ##       Value of the smoothing parameter:  10000, DoF:  6.31</code></pre>
 <p>We can see that the frailty parameter is significant, indicating that there is sufficient difference in the background attrition risk to justify the application of a random hazard effect. We also see that the level of employment now becomes more significant in addition to sentiment, with Low and Medium level employees more likely to leave compared to High level employees.</p>
 <p>The <code>frailtyPenal()</code> function can also be a useful way to observe the different baseline survivals for groups in the data. For example, a simple stratified Cox proportional hazard model based on sentiment category can be constructed<a href="#fn42" class="footnote-ref" id="fnref42"><sup>42</sup></a>.</p>
-<div class="sourceCode" id="cb419"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb419-1"><a href="survival.html#cb419-1" aria-hidden="true" tabindex="-1"></a>stratified_base <span class="ot">&lt;-</span> frailtypack<span class="sc">::</span><span class="fu">frailtyPenal</span>(</span>
-<span id="cb419-2"><a href="survival.html#cb419-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> </span>
-<span id="cb419-3"><a href="survival.html#cb419-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">strata</span>(sentiment_category),</span>
-<span id="cb419-4"><a href="survival.html#cb419-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> job_retention,</span>
-<span id="cb419-5"><a href="survival.html#cb419-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.knots =</span> <span class="dv">12</span>,</span>
-<span id="cb419-6"><a href="survival.html#cb419-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">kappa =</span> <span class="fu">rep</span>(<span class="dv">10000</span>, <span class="dv">2</span>)</span>
-<span id="cb419-7"><a href="survival.html#cb419-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb417-1"><a href="survival.html#cb417-1" tabindex="-1"></a>stratified_base <span class="ot">&lt;-</span> frailtypack<span class="sc">::</span><span class="fu">frailtyPenal</span>(</span>
+<span id="cb417-2"><a href="survival.html#cb417-2" tabindex="-1"></a>  <span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">event =</span> left, <span class="at">time =</span> month) <span class="sc">~</span> </span>
+<span id="cb417-3"><a href="survival.html#cb417-3" tabindex="-1"></a>    <span class="fu">strata</span>(sentiment_category),</span>
+<span id="cb417-4"><a href="survival.html#cb417-4" tabindex="-1"></a>  <span class="at">data =</span> job_retention,</span>
+<span id="cb417-5"><a href="survival.html#cb417-5" tabindex="-1"></a>  <span class="at">n.knots =</span> <span class="dv">12</span>,</span>
+<span id="cb417-6"><a href="survival.html#cb417-6" tabindex="-1"></a>  <span class="at">kappa =</span> <span class="fu">rep</span>(<span class="dv">10000</span>, <span class="dv">2</span>)</span>
+<span id="cb417-7"><a href="survival.html#cb417-7" tabindex="-1"></a>)</span></code></pre></div>
 <p>This can then be plotted to observe how baseline retention differs by group, as in Figure <a href="survival.html#fig:stratified">9.3</a><a href="#fn43" class="footnote-ref" id="fnref43"><sup>43</sup></a>.</p>
-<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb420-1"><a href="survival.html#cb420-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(stratified_base, <span class="at">type.plot =</span> <span class="st">&quot;Survival&quot;</span>, </span>
-<span id="cb420-2"><a href="survival.html#cb420-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">pos.legend =</span> <span class="st">&quot;topright&quot;</span>, <span class="at">Xlab =</span> <span class="st">&quot;Month&quot;</span>,</span>
-<span id="cb420-3"><a href="survival.html#cb420-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">Ylab =</span> <span class="st">&quot;Baseline retention rate&quot;</span>,</span>
-<span id="cb420-4"><a href="survival.html#cb420-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">color =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb418-1"><a href="survival.html#cb418-1" tabindex="-1"></a><span class="fu">plot</span>(stratified_base, <span class="at">type.plot =</span> <span class="st">&quot;Survival&quot;</span>, </span>
+<span id="cb418-2"><a href="survival.html#cb418-2" tabindex="-1"></a>     <span class="at">pos.legend =</span> <span class="st">&quot;topright&quot;</span>, <span class="at">Xlab =</span> <span class="st">&quot;Month&quot;</span>,</span>
+<span id="cb418-3"><a href="survival.html#cb418-3" tabindex="-1"></a>     <span class="at">Ylab =</span> <span class="st">&quot;Baseline retention rate&quot;</span>,</span>
+<span id="cb418-4"><a href="survival.html#cb418-4" tabindex="-1"></a>     <span class="at">color =</span> <span class="dv">1</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:stratified"></span>
 <img src="_main_files/figure-html/stratified-1.png" alt="Baseline retention curves for the two sentiment categories in the `job_retention` data set" width="672" />
 <p class="caption">
