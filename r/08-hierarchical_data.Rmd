@@ -324,7 +324,7 @@ Finally, the parameter estimates for the latent variables should be examined. In
 
 In our case we could consider dropping `Pol3`, `Loc1`, `Pers1` and `Nat3` from the measurement model as they have factor loadings of less than 0.7 and are in factors that contain three items.  We will fit this revised measurement model, and rather than printing the entire output again, we will focus here on our CFI, TLI, RMSEA and SRMR statistics to see if they have improved.  It is advisable, however, that factor loadings are also checked, especially where primary items that scale the variance of latent factors have been removed. 
 
-```{r}
+```{r lavaan}
 meas_mod_revised <- "
 # measurement model
 Pol =~ Pol1 + Pol2

@@ -7,7 +7,7 @@
 <title>6 Multinomial Logistic Regression for Nominal Category Outcomes | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
 <meta name="author" content="Keith McNulty">
 <meta name="description" content="In the previous chapter we looked at how to model a binary or dichotomous outcome using a logistic function. In this chapter we look at how to extend this to the case when the outcome has a number...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.42 with bs4_book()">
 <meta property="og:title" content="6 Multinomial Logistic Regression for Nominal Category Outcomes | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://peopleanalytics-regression-book.org/multinomial-logistic-regression-for-nominal-category-outcomes.html">
@@ -20,14 +20,15 @@
 <meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python">
 <meta name="citation_author" content="Keith McNulty">
 <meta name="citation_publication_date" content="2021">
 <meta name="citation_isbn" content="9781003194156">
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><script src="libs/plotly-binding-4.10.0/plotly.js"></script><script src="libs/typedarray-0.1/typedarray.min.js"></script><link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet">
-<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet">
-<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script><script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="libs/plotly-binding-4.10.4/plotly.js"></script><script src="libs/typedarray-0.1/typedarray.min.js"></script><link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script><script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
@@ -43,6 +44,7 @@
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
+          margin-bottom: 0em;
         }
     .hanging div.csl-entry {
       margin-left:2em;
@@ -121,14 +123,14 @@
 </h3>
 <p>A binary or dichotomous outcome like we studied in the previous chapter is already in fact a nominal outcome with two categories, so in principle we already have the basic technology with which to study this problem. That said, the way we approach the problem can differ according to the types of inferences we wish to make.</p>
 <p>If we only wish to make inferences about the choice of each specific category—what drives whether an observation is in Category A versus the others, or Category B versus the others—then we have the option of running separate binomial logistic regression models on a ‘one versus the rest’ basis. In this case we can refine our model differently for each category, eliminating variables that are not significant in determining membership of that category. This could potentially lead to models being defined differently for different target outcome categories. Notably, there will be no common comparison category between these models. This is sometimes called a <em>stratified</em> approach.</p>
-<p>However, in many studies there is a need for a ‘reference’ category to better understand the relative odds of category membership. For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the ‘most healthy’ or ‘most recovered’ patients)<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;In &lt;span class="citation"&gt;Hosmer, Lemeshow, and Sturdivant (&lt;a href="references.html#ref-hosmer-logistic"&gt;2013&lt;/a&gt;)&lt;/span&gt;, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient Care as the reference.&lt;/p&gt;'><sup>30</sup></a>. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different; we would need to make decisions on refining the model differently, and we interpret the coefficients in a different way.</p>
+<p>However, in many studies there is a need for a ‘reference’ category to better understand the relative odds of category membership. For example, in clinical settings the relative risk factors for different clinical outcomes can only be understood relative to a reference (usually that of the ‘most healthy’ or ‘most recovered’ patients)<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;In &lt;span class="citation"&gt;Hosmer, Lemeshow, and Sturdivant (&lt;a href="references.html#ref-hosmer-logistic"&gt;2013&lt;/a&gt;)&lt;/span&gt;, a good example is provided where the outcome is the placement of psychiatric patients in various forms of aftercare, with Outpatient Care as the reference.&lt;/p&gt;'><sup>29</sup></a>. In organizational settings, one can imagine that the odds of different types of mid-tenure career path changes could only be well understood relative to a reference career path (probably the most common one). While this approach would still be founded on binomial models, the reference points of these models are different; we would need to make decisions on refining the model differently, and we interpret the coefficients in a different way.</p>
 <p>In this chapter we will briefly look at the stratified approach (which is effectively a repetition of work done in the previous chapter) before focusing more intently on how we construct models and make inferences using a multinomial approach.</p>
 </div>
 <div id="use-cases-for-multinomial-logistic-regression" class="section level3" number="6.1.2">
 <h3>
 <span class="header-section-number">6.1.2</span> Use cases for multinomial logistic regression<a class="anchor" aria-label="anchor" href="#use-cases-for-multinomial-logistic-regression"><i class="fas fa-link"></i></a>
 </h3>
-<p>Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order. An underlying assumption is the independence of irrelevant alternatives (IIA). Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, would disproportionately influence the membership of one of the other categories<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Put differently, it assumes that adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption.&lt;/p&gt;"><sup>31</sup></a>. In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives, which are beyond the scope of this book.</p>
+<p>Multinomial logistic regression is appropriate for any situation where a limited number of outcome categories (more than two) are being modeled and where those outcome categories have no order. An underlying assumption is the independence of irrelevant alternatives (IIA). Otherwise stated, this assumption means that there is no other alternative for the outcome that, if included, would disproportionately influence the membership of one of the other categories<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Put differently, it assumes that adding or removing any other available alternative would affect the odds of the other alternatives in equal proportion. It has been shown that there have been many studies that proceeded with a multinomial approach despite the violation of this assumption.&lt;/p&gt;"><sup>30</sup></a>. In cases where this assumption is violated, one could choose to take a stratified approach, or attempt hierarchical or nested multinomial model alternatives, which are beyond the scope of this book.</p>
 <p>Examples of typical situations that might be modeled by multinomial logistic regression include:</p>
 <ol style="list-style-type: decimal">
 <li>Modeling voting choice in elections with multiple candidates</li>
@@ -157,13 +159,13 @@
 <code>absent</code>: The number of days the individual was absent from work in the year prior to the choice</li>
 </ul>
 <p>First we load the data and take a look at it briefly.</p>
-<div class="sourceCode" id="cb326"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># if needed, download health_insurance data</span>
-<span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"http://peopleanalytics-regression-book.org/data/health_insurance.csv"</span>
-<span class="va">health_insurance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb327"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># view first few rows</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb328"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># if needed, download health_insurance data</span></span>
+<span><span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"http://peopleanalytics-regression-book.org/data/health_insurance.csv"</span></span>
+<span><span class="va">health_insurance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb329"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># view first few rows</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##   product age household position_level gender absent
 ## 1       C  57         2              2   Male     10
 ## 2       A  21         7              2   Male      7
@@ -171,9 +173,9 @@
 ## 4       A  36         4              2 Female      6
 ## 5       A  23         0              2   Male     11
 ## 6       A  31         5              1   Male     14</code></pre>
-<div class="sourceCode" id="cb329"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># view structure</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb331"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># view structure</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## 'data.frame':    1453 obs. of  6 variables:
 ##  $ product       : chr  "C" "A" "C" "A" ...
 ##  $ age           : int  57 21 66 36 23 31 37 37 55 66 ...
@@ -182,14 +184,14 @@
 ##  $ gender        : chr  "Male" "Male" "Male" "Female" ...
 ##  $ absent        : int  10 7 1 6 11 14 12 25 3 18 ...</code></pre>
 <p>It looks like two of these columns should be converted to factor—<code>product</code> and <code>gender</code>—so let’s do that and then run a pairplot for a quick overview of any patterns, which can be seen in Figure <a href="multinomial-logistic-regression-for-nominal-category-outcomes.html#fig:insurance-pairplot">6.1</a>.</p>
-<div class="sourceCode" id="cb331"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggobi.github.io/ggally">GGally</a></span><span class="op">)</span>
-
-<span class="co"># convert product and gender to factors</span>
-<span class="va">health_insurance</span><span class="op">$</span><span class="va">product</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">$</span><span class="va">product</span><span class="op">)</span>
-<span class="va">health_insurance</span><span class="op">$</span><span class="va">gender</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">$</span><span class="va">gender</span><span class="op">)</span>
-
-<span class="fu">GGally</span><span class="fu">::</span><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb333"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggobi.github.io/ggally/">GGally</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># convert product and gender to factors</span></span>
+<span><span class="va">health_insurance</span><span class="op">$</span><span class="va">product</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">$</span><span class="va">product</span><span class="op">)</span></span>
+<span><span class="va">health_insurance</span><span class="op">$</span><span class="va">gender</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">$</span><span class="va">gender</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">GGally</span><span class="fu">::</span><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:insurance-pairplot"></span>
 <img src="_main_files/figure-html/insurance-pairplot-1.png" alt="Pairplot of the `health_insurance` data set" width="672"><p class="caption">
@@ -209,29 +211,29 @@ Figure 6.1: Pairplot of the <code>health_insurance</code> data set
 <span class="header-section-number">6.2.1</span> Modeling the choice of Product A versus other products<a class="anchor" aria-label="anchor" href="#modeling-the-choice-of-product-a-versus-other-products"><i class="fas fa-link"></i></a>
 </h3>
 <p>Let’s first create and refine a binomial model for the choice of Product A.</p>
-<div class="sourceCode" id="cb332"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/toshi-ara/makedummies">makedummies</a></span><span class="op">)</span>
-
-<span class="co"># create dummies for product choice outcome</span>
-<span class="va">dummy_product</span> <span class="op">&lt;-</span> <span class="fu">makedummies</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/makedummies/man/makedummies.html">makedummies</a></span><span class="op">(</span><span class="va">health_insurance</span>, 
-                                          col <span class="op">=</span> <span class="st">"product"</span>,
-                                          basal_level <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co"># combine to original set</span>
-<span class="va">health_insurance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">health_insurance</span>, <span class="va">dummy_product</span><span class="op">)</span>
-
-<span class="co"># run a binomial model for the Product A dummy against </span>
-<span class="co"># all input variables (let glm() handle dummy input variables)</span>
-<span class="va">A_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="va">product_A</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">gender</span> <span class="op">+</span> <span class="va">household</span> <span class="op">+</span> 
-    <span class="va">position_level</span> <span class="op">+</span> <span class="va">absent</span>, 
-  data <span class="op">=</span> <span class="va">health_insurance</span>, 
-  family <span class="op">=</span> <span class="st">"binomial"</span>
-<span class="op">)</span>
-
-
-<span class="co"># summary</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">A_model</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb334"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/toshi-ara/makedummies">makedummies</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create dummies for product choice outcome</span></span>
+<span><span class="va">dummy_product</span> <span class="op">&lt;-</span> <span class="fu">makedummies</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/makedummies/man/makedummies.html">makedummies</a></span><span class="op">(</span><span class="va">health_insurance</span>, </span>
+<span>                                          col <span class="op">=</span> <span class="st">"product"</span>,</span>
+<span>                                          basal_level <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># combine to original set</span></span>
+<span><span class="va">health_insurance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">health_insurance</span>, <span class="va">dummy_product</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># run a binomial model for the Product A dummy against </span></span>
+<span><span class="co"># all input variables (let glm() handle dummy input variables)</span></span>
+<span><span class="va">A_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">product_A</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">gender</span> <span class="op">+</span> <span class="va">household</span> <span class="op">+</span> </span>
+<span>    <span class="va">position_level</span> <span class="op">+</span> <span class="va">absent</span>, </span>
+<span>  data <span class="op">=</span> <span class="va">health_insurance</span>, </span>
+<span>  family <span class="op">=</span> <span class="st">"binomial"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># summary</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">A_model</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = product_A ~ age + gender + household + position_level + 
@@ -258,16 +260,16 @@ Figure 6.1: Pairplot of the <code>health_insurance</code> data set
 ## Number of Fisher Scoring iterations: 6</code></pre>
 <p>We see that all variables except <code>absent</code> seem to play a significant role in the choice of Product A. All else being equal, being older makes the choice of Product A less likely. Males are more likely to choose Product A, and larger households and higher position levels also make the choice of Product A more likely. Based on this, we can consider simplifying our model to remove <code>absent</code>. We can also calculate odds ratios and perform some model diagnostics if we wish, similar to how we approached the problem in the previous chapter.</p>
 <p>These results need to be interpreted carefully. For example, the odds ratios for the Product A choice based on a simplified model are as follows:</p>
-<div class="sourceCode" id="cb334"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># simpler model</span>
-<span class="va">A_simple</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="va">product_A</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">household</span> <span class="op">+</span> <span class="va">gender</span> <span class="op">+</span> <span class="va">position_level</span>, 
-  data <span class="op">=</span> <span class="va">health_insurance</span>,
-  family <span class="op">=</span> <span class="st">"binomial"</span>
-<span class="op">)</span>
-
-<span class="co"># view odds ratio as a data frame</span>
-<span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">A_simple</span><span class="op">$</span><span class="va">coefficients</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb336"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># simpler model</span></span>
+<span><span class="va">A_simple</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">product_A</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">household</span> <span class="op">+</span> <span class="va">gender</span> <span class="op">+</span> <span class="va">position_level</span>, </span>
+<span>  data <span class="op">=</span> <span class="va">health_insurance</span>,</span>
+<span>  family <span class="op">=</span> <span class="st">"binomial"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># view odds ratio as a data frame</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">A_simple</span><span class="op">$</span><span class="va">coefficients</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##                  exp(A_simple$coefficients)
 ## (Intercept)                     343.4406669
 ## age                               0.7868098
@@ -301,27 +303,27 @@ for different vectors of coefficients <span class="math inline">\(\alpha\)</span
 <h3>
 <span class="header-section-number">6.3.1</span> Defining a reference level and running the model<a class="anchor" aria-label="anchor" href="#def-ref"><i class="fas fa-link"></i></a>
 </h3>
-<p>The <code>nnet</code> package in R contains a <code><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom()</a></code> function for running a multinomial logistic regression model using neural network technology<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onward in the network. Most commonly they are used in deep learning, but a simple neural network here can model these different categories using a logistic function.&lt;/p&gt;"><sup>32</sup></a>. Before we can run the model we need to make sure our reference level is defined.</p>
-<div class="sourceCode" id="cb336"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># define reference by ensuring it is the first level of the factor</span>
-<span class="va">health_insurance</span><span class="op">$</span><span class="va">product</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/relevel.html">relevel</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">$</span><span class="va">product</span>, ref <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span>
-
-<span class="co"># check that A is now our reference</span>
-<span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">$</span><span class="va">product</span><span class="op">)</span></code></pre></div>
+<p>The <code>nnet</code> package in R contains a <code><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom()</a></code> function for running a multinomial logistic regression model using neural network technology<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Neural networks are computational structures which consist of a network of nodes, each of which take an input and perform a mathematical function to return an output onward in the network. Most commonly they are used in deep learning, but a simple neural network here can model these different categories using a logistic function.&lt;/p&gt;"><sup>31</sup></a>. Before we can run the model we need to make sure our reference level is defined.</p>
+<div class="sourceCode" id="cb338"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># define reference by ensuring it is the first level of the factor</span></span>
+<span><span class="va">health_insurance</span><span class="op">$</span><span class="va">product</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/relevel.html">relevel</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">$</span><span class="va">product</span>, ref <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check that A is now our reference</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">health_insurance</span><span class="op">$</span><span class="va">product</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## [1] "A" "B" "C"</code></pre>
 <p>Once the reference outcome is defined, the <code><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom()</a></code> function from the <code>nnet</code> package will run a series of binomial models comparing the reference to each of the other categories.</p>
 <p>First we will calculate our multinomial logistic regression model.</p>
-<div class="sourceCode" id="cb338"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">nnet</a></span><span class="op">)</span>
-
-<span class="va">multi_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="va">product</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">gender</span> <span class="op">+</span> <span class="va">household</span> <span class="op">+</span> 
-    <span class="va">position_level</span> <span class="op">+</span> <span class="va">absent</span>, 
-  data <span class="op">=</span> <span class="va">health_insurance</span>
-<span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb340"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">nnet</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">multi_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">product</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">gender</span> <span class="op">+</span> <span class="va">household</span> <span class="op">+</span> </span>
+<span>    <span class="va">position_level</span> <span class="op">+</span> <span class="va">absent</span>, </span>
+<span>  data <span class="op">=</span> <span class="va">health_insurance</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Now we will look at a summary of the results.</p>
-<div class="sourceCode" id="cb339"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">multi_model</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb341"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">multi_model</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Call:
 ## multinom(formula = product ~ age + gender + household + position_level + 
 ##     absent, data = health_insurance)
@@ -338,18 +340,18 @@ for different vectors of coefficients <span class="math inline">\(\alpha\)</span
 ## 
 ## Residual Deviance: 1489.365 
 ## AIC: 1517.365</code></pre>
-<p>Notice that the output of <code><a href="https://rdrr.io/r/base/summary.html">summary(multi_model)</a></code> is much less detailed than for our standard binomial models, and it effectively just delivers the coefficients and standard errors of the two models against the reference. To determine whether specific input variables are significant we will need to calculate the p-values of the coefficients manually by calculating the z-statistics and converting (we covered this hypothesis testing methodology in Section <a href="found-stats.html#means-sig">3.3.1</a>).</p>
-<div class="sourceCode" id="cb341"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># calculate z-statistics of coefficients</span>
-<span class="va">z_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">multi_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">/</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">multi_model</span><span class="op">)</span><span class="op">$</span><span class="va">standard.errors</span>
-
-<span class="co"># convert to p-values</span>
-<span class="va">p_values</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">z_stats</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="fl">2</span>
-
-
-<span class="co"># display p-values in transposed data frame</span>
-<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">p_values</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>Notice that the output of <code>summary(multi_model)</code> is much less detailed than for our standard binomial models, and it effectively just delivers the coefficients and standard errors of the two models against the reference. To determine whether specific input variables are significant we will need to calculate the p-values of the coefficients manually by calculating the z-statistics and converting (we covered this hypothesis testing methodology in Section <a href="found-stats.html#means-sig">3.3.1</a>).</p>
+<div class="sourceCode" id="cb343"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># calculate z-statistics of coefficients</span></span>
+<span><span class="va">z_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">multi_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">/</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">multi_model</span><span class="op">)</span><span class="op">$</span><span class="va">standard.errors</span></span>
+<span></span>
+<span><span class="co"># convert to p-values</span></span>
+<span><span class="va">p_values</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">z_stats</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="fl">2</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># display p-values in transposed data frame</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">p_values</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##                             B            C
 ## (Intercept)      0.000000e+00 0.000000e+00
 ## age              0.000000e+00 0.000000e+00
@@ -364,10 +366,10 @@ for different vectors of coefficients <span class="math inline">\(\alpha\)</span
 <span class="header-section-number">6.3.2</span> Interpreting the model<a class="anchor" aria-label="anchor" href="#interpreting-the-model"><i class="fas fa-link"></i></a>
 </h3>
 <p>This confirms that all variables except <code>absent</code> play a role in the choice between all products relative to a reference of Product A. We can also calculate odds ratios as before.</p>
-<div class="sourceCode" id="cb343"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># display odds ratios in transposed data frame</span>
-<span class="va">odds_ratios</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">multi_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">odds_ratios</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb345"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># display odds ratios in transposed data frame</span></span>
+<span><span class="va">odds_ratios</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">multi_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="va">odds_ratios</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##                           B            C
 ## (Intercept)      0.01004179 3.621021e-05
 ## age              1.27591615 1.309721e+00
@@ -398,12 +400,12 @@ Therefore</p>
 \mathrm{ln}\left(\frac{P(y = C)}{P(y=B)}\right) = (\beta - \alpha)X
 \]</span>
 This means we can obtain the coefficients of C against the reference of B by simply calculating the difference between the coefficients of C and B against the common reference of A. Let’s do this.</p>
-<div class="sourceCode" id="cb345"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># calculate difference between coefficients and view as column</span>
-<span class="va">coefs_c_to_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">multi_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span> <span class="op">-</span> 
-   <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">multi_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">coefs_c_to_b</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb347"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># calculate difference between coefficients and view as column</span></span>
+<span><span class="va">coefs_c_to_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">multi_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span> <span class="op">-</span> </span>
+<span>   <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">multi_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="va">coefs_c_to_b</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##                  coefs_c_to_b
 ## (Intercept)      -5.625169520
 ## age               0.026149597
@@ -434,16 +436,16 @@ This means we can obtain the coefficients of C against the reference of B by sim
 <li>Stop when all non-significant variables have been tested.</li>
 </ul>
 <p>In our case, we can compare the coefficients of the model with and without <code>absent</code> included and verify that the changes in the coefficients are not substantial.</p>
-<div class="sourceCode" id="cb347"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># remove absent</span>
-<span class="va">simpler_multi_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="va">product</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">gender</span> <span class="op">+</span> <span class="va">household</span> <span class="op">+</span> <span class="va">position_level</span>,
-  data <span class="op">=</span> <span class="va">health_insurance</span>, 
-  model <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb348"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># view coefficients with absent</span>
-<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">multi_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb349"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># remove absent</span></span>
+<span><span class="va">simpler_multi_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="va">product</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">gender</span> <span class="op">+</span> <span class="va">household</span> <span class="op">+</span> <span class="va">position_level</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">health_insurance</span>, </span>
+<span>  model <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb350"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># view coefficients with absent</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">multi_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##                            B             C
 ## (Intercept)      -4.60099991 -10.226169428
 ## age               0.24366447   0.269814063
@@ -452,9 +454,9 @@ This means we can obtain the coefficients of C against the reference of B by sim
 ## household        -0.96772368   0.204356774
 ## position_level   -0.41530400  -0.213584308
 ## absent            0.01167603   0.003263631</code></pre>
-<div class="sourceCode" id="cb350"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># view coefficients without absent</span>
-<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">simpler_multi_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb352"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># view coefficients without absent</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">simpler_multi_model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##                           B            C
 ## (Intercept)      -4.5008999 -10.19269011
 ## age               0.2433855   0.26976294
@@ -462,16 +464,16 @@ This means we can obtain the coefficients of C against the reference of B by sim
 ## genderNon-binary  0.1712091  -1.29636779
 ## household        -0.9641956   0.20510806
 ## position_level   -0.3912014  -0.20908835</code></pre>
-<p>We can see that only <code>genderNon-binary</code> changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done. In the case of these observations of &lt;code&gt;genderNon-binary&lt;/code&gt;, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a minuscule effect&lt;/p&gt;"><sup>33</sup></a>. It therefore appears safe to remove <code>absent</code>. Furthermore, the Akaike Information Criterion is equally valid in multinomial models for evaluating model parsimony. Here we can calculate that the AIC of our model with and without <code>absent</code> is 1517.36 and 1514.25, respectively, confirming that the model without <code>absent</code> is marginally more parsimonious.</p>
+<p>We can see that only <code>genderNon-binary</code> changed substantially, but we note that this is on an extremely small sample size and so will not have any effect on our model<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Removing insignificant dummy variables, or combining them to make simpler dummy variables can also be done. In the case of these observations of &lt;code&gt;genderNon-binary&lt;/code&gt;, given the relatively small number of these observations in the data set, it does not harm the model to leave this variable included, safe in the knowledge that it has a minuscule effect&lt;/p&gt;"><sup>32</sup></a>. It therefore appears safe to remove <code>absent</code>. Furthermore, the Akaike Information Criterion is equally valid in multinomial models for evaluating model parsimony. Here we can calculate that the AIC of our model with and without <code>absent</code> is 1517.36 and 1514.25, respectively, confirming that the model without <code>absent</code> is marginally more parsimonious.</p>
 </div>
 <div id="model-fit-and-goodness-of-fit" class="section level3" number="6.4.2">
 <h3>
 <span class="header-section-number">6.4.2</span> Model fit and goodness-of-fit<a class="anchor" aria-label="anchor" href="#model-fit-and-goodness-of-fit"><i class="fas fa-link"></i></a>
 </h3>
 <p>As with the binomial case, a variety of Pseudo-<span class="math inline">\(R^2\)</span> methods are available to assess the fit of a multinomial logistic regression model, although some of our previous variants (particularly Tjur) are not defined on models with more than two outcome categories.</p>
-<div class="sourceCode" id="cb352"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">DescTools</span><span class="fu">::</span><span class="fu"><a href="https://andrisignorell.github.io/DescTools/reference/PseudoR2.html">PseudoR2</a></span><span class="op">(</span><span class="va">simpler_multi_model</span>, 
-                    which <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"McFadden"</span>, <span class="st">"CoxSnell"</span>, <span class="st">"Nagelkerke"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb354"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">DescTools</span><span class="fu">::</span><span class="fu"><a href="https://andrisignorell.github.io/DescTools/reference/PseudoR2.html">PseudoR2</a></span><span class="op">(</span><span class="va">simpler_multi_model</span>, </span>
+<span>                    which <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"McFadden"</span>, <span class="st">"CoxSnell"</span>, <span class="st">"Nagelkerke"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##   McFadden   CoxSnell Nagelkerke 
 ##  0.5329175  0.6896945  0.7760413</code></pre>
 <p>Due to the fact that multinomial models have more than one set of coefficients, assessing goodness-of-fit is more challenging, and is still an area of intense research. The most approachable method to assess model confidence is the Hosmer-Lemeshow test mentioned in the previous chapter, which was extended in <span class="citation">Fagerland, Hosmer, and Bofin (<a href="references.html#ref-fagerland">2008</a>)</span> for multinomial models. An implementation is available in the <code>generalhoslem</code> package in R. However, this version of the Hosmer-Lemeshow test is problematic for models with a small number of input variables (fewer than ten), and therefore we will not experiment with it here. For further exploration of this topic, Chapter 8 of <span class="citation">Hosmer, Lemeshow, and Sturdivant (<a href="references.html#ref-hosmer-logistic">2013</a>)</span> is recommended, and for a more thorough treatment of the entire topic of categorical analytics, <span class="citation">Agresti (<a href="references.html#ref-agresti">2007</a>)</span> is an excellent companion.</p>
@@ -580,7 +582,7 @@ This means we can obtain the coefficients of C against the reference of B by sim
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

@@ -7,7 +7,7 @@
 <title>11 Power Analysis to Estimate Required Sample Sizes for Modeling | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
 <meta name="author" content="Keith McNulty">
 <meta name="description" content="In the vast majority of situations in people analytics, researchers and analysts have limited control over the size of their samples. The most common situation is, of course, that analyses are run...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.42 with bs4_book()">
 <meta property="og:title" content="11 Power Analysis to Estimate Required Sample Sizes for Modeling | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://peopleanalytics-regression-book.org/power-tests.html">
@@ -20,14 +20,15 @@
 <meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python">
 <meta name="citation_author" content="Keith McNulty">
 <meta name="citation_publication_date" content="2021">
 <meta name="citation_isbn" content="9781003194156">
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><script src="libs/plotly-binding-4.10.0/plotly.js"></script><script src="libs/typedarray-0.1/typedarray.min.js"></script><link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet">
-<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet">
-<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script><script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="libs/plotly-binding-4.10.4/plotly.js"></script><script src="libs/typedarray-0.1/typedarray.min.js"></script><link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script><script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
@@ -43,6 +44,7 @@
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
+          margin-bottom: 0em;
         }
     .hanging div.csl-entry {
       margin-left:2em;
@@ -156,11 +158,11 @@
 </h2>
 <p>Usually we will run power analyses to get a sense of required sample sizes. Given the observations on unknowns in the previous section, we will have to assert certain possible statistical results in order to estimate required sample sizes. Most often, we will need to suggest the observed effect size in order to obtain the minimum sample size for that effect size to return a statistically significant result at a desired level of statistical power.</p>
 <p>Using our example from the previous section, let’s assume that we would see a ‘medium’ effect size on our samples. <em>Cohen’s Rule of Thumb</em> for <span class="math inline">\(d\)</span> states that <span class="math inline">\(d = 0.2\)</span> is a small effect size, <span class="math inline">\(d = 0.5\)</span> a medium effect size and <span class="math inline">\(d = 0.8\)</span> a large effect size. We can use the <code><a href="https://rdrr.io/pkg/WebPower/man/wp.t.html">wp.t()</a></code> function from the <code>WebPower</code> package in R to do a power analysis on a paired two-sample <span class="math inline">\(t\)</span>-test and return a minimum required sample size. We can assume <span class="math inline">\(d = 0.5\)</span> and that we require a power of 0.8—that is, we want an 80% probability that the test will return an accurate rejection of the null hypothesis.</p>
-<div class="sourceCode" id="cb473"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://webpower.psychstat.org">WebPower</a></span><span class="op">)</span>
-
-<span class="co"># get minimum n for power of 0.8</span>
-<span class="op">(</span><span class="va">n_test</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.t.html">wp.t</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">0.5</span>, p <span class="op">=</span> <span class="fl">0.8</span>, type <span class="op">=</span> <span class="st">"paired"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb482"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://webpower.psychstat.org">WebPower</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># get minimum n for power of 0.8</span></span>
+<span><span class="op">(</span><span class="va">n_test</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.t.html">wp.t</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">0.5</span>, p <span class="op">=</span> <span class="fl">0.8</span>, type <span class="op">=</span> <span class="st">"paired"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Paired t-test
 ## 
 ##            n   d alpha power
@@ -169,9 +171,9 @@
 ## NOTE: n is number of *pairs*
 ## URL: http://psychstat.org/ttest</code></pre>
 <p>This tells us that we need an absolute minimum of 34 individuals in our sample for an effect size of 0.5 to return a significant difference at an alpha of 0.05 with 80% probability. Alternatively we can test the power of a specific proposed sample size.</p>
-<div class="sourceCode" id="cb475"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># get power for n of 40</span>
-<span class="op">(</span><span class="va">p_test</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.t.html">wp.t</a></span><span class="op">(</span>n1 <span class="op">=</span> <span class="fl">40</span>, d <span class="op">=</span> <span class="fl">0.5</span>, type <span class="op">=</span> <span class="st">"paired"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb484"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># get power for n of 40</span></span>
+<span><span class="op">(</span><span class="va">p_test</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.t.html">wp.t</a></span><span class="op">(</span>n1 <span class="op">=</span> <span class="fl">40</span>, d <span class="op">=</span> <span class="fl">0.5</span>, type <span class="op">=</span> <span class="st">"paired"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Paired t-test
 ## 
 ##      n   d alpha     power
@@ -180,12 +182,12 @@
 ## NOTE: n is number of *pairs*
 ## URL: http://psychstat.org/ttest</code></pre>
 <p>This tells us that a minimum sample size of 40 would result in a power of 0.87. A similar process can be used to plot the dependence between power and sample size under various conditions as in Figure <a href="power-tests.html#fig:powersampleplot">11.1</a>. This is known as a <em>power curve</em>.</p>
-<div class="sourceCode" id="cb477"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># test a range of sample sizes</span>
-<span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fl">20</span><span class="op">:</span><span class="fl">100</span>
-<span class="va">power</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.t.html">wp.t</a></span><span class="op">(</span>n1 <span class="op">=</span> <span class="va">sample_sizes</span>, d <span class="op">=</span> <span class="fl">0.5</span>, type <span class="op">=</span> <span class="st">"paired"</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">power</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb486"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># test a range of sample sizes</span></span>
+<span><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fl">20</span><span class="op">:</span><span class="fl">100</span></span>
+<span><span class="va">power</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.t.html">wp.t</a></span><span class="op">(</span>n1 <span class="op">=</span> <span class="va">sample_sizes</span>, d <span class="op">=</span> <span class="fl">0.5</span>, type <span class="op">=</span> <span class="st">"paired"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">power</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:powersampleplot"></span>
 <img src="_main_files/figure-html/powersampleplot-1.png" alt="Plot of power against sample size for a paired t-test" width="672"><p class="caption">
@@ -193,14 +195,14 @@ Figure 11.1: Plot of power against sample size for a paired t-test
 </p>
 </div>
 <p>We can see a ‘sweet spot’ of approximately 40–60 minimum required participants, and a diminishing return on statistical power over and above this. Similarly we can plot a proposed minimum sample size against a range of effect sizes as in Figure <a href="power-tests.html#fig:powerdplot">11.2</a>.</p>
-<div class="sourceCode" id="cb478"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># test a range of effect sizes</span>
-<span class="va">effect_sizes</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">:</span><span class="fl">8</span><span class="op">/</span><span class="fl">10</span>
-<span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.t.html">wp.t</a></span><span class="op">(</span>n1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">7</span><span class="op">)</span>, 
-                          d <span class="op">=</span> <span class="va">effect_sizes</span>, 
-                          type <span class="op">=</span> <span class="st">"paired"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">samples</span><span class="op">$</span><span class="va">d</span>, <span class="va">samples</span><span class="op">$</span><span class="va">power</span>, type <span class="op">=</span> <span class="st">"b"</span>,
-     xlab <span class="op">=</span> <span class="st">"Effect size"</span>, ylab <span class="op">=</span> <span class="st">"Power"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb487"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># test a range of effect sizes</span></span>
+<span><span class="va">effect_sizes</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">:</span><span class="fl">8</span><span class="op">/</span><span class="fl">10</span></span>
+<span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.t.html">wp.t</a></span><span class="op">(</span>n1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">7</span><span class="op">)</span>, </span>
+<span>                          d <span class="op">=</span> <span class="va">effect_sizes</span>, </span>
+<span>                          type <span class="op">=</span> <span class="st">"paired"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">samples</span><span class="op">$</span><span class="va">d</span>, <span class="va">samples</span><span class="op">$</span><span class="va">power</span>, type <span class="op">=</span> <span class="st">"b"</span>,</span>
+<span>     xlab <span class="op">=</span> <span class="st">"Effect size"</span>, ylab <span class="op">=</span> <span class="st">"Power"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:powerdplot"></span>
 <img src="_main_files/figure-html/powerdplot-1.png" alt="Plot of power against effect size for a paired t-test" width="672"><p class="caption">
@@ -208,10 +210,10 @@ Figure 11.2: Plot of power against effect size for a paired t-test
 </p>
 </div>
 <p>Similar power test variants exist for other common simple hypothesis tests. Let’s assume that we want to institute a screening test in a recruiting process, and we want to validate this test by running it on a random set of employees with the aim of proving that the test score has a significant non-zero correlation with job performance. If we assume that we will see a moderate correlation of <span class="math inline">\(r = 0.3\)</span> in our sample<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Cohen’s rule of thumb for correlation coefficients is Weak: 0.1, Moderate: 0.3 and Strong: 0.5.&lt;/p&gt;"><sup>49</sup></a>, we can use the <code><a href="https://rdrr.io/pkg/WebPower/man/wp.correlation.html">wp.correlation()</a></code> function in <code>WebPower</code> to do a power analysis, resulting in Figure <a href="power-tests.html#fig:correlpower">11.3</a>.</p>
-<div class="sourceCode" id="cb479"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fl">50</span><span class="op">:</span><span class="fl">150</span>
-<span class="va">correl_powers</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.correlation.html">wp.correlation</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">sample_sizes</span>, r <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">correl_powers</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb488"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fl">50</span><span class="op">:</span><span class="fl">150</span></span>
+<span><span class="va">correl_powers</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.correlation.html">wp.correlation</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">sample_sizes</span>, r <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">correl_powers</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:correlpower"></span>
 <img src="_main_files/figure-html/correlpower-1.png" alt="Plot of power against sample size for a correlation test" width="672"><p class="caption">
@@ -230,12 +232,12 @@ Figure 11.3: Plot of power against sample size for a correlation test
 f^2 = \frac{R_{\mathrm{full}}^2 - R_{\mathrm{reduced}}^2}{1 - R_{\mathrm{full}}^2}
 \]</span>
 where the formula refers to the <span class="math inline">\(R^2\)</span> fit statistics for the two models being compared. As an example, imagine we already know that GPA in college has a significant relationship with job performance, and we wish to determine if our proposed screening test had incremental validity on top of knowing college GPA. We might run two linear regression models, one relating job performance to GPA, and another relating job performance to <em>both</em> GPA and screening test score. Assuming we would observe a relatively small effect size for our screening test, we assume <span class="math inline">\(f^2 = 0.05\)</span><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;Cohen’s rule of thumb for &lt;span class="math inline"&gt;\(f^2\)&lt;/span&gt; effect sizes is Small: 0.02, Medium: 0.15, Large: 0.35.&lt;/p&gt;'><sup>50</sup></a>, we can plot sample size against power in determining whether the two models are significantly different. We will also need to define the number of predictors in the full model (<code>p1 = 2</code>) and the reduced model (<code>p2 = 1</code>). The plot is shown in Figure <a href="power-tests.html#fig:regressionpower">11.4</a>.</p>
-<div class="sourceCode" id="cb480"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fl">100</span><span class="op">:</span><span class="fl">300</span>
-<span class="va">f_sq_power</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.regression.html">wp.regression</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">sample_sizes</span>, 
-                                      p1 <span class="op">=</span> <span class="fl">2</span>, p2 <span class="op">=</span> <span class="fl">1</span>, f2 <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">f_sq_power</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb489"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fl">100</span><span class="op">:</span><span class="fl">300</span></span>
+<span><span class="va">f_sq_power</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.regression.html">wp.regression</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">sample_sizes</span>, </span>
+<span>                                      p1 <span class="op">=</span> <span class="fl">2</span>, p2 <span class="op">=</span> <span class="fl">1</span>, f2 <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">f_sq_power</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:regressionpower"></span>
 <img src="_main_files/figure-html/regressionpower-1.png" alt="Plot of power against sample size for a small effect of a second input variable in a linear regression model" width="672"><p class="caption">
@@ -256,14 +258,14 @@ Figure 11.4: Plot of power against sample size for a small effect of a second in
 <li>This information is fed into the Wald test, and the power for specific sample sizes is calculated.</li>
 </ol>
 <p>For example, let’s assume that we wanted to determine if our new screening test had a significant effect on promotion likelihood by running an experiment on employees who were being considered for promotion. We assume that our screening test is scored on a percentile scale and has a mean of 53 and a standard deviation of 21. We know that approximately 50% of those being considered for promotion will be promoted, and we believe that the screening test may have a small effect whereby those who score zero would still have a 40% chance of promotion and every additional point scored would increase this chance by 0.2 percentage points. We run the <code><a href="https://rdrr.io/pkg/WebPower/man/wp.logistic.html">wp.logistic()</a></code> function in <code>WebPower</code> to plot a power curve for various sample sizes as in Figure <a href="power-tests.html#fig:logisticpower">11.5</a>.</p>
-<div class="sourceCode" id="cb481"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fl">50</span><span class="op">:</span><span class="fl">2000</span>
-<span class="va">logistic_power</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.logistic.html">wp.logistic</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">sample_sizes</span>, 
-                                        p0 <span class="op">=</span> <span class="fl">0.4</span>, p1 <span class="op">=</span> <span class="fl">0.402</span>,
-                                        family <span class="op">=</span> <span class="st">"normal"</span>, 
-                                        parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">53</span>, <span class="fl">21</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">logistic_power</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb490"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fl">50</span><span class="op">:</span><span class="fl">2000</span></span>
+<span><span class="va">logistic_power</span> <span class="op">&lt;-</span> <span class="fu">WebPower</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/WebPower/man/wp.logistic.html">wp.logistic</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">sample_sizes</span>, </span>
+<span>                                        p0 <span class="op">=</span> <span class="fl">0.4</span>, p1 <span class="op">=</span> <span class="fl">0.402</span>,</span>
+<span>                                        family <span class="op">=</span> <span class="st">"normal"</span>, </span>
+<span>                                        parameter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">53</span>, <span class="fl">21</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">logistic_power</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:logisticpower"></span>
 <img src="_main_files/figure-html/logisticpower-1.png" alt="Plot of power against sample size for a single input variable in logistic regression" width="672"><p class="caption">
@@ -287,25 +289,25 @@ Figure 11.5: Plot of power against sample size for a single input variable in lo
 <span class="header-section-number">11.6</span> Power analysis using Python<a class="anchor" aria-label="anchor" href="#power-analysis-using-python"><i class="fas fa-link"></i></a>
 </h2>
 <p>A limited set of resources for doing power analysis is available in the <code>stats.power</code> module of the <code>statsmodels</code> package. As an example, here is how we would conduct the power analysis for a paired <span class="math inline">\(t\)</span>-test as in Section <a href="power-tests.html#simple-stats">11.2</a> above.</p>
-<div class="sourceCode" id="cb482"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb482-1"><a href="power-tests.html#cb482-1" tabindex="-1"></a><span class="im">import</span> math</span>
-<span id="cb482-2"><a href="power-tests.html#cb482-2" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.power <span class="im">import</span> TTestPower</span>
-<span id="cb482-3"><a href="power-tests.html#cb482-3" tabindex="-1"></a></span>
-<span id="cb482-4"><a href="power-tests.html#cb482-4" tabindex="-1"></a>power <span class="op">=</span> TTestPower()</span>
-<span id="cb482-5"><a href="power-tests.html#cb482-5" tabindex="-1"></a>n_test <span class="op">=</span> power.solve_power(effect_size <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span id="cb482-6"><a href="power-tests.html#cb482-6" tabindex="-1"></a>                           power <span class="op">=</span> <span class="fl">0.8</span>,</span>
-<span id="cb482-7"><a href="power-tests.html#cb482-7" tabindex="-1"></a>                           alpha <span class="op">=</span> <span class="fl">0.05</span>)</span>
-<span id="cb482-8"><a href="power-tests.html#cb482-8" tabindex="-1"></a><span class="bu">print</span>(math.ceil(n_test))</span></code></pre></div>
+<div class="sourceCode" id="cb491"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb491-1"><a href="power-tests.html#cb491-1" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb491-2"><a href="power-tests.html#cb491-2" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.power <span class="im">import</span> TTestPower</span>
+<span id="cb491-3"><a href="power-tests.html#cb491-3" tabindex="-1"></a></span>
+<span id="cb491-4"><a href="power-tests.html#cb491-4" tabindex="-1"></a>power <span class="op">=</span> TTestPower()</span>
+<span id="cb491-5"><a href="power-tests.html#cb491-5" tabindex="-1"></a>n_test <span class="op">=</span> power.solve_power(effect_size <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span id="cb491-6"><a href="power-tests.html#cb491-6" tabindex="-1"></a>                           power <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span id="cb491-7"><a href="power-tests.html#cb491-7" tabindex="-1"></a>                           alpha <span class="op">=</span> <span class="fl">0.05</span>)</span>
+<span id="cb491-8"><a href="power-tests.html#cb491-8" tabindex="-1"></a><span class="bu">print</span>(math.ceil(n_test))</span></code></pre></div>
 <pre><code>## 34</code></pre>
 <p>And a power curve can be constructed as in Figure <a href="power-tests.html#fig:pythonpowerplot">11.6</a>.</p>
-<div class="sourceCode" id="cb484"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb484-1"><a href="power-tests.html#cb484-1" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb484-2"><a href="power-tests.html#cb484-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb484-3"><a href="power-tests.html#cb484-3" tabindex="-1"></a></span>
-<span id="cb484-4"><a href="power-tests.html#cb484-4" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
-<span id="cb484-5"><a href="power-tests.html#cb484-5" tabindex="-1"></a>fig <span class="op">=</span> TTestPower().plot_power(dep_var <span class="op">=</span> <span class="st">'nobs'</span>,</span>
-<span id="cb484-6"><a href="power-tests.html#cb484-6" tabindex="-1"></a>                              nobs <span class="op">=</span> np.arange(<span class="dv">20</span>, <span class="dv">100</span>),</span>
-<span id="cb484-7"><a href="power-tests.html#cb484-7" tabindex="-1"></a>                              effect_size <span class="op">=</span> np.array([<span class="fl">0.5</span>]),</span>
-<span id="cb484-8"><a href="power-tests.html#cb484-8" tabindex="-1"></a>                              alpha <span class="op">=</span> <span class="fl">0.05</span>)</span>
-<span id="cb484-9"><a href="power-tests.html#cb484-9" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="sourceCode" id="cb493"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb493-1"><a href="power-tests.html#cb493-1" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb493-2"><a href="power-tests.html#cb493-2" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb493-3"><a href="power-tests.html#cb493-3" tabindex="-1"></a></span>
+<span id="cb493-4"><a href="power-tests.html#cb493-4" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb493-5"><a href="power-tests.html#cb493-5" tabindex="-1"></a>fig <span class="op">=</span> TTestPower().plot_power(dep_var <span class="op">=</span> <span class="st">'nobs'</span>,</span>
+<span id="cb493-6"><a href="power-tests.html#cb493-6" tabindex="-1"></a>                              nobs <span class="op">=</span> np.arange(<span class="dv">20</span>, <span class="dv">100</span>),</span>
+<span id="cb493-7"><a href="power-tests.html#cb493-7" tabindex="-1"></a>                              effect_size <span class="op">=</span> np.array([<span class="fl">0.5</span>]),</span>
+<span id="cb493-8"><a href="power-tests.html#cb493-8" tabindex="-1"></a>                              alpha <span class="op">=</span> <span class="fl">0.05</span>)</span>
+<span id="cb493-9"><a href="power-tests.html#cb493-9" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:pythonpowerplot"></span>
 <img src="www/11/pythonpowerplot-1.png" alt="Plot of power against sample size for a paired t-test" width="90%"><p class="caption">
@@ -359,7 +361,7 @@ Figure 11.6: Plot of power against sample size for a paired t-test
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

@@ -7,7 +7,7 @@
 <title>9 Survival Analysis for Modeling Singular Events Over Time | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
 <meta name="author" content="Keith McNulty">
 <meta name="description" content="In previous chapters, the outcomes we have been modeling have or have not occurred at a particular point in time following when the input variables were measured. For example, in Chapter 4 input...">
-<meta name="generator" content="bookdown 0.26 with bs4_book()">
+<meta name="generator" content="bookdown 0.42 with bs4_book()">
 <meta property="og:title" content="9 Survival Analysis for Modeling Singular Events Over Time | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://peopleanalytics-regression-book.org/survival.html">
@@ -20,14 +20,15 @@
 <meta name="twitter:image" content="https://peopleanalytics-regression-book.org/www/cover/coverpage-og.png">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.8.0/transition.js"></script><script src="libs/bs3compat-0.8.0/tabs.js"></script><script src="libs/bs3compat-0.8.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
 <script src="libs/bs4_book-1.0.0/bs4_book.js"></script><meta name="citation_title" content="Handbook of Regression Modeling in People Analytics: With Examples in R and Python">
 <meta name="citation_author" content="Keith McNulty">
 <meta name="citation_publication_date" content="2021">
 <meta name="citation_isbn" content="9781003194156">
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><script src="libs/plotly-binding-4.10.0/plotly.js"></script><script src="libs/typedarray-0.1/typedarray.min.js"></script><link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet">
-<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet">
-<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script><script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="libs/plotly-binding-4.10.4/plotly.js"></script><script src="libs/typedarray-0.1/typedarray.min.js"></script><link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script><link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script><script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
@@ -43,6 +44,7 @@
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
+          margin-bottom: 0em;
         }
     .hanging div.csl-entry {
       margin-left:2em;
@@ -121,11 +123,11 @@
 </ul>
 <p>Those seeking a more in depth treatment of survival analysis should consult texts on its use in medical/clinical contexts, and a recommended source is <span class="citation">Collett (<a href="references.html#ref-collett">2015</a>)</span>. In this chapter we will use a walkthrough example to illustrate a typical use of survival analysis in a people analytics context.</p>
 <p>The <code>job_retention</code> data set shows the results of a study of around 3,800 individuals employed in various fields of employment over a one-year period. At the beginning of the study, the individuals were asked to rate their sentiment towards their job. These individuals were then followed up monthly for a year to determine if they were still working in the same job or had left their job for a substantially different job. If an individual was not successfully followed up in a given month, they were no longer followed up for the remainder of the study period.</p>
-<div class="sourceCode" id="cb400"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># if needed, get job_retention data</span>
-<span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"http://peopleanalytics-regression-book.org/data/job_retention.csv"</span>
-<span class="va">job_retention</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">job_retention</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb402"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># if needed, get job_retention data</span></span>
+<span><span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"http://peopleanalytics-regression-book.org/data/job_retention.csv"</span></span>
+<span><span class="va">job_retention</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">job_retention</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##   gender                  field  level sentiment intention left month
 ## 1      M      Public/Government   High         3         8    1     1
 ## 2      F                Finance    Low         8         4    0    12
@@ -159,26 +161,26 @@ S_i = S_{i - 1}(1 - \frac{l_i}{n_i})
 \]</span>
 where <span class="math inline">\(l_i\)</span> is the number reported as left in month <span class="math inline">\(i\)</span>, and <span class="math inline">\(n_i\)</span> is the number still in substantially the same job after month <span class="math inline">\(i - 1\)</span>, with <span class="math inline">\(S_0 = 1\)</span>.</p>
 <p>The <code>survival</code> package in R allows easy construction of survival rates on data in a similar format to that in our <code>job_retention</code> data set. A survival object is created using the <code><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv()</a></code> function to track the survival rate at each time period.</p>
-<div class="sourceCode" id="cb402"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span>
-
-<span class="co"># create survival object with event as 'left' and time as 'month'</span>
-<span class="va">retention</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span>event <span class="op">=</span> <span class="va">job_retention</span><span class="op">$</span><span class="va">left</span>, 
-                  time <span class="op">=</span> <span class="va">job_retention</span><span class="op">$</span><span class="va">month</span><span class="op">)</span>
-
-<span class="co"># view unique values of retention</span>
-<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">retention</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb404"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create survival object with event as 'left' and time as 'month'</span></span>
+<span><span class="va">retention</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span>event <span class="op">=</span> <span class="va">job_retention</span><span class="op">$</span><span class="va">left</span>, </span>
+<span>                  time <span class="op">=</span> <span class="va">job_retention</span><span class="op">$</span><span class="va">month</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># view unique values of retention</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">retention</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##  [1]  1  12+  5   2   3   6   8   4   8+  4+ 11  10   9   7+  5+  3+  7   9+ 11+ 12  10+  6+  2+  1+</code></pre>
 <p>We can see that our survival object records the month at which the individual had left their job if they are recorded as having done so in the data set. If not, the object records the last month at which there was a record of the individual, appended with a ‘+’ to indicate that this was the last record available.</p>
 <p>The <code><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit()</a></code> function allows us to calculate <em>Kaplan-Meier estimates</em> of survival for different groups in the data so that we can compare them. We can do this using our usual formula notation but using a survival object as the outcome. Let’s take a look at survival by gender.</p>
-<div class="sourceCode" id="cb404"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># kaplan-meier estimates of survival by gender</span>
-<span class="va">kmestimate_gender</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span>event <span class="op">=</span> <span class="va">left</span>, time <span class="op">=</span> <span class="va">month</span><span class="op">)</span> <span class="op">~</span> <span class="va">gender</span>, 
-  data <span class="op">=</span> <span class="va">job_retention</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">kmestimate_gender</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb406"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># kaplan-meier estimates of survival by gender</span></span>
+<span><span class="va">kmestimate_gender</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span>event <span class="op">=</span> <span class="va">left</span>, time <span class="op">=</span> <span class="va">month</span><span class="op">)</span> <span class="op">~</span> <span class="va">gender</span>, </span>
+<span>  data <span class="op">=</span> <span class="va">job_retention</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">kmestimate_gender</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Call: survfit(formula = Surv(event = left, time = month) ~ gender, 
 ##     data = job_retention)
 ## 
@@ -213,21 +215,21 @@ where <span class="math inline">\(l_i\)</span> is the number reported as left in
 ##    12   1460      36    0.623 0.00983        0.604        0.642</code></pre>
 <p>We can see that the <code>n.risk</code>, <code>n.event</code> and <code>survival</code> columns for each group correspond to the <span class="math inline">\(n_i\)</span>, <span class="math inline">\(l_i\)</span> and <span class="math inline">\(S_i\)</span> in our formula above and that the confidence intervals for each survival rate are given. This can be very useful if we wish to illustrate a likely effect of a given input variable on survival likelihood.</p>
 <p>Let’s imagine that we wish to determine if the sentiment of the individual had an impact on survival likelihood. We can divide our population into two (or more) groups based on their sentiment and compare their survival rates.</p>
-<div class="sourceCode" id="cb406"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># create a new field to define high sentiment (&gt;= 7)</span>
-<span class="va">job_retention</span><span class="op">$</span><span class="va">sentiment_category</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span>
-  <span class="va">job_retention</span><span class="op">$</span><span class="va">sentiment</span> <span class="op">&gt;=</span> <span class="fl">7</span>, 
-  <span class="st">"High"</span>, 
-  <span class="st">"Not High"</span>
-<span class="op">)</span>
-
-<span class="co"># generate survival rates by sentiment category</span>
-<span class="va">kmestimate_sentimentcat</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span>event <span class="op">=</span> <span class="va">left</span>, time <span class="op">=</span> <span class="va">month</span><span class="op">)</span> <span class="op">~</span> <span class="va">sentiment_category</span>,
-  data <span class="op">=</span> <span class="va">job_retention</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">kmestimate_sentimentcat</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb408"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># create a new field to define high sentiment (&gt;= 7)</span></span>
+<span><span class="va">job_retention</span><span class="op">$</span><span class="va">sentiment_category</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span></span>
+<span>  <span class="va">job_retention</span><span class="op">$</span><span class="va">sentiment</span> <span class="op">&gt;=</span> <span class="fl">7</span>, </span>
+<span>  <span class="st">"High"</span>, </span>
+<span>  <span class="st">"Not High"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># generate survival rates by sentiment category</span></span>
+<span><span class="va">kmestimate_sentimentcat</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span>event <span class="op">=</span> <span class="va">left</span>, time <span class="op">=</span> <span class="va">month</span><span class="op">)</span> <span class="op">~</span> <span class="va">sentiment_category</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">job_retention</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">kmestimate_sentimentcat</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Call: survfit(formula = Surv(event = left, time = month) ~ sentiment_category, 
 ##     data = job_retention)
 ## 
@@ -261,19 +263,19 @@ where <span class="math inline">\(l_i\)</span> is the number reported as left in
 ##    11    283      24    0.534 0.02209        0.493        0.579
 ##    12    254       8    0.517 0.02218        0.476        0.563</code></pre>
 <p>We can see that survival seems to consistently trend higher for those with high sentiment towards their jobs. The <code><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot()</a></code> function in the <code>survminer</code> package can visualize this neatly and also provide additional statistical information on the differences between the groups, as shown in Figure <a href="survival.html#fig:survivalplot">9.1</a>.</p>
-<div class="sourceCode" id="cb408"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.sthda.com/english/rpkgs/survminer/">survminer</a></span><span class="op">)</span>
-
-<span class="co"># show survival curves with p-value estimate and confidence intervals</span>
-<span class="fu">survminer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span><span class="op">(</span>
-  <span class="va">kmestimate_sentimentcat</span>,
-  pval <span class="op">=</span> <span class="cn">TRUE</span>,
-  conf.int <span class="op">=</span> <span class="cn">TRUE</span>,
-  palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"red"</span><span class="op">)</span>,
-  linetype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"solid"</span>, <span class="st">"dashed"</span><span class="op">)</span>,
-  xlab <span class="op">=</span> <span class="st">"Month"</span>,
-  ylab <span class="op">=</span> <span class="st">"Retention Rate"</span>
-<span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb410"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/survminer/index.html">survminer</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># show survival curves with p-value estimate and confidence intervals</span></span>
+<span><span class="fu">survminer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggsurvplot.html">ggsurvplot</a></span><span class="op">(</span></span>
+<span>  <span class="va">kmestimate_sentimentcat</span>,</span>
+<span>  pval <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  conf.int <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"red"</span><span class="op">)</span>,</span>
+<span>  linetype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"solid"</span>, <span class="st">"dashed"</span><span class="op">)</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">"Month"</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">"Retention Rate"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:survivalplot"></span>
 <img src="_main_files/figure-html/survivalplot-1.png" alt="Survival curves by sentiment category in the `job_retention` data" width="672"><p class="caption">
@@ -304,15 +306,15 @@ where <span class="math inline">\(h_0(t)\)</span> is a base or intercept hazard 
 <span class="header-section-number">9.2.1</span> Running a Cox proportional hazard regression model<a class="anchor" aria-label="anchor" href="#running-a-cox-proportional-hazard-regression-model"><i class="fas fa-link"></i></a>
 </h3>
 <p>A Cox proportional hazard model can be run using the <code><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph()</a></code> function in the <code>survival</code> package, with the outcome as a survival object. Let’s model our survival against the input variables <code>gender</code>, <code>field</code>, <code>level</code> and <code>sentiment</code>.</p>
-<div class="sourceCode" id="cb409"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># run cox model against survival outcome</span>
-<span class="va">cox_model</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span>event <span class="op">=</span> <span class="va">left</span>, time <span class="op">=</span> <span class="va">month</span><span class="op">)</span> <span class="op">~</span> <span class="va">gender</span> <span class="op">+</span> 
-    <span class="va">field</span> <span class="op">+</span> <span class="va">level</span> <span class="op">+</span> <span class="va">sentiment</span>,
-  data <span class="op">=</span> <span class="va">job_retention</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">cox_model</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb411"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># run cox model against survival outcome</span></span>
+<span><span class="va">cox_model</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span>event <span class="op">=</span> <span class="va">left</span>, time <span class="op">=</span> <span class="va">month</span><span class="op">)</span> <span class="op">~</span> <span class="va">gender</span> <span class="op">+</span> </span>
+<span>    <span class="va">field</span> <span class="op">+</span> <span class="va">level</span> <span class="op">+</span> <span class="va">sentiment</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">job_retention</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">cox_model</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## Call:
 ## survival::coxph(formula = Surv(event = left, time = month) ~ 
 ##     gender + field + level + sentiment, data = job_retention)
@@ -347,7 +349,7 @@ where <span class="math inline">\(h_0(t)\)</span> is a base or intercept hazard 
 ## Likelihood ratio test= 89.18  on 9 df,   p=2e-15
 ## Wald test            = 94.95  on 9 df,   p=&lt;2e-16
 ## Score (logrank) test = 95.31  on 9 df,   p=&lt;2e-16</code></pre>
-<p>The model returns the following<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;The concordance measure returned is a measure of how well the model can predict in any given pair who will survive longer and is valuable in a number of medical research contexts.&lt;/p&gt;"><sup>41</sup></a></p>
+<p>The model returns the following<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;The concordance measure returned is a measure of how well the model can predict in any given pair who will survive longer and is valuable in a number of medical research contexts.&lt;/p&gt;"><sup>40</sup></a></p>
 <ul>
 <li><p>Coefficients for each input variable and their p-values. Here we can conclude that working in Finance or Health is associated with a significantly greater likelihood of leaving over the period studied, and that higher sentiment is associated with a significantly lower likelihood of leaving.</p></li>
 <li><p>Relative odds ratios associated with each input variable. For example, a single extra point in sentiment reduces the odds of leaving by ~11%. A single less point increases the odds of leaving by ~12%. Confidence intervals for the coefficients are also provided.</p></li>
@@ -361,8 +363,8 @@ where <span class="math inline">\(h_0(t)\)</span> is a base or intercept hazard 
 </h3>
 <p>Note that we mentioned in the previous section a critical assumption for our Cox proportional hazard model to be valid, called the proportional hazard assumption. As always, it is important to check this assumption before finalizing any inferences or conclusions from your model.</p>
 <p>The most popular test of this assumption uses a residual known as a <em>Schoenfeld residual</em>, which would be expected to be independent of time if the proportional hazard assumption holds. The <code><a href="https://rdrr.io/pkg/survival/man/cox.zph.html">cox.zph()</a></code> function in the <code>survival</code> package runs a statistical test on the null hypothesis that the Schoenfeld residuals are independent of time. The test is conducted on every input variable and on the model as a whole, and a significant result would reject the proportional hazard assumption.</p>
-<div class="sourceCode" id="cb411"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="op">(</span><span class="va">ph_check</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/cox.zph.html">cox.zph</a></span><span class="op">(</span><span class="va">cox_model</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb413"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">ph_check</span> <span class="op">&lt;-</span> <span class="fu">survival</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/cox.zph.html">cox.zph</a></span><span class="op">(</span><span class="va">cox_model</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>##            chisq df    p
 ## gender     0.726  1 0.39
 ## field      6.656  5 0.25
@@ -370,11 +372,11 @@ where <span class="math inline">\(h_0(t)\)</span> is a base or intercept hazard 
 ## sentiment  1.828  1 0.18
 ## GLOBAL    11.156  9 0.27</code></pre>
 <p>In our case, we can confirm that the proportional hazard assumption is not rejected. The <code><a href="https://rdrr.io/pkg/survminer/man/ggcoxzph.html">ggcoxzph()</a></code> function in the <code>survminer</code> package takes the result of the <code><a href="https://rdrr.io/pkg/survival/man/cox.zph.html">cox.zph()</a></code> check and allows a graphical check by plotting the residuals against time, as seen in Figure <a href="survival.html#fig:schoenfeld">9.2</a>.</p>
-<div class="sourceCode" id="cb413"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">survminer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggcoxzph.html">ggcoxzph</a></span><span class="op">(</span><span class="va">ph_check</span>, 
-                    font.main <span class="op">=</span> <span class="fl">10</span>, 
-                    font.x <span class="op">=</span> <span class="fl">10</span>, 
-                    font.y <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb415"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">survminer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/survminer/man/ggcoxzph.html">ggcoxzph</a></span><span class="op">(</span><span class="va">ph_check</span>, </span>
+<span>                    font.main <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>                    font.x <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>                    font.y <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:schoenfeld"></span>
 <img src="_main_files/figure-html/schoenfeld-1.png" alt="Schoenfeld test on proportional hazard assumption for `cox_model`" width="672"><p class="caption">
@@ -390,19 +392,19 @@ Figure 9.2: Schoenfeld test on proportional hazard assumption for <code>cox_mode
 <p>We noticed in our example in the previous section that certain fields of employment appeared to have a significant effect on the attrition hazard. It is therefore possible that different fields of employment have different base hazard functions, and we may wish to take this into account in determining if input variables have a significant relationship with attrition. This is analogous to a mixed model which we looked at in Section <a href="modeling-explicit-and-latent-hierarchy-in-data.html#mixed">8.1</a>.</p>
 <p>In this case we would apply a random intercept effect to the base hazard function <span class="math inline">\(h_0(t)\)</span> according to the field of employment of an individual, in order to take this into account in our modeling. This kind of model is called a <em>frailty model</em>, taken from the clinical context, where different groups of patients may have different frailties (background risks of death).</p>
 <p>There are many variants of how frailty models are run in the clinical context (see <span class="citation">Collett (<a href="references.html#ref-collett">2015</a>)</span> for an excellent exposition of these), but the main application of a frailty model in people analytics would be to adapt a Cox proportional hazard model to take into account different background risks of the hazard event occurring among different groups in the data. This is called a <em>shared frailty model</em>. The <code>frailtypack</code> R package allows various frailty models to be run with relative ease. This is how we would run a shared frailty model on our <code>job_retention</code> data to take account of the different background attrition risk for the different fields of employment.</p>
-<div class="sourceCode" id="cb414"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://virginie1rondeau.wixsite.com/virginierondeau/software-frailtypack">frailtypack</a></span><span class="op">)</span>
-
-<span class="op">(</span><span class="va">frailty_model</span> <span class="op">&lt;-</span> <span class="fu">frailtypack</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/frailtypack/man/frailtyPenal.html">frailtyPenal</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span>event <span class="op">=</span> <span class="va">left</span>, time <span class="op">=</span> <span class="va">month</span><span class="op">)</span> <span class="op">~</span> <span class="va">gender</span> <span class="op">+</span> 
-    <span class="va">level</span> <span class="op">+</span> <span class="va">sentiment</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/frailtypack/man/cluster.html">cluster</a></span><span class="op">(</span><span class="va">field</span><span class="op">)</span>,
-  data <span class="op">=</span> <span class="va">job_retention</span>,
-  n.knots <span class="op">=</span> <span class="fl">12</span>, 
-  kappa <span class="op">=</span> <span class="fl">10000</span>
-<span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb416"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://virginie1rondeau.wixsite.com/virginierondeau/software-frailtypack">frailtypack</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">(</span><span class="va">frailty_model</span> <span class="op">&lt;-</span> <span class="fu">frailtypack</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/frailtypack/man/frailtyPenal.html">frailtyPenal</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span>event <span class="op">=</span> <span class="va">left</span>, time <span class="op">=</span> <span class="va">month</span><span class="op">)</span> <span class="op">~</span> <span class="va">gender</span> <span class="op">+</span> </span>
+<span>    <span class="va">level</span> <span class="op">+</span> <span class="va">sentiment</span> <span class="op">+</span> <span class="fu">cluster</span><span class="op">(</span><span class="va">field</span><span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">job_retention</span>,</span>
+<span>  n.knots <span class="op">=</span> <span class="fl">12</span>, </span>
+<span>  kappa <span class="op">=</span> <span class="fl">10000</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>## 
 ## Be patient. The program is computing ... 
-## The program took 1.19 seconds</code></pre>
+## The program took 1.04 seconds</code></pre>
 <pre><code>## Call:
 ## frailtypack::frailtyPenal(formula = Surv(event = left, time = month) ~ 
 ##     gender + level + sentiment + cluster(field), data = job_retention, 
@@ -412,20 +414,20 @@ Figure 9.2: Schoenfeld test on proportional hazard assumption for <code>cox_mode
 ##   Shared Gamma Frailty model parameter estimates  
 ##   using a Penalized Likelihood on the hazard function 
 ## 
-##                  coef exp(coef) SE coef (H) SE coef (HIH)         z          p
-## genderM     -0.029531  0.970901   0.0591820     0.0591820 -0.498986 6.1779e-01
-## levelLow     0.198548  1.219630   0.0917396     0.0917396  2.164255 3.0445e-02
-## levelMedium  0.223266  1.250154   0.1035510     0.1035510  2.156101 3.1076e-02
-## sentiment   -0.108262  0.897392   0.0141325     0.0141325 -7.660518 1.8541e-14
+##                   coef exp(coef) SE coef (H) SE coef (HIH)         z          p
+## genderM     -0.0295295  0.970902   0.0593400     0.0593400 -0.497632 6.1874e-01
+## levelLow     0.1985599  1.219645   0.0927706     0.0927706  2.140332 3.2328e-02
+## levelMedium  0.2232823  1.250174   0.1043782     0.1043782  2.139166 3.2422e-02
+## sentiment   -0.1082618  0.897393   0.0143427     0.0143427 -7.548237 4.4076e-14
 ## 
 ##         chisq df global p
-## level 5.28624  2   0.0711
+## level 5.17425  2   0.0752
 ## 
-##     Frailty parameter, Theta: 48.3209 (SE (H): 25.5895 ) p = 0.029492 
+##     Frailty parameter, Theta: 48.3192 (SE (H): 33.2451 ) p = 0.073053 
 ##  
 ##       penalized marginal log-likelihood = -5510.36
 ##       Convergence criteria: 
-##       parameters = 3.05e-05 likelihood = 4.91e-06 gradient = 1.55e-09 
+##       parameters = 6.55e-05 likelihood = 9.89e-06 gradient = 6.43e-09 
 ## 
 ##       LCV = the approximate likelihood cross-validation criterion
 ##             in the semi parametrical case     = 1.46587 
@@ -437,21 +439,21 @@ Figure 9.2: Schoenfeld test on proportional hazard assumption for <code>cox_mode
 ##       Exact number of knots used:  12 
 ##       Value of the smoothing parameter:  10000, DoF:  6.31</code></pre>
 <p>We can see that the frailty parameter is significant, indicating that there is sufficient difference in the background attrition risk to justify the application of a random hazard effect. We also see that the level of employment now becomes more significant in addition to sentiment, with Low and Medium level employees more likely to leave compared to High level employees.</p>
-<p>The <code><a href="https://rdrr.io/pkg/frailtypack/man/frailtyPenal.html">frailtyPenal()</a></code> function can also be a useful way to observe the different baseline survivals for groups in the data. For example, a simple stratified Cox proportional hazard model based on sentiment category can be constructed<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Note there needs to be a &lt;code&gt;kappa&lt;/code&gt; for each level of the stratification.&lt;/p&gt;"><sup>42</sup></a>.</p>
-<div class="sourceCode" id="cb417"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stratified_base</span> <span class="op">&lt;-</span> <span class="fu">frailtypack</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/frailtypack/man/frailtyPenal.html">frailtyPenal</a></span><span class="op">(</span>
-  formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span>event <span class="op">=</span> <span class="va">left</span>, time <span class="op">=</span> <span class="va">month</span><span class="op">)</span> <span class="op">~</span> 
-    <span class="fu"><a href="https://rdrr.io/pkg/survival/man/strata.html">strata</a></span><span class="op">(</span><span class="va">sentiment_category</span><span class="op">)</span>,
-  data <span class="op">=</span> <span class="va">job_retention</span>,
-  n.knots <span class="op">=</span> <span class="fl">12</span>,
-  kappa <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">10000</span>, <span class="fl">2</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
-<p>This can then be plotted to observe how baseline retention differs by group, as in Figure <a href="survival.html#fig:stratified">9.3</a><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;This is another route to calculating survival curves similar to Figure &lt;a href="survival.html#fig:survivalplot"&gt;9.1&lt;/a&gt;.&lt;/p&gt;'><sup>43</sup></a>.</p>
-<div class="sourceCode" id="cb418"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stratified_base</span>, type.plot <span class="op">=</span> <span class="st">"Survival"</span>, 
-     pos.legend <span class="op">=</span> <span class="st">"topright"</span>, Xlab <span class="op">=</span> <span class="st">"Month"</span>,
-     Ylab <span class="op">=</span> <span class="st">"Baseline retention rate"</span>,
-     color <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<p>The <code><a href="https://rdrr.io/pkg/frailtypack/man/frailtyPenal.html">frailtyPenal()</a></code> function can also be a useful way to observe the different baseline survivals for groups in the data. For example, a simple stratified Cox proportional hazard model based on sentiment category can be constructed<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content="&lt;p&gt;Note there needs to be a &lt;code&gt;kappa&lt;/code&gt; for each level of the stratification.&lt;/p&gt;"><sup>41</sup></a>.</p>
+<div class="sourceCode" id="cb419"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stratified_base</span> <span class="op">&lt;-</span> <span class="fu">frailtypack</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/frailtypack/man/frailtyPenal.html">frailtyPenal</a></span><span class="op">(</span></span>
+<span>  formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span>event <span class="op">=</span> <span class="va">left</span>, time <span class="op">=</span> <span class="va">month</span><span class="op">)</span> <span class="op">~</span> </span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/survival/man/strata.html">strata</a></span><span class="op">(</span><span class="va">sentiment_category</span><span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">job_retention</span>,</span>
+<span>  n.knots <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>  kappa <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">10000</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>This can then be plotted to observe how baseline retention differs by group, as in Figure <a href="survival.html#fig:stratified">9.3</a><a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;This is another route to calculating survival curves similar to Figure &lt;a href="survival.html#fig:survivalplot"&gt;9.1&lt;/a&gt;.&lt;/p&gt;'><sup>42</sup></a>.</p>
+<div class="sourceCode" id="cb420"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stratified_base</span>, type.plot <span class="op">=</span> <span class="st">"Survival"</span>, </span>
+<span>     pos.legend <span class="op">=</span> <span class="st">"topright"</span>, Xlab <span class="op">=</span> <span class="st">"Month"</span>,</span>
+<span>     Ylab <span class="op">=</span> <span class="st">"Baseline retention rate"</span>,</span>
+<span>     color <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <span style="display:block;" id="fig:stratified"></span>
 <img src="_main_files/figure-html/stratified-1.png" alt="Baseline retention curves for the two sentiment categories in the `job_retention` data set" width="672"><p class="caption">
@@ -480,7 +482,7 @@ Figure 9.3: Baseline retention curves for the two sentiment categories in the <c
 <h3>
 <span class="header-section-number">9.4.2</span> Data exercises<a class="anchor" aria-label="anchor" href="#data-exercises-7"><i class="fas fa-link"></i></a>
 </h3>
-<p>For these exercises, use the same <code>job_retention</code> data set as in the walkthrough example for this chapter, which can be loaded via the <code>peopleanalyticsdata</code> package or downloaded from the internet<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="http://peopleanalytics-regression-book.org/data/job_retention.csv" class="uri"&gt;http://peopleanalytics-regression-book.org/data/job_retention.csv&lt;/a&gt;&lt;/p&gt;'><sup>44</sup></a>. The <code>intention</code> field represents a score of 1 to 10 on the individual’s intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention. This response was recorded at the beginning of the study period.</p>
+<p>For these exercises, use the same <code>job_retention</code> data set as in the walkthrough example for this chapter, which can be loaded via the <code>peopleanalyticsdata</code> package or downloaded from the internet<a class="footnote-ref" tabindex="0" data-toggle="popover" data-content='&lt;p&gt;&lt;a href="http://peopleanalytics-regression-book.org/data/job_retention.csv" class="uri"&gt;http://peopleanalytics-regression-book.org/data/job_retention.csv&lt;/a&gt;&lt;/p&gt;'><sup>43</sup></a>. The <code>intention</code> field represents a score of 1 to 10 on the individual’s intention to leave their job in the next 12 months, where 1 indicates an extremely low intention and 10 indicates an extremely high intention. This response was recorded at the beginning of the study period.</p>
 <ol style="list-style-type: decimal">
 <li>Create three categories of <code>intention</code> as follows: High (score of 7 or higher), Moderate (score of 4–6), Low (score of 3 or less)</li>
 <li>Calculate Kaplan-Meier survival estimates for the three categories and visualize these using survival curves.</li>
@@ -544,7 +546,7 @@ Figure 9.3: Baseline retention curves for the two sentiment categories in the <c
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

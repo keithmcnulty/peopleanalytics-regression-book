@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>References | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
   <meta name="description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
   <meta property="og:title" content="References | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
   <meta property="og:type" content="book" />
@@ -55,13 +55,14 @@
 <meta name="citation_author" content="Keith McNulty"/>
 <meta name="citation_publication_date" content="2021"/>
 <meta name="citation_isbn" content="9781003194156"/>
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.4/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script>
 <script>
@@ -77,7 +78,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -87,7 +88,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -141,10 +142,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -433,9 +439,10 @@ div.csl-indent {
 <li class="chapter" data-level="10.2.1" data-path="alt-approaches.html"><a href="alt-approaches.html#ordinary-least-squares-ols-linear-regression"><i class="fa fa-check"></i><b>10.2.1</b> Ordinary Least Squares (OLS) linear regression</a></li>
 <li class="chapter" data-level="10.2.2" data-path="alt-approaches.html"><a href="alt-approaches.html#binomial-logistic-regression"><i class="fa fa-check"></i><b>10.2.2</b> Binomial logistic regression</a></li>
 <li class="chapter" data-level="10.2.3" data-path="alt-approaches.html"><a href="alt-approaches.html#multinomial-logistic-regression"><i class="fa fa-check"></i><b>10.2.3</b> Multinomial logistic regression</a></li>
-<li class="chapter" data-level="10.2.4" data-path="alt-approaches.html"><a href="alt-approaches.html#structural-equation-models"><i class="fa fa-check"></i><b>10.2.4</b> Structural equation models</a></li>
-<li class="chapter" data-level="10.2.5" data-path="alt-approaches.html"><a href="alt-approaches.html#survival-analysis"><i class="fa fa-check"></i><b>10.2.5</b> Survival analysis</a></li>
-<li class="chapter" data-level="10.2.6" data-path="alt-approaches.html"><a href="alt-approaches.html#other-model-variants"><i class="fa fa-check"></i><b>10.2.6</b> Other model variants</a></li>
+<li class="chapter" data-level="10.2.4" data-path="alt-approaches.html"><a href="alt-approaches.html#ordinal-logistic-regression"><i class="fa fa-check"></i><b>10.2.4</b> Ordinal logistic regression</a></li>
+<li class="chapter" data-level="10.2.5" data-path="alt-approaches.html"><a href="alt-approaches.html#mixed-effects-models"><i class="fa fa-check"></i><b>10.2.5</b> Mixed effects models</a></li>
+<li class="chapter" data-level="10.2.6" data-path="alt-approaches.html"><a href="alt-approaches.html#structural-equation-models"><i class="fa fa-check"></i><b>10.2.6</b> Structural equation models</a></li>
+<li class="chapter" data-level="10.2.7" data-path="alt-approaches.html"><a href="alt-approaches.html#survival-analysis"><i class="fa fa-check"></i><b>10.2.7</b> Survival analysis</a></li>
 </ul></li>
 <li class="chapter" data-level="10.3" data-path="alt-approaches.html"><a href="alt-approaches.html#inferential-statistical-modeling-in-julia"><i class="fa fa-check"></i><b>10.3</b> Inferential statistical modeling in Julia</a>
 <ul>
@@ -481,7 +488,7 @@ div.csl-indent {
 <div id="references" class="section level1 unnumbered hasAnchor">
 <h1>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div class="csl-entry">
 Agresti, Alan. 2007. <em>An Introduction to Categorical Data Analysis</em>.
 </div>
@@ -665,7 +672,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');

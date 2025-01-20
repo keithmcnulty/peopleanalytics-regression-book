@@ -311,7 +311,7 @@ X = pd.concat([X1, X2], axis = 1)
 Xc = sm.add_constant(X)
 
 # define model
-model = sm.MNLogit(y, Xc)
+model = sm.MNLogit(y, Xc.astype(float))
 
 # fit model
 insurance_model = model.fit()
@@ -340,13 +340,17 @@ X1 = pd.get_dummies(health_insurance['gender'], drop_first = True)
 X2 = health_insurance.drop(['product', 'gender'], axis = 1)
 X = pd.concat([X1, X2], axis = 1)
 
+# add a constant term to ensure intercept is calculated
 Xc = sm.add_constant(X)
 
 # define model
-model = sm.MNLogit(y, Xc)
+model = sm.MNLogit(y, Xc.astype(float))
 
 # fit model
 insurance_model = model.fit()
+
+# see results summary
+print(insurance_model.summary())
 ```
 
 ```{python, echo = FALSE}
@@ -354,6 +358,105 @@ insurance_model = model.fit()
 print(insurance_model.summary())
 ```
 `r if (knitr::is_latex_output()) '\\normalsize'`
+
+### Ordinal logistic regression
+
+`statsmodels` also offers an ordinal model based on proportional odds logistic regression.  It is important to define the order of your outcome categories before running this model^[Note that intercept coefficients are presented a little differently compared to `MASS::polr()` in R.  The base level intercept is similar, but to get higher level intercepts, their coefficients need to be exponentiated and added to the base level intercept.].
+
+`r if (knitr::is_latex_output()) '\\small'`
+```{python, eval = FALSE}
+import pandas as pd
+from statsmodels.miscmodels.ordinal_model import OrderedModel
+from pandas.api.types import CategoricalDtype
+
+# load soccer data
+url = "http://peopleanalytics-regression-book.org/data/soccer.csv"
+soccer = pd.read_csv(url)
+
+# fill NaN with "None" in discipline column
+soccer.discipline = soccer.discipline.fillna("None")
+
+# turn discipline column into ordered category
+cat = CategoricalDtype(categories=["None", "Yellow", "Red"], ordered=True)
+soccer.discipline = soccer.discipline.astype(cat)
+
+# run proportional odds logistic regression
+prop_odds_logit = OrderedModel.from_formula(
+  "discipline ~ 1 + n_yellow_25 + n_red_25 + position + result + country + level", 
+  soccer, 
+  distr='logit'
+)
+soccer_model = prop_odds_logit.fit(method='bfgs')
+print(soccer_model.summary())
+```
+
+`r if (knitr::is_latex_output()) '\\newpage \\small'`
+```{python, echo = FALSE, results = FALSE}
+import pandas as pd
+from statsmodels.miscmodels.ordinal_model import OrderedModel
+from pandas.api.types import CategoricalDtype
+
+# load soccer data
+url = "http://peopleanalytics-regression-book.org/data/soccer.csv"
+soccer = pd.read_csv(url)
+
+# fill NaN with "None" in discipline column
+soccer.discipline = soccer.discipline.fillna("None")
+
+# turn discipline column into ordered category
+cat = CategoricalDtype(categories=["None", "Yellow", "Red"], ordered=True)
+soccer.discipline = soccer.discipline.astype(cat)
+
+# run proportional odds logistic regression
+prop_odds_logit = OrderedModel.from_formula(
+  "discipline ~ 1 + n_yellow_25 + n_red_25 + position + result + country + level", 
+  soccer, 
+  distr='logit'
+)
+soccer_model = prop_odds_logit.fit(method='bfgs')
+```
+
+```{python, echo = FALSE}
+# see results summary
+print(soccer_model.summary())
+```
+`r if (knitr::is_latex_output()) '\\normalsize'`
+
+### Mixed effects models
+
+`r if (knitr::is_latex_output()) '\\index{Python!packages!pymer4@\\texttt{pymer4}}'`The `pymer4` package provides a simple implementation of linear and generalized linear mixed effects models.  The `Lmer()` function is used for all models, and the specific model is defined by the `family` parameter.
+
+`r if (knitr::is_latex_output()) '\\small'`
+```{python, eval = FALSE}
+from pymer4 import Lmer
+import pandas as pd
+
+url = "http://peopleanalytics-regression-book.org/data/speed_dating.csv"
+speed_dating = pd.read_csv(url)
+
+model = Lmer("dec ~ agediff + samerace + attr + intel + prob + (1 | iid)",
+             data = speed_dating, family = 'binomial')
+
+print(model.fit())
+```
+
+
+`r if (knitr::is_latex_output()) '\\newpage \\small'`
+```{python, echo = FALSE}
+from pymer4 import Lmer
+import pandas as pd
+
+url = "http://peopleanalytics-regression-book.org/data/speed_dating.csv"
+speed_dating = pd.read_csv(url)
+
+model = Lmer("dec ~ agediff + samerace + attr + intel + prob + (1 | iid)",
+             data = speed_dating, family = 'binomial')
+
+print(model.fit())
+```
+
+`r if (knitr::is_latex_output()) '\\normalsize'`
+
 
 ### Structural equation models
 
@@ -448,14 +551,15 @@ plt.show()
 
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
-```{python, echo = FALSE, results = FALSE}
+```{python, echo = FALSE, fig.show='hide'}
 import pandas as pd
 import matplotlib
 from lifelines import KaplanMeierFitter
 from matplotlib import pyplot as plt
 matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype'] = 42
-matplotlib.rcParams['text.usetex'] = True
+# matplotlib.rcParams['text.usetex'] = True
+# matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 
 plt.cla()
 
@@ -530,13 +634,6 @@ cph.check_assumptions(job_retention, p_value_threshold = 0.05)
 ```
 `r if (knitr::is_latex_output()) '\\normalsize'`
 
-### Other model variants
-
-Implementation of other model variants featured in earlier chapters becomes thinner in Python.  However, of note are the following:
-
-* Ordinal regression is not currently available in the release version of the `statsmodels` package but is available in the development version.  The `mord` package offers an implementation of ordinal regression for predictive analytics purposes, but for inferential modeling users will need to wait for a release of `statsmodels` that contains ordinal regression methods or for immediate use they will need to install the development version from source.
-
-* Mixed models only currently have an implementation for linear mixed modeling in `statsmodels`.  Generalized linear mixed models equivalent to those found in the `lme4` R package are not yet available in Python.
 
 `r if (knitr::is_latex_output()) '<!--'`
 ## Inferential statistical modeling in Julia
@@ -577,7 +674,7 @@ using DataFrames, CSV, GLM, Missings, CategoricalArrays;
 
 # get salespeople data
 url = "http://peopleanalytics-regression-book.org/data/salespeople.csv";
-salespeople = CSV.read(download(url), DataFrame, missingstrings=["NA"]);
+salespeople = CSV.read(download(url), DataFrame, missingstring=["NA"]);
 
 # remove missing value rows from dataset
 salespeople = salespeople[completecases(salespeople), :];
@@ -598,6 +695,8 @@ promotion_model = glm(@formula(promoted ~ sales + customer_rate + performance), 
 The AIC, log likelihood and other summary statistics of the model can be obtained using the appropriate functions.  For example: 
 
 ```{julia, message = FALSE, warning = FALSE}
+using StatsBase
+
 # AIC
 aic(promotion_model)
 # log likelihood
@@ -613,7 +712,7 @@ using DataFrames, CSV, Econometrics, CategoricalArrays;
 
 # get health_insurance data
 url = "http://peopleanalytics-regression-book.org/data/health_insurance.csv";
-health_insurance = CSV.read(download(url), DataFrame, missingstrings=["NA"]);
+health_insurance = CSV.read(download(url), DataFrame, missingstring=["NA"]);
 
 # map gender and product to categorical
 health_insurance.gender = CategoricalArray(health_insurance.gender);
@@ -635,7 +734,7 @@ using DataFrames, CSV, Econometrics, CategoricalArrays;
 
 # get soccer data
 url = "http://peopleanalytics-regression-book.org/data/soccer.csv";
-soccer = CSV.read(download(url), DataFrame, missingstrings=["NA"]);
+soccer = CSV.read(download(url), DataFrame, missingstring=["NA"]);
 
 # map columns not starting with "n" to categorical
 transform!(soccer, names(soccer, r"^(?!n)") .=> CategoricalArray, renamecols = false);
@@ -665,7 +764,7 @@ using DataFrames, CSV, MixedModels, CategoricalArrays;
 
 # get speed_dating data
 url = "http://peopleanalytics-regression-book.org/data/speed_dating.csv";
-speed_dating = CSV.read(download(url), DataFrame, missingstrings=["NA"]);
+speed_dating = CSV.read(download(url), DataFrame, missingstring=["NA"]);
 
 # make iid categorical
 speed_dating.iid = CategoricalArray(speed_dating.iid);

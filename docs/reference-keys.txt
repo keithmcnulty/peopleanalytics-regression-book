@@ -202,9 +202,10 @@ inferential-statistical-modeling-in-python
 ordinary-least-squares-ols-linear-regression
 binomial-logistic-regression
 multinomial-logistic-regression
+ordinal-logistic-regression
+mixed-effects-models
 structural-equation-models
 survival-analysis
-other-model-variants
 inferential-statistical-modeling-in-julia
 ordinary-least-squares-ols-linear-regression-1
 binomial-logistic-regression-1

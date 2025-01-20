@@ -518,7 +518,12 @@ Again, we can reject the null hypothesis and confirm the alternative hypothesis 
 
 Elementary descriptive statistics can be performed in Python using various packages.  Descriptive statistics of `numpy` arrays are usually available as methods.
 
-```{python}
+```{python, echo=FALSE}
+import matplotlib
+matplotlib.rcParams.update(matplotlib.rcParamsDefault)
+```
+
+```{python first-python-block}
 import pandas as pd
 import numpy as np
 
@@ -642,7 +647,7 @@ using DataFrames, CSV, StatsBase, Statistics, Missings;
 
 # get salespeople data
 url = "http://peopleanalytics-regression-book.org/data/salespeople.csv";
-salespeople = CSV.read(download(url), DataFrame, missingstrings=["NA"]);
+salespeople = CSV.read(download(url), DataFrame, missingstring=["NA"]);
 
 # remove missing value rows from dataset
 salespeople = salespeople[completecases(salespeople), :];
@@ -699,7 +704,14 @@ perf4 = salespeople[salespeople.performance .== 4, :].sales;
 UnequalVarianceTTest(perf4, perf1)
 ```
 
-Currently, Julia does not have packaged hypothesis tests for correlations, so these would need to be done manually using the methods illustrated in Section \@ref(t-test-cor)^[Julia is a relatively young language and a quick perusal of the `HypothesisTests` Github repo reveals active work to add correlation testing in upcoming versions].  A chi-square test is conducted on a contingency matrix as follows:
+A hypothesis test for non-zero correlation coefficients is performed as follows:
+
+```{julia, message = FALSE, warning = FALSE}
+# test of non-zero correlation
+CorrelationTest(salespeople.sales, salespeople.customer_rate)
+```
+
+A chi-square test is conducted on a contingency matrix as follows:
 
 ```{julia, message = FALSE, warning = FALSE}
 # chi-square test

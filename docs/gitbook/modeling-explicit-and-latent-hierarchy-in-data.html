@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>8 Modeling Explicit and Latent Hierarchy in Data | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia</title>
   <meta name="description" content="A technical manual of inferential statistics and regression modeling in the people and social sciences" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
   <meta property="og:title" content="8 Modeling Explicit and Latent Hierarchy in Data | Handbook of Regression Modeling in People Analytics: With Examples in R, Python and Julia" />
   <meta property="og:type" content="book" />
@@ -55,13 +55,14 @@
 <meta name="citation_author" content="Keith McNulty"/>
 <meta name="citation_publication_date" content="2021"/>
 <meta name="citation_isbn" content="9781003194156"/>
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.4/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7JZGMVRZK"></script>
 <script>
@@ -77,7 +78,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -87,7 +88,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -141,10 +142,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -433,9 +439,10 @@ div.csl-indent {
 <li class="chapter" data-level="10.2.1" data-path="alt-approaches.html"><a href="alt-approaches.html#ordinary-least-squares-ols-linear-regression"><i class="fa fa-check"></i><b>10.2.1</b> Ordinary Least Squares (OLS) linear regression</a></li>
 <li class="chapter" data-level="10.2.2" data-path="alt-approaches.html"><a href="alt-approaches.html#binomial-logistic-regression"><i class="fa fa-check"></i><b>10.2.2</b> Binomial logistic regression</a></li>
 <li class="chapter" data-level="10.2.3" data-path="alt-approaches.html"><a href="alt-approaches.html#multinomial-logistic-regression"><i class="fa fa-check"></i><b>10.2.3</b> Multinomial logistic regression</a></li>
-<li class="chapter" data-level="10.2.4" data-path="alt-approaches.html"><a href="alt-approaches.html#structural-equation-models"><i class="fa fa-check"></i><b>10.2.4</b> Structural equation models</a></li>
-<li class="chapter" data-level="10.2.5" data-path="alt-approaches.html"><a href="alt-approaches.html#survival-analysis"><i class="fa fa-check"></i><b>10.2.5</b> Survival analysis</a></li>
-<li class="chapter" data-level="10.2.6" data-path="alt-approaches.html"><a href="alt-approaches.html#other-model-variants"><i class="fa fa-check"></i><b>10.2.6</b> Other model variants</a></li>
+<li class="chapter" data-level="10.2.4" data-path="alt-approaches.html"><a href="alt-approaches.html#ordinal-logistic-regression"><i class="fa fa-check"></i><b>10.2.4</b> Ordinal logistic regression</a></li>
+<li class="chapter" data-level="10.2.5" data-path="alt-approaches.html"><a href="alt-approaches.html#mixed-effects-models"><i class="fa fa-check"></i><b>10.2.5</b> Mixed effects models</a></li>
+<li class="chapter" data-level="10.2.6" data-path="alt-approaches.html"><a href="alt-approaches.html#structural-equation-models"><i class="fa fa-check"></i><b>10.2.6</b> Structural equation models</a></li>
+<li class="chapter" data-level="10.2.7" data-path="alt-approaches.html"><a href="alt-approaches.html#survival-analysis"><i class="fa fa-check"></i><b>10.2.7</b> Survival analysis</a></li>
 </ul></li>
 <li class="chapter" data-level="10.3" data-path="alt-approaches.html"><a href="alt-approaches.html#inferential-statistical-modeling-in-julia"><i class="fa fa-check"></i><b>10.3</b> Inferential statistical modeling in Julia</a>
 <ul>
@@ -510,7 +517,7 @@ where <span class="math inline">\(\beta_{G0}\)</span> is a random intercept with
 </div>
 <div id="running-a-mixed-model" class="section level3 hasAnchor" number="8.1.2">
 <h3><span class="header-section-number">8.1.2</span> Running a mixed model<a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-a-mixed-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Let’s look at a fun and straightforward example of how mixed models can be useful. The <code>speed_dating</code> data set is a set of information captured during experiments with speed dating by students at Columbia University in New York<a href="#fn37" class="footnote-ref" id="fnref37"><sup>37</sup></a>. Each row represents one meeting between an individual and a partner of the opposite sex. The data contains the following fields:</p>
+<p>Let’s look at a fun and straightforward example of how mixed models can be useful. The <code>speed_dating</code> data set is a set of information captured during experiments with speed dating by students at Columbia University in New York<a href="#fn36" class="footnote-ref" id="fnref36"><sup>36</sup></a>. Each row represents one meeting between an individual and a partner of the opposite sex. The data contains the following fields:</p>
 <ul>
 <li><code>iid</code> is an id number for the individual.</li>
 <li><code>gender</code> is the gender of the individual with 0 as Female and 1 as Male.</li>
@@ -525,15 +532,15 @@ where <span class="math inline">\(\beta_{G0}\)</span> is a random intercept with
 <li><code>agediff</code> is the absolute difference in the ages of the individual and the partner.</li>
 </ul>
 <p>This data can be explored in numerous ways, but we will focus here on modeling options. We are interested in the binary outcome <code>dec</code> (the decision of the individual), and we would like to understand how it relates to the age difference, the racial similarity and the ratings on <code>attr</code>, <code>intel</code> and <code>prob</code>. First, let’s assume that we don’t care about how an individual makes up their mind about their speed date, and that we are only interested in the dynamics of speed date decisions. Then we would simply run a binomial logistic regression on our data set, ignoring <code>iid</code> and other grouping variables like <code>race</code>, <code>goal</code> and <code>gender</code>.</p>
-<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb384-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb384-1" tabindex="-1"></a><span class="co"># if needed, get data</span></span>
-<span id="cb384-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb384-2" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/speed_dating.csv&quot;</span></span>
-<span id="cb384-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb384-3" tabindex="-1"></a>speed_dating <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code></pre></div>
-<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb385-1" tabindex="-1"></a><span class="co"># run standard binomial model</span></span>
-<span id="cb385-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb385-2" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">glm</span>(dec <span class="sc">~</span> agediff <span class="sc">+</span> samerace <span class="sc">+</span> attr <span class="sc">+</span> intel <span class="sc">+</span> prob, </span>
-<span id="cb385-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb385-3" tabindex="-1"></a>             <span class="at">data =</span> speed_dating, </span>
-<span id="cb385-4"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb385-4" tabindex="-1"></a>             <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span>)</span>
-<span id="cb385-5"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb385-5" tabindex="-1"></a></span>
-<span id="cb385-6"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb385-6" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb386-1" tabindex="-1"></a><span class="co"># if needed, get data</span></span>
+<span id="cb386-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb386-2" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/speed_dating.csv&quot;</span></span>
+<span id="cb386-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb386-3" tabindex="-1"></a>speed_dating <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code></pre></div>
+<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb387-1" tabindex="-1"></a><span class="co"># run standard binomial model</span></span>
+<span id="cb387-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb387-2" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">glm</span>(dec <span class="sc">~</span> agediff <span class="sc">+</span> samerace <span class="sc">+</span> attr <span class="sc">+</span> intel <span class="sc">+</span> prob, </span>
+<span id="cb387-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb387-3" tabindex="-1"></a>             <span class="at">data =</span> speed_dating, </span>
+<span id="cb387-4"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb387-4" tabindex="-1"></a>             <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span>)</span>
+<span id="cb387-5"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb387-5" tabindex="-1"></a></span>
+<span id="cb387-6"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb387-6" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = dec ~ agediff + samerace + attr + intel + prob, 
@@ -561,17 +568,17 @@ where <span class="math inline">\(\beta_{G0}\)</span> is a random intercept with
 <p>In general, we see that the factors which significantly influence the speed dating decision seem to be the attractiveness of the partner and the feeling of reciprocation of interest from the partner, and that age difference, racial similarity and intelligence do not seem to play a significant role at the level of the speed date itself.</p>
 <p>Now let’s say that we are interested in how a given <em>individual</em> weighs up these factors in coming to a decision. Different individuals may have different ingoing criteria for making speed dating decisions. As a result, each individual may have varying base likelihoods of a positive decision, and each individual may be affected by the input variables in different ways as they come to their decision. Therefore we will need to assign random effects for individuals based on <code>iid</code>. The <code>lme4</code> package in R contains functions for performing mixed linear regression models and mixed generalized linear regression models. These functions take formulas with additional terms to define the random effects to be estimated. The function for a linear model is <code>lmer()</code> and for a generalized linear model is <code>glmer()</code>.</p>
 <p>In the simple case, let’s assume that each individual has a different ingoing base likelihood of making a positive decision on a speed date. We will therefore model a random intercept according to the <code>iid</code> of the individual. Here we would use the formula <code>dec ~ agediff + samerace + attr + intel + prob + (1 | iid)</code>, where <code>(1 | iid)</code> means ‘a random effect for <code>iid</code> on the intercept of the model’.</p>
-<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb387-1" tabindex="-1"></a><span class="co"># run binomial mixed effects model</span></span>
-<span id="cb387-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb387-2" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
-<span id="cb387-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb387-3" tabindex="-1"></a></span>
-<span id="cb387-4"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb387-4" tabindex="-1"></a>iid_intercept_model <span class="ot">&lt;-</span> lme4<span class="sc">:::</span><span class="fu">glmer</span>(</span>
-<span id="cb387-5"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb387-5" tabindex="-1"></a>  dec <span class="sc">~</span> agediff <span class="sc">+</span> samerace <span class="sc">+</span> attr <span class="sc">+</span> intel <span class="sc">+</span> prob <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> iid),</span>
-<span id="cb387-6"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb387-6" tabindex="-1"></a>  <span class="at">data =</span> speed_dating,</span>
-<span id="cb387-7"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb387-7" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span></span>
-<span id="cb387-8"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb387-8" tabindex="-1"></a>)</span></code></pre></div>
-<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb388-1" tabindex="-1"></a><span class="co"># view summary without correlation table of fixed effects</span></span>
-<span id="cb388-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb388-2" tabindex="-1"></a><span class="fu">summary</span>(iid_intercept_model, </span>
-<span id="cb388-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb388-3" tabindex="-1"></a>        <span class="at">correlation =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb389-1" tabindex="-1"></a><span class="co"># run binomial mixed effects model</span></span>
+<span id="cb389-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb389-2" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb389-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb389-3" tabindex="-1"></a></span>
+<span id="cb389-4"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb389-4" tabindex="-1"></a>iid_intercept_model <span class="ot">&lt;-</span> lme4<span class="sc">:::</span><span class="fu">glmer</span>(</span>
+<span id="cb389-5"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb389-5" tabindex="-1"></a>  dec <span class="sc">~</span> agediff <span class="sc">+</span> samerace <span class="sc">+</span> attr <span class="sc">+</span> intel <span class="sc">+</span> prob <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> iid),</span>
+<span id="cb389-6"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb389-6" tabindex="-1"></a>  <span class="at">data =</span> speed_dating,</span>
+<span id="cb389-7"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb389-7" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span></span>
+<span id="cb389-8"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb389-8" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb390-1" tabindex="-1"></a><span class="co"># view summary without correlation table of fixed effects</span></span>
+<span id="cb390-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb390-2" tabindex="-1"></a><span class="fu">summary</span>(iid_intercept_model, </span>
+<span id="cb390-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb390-3" tabindex="-1"></a>        <span class="at">correlation =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace Approximation) [&#39;glmerMod&#39;]
 ##  Family: binomial  ( logit )
 ## Formula: dec ~ agediff + samerace + attr + intel + prob + (1 | iid)
@@ -582,7 +589,7 @@ where <span class="math inline">\(\beta_{G0}\)</span> is a random intercept with
 ## 
 ## Scaled residuals: 
 ##      Min       1Q   Median       3Q      Max 
-## -25.6965  -0.3644  -0.0606   0.3608  25.0368 
+## -25.6966  -0.3644  -0.0606   0.3608  25.0369 
 ## 
 ## Random effects:
 ##  Groups Name        Variance Std.Dev.
@@ -591,27 +598,27 @@ where <span class="math inline">\(\beta_{G0}\)</span> is a random intercept with
 ## 
 ## Fixed effects:
 ##              Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept) -12.88882    0.42143 -30.583  &lt; 2e-16 ***
+## (Intercept) -12.88882    0.42139 -30.587  &lt; 2e-16 ***
 ## agediff      -0.03671    0.01401  -2.621  0.00877 ** 
-## samerace      0.20187    0.08139   2.480  0.01313 *  
-## attr          1.07894    0.03334  32.363  &lt; 2e-16 ***
-## intel         0.31592    0.03473   9.098  &lt; 2e-16 ***
+## samerace      0.20187    0.08140   2.480  0.01314 *  
+## attr          1.07894    0.03334  32.364  &lt; 2e-16 ***
+## intel         0.31592    0.03472   9.098  &lt; 2e-16 ***
 ## prob          0.61998    0.02873  21.581  &lt; 2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>We can see the two levels of results in this summary. The fixed effects level gives the coefficients of the model at an observation (speed date) level, and the random effects tell us how the intercept (or base likelihood) of that model can vary according to the individual. We see that there is considerable variance in the intercept from individual to individual, and taking this into account, we now see that the decision of an individual on a given date is significantly influenced by all the factors in this model. If we had stuck with the simple binomial model, the effects of age difference, racial similarity and intelligence at an individual level would have gotten lost, and we could have reached the erroneous conclusion that none of these really matter in speed dating.</p>
 <p>To illustrate this graphically, Interactive Figure <a href="modeling-explicit-and-latent-hierarchy-in-data.html#fig:fullbin">8.1</a> shows the <code>speed_dating</code> data for a subset of the three individuals with IIDs 252, 254 and 256. The curve represents a plain binomial logistic regression model fitted on the <code>attr</code> and <code>prob</code> input variables, irrelevant of the IID of the individual.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fullbin"></span>
-<div id="htmlwidget-c25ca3336b15b0293a53" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c25ca3336b15b0293a53">{"x":{"visdat":{"492f4e160c0c":["function () ","plotlyVisDat"]},"cur_data":"492f4e160c0c","attrs":{"492f4e160c0c":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"mode":"markers","type":"scatter3d","marker":{"size":5,"symbol":{},"color":{}},"name":{},"inherit":true},"492f4e160c0c.1":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":{},"x":{},"y":{},"type":"mesh3d","name":"Fitted values","intensity":{},"colorscale":[["0","orange"],["1","orange"]],"showscale":false,"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"attr"},"yaxis":{"title":"prob"},"camera":{"eye":{"x":-1,"y":1.5,"z":0}},"zaxis":{"title":"dec"},"aspectmode":"cube"},"legend":{"title":{"text":"IID"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"z":[1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,0],"mode":"markers","type":"scatter3d","marker":{"color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"size":5,"symbol":["circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle"],"line":{"color":"rgba(31,119,180,1)"}},"name":252,"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"z":[0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"size":5,"symbol":["square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square"],"line":{"color":"rgba(255,127,14,1)"}},"name":254,"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"z":[0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"size":5,"symbol":["diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond"],"line":{"color":"rgba(44,160,44,1)"}},"name":256,"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"colorbar":{"title":"dec<br />fit","ticklen":2},"colorscale":[["0","orange"],["1","orange"]],"showscale":false,"z":[0.551670070630195,0.365439565668836,0.0947439888660703,0.00764376477997706,0.00376883465796061,0.155682469203117,0.365439565668836,0.155682469203117,0.365439565668836,0.0106151989596125,0.0169780729645572,0.0154409574652343,0.0213781713086725,0.0324232828791717,0.0213781713086725,0.0213781713086725,0.212305511382772,0.00801843617441724,0.155682469203117,0.0698864569000024,0.0610466685735347,0.127233508853716,0.016191584810136,0.132686280898083,0.237507834939975,0.312863614638199,0.0324232828791717,0.312863614638199,0.0906874268609976,0.0339709828658529,0.175662165083123,0.376694835551337,0.0339709828658529,0.0111338858306425,0.0906874268609976,0.0234922216739677,0.0906874268609976,0.0906874268609976,0.0698864569000024,0.0906874268609976,0.237507834939975,0.016191584810136,0.642687290928111,0.376694835551337,0.127233508853716,0.376694835551337,0.228884191237727,0.121973306138145,0.563567046482547,0.376694835551337,0.228884191237727,0.376694835551337,0.457054718483421,0.469045976147165,0.469045976147165,0.0638704919262045,0.0246244540647716,0.228884191237727,0.642687290928111,0.302589682714514,0.0906874268609976,0.469045976147165,0.0466952690007226],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2,6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4,7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6,5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3,8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values","intensity":[0.551670070630195,0.365439565668836,0.0947439888660703,0.00764376477997706,0.00376883465796061,0.155682469203117,0.365439565668836,0.155682469203117,0.365439565668836,0.0106151989596125,0.0169780729645572,0.0154409574652343,0.0213781713086725,0.0324232828791717,0.0213781713086725,0.0213781713086725,0.212305511382772,0.00801843617441724,0.155682469203117,0.0698864569000024,0.0610466685735347,0.127233508853716,0.016191584810136,0.132686280898083,0.237507834939975,0.312863614638199,0.0324232828791717,0.312863614638199,0.0906874268609976,0.0339709828658529,0.175662165083123,0.376694835551337,0.0339709828658529,0.0111338858306425,0.0906874268609976,0.0234922216739677,0.0906874268609976,0.0906874268609976,0.0698864569000024,0.0906874268609976,0.237507834939975,0.016191584810136,0.642687290928111,0.376694835551337,0.127233508853716,0.376694835551337,0.228884191237727,0.121973306138145,0.563567046482547,0.376694835551337,0.228884191237727,0.376694835551337,0.457054718483421,0.469045976147165,0.469045976147165,0.0638704919262045,0.0246244540647716,0.228884191237727,0.642687290928111,0.302589682714514,0.0906874268609976,0.469045976147165,0.0466952690007226],"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-c25ca3336b15b0293a53" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-c25ca3336b15b0293a53">{"x":{"visdat":{"6f1935fcd903":["function () ","plotlyVisDat"]},"cur_data":"6f1935fcd903","attrs":{"6f1935fcd903":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"mode":"markers","type":"scatter3d","marker":{"size":5,"symbol":{},"color":{}},"name":{},"inherit":true},"6f1935fcd903.1":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":{},"x":{},"y":{},"type":"mesh3d","name":"Fitted values","intensity":{},"colorscale":[["0","orange"],["1","orange"]],"showscale":false,"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"attr"},"yaxis":{"title":"prob"},"camera":{"eye":{"x":-1,"y":1.5,"z":0}},"zaxis":{"title":"dec"},"aspectmode":"cube"},"legend":{"title":{"text":"IID"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"z":[1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,0],"mode":"markers","type":"scatter3d","marker":{"color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"size":5,"symbol":["circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle"],"line":{"color":"rgba(31,119,180,1)"}},"name":252,"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"z":[0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"size":5,"symbol":["square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square"],"line":{"color":"rgba(255,127,14,1)"}},"name":254,"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"z":[0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"size":5,"symbol":["diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond"],"line":{"color":"rgba(44,160,44,1)"}},"name":256,"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"colorbar":{"title":"dec<br />fit","ticklen":2},"colorscale":[["0","orange"],["1","orange"]],"showscale":false,"z":[0.55167007063019569,0.36543956566883634,0.094743988866070522,0.0076437647799770829,0.0037688346579606265,0.15568246920311746,0.36543956566883634,0.15568246920311746,0.36543956566883634,0.010615198959612538,0.016978072964557282,0.015440957465234335,0.021378171308672561,0.032423282879171747,0.021378171308672561,0.021378171308672561,0.21230551138277276,0.0080184361744172691,0.15568246920311746,0.069886456900002655,0.061046668573534864,0.12723350885371623,0.016191584810136002,0.13268628089808349,0.2375078349399761,0.31286361463819928,0.032423282879171747,0.31286361463819928,0.090687426860997844,0.033970982865853004,0.17566216508312368,0.37669483555133793,0.033970982865853004,0.01113388583064258,0.090687426860997844,0.023492221673967809,0.090687426860997844,0.090687426860997844,0.069886456900002655,0.090687426860997844,0.2375078349399761,0.016191584810136002,0.64268729092811161,0.37669483555133793,0.12723350885371623,0.37669483555133793,0.22888419123772732,0.121973306138145,0.56356704648254796,0.37669483555133793,0.22888419123772732,0.37669483555133793,0.45705471848342177,0.46904597614716526,0.46904597614716526,0.063870491926204614,0.024624454064771668,0.22888419123772732,0.64268729092811161,0.30258968271451397,0.090687426860997844,0.46904597614716526,0.046695269000722718],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2,6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4,7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6,5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3,8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values","intensity":[0.55167007063019569,0.36543956566883634,0.094743988866070522,0.0076437647799770829,0.0037688346579606265,0.15568246920311746,0.36543956566883634,0.15568246920311746,0.36543956566883634,0.010615198959612538,0.016978072964557282,0.015440957465234335,0.021378171308672561,0.032423282879171747,0.021378171308672561,0.021378171308672561,0.21230551138277276,0.0080184361744172691,0.15568246920311746,0.069886456900002655,0.061046668573534864,0.12723350885371623,0.016191584810136002,0.13268628089808349,0.2375078349399761,0.31286361463819928,0.032423282879171747,0.31286361463819928,0.090687426860997844,0.033970982865853004,0.17566216508312368,0.37669483555133793,0.033970982865853004,0.01113388583064258,0.090687426860997844,0.023492221673967809,0.090687426860997844,0.090687426860997844,0.069886456900002655,0.090687426860997844,0.2375078349399761,0.016191584810136002,0.64268729092811161,0.37669483555133793,0.12723350885371623,0.37669483555133793,0.22888419123772732,0.121973306138145,0.56356704648254796,0.37669483555133793,0.22888419123772732,0.37669483555133793,0.45705471848342177,0.46904597614716526,0.46904597614716526,0.063870491926204614,0.024624454064771668,0.22888419123772732,0.64268729092811161,0.30258968271451397,0.090687426860997844,0.46904597614716526,0.046695269000722718],"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p class="caption">
 Figure 8.1: 3D visualization of the fitted plain binomial <code>model</code> against a subset of the <code>speed_dating</code> data for three specific <code>iid</code>s
 </p>
 </div>
 <p>Interactive Figure <a href="modeling-explicit-and-latent-hierarchy-in-data.html#fig:mixedbin">8.2</a> shows the three separate curves for each IID generated by a mixed binomial logistic regression model with a random intercept fitted on the same two input variables. Here, we can see that different individuals process the two inputs in their decision making in different ways, leading to different individual formulas which determine the likelihood of a positive decision. While a plain binomial regression model will find the best single formula from the data irrelevant of the individual, a mixed model allows us to take these different individual formulas into account in determining the effects of the input variables.</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:mixedbin"></span>
-<div id="htmlwidget-0a78b6872d546cc16a4c" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-0a78b6872d546cc16a4c">{"x":{"visdat":{"492f13689be2":["function () ","plotlyVisDat"]},"cur_data":"492f13689be2","attrs":{"492f13689be2":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"mode":"markers","type":"scatter3d","marker":{"size":5,"symbol":{},"color":{}},"name":{},"inherit":true},"492f13689be2.1":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.96806501275553,0.808421727286995,0.45289841521058,0.00189789931975927,0.000603762890891039,0.179766969723851,0.808421727286995,0.179766969723851,0.808421727286995,0.00222805525024738,0.0302334706082787,0.00594944108608041,0.0069794691091404,0.041222250191625,0.0069794691091404,0.0069794691091404,0.370045352782048,0.00432109749234445,0.179766969723851,0.413460276691713,0.0559745225301492],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"type":"mesh3d","name":"Fitted values IID 252","color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"inherit":true},"492f13689be2.2":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.0761269253032353,0.00115648071186152,0.158293542286889,0.371832580276418,0.613379871512699,0.00363103656747012,0.613379871512699,0.029826504417911,0.00824878025862638,0.180899100965386,0.449438803802831,0.00824878025862638,0.000431797718290683,0.029826504417911,0.00309362975082888,0.029826504417911,0.029826504417911,0.056380626019856,0.029826504417911,0.371832580276418,0.00115648071186152],"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"type":"mesh3d","name":"Fitted values IID 254","color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"inherit":true},"492f13689be2.3":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.570402088543388,0.135986813055566,0.0156383923152018,0.135986813055566,0.047622903858518,0.00691270941949104,0.530656384072899,0.135986813055566,0.047622903858518,0.135986813055566,0.15599719283827,0.29668679798236,0.29668679798236,0.00220664256859704,0.00136367017858543,0.047622903858518,0.570402088543388,0.118183819424218,0.00589247530911063,0.29668679798236,0.00187965361787956],"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values IID 256","color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"attr"},"yaxis":{"title":"prob"},"camera":{"eye":{"x":-1,"y":1.5,"z":0}},"zaxis":{"title":"dec"},"aspectmode":"cube"},"legend":{"title":{"text":"IID"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"z":[1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,0],"mode":"markers","type":"scatter3d","marker":{"color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"size":5,"symbol":["circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle"],"line":{"color":"rgba(31,119,180,1)"}},"name":252,"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"z":[0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"size":5,"symbol":["square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square"],"line":{"color":"rgba(255,127,14,1)"}},"name":254,"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"z":[0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"size":5,"symbol":["diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond"],"line":{"color":"rgba(44,160,44,1)"}},"name":256,"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"z":[0.96806501275553,0.808421727286995,0.45289841521058,0.00189789931975927,0.000603762890891039,0.179766969723851,0.808421727286995,0.179766969723851,0.808421727286995,0.00222805525024738,0.0302334706082787,0.00594944108608041,0.0069794691091404,0.041222250191625,0.0069794691091404,0.0069794691091404,0.370045352782048,0.00432109749234445,0.179766969723851,0.413460276691713,0.0559745225301492],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"type":"mesh3d","name":"Fitted values IID 252","frame":null},{"z":[0.0761269253032353,0.00115648071186152,0.158293542286889,0.371832580276418,0.613379871512699,0.00363103656747012,0.613379871512699,0.029826504417911,0.00824878025862638,0.180899100965386,0.449438803802831,0.00824878025862638,0.000431797718290683,0.029826504417911,0.00309362975082888,0.029826504417911,0.029826504417911,0.056380626019856,0.029826504417911,0.371832580276418,0.00115648071186152],"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"type":"mesh3d","name":"Fitted values IID 254","frame":null},{"z":[0.570402088543388,0.135986813055566,0.0156383923152018,0.135986813055566,0.047622903858518,0.00691270941949104,0.530656384072899,0.135986813055566,0.047622903858518,0.135986813055566,0.15599719283827,0.29668679798236,0.29668679798236,0.00220664256859704,0.00136367017858543,0.047622903858518,0.570402088543388,0.118183819424218,0.00589247530911063,0.29668679798236,0.00187965361787956],"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values IID 256","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-0a78b6872d546cc16a4c" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-0a78b6872d546cc16a4c">{"x":{"visdat":{"6f19647c58af":["function () ","plotlyVisDat"]},"cur_data":"6f19647c58af","attrs":{"6f19647c58af":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"x":{},"y":{},"z":{},"mode":"markers","type":"scatter3d","marker":{"size":5,"symbol":{},"color":{}},"name":{},"inherit":true},"6f19647c58af.1":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.9680650183617111,0.80842174438606706,0.45289843695702214,0.0018978990889644992,0.0006037627979087382,0.17976697031377242,0.80842174438606706,0.17976697031377242,0.80842174438606706,0.0022280549722641816,0.030233470249831286,0.0059494405563266847,0.0069794684660877612,0.041222249454937521,0.0069794684660877612,0.0069794684660877612,0.37004536198269883,0.0043210971345476207,0.17976697031377242,0.41346029875330337,0.055974521206295758],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"type":"mesh3d","name":"Fitted values IID 252","color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"inherit":true},"6f19647c58af.2":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.076126920791359812,0.0011564804812837495,0.15829353889248543,0.371832581861119,0.61337988153269973,0.0036310359620276593,0.61337988153269973,0.029826501535233675,0.0082487792059811309,0.18089909671523016,0.44943880389456481,0.0082487792059811309,0.00043179761682849896,0.029826501535233675,0.0030936292446062988,0.029826501535233675,0.029826501535233675,0.056380622948109853,0.029826501535233675,0.371832581861119,0.0011564804812837495],"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"type":"mesh3d","name":"Fitted values IID 254","color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"inherit":true},"6f19647c58af.3":{"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"z":[0.57040208752553612,0.13598680460973023,0.015638390215405099,0.13598680460973023,0.047622899135072186,0.006912708217580066,0.53065638383708336,0.13598680460973023,0.047622899135072186,0.13598680460973023,0.15599718295178946,0.29668679038390089,0.29668679038390089,0.002206642112078942,0.0013636699093278436,0.047622899135072186,0.57040208752553612,0.11818381226705818,0.0058924743023204169,0.29668679038390089,0.0018796532348992711],"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values IID 256","color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"attr"},"yaxis":{"title":"prob"},"camera":{"eye":{"x":-1,"y":1.5,"z":0}},"zaxis":{"title":"dec"},"aspectmode":"cube"},"legend":{"title":{"text":"IID"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"z":[1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,0],"mode":"markers","type":"scatter3d","marker":{"color":["red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red","red"],"size":5,"symbol":["circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle","circle"],"line":{"color":"rgba(31,119,180,1)"}},"name":252,"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null},{"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"z":[0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple","purple"],"size":5,"symbol":["square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square","square"],"line":{"color":"rgba(255,127,14,1)"}},"name":254,"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"line":{"color":"rgba(255,127,14,1)"},"frame":null},{"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"z":[0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0],"mode":"markers","type":"scatter3d","marker":{"color":["brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown","brown"],"size":5,"symbol":["diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond","diamond"],"line":{"color":"rgba(44,160,44,1)"}},"name":256,"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"line":{"color":"rgba(44,160,44,1)"},"frame":null},{"z":[0.9680650183617111,0.80842174438606706,0.45289843695702214,0.0018978990889644992,0.0006037627979087382,0.17976697031377242,0.80842174438606706,0.17976697031377242,0.80842174438606706,0.0022280549722641816,0.030233470249831286,0.0059494405563266847,0.0069794684660877612,0.041222249454937521,0.0069794684660877612,0.0069794684660877612,0.37004536198269883,0.0043210971345476207,0.17976697031377242,0.41346029875330337,0.055974521206295758],"x":[6,4,7,2,2,1,4,1,4,1,6,2,1,4,1,1,2,4,1,8,2],"y":[8,8,4,3,2,8,8,8,8,4,2,4,5,4,5,5,8,2,8,3,6],"type":"mesh3d","name":"Fitted values IID 252","frame":null},{"z":[0.076126920791359812,0.0011564804812837495,0.15829353889248543,0.371832581861119,0.61337988153269973,0.0036310359620276593,0.61337988153269973,0.029826501535233675,0.0082487792059811309,0.18089909671523016,0.44943880389456481,0.0082487792059811309,0.00043179761682849896,0.029826501535233675,0.0030936292446062988,0.029826501535233675,0.029826501535233675,0.056380622948109853,0.029826501535233675,0.371832581861119,0.0011564804812837495],"x":[6,4,8,8,9,4,9,5,6,7,6,6,3,5,5,5,5,8,5,8,4],"y":[5,3,4,5,5,4,5,5,3,5,7,3,3,5,3,5,5,3,5,5,3],"type":"mesh3d","name":"Fitted values IID 254","frame":null},{"z":[0.57040208752553612,0.13598680460973023,0.015638390215405099,0.13598680460973023,0.047622899135072186,0.006912708217580066,0.53065638383708336,0.13598680460973023,0.047622899135072186,0.13598680460973023,0.15599718295178946,0.29668679038390089,0.29668679038390089,0.002206642112078942,0.0013636699093278436,0.047622899135072186,0.57040208752553612,0.11818381226705818,0.0058924743023204169,0.29668679038390089,0.0018796532348992711],"x":[7,6,6,6,6,4,8,6,6,6,5,7,7,4,7,6,7,7,5,7,5],"y":[8,7,5,7,6,6,7,7,6,7,8,7,7,5,2,6,8,6,5,7,4],"type":"mesh3d","name":"Fitted values IID 256","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <p class="caption">
 Figure 8.2: 3D visualization of the individual-level binomial models created by <code>iid_intercept_model</code> against a subset of the <code>speed_dating</code> data for three specific <code>iid</code>s
 </p>
@@ -631,9 +638,9 @@ Figure 8.2: 3D visualization of the individual-level binomial models created by 
 <li><p><em>Structural model</em>: Assuming a satisfactory measurement model, the structural model is effectively a regression model which explains how each of the proposed factors relate to the outcome of interest.</p></li>
 </ol>
 <p>As a walkthrough example, we will work with the <code>politics_survey</code> data set.</p>
-<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb390-1" tabindex="-1"></a><span class="co"># if needed, get data</span></span>
-<span id="cb390-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb390-2" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/politics_survey.csv&quot;</span></span>
-<span id="cb390-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb390-3" tabindex="-1"></a>politics_survey <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code></pre></div>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb392-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb392-1" tabindex="-1"></a><span class="co"># if needed, get data</span></span>
+<span id="cb392-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb392-2" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://peopleanalytics-regression-book.org/data/politics_survey.csv&quot;</span></span>
+<span id="cb392-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb392-3" tabindex="-1"></a>politics_survey <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url)</span></code></pre></div>
 <p>This data set represents the results of a survey conducted by a political party on a set of approximately 2100 voters. The results are on a Likert scale of 1 to 4 where 1 indicates strong negative sentiment with a statement and 4 indicates strong positive sentiment. Subject matter experts have already grouped the items into proposed latent variables or factors, and the data takes the following form:</p>
 <ol style="list-style-type: decimal">
 <li><code>Overall</code> represents the overall intention to vote for the party in the next election.</li>
@@ -647,21 +654,21 @@ Figure 8.2: 3D visualization of the individual-level binomial models created by 
 <li>Items beginning with <code>Eco</code> are considered to be related to interest in economic issues.</li>
 </ol>
 <p>Let’s take a quick look at the data.</p>
-<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb391-1" tabindex="-1"></a><span class="fu">head</span>(politics_survey)</span></code></pre></div>
-<pre><code>##   Overall Pol1 Pol2 Pol3 Hab1 Hab2 Hab3 Loc1 Loc2 Loc3 Loc4 Env1 Env2 Int1 Int2 Pers1 Pers2 Pers3 Nat1 Nat2 Nat3
-## 1       3    2    2    2    2    2    2    3    3    2    2    2    3    3    3     3     4     4    3    3    4
-## 2       4    4    4    4    4    4    4    4    4    4    4    4    4    4    3     4     4     4    4    4    4
-## 3       4    4    4    4    3    2    2    4    4    4    4    4    4    4    4     4     4     4    4    4    4
-## 4       3    4    4    4    3    2    2    4    3    3    4    4    4    4    3     2     3     3    4    4    2
-## 5       3    3    3    4    4    3    3    3    4    3    3    4    4    3    4     4     3     3    4    3    4
-## 6       4    3    3    4    3    2    3    3    3    2    2    3    3    4    3     3     4     3    3    4    3
-##   Eco1 Eco2
-## 1    3    3
-## 2    3    4
-## 3    4    4
-## 4    4    4
-## 5    3    3
-## 6    4    4</code></pre>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb393-1" tabindex="-1"></a><span class="fu">head</span>(politics_survey)</span></code></pre></div>
+<pre><code>##   Overall Pol1 Pol2 Pol3 Hab1 Hab2 Hab3 Loc1 Loc2 Loc3 Loc4 Env1 Env2 Int1 Int2 Pers1 Pers2 Pers3 Nat1 Nat2 Nat3 Eco1
+## 1       3    2    2    2    2    2    2    3    3    2    2    2    3    3    3     3     4     4    3    3    4    3
+## 2       4    4    4    4    4    4    4    4    4    4    4    4    4    4    3     4     4     4    4    4    4    3
+## 3       4    4    4    4    3    2    2    4    4    4    4    4    4    4    4     4     4     4    4    4    4    4
+## 4       3    4    4    4    3    2    2    4    3    3    4    4    4    4    3     2     3     3    4    4    2    4
+## 5       3    3    3    4    4    3    3    3    4    3    3    4    4    3    4     4     3     3    4    3    4    3
+## 6       4    3    3    4    3    2    3    3    3    2    2    3    3    4    3     3     4     3    3    4    3    4
+##   Eco2
+## 1    3
+## 2    4
+## 3    4
+## 4    4
+## 5    3
+## 6    4</code></pre>
 <p>The outcome of interest here is the <code>Overall</code> rating. Our first aim is to confirm that the eight factors suggested by the subject matter experts represent a satisfactory measurement model (that they reasonably explain the responses to the 22 items), adjusting or refining if needed. Assuming we can confirm a satisfactory measurement model, our second aim is to run a structural model to determine how each factor relates to the overall intention to vote for the party in the next election.</p>
 <div id="running-and-assessing-the-measurement-model" class="section level3 hasAnchor" number="8.2.1">
 <h3><span class="header-section-number">8.2.1</span> Running and assessing the measurement model<a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-and-assessing-the-measurement-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -673,32 +680,32 @@ Figure 8.3: Simple path diagram showing proposed measurement model for <code>pol
 </p>
 </div>
 <p>The <code>lavaan</code> package in R is a specialized package for running analysis on latent variables. The function <code>cfa()</code> can be used to perform a confirmatory factor analysis on a specified measurement model. The measurement model can be specified using an appropriately commented and formatted text string as follows. Note the <code>=~</code> notation, and note also that each factor is defined on a new line.</p>
-<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb393-1" tabindex="-1"></a><span class="co"># define measurement model</span></span>
-<span id="cb393-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb393-2" tabindex="-1"></a></span>
-<span id="cb393-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb393-3" tabindex="-1"></a>meas_mod <span class="ot">&lt;-</span> <span class="st">&quot;</span></span>
-<span id="cb393-4"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb393-4" tabindex="-1"></a><span class="st"># measurement model</span></span>
-<span id="cb393-5"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb393-5" tabindex="-1"></a><span class="st">Pol =~ Pol1 + Pol2 + Pol3</span></span>
-<span id="cb393-6"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb393-6" tabindex="-1"></a><span class="st">Hab =~ Hab1 + Hab2 + Hab3</span></span>
-<span id="cb393-7"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb393-7" tabindex="-1"></a><span class="st">Loc =~ Loc1 + Loc2 + Loc3</span></span>
-<span id="cb393-8"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb393-8" tabindex="-1"></a><span class="st">Env =~ Env1 + Env2</span></span>
-<span id="cb393-9"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb393-9" tabindex="-1"></a><span class="st">Int =~ Int1 + Int2</span></span>
-<span id="cb393-10"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb393-10" tabindex="-1"></a><span class="st">Pers =~ Pers1 + Pers2 + Pers3</span></span>
-<span id="cb393-11"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb393-11" tabindex="-1"></a><span class="st">Nat =~ Nat1 + Nat2 + Nat3</span></span>
-<span id="cb393-12"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb393-12" tabindex="-1"></a><span class="st">Eco =~ Eco1 + Eco2</span></span>
-<span id="cb393-13"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb393-13" tabindex="-1"></a><span class="st">&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb395-1" tabindex="-1"></a><span class="co"># define measurement model</span></span>
+<span id="cb395-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb395-2" tabindex="-1"></a></span>
+<span id="cb395-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb395-3" tabindex="-1"></a>meas_mod <span class="ot">&lt;-</span> <span class="st">&quot;</span></span>
+<span id="cb395-4"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb395-4" tabindex="-1"></a><span class="st"># measurement model</span></span>
+<span id="cb395-5"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb395-5" tabindex="-1"></a><span class="st">Pol =~ Pol1 + Pol2 + Pol3</span></span>
+<span id="cb395-6"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb395-6" tabindex="-1"></a><span class="st">Hab =~ Hab1 + Hab2 + Hab3</span></span>
+<span id="cb395-7"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb395-7" tabindex="-1"></a><span class="st">Loc =~ Loc1 + Loc2 + Loc3</span></span>
+<span id="cb395-8"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb395-8" tabindex="-1"></a><span class="st">Env =~ Env1 + Env2</span></span>
+<span id="cb395-9"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb395-9" tabindex="-1"></a><span class="st">Int =~ Int1 + Int2</span></span>
+<span id="cb395-10"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb395-10" tabindex="-1"></a><span class="st">Pers =~ Pers1 + Pers2 + Pers3</span></span>
+<span id="cb395-11"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb395-11" tabindex="-1"></a><span class="st">Nat =~ Nat1 + Nat2 + Nat3</span></span>
+<span id="cb395-12"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb395-12" tabindex="-1"></a><span class="st">Eco =~ Eco1 + Eco2</span></span>
+<span id="cb395-13"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb395-13" tabindex="-1"></a><span class="st">&quot;</span></span></code></pre></div>
 <p>With the measurement model defined, the confirmatory factor analysis can be run and a summary viewed. The <code>lavaan</code> summary functions used in this section produce quite large outputs . We will proceed to highlight which parts of this output are important in interpreting and refining the model.</p>
-<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb394-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb394-1" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
-<span id="cb394-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb394-2" tabindex="-1"></a></span>
-<span id="cb394-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb394-3" tabindex="-1"></a>cfa_meas_mod <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">cfa</span>(<span class="at">model =</span> meas_mod, <span class="at">data =</span> politics_survey)</span>
-<span id="cb394-4"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb394-4" tabindex="-1"></a>lavaan<span class="sc">::</span><span class="fu">summary</span>(cfa_meas_mod, <span class="at">fit.measures =</span> <span class="cn">TRUE</span>, <span class="at">standardized =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<pre><code>## lavaan 0.6-7 ended normally after 108 iterations
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-1" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb396-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-2" tabindex="-1"></a></span>
+<span id="cb396-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-3" tabindex="-1"></a>cfa_meas_mod <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">cfa</span>(<span class="at">model =</span> meas_mod, <span class="at">data =</span> politics_survey)</span>
+<span id="cb396-4"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-4" tabindex="-1"></a>lavaan<span class="sc">::</span><span class="fu">summary</span>(cfa_meas_mod, <span class="at">fit.measures =</span> <span class="cn">TRUE</span>, <span class="at">standardized =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## lavaan 0.6-19 ended normally after 108 iterations
 ## 
 ##   Estimator                                         ML
 ##   Optimization method                           NLMINB
-##   Number of free parameters                         70
-##                                                       
+##   Number of model parameters                        70
+## 
 ##   Number of observations                          2108
-##                                                       
+## 
 ## Model Test User Model:
 ##                                                       
 ##   Test statistic                               838.914
@@ -723,14 +730,15 @@ Figure 8.3: Simple path diagram showing proposed measurement model for <code>pol
 ##                                                       
 ##   Akaike (AIC)                               75863.036
 ##   Bayesian (BIC)                             76258.780
-##   Sample-size adjusted Bayesian (BIC)        76036.383
+##   Sample-size adjusted Bayesian (SABIC)      76036.383
 ## 
 ## Root Mean Square Error of Approximation:
 ## 
 ##   RMSEA                                          0.045
 ##   90 Percent confidence interval - lower         0.042
 ##   90 Percent confidence interval - upper         0.048
-##   P-value RMSEA &lt;= 0.05                          0.998
+##   P-value H_0: RMSEA &lt;= 0.050                    0.998
+##   P-value H_0: RMSEA &gt;= 0.080                    0.000
 ## 
 ## Standardized Root Mean Square Residual:
 ## 
@@ -844,7 +852,7 @@ Figure 8.3: Simple path diagram showing proposed measurement model for <code>pol
 ##     Nat               0.273    0.015   18.788    0.000    1.000    1.000
 ##     Eco               0.276    0.015   17.974    0.000    1.000    1.000</code></pre>
 <p>This is a large set of results, but we can focus in on some important parameters to examine. First, we note that the results did not come attached to a warning. One particular warning to look out for relates to the covariance matrix being non-positive definite. This renders some of the attempted measurement invalid and is usually caused by too small a sample size for the complexity of the measurement model. Since we did not receive this warning, we can proceed safely.</p>
-<p>Second, we examine the fit statistics. Numerous statistics are reported<a href="#fn38" class="footnote-ref" id="fnref38"><sup>38</sup></a>, but for larger samples such as this data set, the following measures should be examined:</p>
+<p>Second, we examine the fit statistics. Numerous statistics are reported<a href="#fn37" class="footnote-ref" id="fnref37"><sup>37</sup></a>, but for larger samples such as this data set, the following measures should be examined:</p>
 <ul>
 <li><p>CFI and TLI, which compare the proposed model to a baseline (null or random) model to determine if it is better. Ideally we look for both of these measures to exceed 0.95. We see that our measurement model comes very close to meeting these criteria.</p></li>
 <li><p>RMSEA should ideally be less than 0.06, which is met by our measurement model.</p></li>
@@ -852,24 +860,24 @@ Figure 8.3: Simple path diagram showing proposed measurement model for <code>pol
 </ul>
 <p>Finally, the parameter estimates for the latent variables should be examined. In particular the <code>Std.all</code> column which is similar to standardized regression coefficients. These parameters are commonly known as factor loadings—they can be interpreted as the extent to which the item response is explained by the proposed latent variable. In general, factor loadings of 0.7 or above are considered reasonable. Factor loadings less than this may be introducing unacceptable measurement error. One option if this occurs is to drop the item completely from the measurement model, or to explore an alternative measurement model with the item assigned to another latent variable. In any case the analyst will need to balance these considerations against the need to have factors measured against multiple items wherever possible in order to minimize other aspects of measurement error.</p>
 <p>In our case we could consider dropping <code>Pol3</code>, <code>Loc1</code>, <code>Pers1</code> and <code>Nat3</code> from the measurement model as they have factor loadings of less than 0.7 and are in factors that contain three items. We will fit this revised measurement model, and rather than printing the entire output again, we will focus here on our CFI, TLI, RMSEA and SRMR statistics to see if they have improved. It is advisable, however, that factor loadings are also checked, especially where primary items that scale the variance of latent factors have been removed.</p>
-<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-1" tabindex="-1"></a>meas_mod_revised <span class="ot">&lt;-</span> <span class="st">&quot;</span></span>
-<span id="cb396-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-2" tabindex="-1"></a><span class="st"># measurement model</span></span>
-<span id="cb396-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-3" tabindex="-1"></a><span class="st">Pol =~ Pol1 + Pol2</span></span>
-<span id="cb396-4"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-4" tabindex="-1"></a><span class="st">Hab =~ Hab1 + Hab2 + Hab3</span></span>
-<span id="cb396-5"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-5" tabindex="-1"></a><span class="st">Loc =~ Loc2 + Loc3</span></span>
-<span id="cb396-6"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-6" tabindex="-1"></a><span class="st">Env =~ Env1 + Env2</span></span>
-<span id="cb396-7"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-7" tabindex="-1"></a><span class="st">Int =~ Int1 + Int2</span></span>
-<span id="cb396-8"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-8" tabindex="-1"></a><span class="st">Pers =~ Pers2 + Pers3</span></span>
-<span id="cb396-9"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-9" tabindex="-1"></a><span class="st">Nat =~ Nat1 + Nat2</span></span>
-<span id="cb396-10"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-10" tabindex="-1"></a><span class="st">Eco =~ Eco1 + Eco2</span></span>
-<span id="cb396-11"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-11" tabindex="-1"></a><span class="st">&quot;</span></span>
-<span id="cb396-12"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-12" tabindex="-1"></a></span>
-<span id="cb396-13"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-13" tabindex="-1"></a>cfa_meas_mod_rev <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">cfa</span>(<span class="at">model =</span> meas_mod_revised, </span>
-<span id="cb396-14"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-14" tabindex="-1"></a>                                <span class="at">data =</span> politics_survey)</span>
-<span id="cb396-15"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-15" tabindex="-1"></a></span>
-<span id="cb396-16"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-16" tabindex="-1"></a>fits <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">fitmeasures</span>(cfa_meas_mod_rev)</span>
-<span id="cb396-17"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-17" tabindex="-1"></a></span>
-<span id="cb396-18"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb396-18" tabindex="-1"></a>fits[<span class="fu">c</span>(<span class="st">&quot;cfi&quot;</span>, <span class="st">&quot;tli&quot;</span>, <span class="st">&quot;rmsea&quot;</span>, <span class="st">&quot;srmr&quot;</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-1" tabindex="-1"></a>meas_mod_revised <span class="ot">&lt;-</span> <span class="st">&quot;</span></span>
+<span id="cb398-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-2" tabindex="-1"></a><span class="st"># measurement model</span></span>
+<span id="cb398-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-3" tabindex="-1"></a><span class="st">Pol =~ Pol1 + Pol2</span></span>
+<span id="cb398-4"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-4" tabindex="-1"></a><span class="st">Hab =~ Hab1 + Hab2 + Hab3</span></span>
+<span id="cb398-5"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-5" tabindex="-1"></a><span class="st">Loc =~ Loc2 + Loc3</span></span>
+<span id="cb398-6"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-6" tabindex="-1"></a><span class="st">Env =~ Env1 + Env2</span></span>
+<span id="cb398-7"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-7" tabindex="-1"></a><span class="st">Int =~ Int1 + Int2</span></span>
+<span id="cb398-8"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-8" tabindex="-1"></a><span class="st">Pers =~ Pers2 + Pers3</span></span>
+<span id="cb398-9"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-9" tabindex="-1"></a><span class="st">Nat =~ Nat1 + Nat2</span></span>
+<span id="cb398-10"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-10" tabindex="-1"></a><span class="st">Eco =~ Eco1 + Eco2</span></span>
+<span id="cb398-11"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-11" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb398-12"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-12" tabindex="-1"></a></span>
+<span id="cb398-13"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-13" tabindex="-1"></a>cfa_meas_mod_rev <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">cfa</span>(<span class="at">model =</span> meas_mod_revised, </span>
+<span id="cb398-14"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-14" tabindex="-1"></a>                                <span class="at">data =</span> politics_survey)</span>
+<span id="cb398-15"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-15" tabindex="-1"></a></span>
+<span id="cb398-16"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-16" tabindex="-1"></a>fits <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">fitmeasures</span>(cfa_meas_mod_rev)</span>
+<span id="cb398-17"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-17" tabindex="-1"></a></span>
+<span id="cb398-18"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-18" tabindex="-1"></a>fits[<span class="fu">c</span>(<span class="st">&quot;cfi&quot;</span>, <span class="st">&quot;tli&quot;</span>, <span class="st">&quot;rmsea&quot;</span>, <span class="st">&quot;srmr&quot;</span>)]</span></code></pre></div>
 <pre><code>##        cfi        tli      rmsea       srmr 
 ## 0.97804888 0.96719394 0.03966962 0.02736629</code></pre>
 <p>We now see that our measurement model comfortably meets all fit requirements. In our case we chose to completely drop four items from the model. Analysts may wish to experiment with relaxing criteria on dropping items, or on reassigning items to other factors to achieve a good balance between fit and factor measurement reliability.</p>
@@ -877,33 +885,33 @@ Figure 8.3: Simple path diagram showing proposed measurement model for <code>pol
 <div id="running-and-interpreting-the-structural-model" class="section level3 hasAnchor" number="8.2.2">
 <h3><span class="header-section-number">8.2.2</span> Running and interpreting the structural model<a href="modeling-explicit-and-latent-hierarchy-in-data.html#running-and-interpreting-the-structural-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>With a satisfactory measurement model, the structural model is a simple regression formula. The <code>sem()</code> function in <code>lavaan</code> can be used to perform a full structural equation model including the measurement model and structural model. Like for <code>cfa()</code>, an extensive output can be expected from this function, but assuming that our measurement model is satisfactory, our key interest is now in the structural model elements of this output.</p>
-<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-1" tabindex="-1"></a><span class="co"># define full SEM using revised measurement model</span></span>
-<span id="cb398-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-2" tabindex="-1"></a>full_sem <span class="ot">&lt;-</span> <span class="st">&quot;</span></span>
-<span id="cb398-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-3" tabindex="-1"></a><span class="st"># measurement model</span></span>
-<span id="cb398-4"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-4" tabindex="-1"></a><span class="st">Pol =~ Pol1 + Pol2</span></span>
-<span id="cb398-5"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-5" tabindex="-1"></a><span class="st">Hab =~ Hab1 + Hab2 + Hab3</span></span>
-<span id="cb398-6"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-6" tabindex="-1"></a><span class="st">Loc =~ Loc2 + Loc3</span></span>
-<span id="cb398-7"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-7" tabindex="-1"></a><span class="st">Env =~ Env1 + Env2</span></span>
-<span id="cb398-8"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-8" tabindex="-1"></a><span class="st">Int =~ Int1 + Int2</span></span>
-<span id="cb398-9"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-9" tabindex="-1"></a><span class="st">Pers =~ Pers2 + Pers3</span></span>
-<span id="cb398-10"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-10" tabindex="-1"></a><span class="st">Nat =~ Nat1 + Nat2</span></span>
-<span id="cb398-11"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-11" tabindex="-1"></a><span class="st">Eco =~ Eco1 + Eco2</span></span>
-<span id="cb398-12"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-12" tabindex="-1"></a></span>
-<span id="cb398-13"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-13" tabindex="-1"></a><span class="st"># structural model</span></span>
-<span id="cb398-14"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-14" tabindex="-1"></a><span class="st">Overall ~ Pol + Hab + Loc + Env + Int + Pers + Nat + Eco</span></span>
-<span id="cb398-15"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-15" tabindex="-1"></a><span class="st">&quot;</span></span>
-<span id="cb398-16"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-16" tabindex="-1"></a></span>
-<span id="cb398-17"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-17" tabindex="-1"></a><span class="co"># run full SEM </span></span>
-<span id="cb398-18"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-18" tabindex="-1"></a>full_model <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">sem</span>(<span class="at">model =</span> full_sem, <span class="at">data =</span> politics_survey)</span>
-<span id="cb398-19"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb398-19" tabindex="-1"></a>lavaan<span class="sc">::</span><span class="fu">summary</span>(full_model, <span class="at">standardized =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<pre><code>## lavaan 0.6-7 ended normally after 99 iterations
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-1" tabindex="-1"></a><span class="co"># define full SEM using revised measurement model</span></span>
+<span id="cb400-2"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-2" tabindex="-1"></a>full_sem <span class="ot">&lt;-</span> <span class="st">&quot;</span></span>
+<span id="cb400-3"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-3" tabindex="-1"></a><span class="st"># measurement model</span></span>
+<span id="cb400-4"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-4" tabindex="-1"></a><span class="st">Pol =~ Pol1 + Pol2</span></span>
+<span id="cb400-5"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-5" tabindex="-1"></a><span class="st">Hab =~ Hab1 + Hab2 + Hab3</span></span>
+<span id="cb400-6"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-6" tabindex="-1"></a><span class="st">Loc =~ Loc2 + Loc3</span></span>
+<span id="cb400-7"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-7" tabindex="-1"></a><span class="st">Env =~ Env1 + Env2</span></span>
+<span id="cb400-8"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-8" tabindex="-1"></a><span class="st">Int =~ Int1 + Int2</span></span>
+<span id="cb400-9"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-9" tabindex="-1"></a><span class="st">Pers =~ Pers2 + Pers3</span></span>
+<span id="cb400-10"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-10" tabindex="-1"></a><span class="st">Nat =~ Nat1 + Nat2</span></span>
+<span id="cb400-11"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-11" tabindex="-1"></a><span class="st">Eco =~ Eco1 + Eco2</span></span>
+<span id="cb400-12"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-12" tabindex="-1"></a></span>
+<span id="cb400-13"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-13" tabindex="-1"></a><span class="st"># structural model</span></span>
+<span id="cb400-14"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-14" tabindex="-1"></a><span class="st">Overall ~ Pol + Hab + Loc + Env + Int + Pers + Nat + Eco</span></span>
+<span id="cb400-15"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-15" tabindex="-1"></a><span class="st">&quot;</span></span>
+<span id="cb400-16"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-16" tabindex="-1"></a></span>
+<span id="cb400-17"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-17" tabindex="-1"></a><span class="co"># run full SEM </span></span>
+<span id="cb400-18"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-18" tabindex="-1"></a>full_model <span class="ot">&lt;-</span> lavaan<span class="sc">::</span><span class="fu">sem</span>(<span class="at">model =</span> full_sem, <span class="at">data =</span> politics_survey)</span>
+<span id="cb400-19"><a href="modeling-explicit-and-latent-hierarchy-in-data.html#cb400-19" tabindex="-1"></a>lavaan<span class="sc">::</span><span class="fu">summary</span>(full_model, <span class="at">standardized =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## lavaan 0.6-19 ended normally after 99 iterations
 ## 
 ##   Estimator                                         ML
 ##   Optimization method                           NLMINB
-##   Number of free parameters                         71
-##                                                       
+##   Number of model parameters                        71
+## 
 ##   Number of observations                          2108
-##                                                       
+## 
 ## Model Test User Model:
 ##                                                       
 ##   Test statistic                               465.318
@@ -1056,14 +1064,14 @@ Figure 8.4: Path diagram for full structural equation model on <code>politics_su
 </div>
 <div id="data-exercises-6" class="section level3 hasAnchor" number="8.3.2">
 <h3><span class="header-section-number">8.3.2</span> Data exercises<a href="modeling-explicit-and-latent-hierarchy-in-data.html#data-exercises-6" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>For Exercises 1–4, use the <code>speed_dating</code> set used earlier in this chapter<a href="#fn39" class="footnote-ref" id="fnref39"><sup>39</sup></a>.</p>
+<p>For Exercises 1–4, use the <code>speed_dating</code> set used earlier in this chapter<a href="#fn38" class="footnote-ref" id="fnref38"><sup>38</sup></a>.</p>
 <ol style="list-style-type: decimal">
 <li>Split the data into two sets according to the gender of the participant. Run standard binomial logistic regression models on each set to determine the relationship between the <code>dec</code> decision outcome and the input variables <code>samerace</code>, <code>agediff</code>, <code>attr</code>, <code>intel</code> and <code>prob</code>.</li>
 <li>Run similar mixed models on these sets with a random intercept for <code>iid</code>.</li>
 <li>What different conclusions can you make in comparing the mixed models with the standard models?</li>
 <li>Experiment with some random slope effects to see if they reveal anything new about the input variables.</li>
 </ol>
-<p>For exercises 5–10, load the <code>employee_survey</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn40" class="footnote-ref" id="fnref40"><sup>40</sup></a>. This data set contains the results of an engagement survey of employees of a technology company. Each row represents the responses of an individual to the survey and each column represents a specific survey question, with responses on a Likert scale of 1 to 4, with 1 indicating strongly negative sentiment and 4 indicating strongly positive sentiment. Subject matter experts have grouped the items into hypothesized latent factors as follows:</p>
+<p>For exercises 5–10, load the <code>employee_survey</code> data set via the <code>peopleanalyticsdata</code> package or download it from the internet<a href="#fn39" class="footnote-ref" id="fnref39"><sup>39</sup></a>. This data set contains the results of an engagement survey of employees of a technology company. Each row represents the responses of an individual to the survey and each column represents a specific survey question, with responses on a Likert scale of 1 to 4, with 1 indicating strongly negative sentiment and 4 indicating strongly positive sentiment. Subject matter experts have grouped the items into hypothesized latent factors as follows:</p>
 <ul>
 <li><code>Happiness</code> is an overall measure of the employees current sentiment about their job.</li>
 <li>Items beginning with <code>Ben</code> relate to employment benefits.</li>
@@ -1084,7 +1092,7 @@ Figure 8.4: Path diagram for full structural equation model on <code>politics_su
 </div>
 </div>
 <h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-bartholomew" class="csl-entry">
 Bartholomew, David J., Martin Knott, and Irini Moustaki. 2011. <em>Latent Variable Models and Factor Analysis: A Unified Approach</em>.
 </div>
@@ -1097,11 +1105,11 @@ Skrondal, Anders, and Sophia Rabe-Hesketh. 2004. <em>Generalized Latent Variable
 </div>
 <div class="footnotes">
 <hr />
-<ol start="37">
-<li id="fn37"><p>I have simplified the data set, and the full version can be found at <a href="http://www.stat.columbia.edu/~gelman/arm/examples/speed.dating/" class="uri">http://www.stat.columbia.edu/~gelman/arm/examples/speed.dating/</a><a href="modeling-explicit-and-latent-hierarchy-in-data.html#fnref37" class="footnote-back">↩︎</a></p></li>
-<li id="fn38"><p>Other reported measures include chi-square statistical tests of perfect fit for the measurement model and for the baseline model, and AIC and BIC. While these generally are not very helpful in determining the quality of a specific measurement model, they are valuable for comparing different measurement model options.<a href="modeling-explicit-and-latent-hierarchy-in-data.html#fnref38" class="footnote-back">↩︎</a></p></li>
-<li id="fn39"><p><a href="http://peopleanalytics-regression-book.org/data/speed_dating.csv" class="uri">http://peopleanalytics-regression-book.org/data/speed_dating.csv</a><a href="modeling-explicit-and-latent-hierarchy-in-data.html#fnref39" class="footnote-back">↩︎</a></p></li>
-<li id="fn40"><p><a href="http://peopleanalytics-regression-book.org/data/employee_survey.csv" class="uri">http://peopleanalytics-regression-book.org/data/employee_survey.csv</a><a href="modeling-explicit-and-latent-hierarchy-in-data.html#fnref40" class="footnote-back">↩︎</a></p></li>
+<ol start="36">
+<li id="fn36"><p>I have simplified the data set, and the full version can be found at <a href="http://www.stat.columbia.edu/~gelman/arm/examples/speed.dating/" class="uri">http://www.stat.columbia.edu/~gelman/arm/examples/speed.dating/</a><a href="modeling-explicit-and-latent-hierarchy-in-data.html#fnref36" class="footnote-back">↩︎</a></p></li>
+<li id="fn37"><p>Other reported measures include chi-square statistical tests of perfect fit for the measurement model and for the baseline model, and AIC and BIC. While these generally are not very helpful in determining the quality of a specific measurement model, they are valuable for comparing different measurement model options.<a href="modeling-explicit-and-latent-hierarchy-in-data.html#fnref37" class="footnote-back">↩︎</a></p></li>
+<li id="fn38"><p><a href="http://peopleanalytics-regression-book.org/data/speed_dating.csv" class="uri">http://peopleanalytics-regression-book.org/data/speed_dating.csv</a><a href="modeling-explicit-and-latent-hierarchy-in-data.html#fnref38" class="footnote-back">↩︎</a></p></li>
+<li id="fn39"><p><a href="http://peopleanalytics-regression-book.org/data/employee_survey.csv" class="uri">http://peopleanalytics-regression-book.org/data/employee_survey.csv</a><a href="modeling-explicit-and-latent-hierarchy-in-data.html#fnref39" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
@@ -1170,7 +1178,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
