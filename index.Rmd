@@ -24,8 +24,8 @@ if (knitr::is_latex_output()) {
   options(width = 100)
 }
 
-# bookdown::render_book("index.Rmd", output_format = "bookdown::bs4_book", config_file = "_bookdown_bs4.yml")
-# knitr::opts_chunk$set(dpi=300)
+## bookdown::render_book("index.Rmd", output_format = "bookdown::bs4_book", config_file = "_bookdown_bs4.yml")
+## knitr::opts_chunk$set(dpi=300)
 knitr::opts_chunk$set(out.width = "90%")
 ```
 
